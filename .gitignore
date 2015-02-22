@@ -1,2 +1,9 @@
+# vi temp files
+*.swp
+*.swo
+*~
+
+# jekyll
+_drafts
 _site
 .sass-cache
