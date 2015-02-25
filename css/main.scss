@@ -17,12 +17,12 @@ $spacing-unit:     30px;
 $text-color:       #282828;
 $background-color: #fdfdfd;
 
-$reverse-text-color: #fff;
-$reverse-background-color: #000;
-
 $grey-color:       #828282;
 $grey-color-light: lighten($grey-color, 40%);
 $grey-color-dark:  darken($grey-color, 25%);
+
+$reverse-text-color: lighten($grey-color, 15%);
+$reverse-background-color: #000;
 
 // Width of the content area
 $content-width:    800px;

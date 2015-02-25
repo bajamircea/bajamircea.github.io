@@ -11,12 +11,25 @@
  */
 footer {
   background-color: $reverse-background-color;
+  color: $reverse-text-color;
   padding: $base-font-size 0;
 }
 
 .footer-content {
   text-align: center;
   @include font-size($base-font-size * 1.5, normal, $base-line-height);
+
+  > a {
+    color: $reverse-text-color;
+
+    &:visited {
+      color: $reverse-text-color;
+    }
+
+    &:hover {
+      color: $grey-color-light;
+    }
+  }
 }
 
 /**
