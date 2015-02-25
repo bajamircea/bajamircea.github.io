@@ -89,20 +89,20 @@ h1, h2, h3, h4, h5, h6 {
  * Links
  */
 a {
-    color: $brand-color;
-    text-decoration: none;
+  color: $text-color;
+  text-decoration: underline;
+  @include transition(0.3s linear);
 
-    &:visited {
-        color: darken($brand-color, 15%);
-    }
+  &:visited {
+    color: $text-color;
+    text-decoration: underline;
+  }
 
-    &:hover {
-        color: $text-color;
-        text-decoration: underline;
-    }
+  &:hover {
+    color: $grey-color;
+    text-decoration: underline;
+  }
 }
-
-
 
 /**
  * Blockquotes
@@ -127,10 +127,9 @@ blockquote {
  */
 pre,
 code {
-    font-size: 15px;
-    border: 1px solid $grey-color-light;
-    border-radius: 3px;
-    background-color: #eef;
+  font-family: monospace;
+  @include font-size(12px, normal, 16.8px);
+  border: 1px solid $grey-color-light;
 }
 
 code {
@@ -139,7 +138,7 @@ code {
 
 pre {
     padding: 8px 12px;
-    overflow-x: scroll;
+    overflow-x: auto;
 
     > code {
         border: 0;
@@ -147,8 +146,6 @@ pre {
         padding-left: 0;
     }
 }
-
-
 
 /**
  * Wrapper
@@ -181,24 +178,5 @@ pre {
         content: "";
         display: table;
         clear: both;
-    }
-}
-
-
-
-/**
- * Icons
- */
-.icon {
-
-    > svg {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        vertical-align: middle;
-
-        path {
-            fill: $grey-color;
-        }
     }
 }

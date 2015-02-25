@@ -6,16 +6,19 @@
 
 
 // Our variables
-$base-font-family: Helvetica, Arial, sans-serif;
-$base-font-size:   16px;
-$small-font-size:  $base-font-size * 0.875;
-$base-line-height: 1.5;
+$base-font-family: serif;
+$base-font-size:   14px;
+$small-font-size:  12px;
+$title-font-size:  84px;
+$base-line-height: 26.6px;
 
 $spacing-unit:     30px;
 
-$text-color:       #111;
+$text-color:       #282828;
 $background-color: #fdfdfd;
-$brand-color:      #2a7ae2;
+
+$reverse-text-color: #fff;
+$reverse-background-color: #000;
 
 $grey-color:       #828282;
 $grey-color-light: lighten($grey-color, 40%);
@@ -28,24 +31,9 @@ $on-palm:          600px;
 $on-laptop:        800px;
 
 
-
-// Using media queries with like this:
-// @include media-query($on-palm) {
-//     .wrapper {
-//         padding-right: $spacing-unit / 2;
-//         padding-left: $spacing-unit / 2;
-//     }
-// }
-@mixin media-query($device) {
-    @media screen and (max-width: $device) {
-        @content;
-    }
-}
-
-
-
 // Import partials from `sass_dir` (defaults to `_sass`)
 @import
+        "mixins",
         "base",
         "layout",
         "syntax-highlighting"
