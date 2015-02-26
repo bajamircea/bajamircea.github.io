@@ -20,19 +20,17 @@ title: Mircea Baja's Posts
   {% endfor %}
 </ul>
 
-{% if paginator.total_pages > 1 %}
-  <div class="pagination">
-    {% if paginator.previous_page %}
-      {% if paginator.page == 2 %}
-        <a rel="prev" class="previous" href="/"><i class="fa fa-angle-left"></i> Previous</a>
-      {% else %}
-        <a rel="prev" class="previous" href="{{ paginator.previous_page_path }}"><i class="fa fa-angle-left"></i> Previous</a>
-      {% endif %}
+<div class="pagination">
+  {% if paginator.previous_page %}
+    {% if paginator.page == 2 %}
+      <a rel="prev" class="previous" href="/"><i class="fa fa-angle-left"></i> Previous</a>
     {% else %}
-      <span class="previous">&nbsp;</span>
+      <a rel="prev" class="previous" href="{{ paginator.previous_page_path }}"><i class="fa fa-angle-left"></i> Previous</a>
     {% endif %}
-    {% if paginator.next_page %}
-      <a rel="next" class="next" href="{{ paginator.next_page_path }}">Next <i class="fa fa-angle-right"></i> </a>
-    {% endif %}
-  </div>
-{% endif %}
+  {% else %}
+    <span class="previous">&nbsp;</span>
+  {% endif %}
+  {% if paginator.next_page %}
+    <a rel="next" class="next" href="{{ paginator.next_page_path }}">Next <i class="fa fa-angle-right"></i> </a>
+  {% endif %}
+</div>
