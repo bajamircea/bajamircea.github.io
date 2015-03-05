@@ -1,0 +1,247 @@
+---
+layout: post
+title: 'Dealing with C APIs'
+categories: coding cpp
+---
+[DRAFT] This article focuses on dealing with C APIs, in particular the ones that follow
+a construct-use-destroy cycle. You first need to call a function that
+constructs some object and returns a handle that allows the implementation to
+access the object later. To use the object, you call functions that get the
+handle as an additional argument. To free resources at the end, you need to
+call a function that destroys the object.
+
+For example here are the function declarations of four functions from
+`stdio.h`:
+
+{% highlight c++ linenos %}
+FILE * fopen(const char * filename, const char * mode);
+
+size_t fread(void * ptr, size_t size, size_t count, FILE * stream);
+size_t fwrite(const void * ptr, size_t size, size_t count, FILE * stream);
+
+int fclose(FILE * stream);
+{% endhighlight %}
+
+They do have some peculiarities. One quirk is that to specify a buffer
+three arguments are used: a pointer to an array, the size of one element in the
+array and the count of elements.
+
+But as a usage pattern they should be familiar. Use `fopen` to open a file.
+This returns a `FILE` pointer as the object handle. This handle is passed to
+`fread` and `fwrite` to read or write a buffer to the file (another quirk is
+that the handle is the last argument, more often it's the first one). Call
+`fclose` at the end.
+
+[Documentation][fwrite-doc] of `fwrite` might include an example on how to
+use it:
+
+{% highlight c++ linenos %}
+#include <stdio.h>
+
+int main ()
+{
+  FILE * pFile;
+  char buffer[] = { 'x' , 'y' , 'z' };
+  pFile = fopen("myfile.bin", "wb");
+  fwrite(buffer , sizeof(char), sizeof(buffer), pFile);
+  fclose(pFile);
+  return 0;
+}
+{% endhighlight %}
+
+The example above is misleadingly simple because it does not deal with errors.
+If the file fails to open (e.g.  lack of permissions), `fopen` returns a null
+pointer, and in the example above the null pointer is passed to `fwrite` and
+`fclose` as the file handle. In general the implementation does not need to
+check for a null pointer in theese cases because it's the job of the caller to
+ensure it's not. However some APIs do check for null pointer if that's a
+unfortunalte common usage pattern that the library implementation wants to deal
+with.
+
+{% highlight c++ linenos %}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main ()
+{
+  FILE * src = fopen("src.bin", "rb");
+  FILE * dst = fopen("dst.bin", "wb");
+  const int buffer_size = 1024;
+  char * buffer = malloc(buffer_size);
+
+  for(;;)
+  {
+    int read_count = fread(buffer, 1, buffer_size, src);
+    fwrite(buffer , 1, read_count, dst);
+    fputs(".", stdout);
+
+    if (feof(src))
+    {
+      fputs("\nFinished copying\n", stdout);
+      break;
+    }
+  }
+
+  free(buffer);
+  fclose(dst);
+  fclose(src);
+
+  return 0;
+}
+{% endhighlight %}
+Let's have a look at how error handling would look for a not so trivial example
+like copying the contents of a file to another.
+
+{% highlight c++ linenos %}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main ()
+{
+  int return_value = -1;
+  FILE * src = fopen("src.bin", "rb");
+  if (0 == src)
+  {
+    perror("Failed to open source file");
+  }
+  else
+  {
+    FILE * dst = fopen("dst.bin", "wb");
+    if (0 == dst)
+    {
+      perror("Failed to open destination file");
+    }
+    else
+    {
+      const int buffer_size = 1024;
+      char * buffer = malloc(buffer_size);
+      if (0 == buffer)
+      {
+        fputs("Failed to allocate buffer\n", stderr);
+      }
+      else
+      {
+        for(;;)
+        {
+          int read_count = fread(buffer, 1, buffer_size, src);
+          if (read_count != buffer_size)
+          {
+            if (ferror(src))
+            {
+              perror("Failed to write to destination file");
+              break;
+            }
+          }
+
+          if (read_count > 0)
+          {
+            int write_count = fwrite(buffer , 1, read_count, dst);
+            if (write_count != read_count)
+            {
+              perror("Failed to write to destination file");
+              break;
+            }
+            fputs(".", stdout);
+          }
+
+          if (feof(src))
+          {
+            return_value = 0;
+            fputs("\nFinished copying\n", stdout);
+            break;
+          }
+        }
+
+        free(buffer);
+      }
+
+      fclose(dst);
+    }
+
+    fclose(src);
+  }
+  return return_value;
+}
+{% endhighlight %}
+
+{% highlight c++ linenos %}
+#include <stdio.h>
+#include <stdlib.h>
+
+int main ()
+{
+  int return_value = -1;
+  FILE * src = fopen("src.bin", "rb");
+  if (0 == src)
+  {
+    perror("Failed to open source file");
+    goto end;
+  }
+
+  FILE * dst = fopen("dst.bin", "wb");
+  if (0 == dst)
+  {
+    perror("Failed to open destination file");
+    goto end;
+  }
+
+  const int buffer_size = 1024;
+  char * buffer = malloc(buffer_size);
+  if (0 == buffer)
+  {
+    fputs("Failed to allocate buffer\n", stderr);
+    goto end;
+  }
+
+  for(;;)
+  {
+    int read_count = fread(buffer, 1, buffer_size, src);
+    if (read_count != buffer_size)
+    {
+      if (ferror(src))
+      {
+        perror("Failed to write to destination file");
+        goto end;
+      }
+    }
+
+    if (read_count > 0)
+    {
+      int write_count = fwrite(buffer , 1, read_count, dst);
+      if (write_count != read_count)
+      {
+        perror("Failed to write to destination file");
+        goto end;
+      }
+      fputs(".", stdout);
+    }
+
+    if (feof(src))
+    {
+      return_value = 0;
+      fputs("\nFinished copying\n", stdout);
+      break;
+    }
+  }
+
+end:
+  if (buffer)
+  {
+    free(buffer);
+  }
+
+  if (dst)
+  {
+    fclose(dst);
+  }
+
+  if (src)
+  {
+    fclose(src);
+  }
+
+  return return_value;
+}
+{% endhighlight %}
+
+[fwrite-doc]:      http://www.cplusplus.com/reference/cstdio/fwrite/
