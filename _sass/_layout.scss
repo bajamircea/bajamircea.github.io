@@ -144,6 +144,7 @@ header > .post-date {
 
     h2 {
         font-size: 32px;
+        margin-top: 32px;
 
         @include media-query($on-laptop) {
             font-size: 28px;
