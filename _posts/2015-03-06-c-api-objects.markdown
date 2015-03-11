@@ -4,7 +4,7 @@ title: 'C Objects'
 categories: coding c
 ---
 
-This article looks at the options for implementing objects in the C language
+This ar looks at the options for implementing objects in the C language
 from the C API user's point of view. This is the first from a series of
 articles that looks at how to deal with such APIs, with emphasis on correctly
 using such APIs which is sadly too often not the case.
@@ -204,6 +204,7 @@ FILE * stderr;
 {% endhighlight %}
 
 You can't close these handles.
+
 
 [fwrite-doc]:      http://www.cplusplus.com/reference/cstdio/fwrite/
 [why-win-handle]:  http://blogs.msdn.com/b/oldnewthing/archive/2004/03/02/82639.aspx

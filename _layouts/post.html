@@ -12,12 +12,12 @@ layout: default
 </article>
 
 <div class="pagination">
-  {% if page.next.url %}
-    <a rel="prev" class="previous" href="{{ page.next.url }}"><i class="fa fa-angle-left"></i> {{ page.next.title }}</a>
+  {% if page.previous.url %}
+    <a rel="prev" class="previous" href="{{ page.previous.url }}"><i class="fa fa-angle-left"></i> {{ page.previous.title }}</a>
   {% else %}
     <span class="previous">&nbsp;</span>
   {% endif %}
-  {% if page.previous.url %}
-    <a rel="next" class="next" href="{{ page.previous.url }}">{{ page.previous.title }} <i class="fa fa-angle-right"></i></a>
+  {% if page.next.url %}
+    <a rel="next" class="next" href="{{ page.next.url }}">{{ page.next.title }} <i class="fa fa-angle-right"></i></a>
   {% endif %}
 </div>
