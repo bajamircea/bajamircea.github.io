@@ -5,7 +5,7 @@ categories: coding c
 ---
 
 This article looks at handling errors in C APIs using a if-error-else codding
-pattern. It describes the issues and option when using this coding stile, with
+pattern. It describes the issues and option when using this coding style, with
 the full example of the [copy file example][copy-file] written to test error
 using if-error-else blocks.
 
