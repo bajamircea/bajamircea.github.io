@@ -4,10 +4,9 @@ title: 'If Error Else'
 categories: coding c
 ---
 
-This article looks at handling errors in C APIs using a if-error-else codding
-pattern. It describes the issues and option when using this coding style, with
-the full example of the [copy file example][copy-file] written to test error
-using if-error-else blocks.
+This article looks at handling errors in C APIs using an if-error-else codding
+pattern. It describes the issues and options when using this coding style, with
+the full example of the [copy file example][copy-file] rewritten.
 
 
 ## Introduction
@@ -56,21 +55,6 @@ In this case it's just `fclose` that moves away from the related function
 (`fopen`) as more code gets added. I refer to this coding style the
 **if-error-else coding pattern**.
 
-A minor issue is that I find reading the `else` in the code above involves a
-double negation: it happens for `! ! f`, which I can figure out it means `f`,
-which means `0 != f`. I find the following approach a bit more readable.
-
-{% highlight c++ linenos %}
-if (0 == f)
-{
-  // handle error
-}
-else // 0 != f
-{
-  // file opened
-}
-{% endhighlight %}
-
 For functions that need not release any resource, like `fwrite`, the error
 handing stays close to the function it relates to:
 
@@ -92,7 +76,7 @@ else
 ## Issues
 
 The first issue with this approach is the repetition. It's a major issue.
-Every time we invoke `fopen` using this coding pattern we need to repeat:
+Every time we call `fopen` using this coding pattern we also need to repeat:
 
 - the if condition
 - the error handling
@@ -101,20 +85,32 @@ Every time we invoke `fopen` using this coding pattern we need to repeat:
 - and 4 curly brackets
 
 For the [copy file example][copy-file] this approach takes the code from 27
-lines of code to **69 lines** of code, more than double.
+lines of code to **68 lines** of code, more than double. So much repetition has
+cascading effects that results on errors when coding and time waste when
+reading code.
 
-So much repetition has cascading effects. Chances of coding mistakes increases:
-usually there are some genuine mistakes and lots of incorrect error text
-messages. For example the message `"Failed to open source file"` might be also
-logged when failing to open the destination file. The code bloat distracts from
-the intended functionality and slows down reading. Remember code is usually
-read more times than it's written.
+On one side this coding style at least tries to check systematically for
+errors. But, because of the repetition, there is repeated scope for error that
+for any but non-trivial projects results in mistakes that cumulate to a muddy
+code quality.
 
-The code repetition can be addressed using a C++ RAII approach.
+One apparently trivial issue is the case of iregular error checking. Notice how
+in the example below `fread` does not have a `else` bracnch, instead it breaks
+out of the `for` loop on error. This kind of things have no impact on execution
+they just slow down reading.
+
+Then there are lots of incorrect error test messages. The code to open the
+file was copy-pasted and the same message `"Failed to open source file"` might
+also be logged when failing to open the destination file.
+
+Then there is the case of the missing or incorrect error handling.
+
+The **code repetition can be addressed using a C++ RAII approach**.
 
 The second issue is the ever growing nesting depth. For the simple example
-below we get to **6 levels** deep compared with 2 levels in the example with no
-error handling.
+below we get to **6 levels** deep compared with 2 levels in the example with
+[no error handling][copy-file].
+
 
 ## Full code
 
@@ -125,6 +121,7 @@ error handling.
 int main ()
 {
   int return_value = -1;
+
   FILE * src = fopen("src.bin", "rb");
   if (0 == src)
   {
@@ -150,13 +147,10 @@ int main ()
         for(;;)
         {
           int read_count = fread(buffer, 1, buffer_size, src);
-          if (read_count != buffer_size)
+          if ((read_count != buffer_size) && ferror(src))
           {
-            if (ferror(src))
-            {
-              perror("Failed to read from source file");
-              break;
-            }
+            perror("Failed to read from source file");
+            break;
           }
 
           if (read_count > 0)
@@ -186,9 +180,18 @@ int main ()
 
     fclose(src);
   }
+
   return return_value;
 }
 {% endhighlight %}
+
+
+## Summary
+
+You need to understand how to handle errors. Logically the code above does the
+right thing, in that it is what we want the computer to execute. However as a
+coding style the if-error-else approach is verbose and error prone. **Don't use
+it**.
 
 
 [copy-file]:    {% post_url 2015-03-12-copy-file-no-error %}
