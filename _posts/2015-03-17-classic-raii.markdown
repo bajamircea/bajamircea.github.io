@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Classic RAII'
-categories: coding c
+categories: coding cpp
 ---
 
 RAII (Resource Aquisition Is Initialization) is a complex name that does not do
