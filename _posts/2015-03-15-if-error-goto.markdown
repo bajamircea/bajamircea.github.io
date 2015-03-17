@@ -61,7 +61,7 @@ invoke `fopen` using this coding pattern we need to repeat:
 - and 4 curly brackets
 
 For the [copy file example][copy-file] this approach takes the code from 27
-lines of code to **74 lines** of code, more than double.
+lines of code to **75 lines** of code, more than double.
 
 The code repetition can be addressed using a C++ RAII approach.
 
@@ -78,6 +78,7 @@ but not really harmful, because it's regular, not jumping all over the place.
 int main ()
 {
   int return_value = 1;
+
   FILE * src = fopen("src.bin", "rb");
   if ( ! src)
   {
@@ -111,7 +112,7 @@ int main ()
 
     if (read_count > 0)
     {
-      size_t write_count = fwrite(buffer , 1, read_count, dst);
+      size_t write_count = fwrite(buffer, 1, read_count, dst);
       if (write_count != read_count)
       {
         perror("Failed to write to destination file");

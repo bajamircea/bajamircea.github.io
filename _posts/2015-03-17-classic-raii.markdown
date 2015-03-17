@@ -213,7 +213,7 @@ size_t file::read(char * buffer, size_t size)
 
 void file::write(const char * buffer, size_t size)
 {
-  size_t write_count = fwrite(buffer , 1, size, f_);
+  size_t write_count = fwrite(buffer, 1, size, f_);
   if (write_count != size)
   {
     log_and_throw("Failed to write to file");

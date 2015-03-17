@@ -155,7 +155,7 @@ int main ()
 
           if (read_count > 0)
           {
-            size_t write_count = fwrite(buffer , 1, read_count, dst);
+            size_t write_count = fwrite(buffer, 1, read_count, dst);
             if (write_count != read_count)
             {
               perror("Failed to write to destination file");
