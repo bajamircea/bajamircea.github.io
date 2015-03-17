@@ -5,7 +5,7 @@ categories: coding c
 ---
 
 RAII (Resource Aquisition Is Initialization) is a complex name that does not do
-justice to one of the most useful programming idioms.  This article describes
+justice to one of the most useful programming idioms. This article describes
 the options and issues when using this coding style, with the full example of
 the [copy file example][copy-file] rewritten.
 
@@ -14,14 +14,14 @@ the [copy file example][copy-file] rewritten.
 
 RAII is a resource management technique developed in C++ by Bjarne Stroustrup
 and Andrew Koenig in the 1980s. It largely eliminates the need to collect
-garbage, by allowing not creating garbage in the first place.
+garbage, by not creating garbage in the first place.
 
-In this article I'll describe what I call the **classical RAII**, as we'll see
-later there are some minor variations.
+In this article I'll describe what I call the **classical RAII**. As we'll see
+later, there are some minor variations.
 
 RAII fundamentally works by wrapping a resource in an object, initializing the
 resource in the constructor. If the constructor succeeds, the destructor will
-cleanup the resource. If the constructor fails it throws an exception, and
+cleanup the resource. If the constructor fails, it throws an exception, and
 conveniently the destructor is not called.
 
 When opening a file with `fopen`, the resource that needs to be wrapped is a
@@ -55,19 +55,18 @@ public:
 
   // methods
   // that use f_
-  // can assume f_ is not null
-  // no need to test
+  // assume f_ is not null
 };
 {% endhighlight %}
 
 Notice that the construction has two possible outcomes: the constructor
 succeeds or it throws.
 
-If `fopen` succeeds, the constructor succeeds and ends with a `f_` that is not
-null. It can be used in other `file` class methods without the need to test for
-null, including in the destructor. That explains the complicated RAII name
-(Resource Aquisition Is Initialization): when the resource is aquired, the
-object is fully initialized.
+If `fopen` succeeds, then the constructor succeeds and the instance has a `f_`
+that is not null. `f_` can be used in other `file` class methods without the
+need to test for null, including in the destructor. This behaviour explains the
+complicated RAII name (Resource Aquisition Is Initialization): when the
+resource is aquired, the object is fully initialized.
 
 If `fopen` fails, the constructor throws: the object is not constructed, the
 user can't call methods and the destructor is not called.
@@ -98,17 +97,17 @@ first, and destructed last. The scope of `dst` is surrounded by the scope of
 
 If say the creation of `dst` fails, then the execution exits the scope,
 ensuring that the destructor if `src` is called closing it's already opened
-`FILE *`. This provides *exception safety* for the stack resources.
-
-  - can compound objects with RAII
-  - compare with try with resources approach
+`FILE *`. This provides **exception safety** for the stack resources.
 
 
 ## Issues
 
-- destructors must not throw
-- copyability
-- returning such objects
+No real issues, more like things to pay attention to:
+
+- Ensure the destructors don't throw
+- Pay attention to the copy constructor and assignment operator. One easy
+  option is to delete them to ensure that destructor does not try to release
+  twice the same resource.
 
 ## Full code
 
@@ -169,8 +168,8 @@ public:
   ~file();
 
 private:
-  file(const file &);
-  file & operator=(const file &);
+  file(const file &) = delete;
+  file & operator=(const file &) = delete;
 
 public:
   size_t read(char * buffer, size_t size);
@@ -238,7 +237,7 @@ void file::log_and_throw(const char * message)
 
 RAII coding style avoids repetition and reduces errors through encapsulation
 and locality of resource management. It is a very important programming idiom,
-albeit with an unfortunate name. **Usage of some RAII variant is highly
+with an unfortunate name unfortunately. **Usage of some RAII variant is highly
 recommended**.
 
 
