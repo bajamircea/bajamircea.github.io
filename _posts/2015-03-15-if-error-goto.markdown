@@ -77,7 +77,7 @@ but not really harmful, because it's regular, not jumping all over the place.
 
 int main ()
 {
-  int return_value = -1;
+  int return_value = 1;
   FILE * src = fopen("src.bin", "rb");
   if ( ! src)
   {

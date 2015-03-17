@@ -120,7 +120,7 @@ below we get to **6 levels** deep compared with 2 levels in the example with
 
 int main ()
 {
-  int return_value = -1;
+  int return_value = 1;
 
   FILE * src = fopen("src.bin", "rb");
   if (0 == src)
