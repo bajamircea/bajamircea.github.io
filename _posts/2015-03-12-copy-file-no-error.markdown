@@ -33,12 +33,12 @@ int main ()
 {
   FILE * src = fopen("src.bin", "rb");
   FILE * dst = fopen("dst.bin", "wb");
-  const int buffer_size = 1024;
+  const size_t buffer_size = 1024;
   char * buffer = malloc(buffer_size);
 
   for(;;)
   {
-    int read_count = fread(buffer, 1, buffer_size, src);
+    size_t read_count = fread(buffer, 1, buffer_size, src);
     fwrite(buffer , 1, read_count, dst);
     fputs(".", stdout);
 

@@ -92,7 +92,7 @@ int main ()
     goto end;
   }
 
-  const int buffer_size = 1024;
+  const size_t buffer_size = 1024;
   char * buffer = malloc(buffer_size);
   if ( ! buffer)
   {
@@ -102,7 +102,7 @@ int main ()
 
   for(;;)
   {
-    int read_count = fread(buffer, 1, buffer_size, src);
+    size_t read_count = fread(buffer, 1, buffer_size, src);
     if ((read_count != buffer_size) && ferror(src))
     {
       perror("Failed to read from source file");
@@ -111,7 +111,7 @@ int main ()
 
     if (read_count > 0)
     {
-      int write_count = fwrite(buffer , 1, read_count, dst);
+      size_t write_count = fwrite(buffer , 1, read_count, dst);
       if (write_count != read_count)
       {
         perror("Failed to write to destination file");
