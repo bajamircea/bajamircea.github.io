@@ -1,0 +1,198 @@
+---
+layout: post
+title: 'Slim RAII'
+categories: coding cpp
+---
+
+This article looks at handling errors in C APIs using an if-error-return
+codding pattern which uses a slimmed down RAII variant.  It describes the
+issues and options when using this coding style, with the full example of the
+[copy file example][copy-file] rewritten.
+
+
+## Introduction
+
+I mentioned that there are variants of [RAII][classic-raii], and this describes
+the slimmed down variant that uses very simple classes to wrap resources and
+ensure they are released.
+
+This approach is useful for example when working with an unfamiliar C API. Say
+at the stage when you're not sure: should `fread` belong to the `file` class or
+to the `buffer` class? This is a serious question, because there is a 'smell'
+in code that if a function member of a class needs lots of member variables
+form another class, maybe it belongs to the wrong class. `fread` needs both the
+pointer to and the size of data from the `buffer`, and only the file pointer
+from the `file`.
+
+In this slimmed down RAII variant we have a simple class that gets the resource
+on the constructor and frees it in the destructor. It is so slimmed down that
+the resource is accessible as a public member variable, and there no other
+member functions. To even remove the need to declare `public` accessibility the
+class is actually a struct.
+
+{% highlight c++ linenos %}
+struct file
+{
+  FILE * p;
+
+  file(FILE * x) :
+    p(x)
+  {
+  }
+
+  ~file()
+  {
+    if (p)
+    {
+      fclose(p);
+    }
+  }
+};
+{% endhighlight %}
+
+To initialize and use this class one needs to use the if-error-return pattern:
+
+{% highlight c++ linenos %}
+file src(fopen("src.bin", "rb"));
+if ( ! src.p)
+{
+  perror("Failed to open source file");
+  return 1;
+}
+
+// more
+// code
+// here
+
+size_t read_count = fread(buffer.p, 1, buffer_size, src.p);
+if ((read_count != buffer_size) && ferror(src.p))
+{
+  perror("Failed to read from source file");
+  return 1;
+}
+{% endhighlight %}
+
+Another situation where this approach might be useful is where you need more
+control over if and when exceptions are thrown.
+
+
+## Issues
+
+The issue with this approach is the repetition, that it shares with all the
+if-error patterns. While resources are released by the destructor, the
+repetition for the `if` blocks is still a major issue. Every time we call some
+function we need to repeat:
+
+- the if condition
+- the error handling
+- the return statement
+- and 2 curly brackets
+
+
+## Full code
+
+{% highlight c++ linenos %}
+#include <stdio.h>
+#include <stdlib.h>
+
+struct file
+{
+  FILE * p;
+
+  file(FILE * x) :
+    p(x)
+  {
+  }
+
+  ~file()
+  {
+    if (p)
+    {
+      fclose(p);
+    }
+  }
+
+  file(const file &) = delete;
+  file & operator=(const file &) = delete;
+};
+
+struct mem
+{
+  char * p;
+
+  mem(char * x) :
+    p(x)
+  {
+  }
+
+  ~mem()
+  {
+    if (p)
+    {
+      free(p);
+    }
+  }
+
+  mem(const mem &) = delete;
+  mem & operator=(const mem &) = delete;
+};
+
+int main ()
+{
+  file src(fopen("src.bin", "rb"));
+  if ( ! src.p)
+  {
+    perror("Failed to open source file");
+    return 1;
+  }
+
+  file dst(fopen("dst.bin", "wb"));
+  if ( ! dst.p)
+  {
+    perror("Failed to open destination file");
+    return 1;
+  }
+
+  const size_t buffer_size = 1024;
+  mem buffer(reinterpret_cast<char *>(malloc(buffer_size)));
+  if ( ! buffer.p)
+  {
+    fputs("Failed to allocate buffer\n", stderr);
+    return 1;
+  }
+
+  do
+  {
+    size_t read_count = fread(buffer.p, 1, buffer_size, src.p);
+    if ((read_count != buffer_size) && ferror(src.p))
+    {
+      perror("Failed to read from source file");
+      return 1;
+    }
+
+    if (read_count > 0)
+    {
+      size_t write_count = fwrite(buffer.p, 1, read_count, dst.p);
+      if (write_count != read_count)
+      {
+        perror("Failed to write to destination file");
+        return 1;
+      }
+      fputs(".", stdout);
+    }
+  } while ( ! feof(src.p));
+
+  fputs("\nSUCCESS\n", stdout);
+  return 0;
+}
+{% endhighlight %}
+
+
+## Summary
+
+Use it as a **stopgap measure** while learning a C API, to ensure resources are
+released.
+
+[copy-file]:     {% post_url 2015-03-12-copy-file-no-error %}
+[if-error-goto]:     {% post_url 2015-03-15-if-error-goto %}
+[classic-raii]:     {% post_url 2015-03-17-classic-raii %}
