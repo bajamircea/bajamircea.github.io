@@ -1,0 +1,222 @@
+---
+layout: post
+title: 'Fat RAII'
+categories: coding cpp
+---
+
+This article looks at handling errors in C APIs using an
+all-singing-all-dancing approach that uses a fatted up RAII variant. It
+describes the issues and options when using this coding style, with the full
+example of the [copy file example][copy-file] rewritten.
+
+
+## Introduction
+
+I mentioned that there are variants of [RAII][classic-raii] (that include the
+[slim RAII][slim-raii]), and this describes a variant that adds more complexity
+in the classes that wrap C APIs with the goal of making it easier to use.
+
+
+
+## Advantages
+
+
+
+## Issues
+
+
+## Full code
+
+### main.cpp
+{% highlight c++ linenos %}
+#include "file.h"
+#include <vector>
+#include <iostream>
+
+void copy_file()
+{
+  file src = file::open("src.bin", "rb");
+  file dst = file::open_stdout();
+  std::vector<char> buffer(1024);
+
+  do
+  {
+    size_t read_count = src.read(buffer.data(), buffer.size());
+
+    if (read_count > 0)
+    {
+      dst.write(buffer.data(), read_count);
+      std::cout << '.';
+    }
+  } while ( ! src.is_eof());
+}
+
+int main ()
+{
+  try
+  {
+    copy_file();
+
+    std::cout << "\nSUCCESS\n";
+    return 0;
+  }
+  catch(const std::exception & e)
+  {
+    std::cerr << e.what() << std::endl;
+    return 1;
+  }
+}
+{% endhighlight %}
+
+
+### file.h
+{% highlight c++ linenos %}
+#pragma once
+
+#include "noncopyable.h"
+#include <cstdio>
+
+class file :
+  private noncopyable
+{
+  FILE * f_;
+  bool own_;
+
+  file(FILE * f, bool own);
+public:
+  ~file();
+
+public:
+  file(file && other);
+  file & operator=(file && other);
+
+public:
+  static file open(const char * file_name, const char * mode);
+  static file open_stdout(bool own = false);
+
+public:
+  size_t read(char * buffer, size_t size);
+  void write(const char * buffer, size_t size);
+  bool is_eof();
+
+private:
+  static void log_and_throw(const char * message);
+};
+{% endhighlight %}
+
+
+### file.cpp
+{% highlight c++ linenos %}
+#include "file.h"
+#include <stdexcept>
+
+file::file(FILE * f, bool own) :
+  f_(f),
+  own_(own)
+{
+}
+
+file::~file()
+{
+  if (own_ && f_)
+  {
+    fclose(f_);
+  }
+}
+
+file::file(file && other) :
+  f_(other.f_),
+  own_(other.own_)
+{
+  other.f_ = 0;
+  other.own_ = false;
+}
+
+file & file::operator=(file && other)
+{
+  if (this != &other)
+  {
+    if (own_ && f_)
+    {
+      fclose(f_);
+    }
+    f_ = other.f_;
+    own_ = other.own_;
+    other.f_ = 0;
+    other.own_ = false;
+  }
+  return *this;
+}
+
+file file::open(const char * file_name, const char * mode)
+{
+  FILE * f = fopen(file_name, mode);
+  if ( ! f)
+  {
+    log_and_throw("Failed to open file");
+  }
+  return file(f, true);
+}
+
+file file::open_stdout(bool own)
+{
+  return file(stdout, own);
+}
+
+size_t file::read(char * buffer, size_t size)
+{
+  size_t read_count = fread(buffer, 1, size, f_);
+  if ((read_count != size) && ferror(f_))
+  {
+    log_and_throw("Failed to read from file");
+  }
+  return read_count;
+}
+
+void file::write(const char * buffer, size_t size)
+{
+  size_t write_count = fwrite(buffer , 1, size, f_);
+  if (write_count != size)
+  {
+    log_and_throw("Failed to write to file");
+  }
+}
+
+bool file::is_eof()
+{
+  return feof(f_);
+}
+
+void file::log_and_throw(const char * message)
+{
+  perror(0);
+  throw std::runtime_error(message);
+}
+{% endhighlight %}
+
+
+### noncopyable.h
+{% highlight c++ linenos %}
+
+#pragma once
+
+class noncopyable
+{
+protected:
+  noncopyable() {};
+
+private:
+  noncopyable(const noncopyable &) = delete;
+  noncopyable & operator=(const noncopyable &) = delete;
+};
+{% endhighlight %}
+
+
+## Summary
+
+**RAII rules!**
+
+
+[copy-file]:     {% post_url 2015-03-12-copy-file-no-error %}
+[classic-raii]:     {% post_url 2015-03-17-classic-raii %}
+[slim-raii]:     {% post_url 2015-03-22-slim-raii %}

@@ -35,7 +35,7 @@ struct file
 {
   FILE * p;
 
-  file(FILE * x) :
+  explicit file(FILE * x) :
     p(x)
   {
   }
@@ -79,9 +79,9 @@ control over if and when exceptions are thrown.
 ## Issues
 
 The issue with this approach is the repetition, that it shares with all the
-if-error patterns. While resources are released by the destructor, the
-repetition for the `if` blocks is still a major issue. Every time we call some
-function we need to repeat:
+[if-error patterns][if-error-goto]. While resources are released by the
+destructor, the repetition for the `if` blocks is still a major issue. Every
+time we call some function we need to repeat:
 
 - the if condition
 - the error handling
@@ -99,7 +99,7 @@ struct file
 {
   FILE * p;
 
-  file(FILE * x) :
+  explicit file(FILE * x) :
     p(x)
   {
   }
@@ -116,16 +116,16 @@ struct file
   file & operator=(const file &) = delete;
 };
 
-struct mem
+struct mem_buffer
 {
   char * p;
 
-  mem(char * x) :
+  explicit mem_buffer(char * x) :
     p(x)
   {
   }
 
-  ~mem()
+  ~mem_buffer()
   {
     if (p)
     {
@@ -133,8 +133,8 @@ struct mem
     }
   }
 
-  mem(const mem &) = delete;
-  mem & operator=(const mem &) = delete;
+  mem_buffer(const mem_buffer &) = delete;
+  mem_buffer & operator=(const mem_buffer &) = delete;
 };
 
 int main ()
@@ -154,7 +154,7 @@ int main ()
   }
 
   const size_t buffer_size = 1024;
-  mem buffer(reinterpret_cast<char *>(malloc(buffer_size)));
+  mem_buffer buffer(reinterpret_cast<char *>(malloc(buffer_size)));
   if ( ! buffer.p)
   {
     fputs("Failed to allocate buffer\n", stderr);
@@ -190,8 +190,8 @@ int main ()
 
 ## Summary
 
-Use it as a **stopgap measure** while learning a C API, to ensure resources are
-released.
+Use it as a **stopgap measure** to ensure resources are released while learning
+a C API.
 
 [copy-file]:     {% post_url 2015-03-12-copy-file-no-error %}
 [if-error-goto]:     {% post_url 2015-03-15-if-error-goto %}
