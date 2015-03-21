@@ -5,9 +5,8 @@ categories: coding cpp
 ---
 
 This article looks at handling errors in C APIs using an if-error-return
-codding pattern which uses a slimmed down RAII variant.  It describes the
-issues and options when using this coding style, with the full example of the
-[copy file example][copy-file] rewritten.
+codding pattern which uses a slimmed down RAII variant which is sometimes
+useful.
 
 
 ## Introduction
@@ -20,7 +19,7 @@ This approach is useful for example when working with an unfamiliar C API. Say
 at the stage when you're not sure: should `fread` belong to the `file` class or
 to the `buffer` class? This is a serious question, because there is a 'smell'
 in code that if a function member of a class needs lots of member variables
-form another class, maybe it belongs to the wrong class. `fread` needs both the
+from another class, maybe it belongs to the wrong class. `fread` needs both the
 pointer to and the size of data from the `buffer`, and only the file pointer
 from the `file`.
 
@@ -28,7 +27,7 @@ In this slimmed down RAII variant we have a simple class that gets the resource
 on the constructor and frees it in the destructor. It is so slimmed down that
 the resource is accessible as a public member variable, and there no other
 member functions. To even remove the need to declare `public` accessibility the
-class is actually a struct.
+class is actually a `struct`.
 
 {% highlight c++ linenos %}
 struct file
@@ -193,6 +192,5 @@ int main ()
 Use it as a **stopgap measure** to ensure resources are released while learning
 a C API.
 
-[copy-file]:     {% post_url 2015-03-12-copy-file-no-error %}
 [if-error-goto]:     {% post_url 2015-03-15-if-error-goto %}
 [classic-raii]:     {% post_url 2015-03-17-classic-raii %}

@@ -6,8 +6,7 @@ categories: coding c
 
 This article looks at handling errors in C APIs using an if-error-goto codding
 pattern which is an improvement over the [if-error-else][if-error-else]
-variant. It describes the issues and options when using this coding style, with
-the full example of the [copy file example][copy-file] rewritten.
+variant.
 
 
 ## Introduction
@@ -43,14 +42,14 @@ Compared with the [if-error-else][if-error-else] style, it addresses the
 nesting problem: the sample code below goes to **3 levels** deep down from 6
 levels.
 
-It also addresses the choice for irregular error handling. Inside the `for`
-loop one would still use `goto` in case of an error (instead of choosing to
-`break` from the loop).
+It also addresses the irregular error handling. Inside the `for` loop one would
+still use `goto` in case of an error (instead of choosing to `break` from the
+loop).
 
 ## Issues
 
 This style still has the issue of too much repetition, and the same comments
-from the [if-error-else][if-error-else] stype apply here as well. Every time we
+from the [if-error-else][if-error-else] style apply here as well. Every time we
 invoke `fopen` using this coding pattern we need to repeat:
 
 - the if condition
@@ -60,8 +59,8 @@ invoke `fopen` using this coding pattern we need to repeat:
 - the `fclose` call
 - and 4 curly brackets
 
-For the [copy file example][copy-file] this approach takes the code from 27
-lines of code to **75 lines** of code, more than double.
+For the [copy file example][copy-file] this approach takes the code from 28
+lines of code to **75 lines** of code, almost triple.
 
 The code repetition can be addressed using a C++ RAII approach.
 
@@ -154,7 +153,7 @@ end:
 
 While an improvement over the if-error-else approach, the if-error-goto is
 still verbose, repetitive and error prone.  **Don't use it**, unless for
-whatever reason you can't use C++.
+whatever reason you can't use C++ and RAII.
 
 
 [copy-file]:     {% post_url 2015-03-12-copy-file-no-error %}

@@ -5,9 +5,7 @@ categories: coding cpp
 ---
 
 This article looks at handling errors in C APIs using an
-all-singing-all-dancing approach that uses a fatted up RAII variant. It
-describes the issues and options when using this coding style, with the full
-example of the [copy file example][copy-file] rewritten.
+all-singing-all-dancing approach that uses a fatted up RAII variant.
 
 
 ## Introduction
@@ -15,7 +13,6 @@ example of the [copy file example][copy-file] rewritten.
 I mentioned that there are variants of [RAII][classic-raii] (that include the
 [slim RAII][slim-raii]), and this describes a variant that adds more complexity
 in the classes that wrap C APIs with the goal of making it easier to use.
-
 
 
 ## Advantages
@@ -73,7 +70,6 @@ int main ()
 {% highlight c++ linenos %}
 #pragma once
 
-#include "noncopyable.h"
 #include <cstdio>
 
 class file :
@@ -85,7 +81,9 @@ class file :
   file(FILE * f, bool own);
 public:
   ~file();
-
+private:
+  file(const file &) = delete;
+  file & operator=(const file &) = delete;
 public:
   file(file && other);
   file & operator=(file && other);
@@ -195,28 +193,10 @@ void file::log_and_throw(const char * message)
 {% endhighlight %}
 
 
-### noncopyable.h
-{% highlight c++ linenos %}
-
-#pragma once
-
-class noncopyable
-{
-protected:
-  noncopyable() {};
-
-private:
-  noncopyable(const noncopyable &) = delete;
-  noncopyable & operator=(const noncopyable &) = delete;
-};
-{% endhighlight %}
-
-
 ## Summary
 
 **RAII rules!**
 
 
-[copy-file]:     {% post_url 2015-03-12-copy-file-no-error %}
 [classic-raii]:     {% post_url 2015-03-17-classic-raii %}
 [slim-raii]:     {% post_url 2015-03-22-slim-raii %}

@@ -4,10 +4,10 @@ title: 'Copy File No Error'
 categories: coding c
 ---
 
-This short article proposes a simple example, that copies the contents of a
-file to another, with no error handling. Future articles will use this example
-as a base of comparison. This is the second from a series of articles that
-looks at how to deal with C APIs, resources and error handling.
+This short article proposes a simple example that copies the contents of a file
+to another, with no error handling. Future articles will use this example as a
+base of comparison. This is the second from a series of articles that looks at
+how to deal with C APIs, resources and error handling.
 
 
 ## Summary
@@ -20,7 +20,8 @@ another until it gets to the end of the source file.
 The code ignores all error handling. That makes it **wrong**, but otherwise an
 easy read.
 
-The sample with no error handling has **27 lines** of code.
+The sample with no error handling has 28 lines of code of which the core
+copying takes **20 lines** of code (between line 6 and 25 inclusive).
 
 
 ## Full code
@@ -44,7 +45,6 @@ int main ()
 
     if (feof(src))
     {
-      fputs("\nSUCCESS\n", stdout);
       break;
     }
   }
@@ -52,6 +52,8 @@ int main ()
   free(buffer);
   fclose(dst);
   fclose(src);
+
+  fputs("\nSUCCESS\n", stdout);
 }
 {% endhighlight %}
 

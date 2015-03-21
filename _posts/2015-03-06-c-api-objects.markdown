@@ -4,10 +4,10 @@ title: 'C Objects'
 categories: coding c
 ---
 
-This ar looks at the options for implementing objects in the C language
+This article looks at the options for implementing objects in the C language
 from the C API user's point of view. This is the first from a series of
 articles that looks at how to deal with such APIs, with emphasis on correctly
-using such APIs which is sadly too often not the case.
+using such APIs (which is sadly too often not the case).
 
 
 ## Introduction
@@ -42,7 +42,7 @@ int fclose(FILE * stream);
 `fopen` is the constructor function. It opens a file and returns a `FILE`
 pointer as the object handle. If called again (e.g. to open another file), it
 returns a pointer to a new `FILE` instance. Use `fread` and `fwrite` to read or
-write a buffer to the file. Pass them the appropriate `FILE` pointer as the
+write a buffer to the file. Pass them the appropriate `FILE` pointer, as the
 handle, in addition to the three arguments related to the buffer. Call `fclose`
 at the end to free resources associated with a handle.
 
@@ -100,9 +100,9 @@ if (0 == f)
 Sometimes the invalid value might be different from null, and there could be
 more than one invalid value for a handle type. For example `CreateEvent`returns
 `NULL` in case of error. [However][why-win-handle] `CreateFile` returns in case
-of error `INVALID_HANDLE_VALUE`, which is `-1`, error even if the return type
-is the same as `CreateEvent`. **Ensure you check for the right invalid value
-depending on the constructor function**.
+of error `INVALID_HANDLE_VALUE`, which is `-1`, even if the return type is the
+same as `CreateEvent`. **Ensure you check for the right invalid value depending
+on the constructor function**.
 
 {% highlight c++ linenos %}
 HANDLE e = CreateEvent(...);
@@ -178,22 +178,22 @@ argument, are the odd case.
 
 Sometimes C API implementations check that the object handle is not a null
 pointer and return some error code in that case instead of crashing the program
-(as `fwrite` would usually do). Don't rely on this behaviour, **just don't try
-to use the object handle if the constructor fails**.
+(as `fwrite` would usually do). Don't rely on this behaviour, **don't use the
+object handle if the constructor fails**.
 
 
 ## Destruction
 
-Failing to destruct objects returned by constructing functions leands to
+Failing to destruct objects returned by constructing functions leads to
 resource leaks (at least memory if nothing else).
 
 If you check for a null pointer before destroying the object, remember that not
 all constructors return a null pointer (see `CreateFile` above).
 
-Similar to the usage the C API implementation might check that the object
+Similar to the usage, the C API implementation might check that the object
 handle is not a null pointer. Don't rely on this behaviour (e.g. by not
-performing the check yourself) unless you're sure it's safe.
-E.g. it is safe to call `delete` with a null pointer in C++.
+performing the check yourself) unless you're sure it's safe.  E.g. it is safe
+to call `delete` with a null pointer in C++.
 
 And finally, not all handles need destructing. For example `stdio.h` also defines:
 
@@ -204,6 +204,13 @@ FILE * stderr;
 {% endhighlight %}
 
 You can't close these handles.
+
+
+## Summary
+
+We've looked at the variations C APIs typically use to implement objects. In
+the following articles we'll look at techniques to use the C APIs correctly and
+effectively.
 
 
 [fwrite-doc]:      http://www.cplusplus.com/reference/cstdio/fwrite/

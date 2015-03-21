@@ -4,24 +4,26 @@ title: 'Classic RAII'
 categories: coding cpp
 ---
 
-RAII (Resource Aquisition Is Initialization) is a complex name that does not do
-justice to one of the most useful programming idioms. This article describes
-the options and issues when using this coding style, with the full example of
-the [copy file example][copy-file] rewritten.
+RAII (Resource Aquisition Is Initialization) is a difficult to say name that
+does not do justice to **one of the most useful programming idioms**. This
+article describes the classic way of using RAII, with the full example of the
+[copy file example][copy-file] rewritten.
 
 
 ## Introduction
 
 RAII is a resource management technique developed in C++ by Bjarne Stroustrup
 and Andrew Koenig in the 1980s. It largely eliminates the need to collect
-garbage, by not creating garbage in the first place.
+garbage, by not creating garbage in the first place and providing ease of use
+and correctness when dealing with resources (e.g. memory, files, etc.).
 
 In this article I'll describe what I call the **classical RAII**. As we'll see
 later, there are some minor variations.
 
 RAII fundamentally works by wrapping a resource in an object, initializing the
-resource in the constructor. If the constructor succeeds, the destructor will
-cleanup the resource. If the constructor fails, it throws an exception, and
+resource in the constructor. If the constructor succeeds, the object can be
+used and the destructor will automatically cleanup the resource. If the
+constructor fails, it throws an exception, the object can't be used and
 conveniently the destructor is not called.
 
 When opening a file with `fopen`, the resource that needs to be wrapped is a
@@ -30,7 +32,7 @@ succeeds, the destructor will call `fclose`. If opening a file fails (e.g.
 because of the file permissions) the constructor throws an exception and the
 destructor is not called.
 
-A class to wrap the `FILE *` in a classical RAII idiom would look like:
+A class to wrap the `FILE *` using a classical RAII idiom would look like:
 
 {% highlight c++ linenos %}
 class file
@@ -79,7 +81,7 @@ matching `fopen` (**locality**), they are no longer getting further away as
 non-related code gets added.
 
 Secondly notice how the `file` class **encapsulates** the logic of managing the
-`FILE *`. To open two files and use them one needs to construct them like this:
+`FILE *`. To open and use two files, one needs to construct them like this:
 
 {% highlight c++ linenos %}
 file src("src.bin", "rb");
@@ -97,7 +99,7 @@ first, and destructed last. The scope of `dst` is surrounded by the scope of
 
 If say the creation of `dst` fails, then the execution exits the scope,
 ensuring that the destructor if `src` is called closing it's already opened
-`FILE *`. This provides **exception safety** for the stack resources.
+`FILE *`. This provides **exception safety** for the resources on the stack.
 
 
 ## Issues
@@ -108,6 +110,13 @@ No real issues, more like things to pay attention to:
 - Pay attention to the copy constructor and assignment operator. One easy
   option is to delete them to ensure that destructor does not try to release
   twice the same resource.
+
+We now have three files, with a total of 107 lines of code, however the code to
+actually copy the file (in main.cpp line 7 to 20) takes **14 lines** of code.
+
+Note that in the example below I've used a vector which initializes the buffer
+with zeros which is not really required. Does it impact performance? The answer
+is: measure if it matters.
 
 ## Full code
 
@@ -237,7 +246,7 @@ void file::log_and_throw(const char * message)
 
 RAII coding style avoids repetition and reduces errors through encapsulation
 and locality of resource management. It is a very important programming idiom,
-with an unfortunate name unfortunately. **Usage of some RAII variant is highly
+with a difficult name unfortunately. **Usage of some RAII variant is highly
 recommended**.
 
 

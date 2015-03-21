@@ -12,8 +12,8 @@ the full example of the [copy file example][copy-file] rewritten.
 ## Introduction
 
 If opening a file fails (e.g. because of the file permissions) `fopen` returns
-a null pointer. The code has to test for this case. One way is to use
-if-else blocks like below:
+a null pointer. The code has to test for this case. One way is to use if-else
+blocks like below:
 
 {% highlight c++ linenos %}
 FILE * f = fopen("file.name", "rb");
@@ -56,7 +56,7 @@ In this case it's just `fclose` that moves away from the related function
 **if-error-else coding pattern**.
 
 For functions that need not release any resource, like `fwrite`, the error
-handing stays close to the function it relates to:
+handing can stay close to the function it relates to:
 
 {% highlight c++ linenos %}
 size_t write_count = fwrite(buffer , 1, read_count, dst);
@@ -84,7 +84,7 @@ Every time we call `fopen` using this coding pattern we also need to repeat:
 - the `fclose` call
 - and 4 curly brackets
 
-For the [copy file example][copy-file] this approach takes the code from 27
+For the [copy file example][copy-file] this approach takes the code from 28
 lines of code to **68 lines** of code, more than double. So much repetition has
 cascading effects that results on errors when coding and time waste when
 reading code.
@@ -95,15 +95,16 @@ for any but non-trivial projects results in mistakes that cumulate to a muddy
 code quality.
 
 One apparently trivial issue is the case of iregular error checking. Notice how
-in the example below `fread` does not have a `else` bracnch, instead it breaks
-out of the `for` loop on error. This kind of things have no impact on execution
-they just slow down reading.
+in the example below `fread` does not have a `else` branch, instead it breaks
+out of the `for` loop on error. Also the success path is burried somewhere in
+the middle of the code. This kind of things have no impact on execution they
+just slow down understanding a program and the ability to change it easily.
 
-Then there are lots of incorrect error test messages. The code to open the
-file was copy-pasted and the same message `"Failed to open source file"` might
-also be logged when failing to open the destination file.
+Repetition leads to the chance of incorrect error test messages. The code to
+open the file was copy-pasted and the same message `"Failed to open source
+file"` might also be logged when failing to open the destination file.
 
-Then there is the case of the missing or incorrect error handling.
+Repetition also leads to the chance of missing or incorrect error handling.
 
 The **code repetition can be addressed using a C++ RAII approach**.
 
@@ -190,8 +191,8 @@ int main ()
 
 You need to understand how to handle errors. Logically the code above does the
 right thing, in that it is what we want the computer to execute. However as a
-coding style the if-error-else approach is verbose and error prone. **Don't use
-it**.
+coding style the if-error-else approach is repetitive and error prone. **Don't
+use it**.
 
 
 [copy-file]:    {% post_url 2015-03-12-copy-file-no-error %}
