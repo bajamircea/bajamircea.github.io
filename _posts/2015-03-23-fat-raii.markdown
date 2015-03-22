@@ -14,12 +14,47 @@ I mentioned that there are variants of [RAII][classic-raii] (that include the
 [slim RAII][slim-raii]), and this describes a variant that adds more complexity
 in the classes that wrap C APIs with the goal of making it easier to use.
 
+The first issue is that copying a handle is not allways possible or cheap to
+do, so usually, like in our classic RAII `file` class copying (constructor and
+assignment) are disabled. However it would be usefull if the class could be
+moved.
 
-## Advantages
+To make the class movable, in addition to implementing the move constructor and
+assignment, we need to test for an invalid handle in the destructor before
+releasing the resource. Remember that in the classical RAII, that was not
+required, but the move semantics render the source object unusable: with an
+invalid handle.
 
+{% highlight c++ linenos %}
+file::file(file && other) :
+  f_(other_f)
+{
+  other_.f = 0;
+}
 
+file::~file()
+{
+  if (f_)
+  {
+    fclose(f_)
+  }
+}
+{% endhighlight %}
 
-## Issues
+Making our RAII class movable makes it easy to return it directly from
+functions and store it in containers. In particular it's easier to use a class
+if we define factory functions with names, rather than overloading the
+constructor. A file could be opened, or could be one of the 3 predefined values
+(input, output or error).
+
+{% highlight c++ linenos %}
+file x = file::open("file.name", "rb");
+file y = file::stdout();
+{% endhighlight %}
+
+When standard files are used there is also the question if we want to close
+them when the instance goes out of scope. To handle the option of not closing
+the file, I've added the `own_` boolean as a member variable.
 
 
 ## Full code
@@ -33,7 +68,7 @@ in the classes that wrap C APIs with the goal of making it easier to use.
 void copy_file()
 {
   file src = file::open("src.bin", "rb");
-  file dst = file::open_stdout();
+  file dst = file::stdout();
   std::vector<char> buffer(1024);
 
   do
@@ -72,8 +107,7 @@ int main ()
 
 #include <cstdio>
 
-class file :
-  private noncopyable
+class file
 {
   FILE * f_;
   bool own_;
@@ -90,7 +124,7 @@ public:
 
 public:
   static file open(const char * file_name, const char * mode);
-  static file open_stdout(bool own = false);
+  static file stdout(bool own = false);
 
 public:
   size_t read(char * buffer, size_t size);
@@ -156,9 +190,9 @@ file file::open(const char * file_name, const char * mode)
   return file(f, true);
 }
 
-file file::open_stdout(bool own)
+file file::stdout(bool own)
 {
-  return file(stdout, own);
+  return file(::stdout, own);
 }
 
 size_t file::read(char * buffer, size_t size)
@@ -195,7 +229,9 @@ void file::log_and_throw(const char * message)
 
 ## Summary
 
-**RAII rules!**
+As you use a particular RAII class more and more, there might be a trade off to
+be made between compactness and minimalism (with impact on performance) one one
+side (classic RAII) and ease of use on the other side (the example above).
 
 
 [classic-raii]:     {% post_url 2015-03-17-classic-raii %}
