@@ -1,0 +1,188 @@
+---
+layout: post
+title: 'Finally'
+categories: coding cpp
+---
+
+C++ does not have a `finally` construct and I believe this is a good thing.
+Bjarne Stroustrup [explains][finally-explain] that **"in realistic systems, there
+are far more resource acquisitions than kinds of resources, so the RAII
+technique leads to less code than use of a `finally` construct"**. This article
+compares C++ RAII to `finally` constructs in other languages.
+
+
+## Introduction (examples in Java)
+
+Java has a `finally` construct. It's supposed to be used like this:
+
+{% highlight java linenos %}
+public void foo() {
+  try {
+    // code
+    // that might throw
+  } finally {
+    // code to cleanup
+    // regardless of wether an exception is thrown
+  }
+}
+{% endhighlight %}
+
+In particular if we create an object we would often like to call a method (say
+`close`) in a finally block.
+
+{% highlight java linenos %}
+public void foo() {
+  SomeClass obj = new SomeClass();
+  try {
+    // code
+    // that might also call something like
+    // obj.bar()
+  } finally {
+    obj.close();
+  }
+}
+{% endhighlight %}
+
+This is such a common pattern that Java has a special syntax for it that is
+called try-with-resources. As long as the object implements the `AutoClosable`
+interface (which has a `close` method) the code bellow will be equivalent to
+the one above.
+
+{% highlight java linenos %}
+public void foo() {
+  try (SomeClass obj = new SomeClass()) {
+    // code
+    // that might also call something like
+    // obj.bar()
+  }
+}
+{% endhighlight %}
+
+
+## Other languages
+
+C# has almost the same syntax for `finally` as Java:
+
+- Java `finally`: C# `finally`
+- Java try-with-resources: C# `using`
+- Java `AutoClosable`: C# `IDisposable`
+
+Python has `finally` and it has `with` as the equivalent of try-with-resources.
+
+Ruby has a `ensure` keyword. The equivalent of try-with-resources are some
+functions with blocks e.g.:
+
+{% highlight ruby linenos %}
+File.open('src.txt', 'r') do |f|
+  puts f.readlines
+end
+
+# which is logically implemented as:
+def open(file_name, mode)
+  f = actually_open(file_name, mode)
+  begin
+    yield(f)
+  ensure
+    f.close
+  end
+end
+{% endhighlight %}
+
+
+## Issues
+
+The first issue is that every time you **use** a class that wraps some
+resource, like `SomeClass` you need to use the syntax above (either try-finally
+or try-with-resources)
+
+[RAII][classic-raii] wins on this one with a more compact syntax on usage.
+What Bjarne Stroustrup means by "in realistic systems, there are far more
+resource acquisitions than kinds of resources" is that **you'll use classes that
+wraps a resource more than the number of classesi**. E.g. even in a trivial
+example that copies a file from a source to a destination, the `file` class
+that needs to close a file is used twice.
+
+The second issue is that in garbage collected languages usually memory is still
+only relased when garbage collected. In C++ memory is a resource in the same
+way as other resources.
+
+The third issue is that if you not use a try-finally or try-with-resource the
+resource will be released only later, when garbage collected. That leads to
+subtle bugs like unable to access files for a while, or temporarily running out
+of database connections, until the garbage collector collects them.
+
+C++ is deterministic, in that the resources get released when the object goes
+out of scope on the stack or gets deleted from the heap. This is entirely under
+the control of the programmer, not delayed.
+
+The fourth issue is composition. If a class has a member variable that wraps a
+resource, also has to implement `AutoClosable` and has to be used with special
+syntax.
+
+
+## Bad examples using finally
+
+There is large amount of bad examples, even in official documentation.
+
+For example in [this C# example below][csharp-finally-bad] if the buffer
+allocation fails the file is not closed. Also the check for `null` at line 10
+is not required because if the `StreamReader` constructor fails we don't reach
+that code.
+
+{% highlight c# linenos %}
+string path = @"c:\users\public\test.txt";
+System.IO.StreamReader file = new System.IO.StreamReader(path);
+char[] buffer = new char[10];
+try
+{
+  file.ReadBlock(buffer, index, buffer.Length);
+}
+finally
+{
+  if (file != null)
+  {
+     file.Close();
+  }
+}
+// Do something with buffer...
+{% endhighlight %}
+
+There is an abundance of confusing examples even in
+[offical][java-finally-bad-1] [documentation][java-finally-bad-2] that probably
+work most of the time, but require effort on usage/reading to ensure
+correctness.
+
+{% highlight java linenos %}
+public void writeList() {
+  PrintWriter out = null;
+  try {
+    out = new PrintWriter(new FileWriter("OutFile.txt"));
+    // code
+    // that might also call something like
+    // out.println()
+  } finally {
+    if (out != null) {
+      out.close();
+    }
+  }
+}
+{% endhighlight %}
+
+In the code above, when would `out` be `null`? When either `FileWriter` or
+`PrintWriter` constructors fail. If `FileWriter` succeeds, but `PrintWriter`
+fails, then we're in trouble because we fail to close the file before we exit
+the function. However that constructor of `PrintWriter` is very unlikey to
+fail.
+
+## Sumary
+
+C++ RAII is a better option than `finally` in realistic systems because it has
+a simpler syntax from the resource class user's point of view.
+
+
+[finally-explain]:     http://www.stroustrup.com/bs_faq2.html#finally
+[java-finally-bad-1]:  http://docs.oracle.com/javase/tutorial/essential/exceptions/putItTogether.html
+[java-finally-bad-2]:  http://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
+[csharp-finally-bad]:  https://msdn.microsoft.com/en-us/library/dszsf989.aspx
+[classic-raii]:        {% post_url 2015-03-17-classic-raii %}
+
