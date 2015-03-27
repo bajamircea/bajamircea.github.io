@@ -147,7 +147,7 @@ finally
 // Do something with buffer...
 {% endhighlight %}
 
-There is an abundance of confusing examples even in
+In Java as well, there is an abundance of confusing examples even in
 [offical][java-finally-bad-1] [documentation][java-finally-bad-2] that probably
 work most of the time, but require effort on usage/reading to ensure
 correctness.
