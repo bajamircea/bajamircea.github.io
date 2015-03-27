@@ -98,7 +98,7 @@ or try-with-resources)
 [RAII][classic-raii] wins on this one with a more compact syntax on usage.
 What Bjarne Stroustrup means by "in realistic systems, there are far more
 resource acquisitions than kinds of resources" is that **you'll use classes that
-wraps a resource more than the number of classesi**. E.g. even in a trivial
+wrap resources more than the number of classes**. E.g. even in a trivial
 example that copies a file from a source to a destination, the `file` class
 that needs to close a file is used twice.
 
