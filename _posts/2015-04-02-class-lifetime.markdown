@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Class lifetime'
+title: 'Class Lifetime'
 categories: coding cpp
 ---
 
