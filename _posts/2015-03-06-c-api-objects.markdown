@@ -164,7 +164,7 @@ if (0 != result)
 
 For this style of constructor functions **you need to understand what happens
 if you pass a unitialized value** like in the example above and **how the
-handle value could change if the constructof function returns an error**.
+handle value could change if the constructor function returns an error**.
 
 ## Usage
 
