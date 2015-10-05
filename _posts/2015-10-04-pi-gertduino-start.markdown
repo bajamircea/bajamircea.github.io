@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'GertDuino board setup'
-categories: coding raspberypi
+categories: embedded raspberypi
 ---
 
 Initial setup steps for a GertDuino board with an existing Raspbery Pi 2
@@ -12,13 +12,14 @@ system, and solve the Raspbery Pi reboot problem.
 
 The steps below assume you have:
 
-- a Raspbery Pi 2, fully workable (power, network, display), running Raspbian
-- [a GertDuino board][gertduino]
+- A Raspbery Pi 2, fully workable (power, network, display), running Raspbian
+  (I had version 1.1)
+- [A GertDuino board][gertduino] (I had revision 5)
 
 First get and read the [GertDuino manual][manual].
 
 You would have learned that GertDuino board comes with two Atmel
-microcontrollers that can be programmed from Raspbery Pi: ATmega328 and
+microcontrollers that can be programmed from Raspbery Pi: ATmega328p and
 ATmega48pa.
 
 The following steps will get to the point where we load a program for each
@@ -51,7 +52,7 @@ This but did not help me.
 Ensure the system is not powered.
 
 Use the four jumpers the GertDuino board comes with. Put them in the position
-to program the ATmega48pa.
+to program the ATmega48pa (marked in red in the image from the manual below).
 
 ![Jumpers position to program ATmega48pa](/assets/2015-10-04-pi-gertduino-start/program-48-jumpers.jpg)
 
@@ -134,18 +135,19 @@ sudo halt
 {% endhighlight %}
 
 
-## Load program to ATmega328
+## Load program to ATmega328p
 
 Ensure the Raspbery Pi 2 is not powered.
 
 Use the four jumpers the GertDuino board comes with. Put them in the position
-to program the ATmega328.
+to program the ATmega328p (marked in red in the image from the manual below).
 
-![Jumpers position to program ATmega328](/assets/2015-10-04-pi-gertduino-start/program-328-jumpers.jpg)
+![Jumpers position to program ATmega328p](/assets/2015-10-04-pi-gertduino-start/program-328-jumpers.jpg)
 
-Power on the system.
+Power on the system. This time it should boot even if ATmega48pa is no longer
+reset.
 
-One off clock setup (as per manual documentation)
+Run one off clock setup (as per manual documentation)
 
 {% highlight text %}
 avrdude -qq -c gpio -p atmega328p -U lock:w:0x3F:m -U efuse:w:0x07:m -U lfuse:w:0xE7:m -U hfuse:w:0xD9:m
@@ -158,7 +160,7 @@ avrdude: AVR device not responding
 avrdude: initialization failed, rc=-1
 {% endhighlight %}
 
-Upload a program to ATmega328.
+Load a program into ATmega328p.
 
 {% highlight bash %}
 cd ~/gertduino/blink
@@ -171,11 +173,16 @@ This should work.
 
 ## See it working
 
-To see the leds blinking, you need to remove the reset for the ATmega328.
+To see the LEDs blinking, you need to remove the reset for the ATmega328p.
 Either:
 
 - remove the jumper from the reset position
 - or use the `reset_off` script from the `~/gertduino` folder
+
+The `reset_off` and `reset_on` scripts also have issues, possibly because GPIO
+8 on Raspbery Pi is now in default input mode. Commenting the last statement
+(`# echo 8 > /sys/class/gpio/unexport`) gives mixed results. But that's a
+battle for another time.
 
 And that's the initial setup for the GertDuino board with a Raspbery Pi 2.
 
