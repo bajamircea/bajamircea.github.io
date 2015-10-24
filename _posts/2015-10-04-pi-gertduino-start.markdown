@@ -153,7 +153,8 @@ Run one off clock setup (as per manual documentation)
 avrdude -qq -c gpio -p atmega328p -U lock:w:0x3F:m -U efuse:w:0x07:m -U lfuse:w:0xE7:m -U hfuse:w:0xD9:m
 {% endhighlight %}
 
-If you get an error message like below, check the jumpers and try again.
+If you get an error message like below, check the connection (between the
+Gertduino board and Raspberry Pi) and jumpers, then try again.
 
 {% highlight text %}
 avrdude: AVR device not responding
