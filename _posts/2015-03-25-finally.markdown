@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Finally'
+title: 'RAII vs finally'
 categories: coding cpp
 ---
 
