@@ -2,7 +2,7 @@
 // MEDIA QUERIES
 // --------------------------------------------------
 
-// Using media queries with like this:
+// Use media queries like this:
 // @include media-query($on-palm) {
 //     .wrapper {
 //         padding-right: $spacing-unit / 2;
@@ -15,14 +15,15 @@
     }
 }
 
+
 // FONTS
 // --------------------------------------------------
-
 @mixin font-size($font-size, $weight, $line-height: $base-line-height) {
   font-size: $font-size;
   font-weight: $weight;
   line-height: $line-height;
 }
+
 
 // CSS3 PROPERTIES
 // --------------------------------------------------
@@ -39,4 +40,23 @@
 @mixin opacity($opacity) {
   opacity: $opacity / 100;
   filter: alpha(opacity=$opacity);
+}
+
+// Special links
+// --------------------------------------------------
+@mixin undecorated-link($color, $active-color) {
+  color: $color;
+  display: inline-block;
+  text-decoration: none;
+  @include transition(0.3s linear);
+
+  &:visited {
+    color: $color;
+    text-decoration: none;
+  }
+
+  &:hover {
+    color: $active-color;
+    text-decoration: none;
+  }
 }

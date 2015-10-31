@@ -50,6 +50,10 @@
   text-align: center;
   border-bottom: 1px solid $grey-color-light;
   padding: $spacing-unit 0;
+
+  > a {
+    @include undecorated-link($text-color, $grey-color);
+  }
 }
 
 header {
@@ -86,16 +90,7 @@ header > .post-date {
     margin: $spacing-unit 0 $spacing-unit;
 
     > a {
-      display: inline-block;
-      text-decoration:none;
-
-      &:visited {
-        text-decoration:none;
-      }
-
-      &:hover {
-        text-decoration:none;
-      }
+      @include undecorated-link($text-color, $grey-color);
     }
 
     h2 {
@@ -126,16 +121,7 @@ header > .post-date {
 
   > a {
     @include font-size($base-font-size, bold, $base-line-height);
-    display: inline-block;
-    text-decoration:none;
-
-    &:visited {
-      text-decoration:none;
-    }
-
-    &:hover {
-      text-decoration:none;
-    }
+    @include undecorated-link($text-color, $grey-color);
   }
 }
 
@@ -182,14 +168,6 @@ footer {
   @include font-size($base-font-size * 1.5, normal, $base-line-height);
 
   > a {
-    color: $reverse-text-color;
-
-    &:visited {
-      color: $reverse-text-color;
-    }
-
-    &:hover {
-      color: $grey-color-light;
-    }
+    @include undecorated-link($reverse-text-color, $grey-color-light);
   }
 }

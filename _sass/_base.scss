@@ -9,7 +9,6 @@ dl, dd, ol, ul, figure {
 }
 
 
-
 /**
  * Basic styling
  */
@@ -24,7 +23,6 @@ body {
 }
 
 
-
 /**
  * Set `margin-bottom` to maintain vertical rhythm
  */
@@ -36,7 +34,6 @@ ul, ol, dl, figure,
 }
 
 
-
 /**
  * Images
  */
@@ -44,7 +41,6 @@ img {
     max-width: 100%;
     vertical-align: middle;
 }
-
 
 
 /**
@@ -57,7 +53,6 @@ figure > img {
 figcaption {
     font-size: $small-font-size;
 }
-
 
 
 /**
@@ -75,7 +70,6 @@ li {
 }
 
 
-
 /**
  * Headings
  */
@@ -87,24 +81,6 @@ strong {
     font-weight: bold;
 }
 
-/**
- * Links
- */
-a {
-  color: $text-color;
-  text-decoration: underline;
-  @include transition(0.3s linear);
-
-  &:visited {
-    color: $text-color;
-    text-decoration: underline;
-  }
-
-  &:hover {
-    color: $grey-color;
-    text-decoration: underline;
-  }
-}
 
 /**
  * Blockquotes
@@ -121,7 +97,6 @@ blockquote {
         margin-bottom: 0;
     }
 }
-
 
 
 /**
@@ -148,6 +123,7 @@ pre {
         padding-left: 0;
     }
 }
+
 
 /**
  * Clearfix
