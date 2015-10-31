@@ -113,7 +113,7 @@ void house::close_door() {
 }
 {% endhighlight %}
 
-The class above is to a certain degree counterfeit because and its dependencies
+The class above is to a certain degree contrived because and its dependencies
 have already been abstracted into separate classes in order to keep the example
 short. Imagine an order of magnitude more code, members and includes.
 

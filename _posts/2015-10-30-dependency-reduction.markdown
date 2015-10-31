@@ -144,7 +144,11 @@ void tv::switch_on() {
 {% endhighlight %}
 
 The refactoring took us from 52 lines of code in 2 files to 89 lines of code in
-8 files.
+8 files. The increase in number of files is expected, but the almost doubling
+in the number of lines of the code is the result of having started with an
+already simple class with not much code. Even then, it does say a better
+story, mapping itself better to the original problem description: a person
+finishes the cup of tea and goes to another room where it switches on the TV.
 
 # Obstacles
 
