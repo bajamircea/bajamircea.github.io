@@ -18,7 +18,7 @@ article][dependency-reduction] with a C++ template-based approach.
 # Code
 
 Once I got the ideea of using dependency injection using interfaces and reaped
-the benefit of more test coverage/less errors, I wonders why people don't beat
+the benefit of more test coverage/less errors, I wondered why people don't beat
 the drum more about it. What would Alexander Stepanov do? Well, if you want to
 test a vector, you create an instrumented class and you create a vector of that
 class. Bingo! A class that uses templates for injection receives the types of
