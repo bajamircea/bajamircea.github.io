@@ -111,9 +111,6 @@ No real issues, more like things to pay attention to:
   option is to delete them to ensure that destructor does not try to release
   twice the same resource.
 
-We now have three files, with a total of 107 lines of code, however the code to
-actually copy the file (in main.cpp line 7 to 20) takes **14 lines** of code.
-
 Note that in the example below I've used a vector which initializes the buffer
 with zeros which is not really required. Does it impact performance? The answer
 is: measure if it matters.
@@ -242,6 +239,21 @@ void file::log_and_throw(const char * message)
 {% endhighlight %}
 
 
+## Code discussion
+
+We now have three source files, with a total of 107 lines of code, however the
+code to actually copy the file (in `copy-file` in `main.cpp`) takes **14
+lines** of code which is shorter even than the [version without any error
+checking][copy-file] because the `file` class takes care of the trivial issues.
+
+I believe this is one aspect of what Bjarne Stroustrup [means when he
+says][finally-explain] that **"in realistic systems, there are far more
+resource acquisitions than kinds of resources, so the RAII technique leads to
+less code**. In this example the `file` class is used only twice but this is
+compensated by the fact that library classes are used a lot (e.g. think
+`std::vector`).
+
+
 ## Summary
 
 RAII coding style avoids repetition and reduces errors through encapsulation
@@ -252,3 +264,4 @@ recommended**.
 
 [copy-file]:     {% post_url 2015-03-12-copy-file-no-error %}
 [if-error-else]: {% post_url 2015-03-14-if-error-else %}
+[finally-explain]:     http://www.stroustrup.com/bs_faq2.html#finally
