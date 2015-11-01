@@ -62,7 +62,7 @@ A good pattern for a C++ class that stores various pieces of data together is a
 struct data
 {
   int value{};
-  int answer{42};
+  int answer{ 42 };
   bool valid_answer{};
   std::string reason{};
 };
