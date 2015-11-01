@@ -92,13 +92,13 @@ file dst("dst.bin", "wb");
 {% endhighlight %}
 
 On the happy path this will create two `file` instances, each in charge with
-it's own `FILE *`. When they go out of scope they will each be destructed,
+its own `FILE *`. When they go out of scope they will each be destructed,
 closing each file, in the reverse order of the declaration: `src` is created
 first, and destructed last. The scope of `dst` is surrounded by the scope of
 `dst`.
 
 If say the creation of `dst` fails, then the execution exits the scope,
-ensuring that the destructor if `src` is called closing it's already opened
+ensuring that the destructor if `src` is called closing its already opened
 `FILE *`. This provides **exception safety** for the resources on the stack.
 
 

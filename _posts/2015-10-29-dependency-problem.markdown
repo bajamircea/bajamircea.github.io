@@ -28,7 +28,7 @@ post).
 
 Related to the above is a large number of `#include` directives required to
 support the amount of functionality in the class. In general a file including
-more than about half a dozen other files indicates that it's content tries to
+more than about half a dozen other files indicates that its content tries to
 link too many things together at the same time. Examples of exceptions are:
 
 - Some entry point of the application where many objects are just linked

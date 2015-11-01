@@ -185,8 +185,8 @@ about 70 lines required to implement and support it.
 The advantages are:
 
   - It makes it trivial to unit test in isolation classes that are in the
-    middle of the application logic. For this alone I'm willing to forego it's
-    problems.
+    middle of the application logic. For this alone I'm willing to forego its
+    problems (until a better option becomes feasible).
   - Constructor injection makes it obviously (compiler checks it) which
     dependencies need to be created to instantiate a class. That is better than
     using a setter method to inject dependencies.
