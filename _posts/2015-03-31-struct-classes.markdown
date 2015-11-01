@@ -30,7 +30,7 @@ struct file
   FILE * p;
 
   explicit file(FILE * x) :
-    p(x)
+    p{ x }
   {
   }
 
@@ -55,6 +55,26 @@ public:
 };
 {% endhighlight %}
 
+A good pattern for a C++ class that stores various pieces of data together is a
+`struct` that uses member variable initialization.
+
+{% highlight c++ linenos %}
+struct data
+{
+  int value{};
+  int answer{42};
+  bool valid_answer{};
+  std::string reason{};
+};
+{% endhighlight %}
+
+This eliminates the need to write a constructor to initialize the member
+variables. Also note that only fields where the default value was not desired
+are initialized (default value for int-types is 0, false for bool and nullptr
+for pointers).
+
+Once initialied with data (e.g. from a stream), pass it by const reference to
+make its fields read only.
 
 ## Summary
 

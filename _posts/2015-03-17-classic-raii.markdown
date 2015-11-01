@@ -84,8 +84,8 @@ Secondly notice how the `file` class **encapsulates** the logic of managing the
 `FILE *`. To open and use two files, one needs to construct them like this:
 
 {% highlight c++ linenos %}
-file src("src.bin", "rb");
-file dst("dst.bin", "wb");
+file src{ "src.bin", "rb" };
+file dst{ "dst.bin", "wb" };
 // more
 // code
 // here
@@ -111,31 +111,32 @@ No real issues, more like things to pay attention to:
   option is to delete them to ensure that destructor does not try to release
   twice the same resource.
 
-Note that in the example below I've used a vector which initializes the buffer
-with zeros which is not really required. Does it impact performance? The answer
-is: measure if it matters.
+Note: I used std::unique_ptr as a buffer to have a comparable solution that
+allocates on the heap like the C example, without initializing with 0 like
+std::vector would.
 
 ## Full code
 
 ### main.cpp
 {% highlight c++ linenos %}
 #include "file.h"
-#include <vector>
 #include <iostream>
+#include <memory>
 
 void copy_file()
 {
-  file src("src.bin", "rb");
-  file dst("dst.bin", "wb");
-  std::vector<char> buffer(1024);
+  file src{ "src.bin", "rb" };
+  file dst{ "dst.bin", "wb" };
+  constexpr size_t buffer_size{ 1024 };
+  auto buffer = std::make_unique<char[]>(buffer_size);
 
   do
   {
-    size_t read_count = src.read(buffer.data(), buffer.size());
+    size_t read_count = src.read(buffer.get(), buffer_size);
 
     if (read_count > 0)
     {
-      dst.write(buffer.data(), read_count);
+      dst.write(buffer.get(), read_count);
       std::cout << '.';
     }
   } while ( ! src.is_eof());
@@ -241,10 +242,11 @@ void file::log_and_throw(const char * message)
 
 ## Code discussion
 
-We now have three source files, with a total of 107 lines of code, however the
-code to actually copy the file (in `copy-file` in `main.cpp`) takes **14
-lines** of code which is shorter even than the [version without any error
-checking][copy-file] because the `file` class takes care of the trivial issues.
+We now have three source files, with a total of 108 lines of code. The code to
+actually copy the file (in `copy-file` in `main.cpp`) takes **15 lines** of
+code however, which is shorter even than the 20 lines of code in [the version
+without any error checking][copy-file] mainly because the `file` class takes
+care of the now trivial issues of checking for errors and releasing resources.
 
 I believe this is one aspect of what Bjarne Stroustrup [means when he
 says][finally-explain] that **"in realistic systems, there are far more

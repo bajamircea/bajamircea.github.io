@@ -35,7 +35,7 @@ struct file
   FILE * p;
 
   explicit file(FILE * x) :
-    p(x)
+    p{ x }
   {
   }
 
@@ -52,7 +52,7 @@ struct file
 To initialize and use this class one needs to use the if-error-return pattern:
 
 {% highlight c++ linenos %}
-file src(fopen("src.bin", "rb"));
+file src{ fopen("src.bin", "rb") };
 if ( ! src.p)
 {
   perror("Failed to open source file");
@@ -99,7 +99,7 @@ struct file
   FILE * p;
 
   explicit file(FILE * x) :
-    p(x)
+    p{ x }
   {
   }
 
@@ -120,7 +120,7 @@ struct mem_buffer
   char * p;
 
   explicit mem_buffer(char * x) :
-    p(x)
+    p{ x }
   {
   }
 
@@ -138,22 +138,22 @@ struct mem_buffer
 
 int main ()
 {
-  file src(fopen("src.bin", "rb"));
+  file src{ fopen("src.bin", "rb") };
   if ( ! src.p)
   {
     perror("Failed to open source file");
     return 1;
   }
 
-  file dst(fopen("dst.bin", "wb"));
+  file dst{ fopen("dst.bin", "wb") };
   if ( ! dst.p)
   {
     perror("Failed to open destination file");
     return 1;
   }
 
-  const size_t buffer_size = 1024;
-  mem_buffer buffer(reinterpret_cast<char *>(malloc(buffer_size)));
+  constexpr size_t buffer_size{ 1024 };
+  mem_buffer buffer{ reinterpret_cast<char *>(malloc(buffer_size)) };
   if ( ! buffer.p)
   {
     fputs("Failed to allocate buffer\n", stderr);
@@ -190,7 +190,7 @@ int main ()
 ## Summary
 
 Use it as a **stopgap measure** to ensure resources are released while learning
-a C API.
+a C API or in a very localized area handling a C API.
 
 [if-error-goto]:     {% post_url 2015-03-15-if-error-goto %}
 [classic-raii]:     {% post_url 2015-03-17-classic-raii %}

@@ -145,7 +145,7 @@ destination file, the destructor is not called, and the source file is not
 closed. The smell in this case is that the `two_files` class tries to directly
 manage two resources.
 
-The correct option is to have a class that manage a single resource, and have
+The better option is to have a class that manage a single resource, and have
 `two_files` have two member variables of that class:
 
 {% highlight c++ linenos %}

@@ -27,7 +27,7 @@ invalid handle.
 
 {% highlight c++ linenos %}
 file::file(file && other) :
-  f_(other_f)
+  f_{ other_f }
 {
   other_.f = 0;
 }
@@ -48,8 +48,8 @@ constructor. A file could be opened, or could be one of the 3 predefined values
 (input, output or error).
 
 {% highlight c++ linenos %}
-file x = file::open("file.name", "rb");
-file y = file::stdout();
+file x{ file::open("file.name", "rb") };
+file y{ file::stdout() };
 {% endhighlight %}
 
 When standard files are used there is also the question if we want to close
@@ -62,22 +62,21 @@ the file, I've added the `own_` boolean as a member variable.
 ### main.cpp
 {% highlight c++ linenos %}
 #include "file.h"
-#include <vector>
 #include <iostream>
 
 void copy_file()
 {
-  file src = file::open("src.bin", "rb");
-  file dst = file::stdout();
-  std::vector<char> buffer(1024);
+  file src{ file::open("src.bin", "rb") };
+  file dst{ file::stdout() };
+  char buffer[1024];
 
   do
   {
-    size_t read_count = src.read(buffer.data(), buffer.size());
+    size_t read_count = src.read(buffer, sizeof(buffer));
 
     if (read_count > 0)
     {
-      dst.write(buffer.data(), read_count);
+      dst.write(buffer, read_count);
       std::cout << '.';
     }
   } while ( ! src.is_eof());
@@ -143,8 +142,8 @@ private:
 #include <stdexcept>
 
 file::file(FILE * f, bool own) :
-  f_(f),
-  own_(own)
+  f_{ f },
+  own_{ own }
 {
 }
 
@@ -157,8 +156,8 @@ file::~file()
 }
 
 file::file(file && other) :
-  f_(other.f_),
-  own_(other.own_)
+  f_{ other.f_ },
+  own_{ other.own_ }
 {
   other.f_ = 0;
   other.own_ = false;
@@ -182,22 +181,22 @@ file & file::operator=(file && other)
 
 file file::open(const char * file_name, const char * mode)
 {
-  FILE * f = fopen(file_name, mode);
+  FILE * f{ fopen(file_name, mode) };
   if ( ! f)
   {
     log_and_throw("Failed to open file");
   }
-  return file(f, true);
+  return file{ f, true };
 }
 
 file file::stdout(bool own)
 {
-  return file(::stdout, own);
+  return file{ ::stdout, own };
 }
 
 size_t file::read(char * buffer, size_t size)
 {
-  size_t read_count = fread(buffer, 1, size, f_);
+  size_t read_count{ fread(buffer, 1, size, f_) };
   if ((read_count != size) && ferror(f_))
   {
     log_and_throw("Failed to read from file");
@@ -207,7 +206,7 @@ size_t file::read(char * buffer, size_t size)
 
 void file::write(const char * buffer, size_t size)
 {
-  size_t write_count = fwrite(buffer , 1, size, f_);
+  size_t write_count{ fwrite(buffer , 1, size, f_) };
   if (write_count != size)
   {
     log_and_throw("Failed to write to file");
