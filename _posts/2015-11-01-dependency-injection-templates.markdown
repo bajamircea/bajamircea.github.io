@@ -4,8 +4,6 @@ title: 'Dependency injection using templates'
 categories: coding cpp
 ---
 
-WORK IN PROGRESS
-
 Using C++ templates to implement dependency injection.
 
 
@@ -24,15 +22,10 @@ test a vector, you create an instrumented class and you create a vector of that
 class. Bingo! A class that uses templates for injection receives the types of
 the dependencies as template arguments.
 
-Note that you might choose to not inject all member variables types (e.g. an
-`int` or a `std::vector`), or you might choose to still inject some member
-variables by reference.
+This is how the `house` class can change (now most of the code resides in
+headers):
 
-Also now most of the code resides in headers.
-
-This is how the `house` class can change.
-
-### house.h
+### house.h (injected types)
 {% highlight c++ linenos %}
 template<
   class cuppa,
@@ -60,11 +53,48 @@ private:
 
 The dependent class do not need to change.
 
-We can now test the `home` class, using `gtest` and `gmock` for example.
+As above however, it's not very easy to write tests, because we don't have
+access to the private member variables. One option is to leave the class as
+above, and capture results from mocked dependencies in static data. The other
+option is to inject the values as well by reference:
 
-TODO: adapt test
+### house.h (injected types and references)
+{% highlight c++ linenos %}
+template<
+  class Cuppa,
+  class Door,
+  class Tv>
+class house
+{
+public:
+  void house::house(
+    Cuppa & c,
+    Door & d,
+    Tv & t) :
+      cuppa_(c),
+      door_(d),
+      tv_(t) {
+  }
 
-### home_test.h
+  void house::chillax() {
+    cuppa_.finish();
+
+    door_.open();
+    door_.close();
+
+    tv_.switch_on();
+  }
+
+private:
+  Cuppa & cuppa_;
+  Door & door_;
+  Tv & tv_;
+};
+{% endhighlight %}
+
+Testing is now trivial:
+
+### house_test.h
 {% highlight c++ linenos %}
 #include <gtest.h>
 #include <gmock.h>
@@ -87,7 +117,7 @@ TEST(house_test, trivial)
   door_mock d;
   tv_mock t;
 
-  house<cuppa_mock, door_mock, tv_mock> h;
+  house<cuppa_mock, door_mock, tv_mock> h{ c, d, t };
   h.chillax();
 }
 {% endhighlight %}
@@ -103,19 +133,20 @@ when used in production.
 #include "house.h"
 
 int main() {
-  house<cuppa, door, tv> h;
+  cuppa c;
+  door d;
+  tv t;
+
+  house<cuppa, door, tv> h{ c, d, t };
   h.chillax();
 }
 {% endhighlight %}
 
 
-# Discussion
-
-TODO:
-
 # Conclusion
 
-TODO:
+Dependency injection using templates is very similar to dependency injection
+using interfaces.
 
 
 [dependency-reduction]:    {% post_url 2015-10-30-dependency-reduction %}
