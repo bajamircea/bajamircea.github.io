@@ -123,9 +123,9 @@ void cuppa::finish() {
 }
 {% endhighlight %}
 
-We can now test the `home` class, using `gtest` and `gmock` for example.
+We can now test the `house` class, using `gtest` and `gmock` for example.
 
-### home_test.h
+### house_test.h
 {% highlight c++ linenos %}
 #include <gtest.h>
 #include <gmock.h>

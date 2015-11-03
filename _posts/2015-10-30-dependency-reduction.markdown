@@ -11,7 +11,7 @@ each abstraction in turn is smaller and simpler.
 
 # Introduction
 
-The `home` class from the [the previous article][dependency-problem] depends on
+The `house` class from the [the previous article][dependency-problem] depends on
 several other contributors to do its `chillax` job: the `tea` and `cup`, the
 `knob`s and `hinge`, the `display` and `remote`.
 
