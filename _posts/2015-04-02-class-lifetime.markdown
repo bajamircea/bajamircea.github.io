@@ -4,7 +4,7 @@ title: 'Class Lifetime'
 categories: coding cpp
 ---
 
-Not all the parts of a C++ class have the same lifespan. Distinct steps
+Not all the parts of a C++ class have the same lifespan. Distinct steps are
 executed in sequence in the order to build or cleanup a C++ class instance.
 
 
@@ -68,7 +68,7 @@ the base class in the constructor's initialization list, for example:
 {% highlight c++ linenos %}
 SomeClass::SomeClass(int i, int j, int k) :
   // initialization list
-  Base(i, j)
+  Base{ i, j }
 {
   // constructor body
 };
@@ -87,9 +87,9 @@ in the initialization list, if possible.
 {% highlight c++ linenos %}
 SomeClass::SomeClass(int i, int j, int k) :
   // initialization list
-  Base(i, j),
-  a(k),
-  b()
+  Base{ i, j },
+  a{ k },
+  b{}
 {
   // constructor body
 };
@@ -111,8 +111,8 @@ class two_files
 
 public:
   two_files(const char * src_name, const char * dst_name) :
-    src(0),
-    dst(0)
+    src{},
+    dst{}
   {
     src = ::fopen(src_name, "rb");
     if ( ! src)
@@ -179,8 +179,8 @@ class two_files
 
 public:
   two_files(const char * src_name, const char * dst_name) :
-    src(src_name, "rb"),
-    dst(dst_name, "wb")
+    src{ src_name, "rb" },
+    dst{ dst_name, "wb" }
   {
   }
 };

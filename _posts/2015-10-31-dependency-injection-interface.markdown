@@ -84,13 +84,15 @@ interface of pure virtual functions.
 struct cuppa_interface
 {
   virtual void finish() = 0;
-  virtual ~cuppa_interface() {};
+
+protected:
+  ~cuppa_interface() {};
 };
 {% endhighlight %}
 
 The virtual destructor in the interface helps with the issue of someone taking
-a pointer to the interface and deleting it. We want the object destroyed hance
-the virtual destructor.
+a pointer to the interface and deleting it. A protected destructor stops that
+from happening. The other option would be to have a public virtual destructor.
 
 Then the `cuppa` class implements this interface.
 
