@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Too many dependencies: the problem'
+title: 'Dependencies: the problem'
 categories: coding cpp
 ---
 
@@ -42,6 +42,10 @@ link too many things together at the same time. Examples of exceptions are:
 Sometimes one can identify a group of member variables, that are used together
 in code, that are very loosely coupled with other groups of member variables of
 the same class.
+
+I'm going to focus on the problem of a class depending/having too many member
+variables.
+
 
 # Sample problem code
 

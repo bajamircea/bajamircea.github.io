@@ -28,13 +28,13 @@ headers):
 ### house.h (injected types)
 {% highlight c++ linenos %}
 template<
-  class cuppa,
-  class door,
-  class tv>
+  class Cuppa,
+  class Door,
+  class Tv>
 class house
 {
 public:
-  void house::chillax() {
+  void chillax() {
     cuppa_.finish();
 
     door_.open();
@@ -44,9 +44,9 @@ public:
   }
 
 private:
-  cuppa cuppa_;
-  door door_;
-  tv tv_;
+  Cuppa cuppa_;
+  Door door_;
+  Tv tv_;
 };
 {% endhighlight %}
 
@@ -67,7 +67,7 @@ template<
 class house
 {
 public:
-  void house::house(
+  void house(
     Cuppa & c,
     Door & d,
     Tv & t) :
@@ -76,7 +76,7 @@ public:
       tv_(t) {
   }
 
-  void house::chillax() {
+  void chillax() {
     cuppa_.finish();
 
     door_.open();
@@ -141,6 +141,15 @@ int main() {
   h.chillax();
 }
 {% endhighlight %}
+
+The need to have a place where the dependencies are instantiated is a mixed
+blessing. On one side it introduces another layer.
+
+Sometimes this layer is usefull, e.g. what if we wanted to decompose the
+`house` class differently?  What if we wanted it to have a `kitchen` and a
+`living_room`, but the two rooms share the same `door`. Having a place where
+dependencies are created allows us to create a `door` then each room (and pass
+each the same `door`) and then the rooms to `house`.
 
 
 # Conclusion
