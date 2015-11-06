@@ -27,7 +27,7 @@ Testing at class level is not a substitute, but it adds to testing at larger
 levels.
 
 
-# Types of classes participating in the dependency injection
+# Types of classes
 
 I focused mostly on the "middle" classes, the ones that have the dependencies
 injected. But there are two more times of participants in this.
