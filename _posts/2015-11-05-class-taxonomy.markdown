@@ -5,7 +5,7 @@ categories: coding cpp
 ---
 
 WORK IN PROGRESS.
-Following the idea of descibing and cataloguing organisms in biology, let's
+Following the idea of describing and cataloguing organisms in biology, let's
 have a look at various types of C++ classes.
 
 
