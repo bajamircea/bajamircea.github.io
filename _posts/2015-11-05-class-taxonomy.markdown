@@ -342,25 +342,127 @@ void some_class::some_fn()
   ...
 {% endhighlight %}
 
-# 3 Surrealist creatures
+# 3 Modern creatures
 
 ## 3.1 Behaviour base class
 
 These are base classes with no data (not even a virtual destructor/table) e.g.
 `boost::noncopyable`.
 
-    - template value calculator
-      - factorial -> use constexpr
-      - e.g. std::size() for arrays
-    - trait
-      - type trait
-    - tag
-    - thread
-      - threads can't be implemented as a library
-      - destructor terminates process if not stopped
-     - mutex
+## 3.2 Compile time value calculator
 
-## Curiously recurring template classes
+See the factorial calculator below. Over time `constexpr` will reduce this type
+of usage.
+
+{% highlight c++ linenos %}
+template <unsigned int n>
+struct factorial :
+  std::integral_constant<
+    unsigned int,
+    n * factorial<n-1>::value
+  >
+{
+};
+
+template <>
+struct factorial<0> :
+  std::integral_constant<unsigned int,1>
+{
+};
+
+...
+  std::cout<< factorial<3>::value << std::endl;
+...
+{% endhighlight %}
+
+
+## 3.3 Traits
+
+### 3.3.1 Plain trait
+
+Traits are classes that associate information to a type.
+
+{% highlight c++ linenos %}
+template<class Path>
+struct path_trait { };
+
+template<>
+struct path_trait<unix_path>
+{
+  using path_type = unix_path;
+  using char_type = char;
+  static constexpr char_type separator = '/';
+  bool is_absolute_path(const path_type & x) {
+    ...
+  }
+};
+
+template<>
+struct path_trait<windows_path>
+{
+  using path_type = windows_path;
+  using char_type = wchar_t;
+  static constexpr char_type separator = L'\\';
+  bool is_absolute_path(const path_type & x) {
+    ...
+  }
+};
+
+// sample usage
+template<class Path>
+Path combine(const Path & base, const Path & last) {
+  return base + path_trait<Path>::separator + last;
+}
+{% endhighlight %}
+
+### 3.3.2 Type trait
+
+Is a trait reduced to a boolean that says if a type has a certain
+characteristic. See the `is_...` functions in the standard `<type_traits>`
+header.
+
+### 3.3.3 Tag
+
+Is a trait component reduced to the simple fact that it is a certain type. Used
+to dispatch implementation depending on the tag class, to get around the issues
+with function specialization not overloading.
+
+{% highlight c++ linenos %}
+struct unix_tag { };
+
+template<class Path>
+struct path_trait { };
+
+template<>
+struct path_trait<unix_path> {
+  using tag = unix_tag;
+};
+
+template<class Path>
+Path combine_impl(const Path & base, const Path & last, unix_tag) {
+  return base + '/' + last;
+}
+
+template<class Path>
+Path combine(const Path & base, const Path & last) {
+  typename path_trait<unix_path>::tag dummy;
+  return combine_impl(base, last, dummy);
+}
+{% endhighlight %}
+
+
+## 3.4 Thread support
+
+Thread support is special because it cannot be implemented solely as a library,
+it requires support from the compiler. A concrete example of the previous
+phrase is that a static member variable in a function needs to be implemented
+differently in a multithreaded environment as compare to a single threaded one.
+
+`std::thread` has a different from usual destructor. Normally a destructor cleanups after
+some resource. `std::thread` throws if it's `joinable`. It makes sense when you
+go into the details.
+
+## 3.5 Curiously recurring template classes
 
 This involves a derived class and a template base class, that allows the base
 class to access members of the derived class.
