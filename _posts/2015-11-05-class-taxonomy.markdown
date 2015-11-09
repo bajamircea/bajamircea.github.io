@@ -174,6 +174,8 @@ class between_inclusive
 public:
   between_inclusive(int lower, int upper) :
     lower_{ lower }, upper_{ upper }
+  {
+  }
 
   bool operator()(int value) {
     return (lower_ <= value) && (value <= higher_);
