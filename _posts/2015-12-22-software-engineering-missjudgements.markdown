@@ -39,6 +39,7 @@ situations in software development.
 - Question substitution tendency
 - Authority bias tendency
 - Social proof tendency
+- Wrong question tendency
 - Form over substance tendency
 
 - Using the wrong tools
@@ -207,6 +208,13 @@ This is where there are several approaches to a problem each with it's pros and
 cons, and decission is taken not by judging the facts/arguments/reaons, but by
 accepting the decission of the majority of the team members/participants to the
 meeting.
+
+
+# Wrong question tendency
+
+This is when the question asked is already wrong. E.g. "Can it be done?".
+Usually most of the things in software can be done. The better questions are
+"Should we do it?" "Is there a better/faster alternative?"
 
 
 # Form over substance tendency
