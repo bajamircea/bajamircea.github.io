@@ -64,7 +64,7 @@ instances of something.
 
 # What
 
-What to inject is a decission to take on a case by case basis. You don't need
+What to inject is a decision to take on a case by case basis. You don't need
 to inject all the member variables. Also don't inject what you can simply
 provide as a method argument.
 
