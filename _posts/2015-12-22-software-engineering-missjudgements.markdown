@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Software Engineering Missjudgements'
+title: 'Software engineering missjudgements'
 categories: coding cpp
 ---
 
@@ -103,6 +103,7 @@ fundamentally change to do the remaining 50% in 2 months.
 # Ignoring productivity tendency
 
 It is a tautology: to deliver more you need to be more productive/efficient.
+
 Especially for activities that have a repeatable patern (e.g. a sequence like:
 change code, build, write test, build, run test, commit, deploy, mark ticket
 done), it is worthwhile improving the amount of time to complete a cycle.
@@ -212,9 +213,11 @@ meeting.
 
 # Wrong question tendency
 
-This is when the question asked is already wrong. E.g. "Can it be done?".
-Usually most of the things in software can be done. The better questions are
-"Should we do it?" "Is there a better/faster alternative?"
+This is when the question asked is already wrong.
+
+Question: Can it be done?
+Actual answer: Usually most of the things in software can be done.
+Better questions: Should we do it? Is there a better/faster alternative?
 
 
 # Form over substance tendency
