@@ -274,7 +274,7 @@ public:
 That would be when a base class implements some functionality and calls into
 virtual functions to give the derived class a chance to customize behaviour.
 The problem with this is that it ties the base and derived class too much
-together.
+together. Usually an anti-pattern.
 
 {% highlight c++ linenos %}
 class impl
@@ -324,11 +324,11 @@ class some_class::impl
   }
 };
 
-some_clas::ssome_class() :
+some_clas::some_class() :
   pimpl_{ std::make_unique<impl>() }
 {}
 
-some_clas::s~some_class()
+some_clas::~some_class()
 {}
 
 void some_class::some_fn()
@@ -373,7 +373,7 @@ struct factorial<0> :
 };
 
 ...
-  std::cout<< factorial<3>::value << std::endl;
+  std::cout << factorial<3>::value << std::endl;
 ...
 {% endhighlight %}
 
@@ -447,7 +447,7 @@ Path combine_impl(const Path & base, const Path & last, unix_tag) {
 
 template<class Path>
 Path combine(const Path & base, const Path & last) {
-  typename path_trait<unix_path>::tag dummy;
+  typename path_trait<Path>::tag dummy;
   return combine_impl(base, last, dummy);
 }
 {% endhighlight %}
@@ -458,11 +458,13 @@ Path combine(const Path & base, const Path & last) {
 Thread support is special because it cannot be implemented solely as a library,
 it requires support from the compiler. A concrete example of the previous
 phrase is that a static member variable in a function needs to be implemented
-differently in a multithreaded environment as compare to a single threaded one.
+differently in a multithreaded environment as compared to a single threaded
+one.
 
-`std::thread` has a different from usual destructor. Normally a destructor cleanups after
-some resource. `std::thread` throws if it's `joinable`. It makes sense when you
-go into the details.
+`std::thread` has a different from usual destructor. Normally a destructor
+cleans after some resource. `std::thread` terminates the process if it's
+`joinable` (i.e. if the thead did not finish by the time we hit the
+destructor). It makes sense when you go into the details.
 
 ## 3.5 Curiously recurring template classes
 
