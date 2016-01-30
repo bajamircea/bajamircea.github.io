@@ -178,7 +178,7 @@ public:
   }
 
   bool operator()(int value) {
-    return (lower_ <= value) && (value <= higher_);
+    return (lower_ <= value) && (value <= upper_);
   }
 
 private:
@@ -191,7 +191,7 @@ the above is equivalent to a lambda
 
 {% highlight c++ linenos %}
 [=lower, =upper](int value) {
-  return (lower <= value) && (value <= higher);
+  return (lower <= value) && (value <= upper);
 }
 {% endhighlight %}
 
@@ -209,7 +209,7 @@ public:
   house() :
     d_{},
     k_{ d_ },
-    l_r{ d_ }
+    l_r_{ d_ }
   {
   }
   ...
@@ -273,19 +273,30 @@ public:
 
 That would be when a base class implements some functionality and calls into
 virtual functions to give the derived class a chance to customize behaviour.
-The problem with this is that it ties the base and derived class too much
-together. Usually an anti-pattern.
+*Usually an anti-pattern.* The problem with this is that it ties the base and
+derived class too much together.
 
 {% highlight c++ linenos %}
-class impl
+class base_with_impl
 {
 public:
-  void some_fn()
+  void method_impl_in_base_class()
   {
-    // call some_fn2()
+    // some implementation that also
+    // calls method_impl_in_derived_class()
   }
-  virtual int some_fn2() = 0;
+  virtual int method_impl_in_derived_class() = 0;
   vritual ~itf() {};
+};
+
+class derived:
+  public base_with_impl
+{
+public:
+  int method_impl_in_derived_class() override
+  {
+    // some implementation
+  }
 };
 {% endhighlight %}
 
