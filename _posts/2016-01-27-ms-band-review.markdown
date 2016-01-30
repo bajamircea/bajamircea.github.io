@@ -143,6 +143,9 @@ are a big productivity killer, so I'm currently not using any ... though I find
 the Calendar tempting, I currently set myself manually alarms a minute or so
 ahead of meetings.
 
+You need a few minutes daily to charge and sync it.
+
+And there is something inconvenient about the shape when I cross my arms.
 
 # High level application architecture
 
@@ -171,7 +174,7 @@ There are APIs to access the data:
 There are no APIs though to talk to the device directly, and no app/APIs for
 Linux.
 
-With this architecture come the issues.
+With this architecture come issues however.
 
 The dependence from the cloud means that the applications can stop working at
 any time, and I've been witness to that.
