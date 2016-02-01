@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Evaluation timeline'
+title: 'Evaluation Timeline'
 categories: coding cpp
 ---
 

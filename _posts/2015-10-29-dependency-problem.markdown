@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Dependencies: the problem'
+title: 'Dependencies - The Problem'
 categories: coding cpp
 ---
 

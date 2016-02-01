@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Dependency injection using interfaces'
+title: 'Dependency Injection Using Interfaces'
 categories: coding cpp
 ---
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'GertDuino board setup'
+title: 'GertDuino Board Setup'
 categories: embedded raspberypi
 ---
 

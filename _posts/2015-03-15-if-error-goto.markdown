@@ -60,7 +60,7 @@ invoke `fopen` using this coding pattern we need to repeat:
 - and 4 curly brackets
 
 For the [copy file example][copy-file] this approach takes the code from 28
-lines of code to **75 lines** of code, almost triple.
+lines of code to **78 lines** of code, almost triple.
 
 The code repetition can be addressed using a C++ RAII approach.
 
@@ -77,15 +77,18 @@ but not really harmful, because it's regular, not jumping all over the place.
 int main ()
 {
   int return_value = 1;
+  FILE * src = 0;
+  FILE * dst = 0;
+  char * buffer = 0;
 
-  FILE * src = fopen("src.bin", "rb");
+  src = fopen("src.bin", "rb");
   if ( ! src)
   {
     perror("Failed to open source file");
     goto end;
   }
 
-  FILE * dst = fopen("dst.bin", "wb");
+  dst = fopen("dst.bin", "wb");
   if ( ! dst)
   {
     perror("Failed to open destination file");
@@ -93,7 +96,7 @@ int main ()
   }
 
   const size_t buffer_size = 1024;
-  char * buffer = malloc(buffer_size);
+  buffer = malloc(buffer_size);
   if ( ! buffer)
   {
     fputs("Failed to allocate buffer\n", stderr);

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Reducing dependencies'
+title: 'Reducing Dependencies'
 categories: coding cpp
 ---
 

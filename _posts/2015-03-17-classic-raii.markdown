@@ -112,53 +112,10 @@ No real issues, more like things to pay attention to:
   twice the same resource.
 
 Note: I used std::unique_ptr as a buffer to have a comparable solution that
-allocates on the heap like the C example, without initializing with 0 like
-std::vector would.
+allocates on the heap like the C example, without initializing with `0` like
+`std::vector` would.
 
 ## Full code
-
-### main.cpp
-{% highlight c++ linenos %}
-#include "file.h"
-#include <iostream>
-#include <memory>
-
-void copy_file()
-{
-  file src{ "src.bin", "rb" };
-  file dst{ "dst.bin", "wb" };
-  constexpr size_t buffer_size{ 1024 };
-  auto buffer = std::make_unique<char[]>(buffer_size);
-
-  do
-  {
-    size_t read_count = src.read(buffer.get(), buffer_size);
-
-    if (read_count > 0)
-    {
-      dst.write(buffer.get(), read_count);
-      std::cout << '.';
-    }
-  } while ( ! src.is_eof());
-}
-
-int main ()
-{
-  try
-  {
-    copy_file();
-
-    std::cout << "\nSUCCESS\n";
-    return 0;
-  }
-  catch(const std::exception & e)
-  {
-    std::cerr << e.what() << std::endl;
-    return 1;
-  }
-}
-{% endhighlight %}
-
 
 ### file.h
 {% highlight c++ linenos %}
@@ -239,14 +196,70 @@ void file::log_and_throw(const char * message)
 }
 {% endhighlight %}
 
+### application.h
+{% highlight c++ linenos %}
+#pragma once
+
+void copy_file();
+{% endhighlight %}
+
+### application.cpp
+{% highlight c++ linenos %}
+#include "application.h"
+#include "file.h"
+#include <iostream>
+#include <memory>
+
+void copy_file()
+{
+  file src{ "src.bin", "rb" };
+  file dst{ "dst.bin", "wb" };
+  constexpr size_t buffer_size{ 1024 };
+  auto buffer = std::make_unique<char[]>(buffer_size);
+
+  do
+  {
+    size_t read_count = src.read(buffer.get(), buffer_size);
+
+    if (read_count > 0)
+    {
+      dst.write(buffer.get(), read_count);
+      std::cout << '.';
+    }
+  } while ( ! src.is_eof());
+}
+{% endhighlight %}
+
+### main.cpp
+{% highlight c++ linenos %}
+#include "application.h"
+#include <iostream>
+
+int main ()
+{
+  try
+  {
+    copy_file();
+
+    std::cout << "\nSUCCESS\n";
+    return 0;
+  }
+  catch(const std::exception & e)
+  {
+    std::cerr << e.what() << std::endl;
+    return 1;
+  }
+}
+{% endhighlight %}
 
 ## Code discussion
 
-We now have three source files, with a total of 108 lines of code. The code to
-actually copy the file (in `copy-file` in `main.cpp`) takes **15 lines** of
-code however, which is shorter even than the 20 lines of code in [the version
-without any error checking][copy-file] mainly because the `file` class takes
-care of the now trivial issues of checking for errors and releasing resources.
+We now have five source files, with a total of 114 lines of code. The code to
+actually copy the file (in `copy_file` in `application.cpp`) takes **15 lines**
+of code however, which is shorter even than the 20 lines of code in [the
+version without any error checking][copy-file] mainly because the `file` class
+takes care of the now trivial issues of checking for errors and releasing
+resources.
 
 I believe this is one aspect of what Bjarne Stroustrup [means when he
 says][finally-explain] that **"in realistic systems, there are far more
@@ -255,6 +268,16 @@ less code**. In this example the `file` class is used only twice but this is
 compensated by the fact that library classes are used a lot (e.g. think
 `std::vector`).
 
+The other thing to note is that we separated the code in several parts that
+each uses a subset of the C++ language:
+
+- `file.h` and `file.cpp` implement RAII. They care about construction,
+  destruction, copying, checking for API errors.
+- `application.h` and `application.cpp` are the core functionality. They assume
+  the RAII classes are correct and that somewhere the exceptions are caught,
+  but the code has a very different feel.
+- and finally `main.cpp` just cares about error handling and invoking the
+  application function.
 
 ## Summary
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Dependency injection using templates'
+title: 'Dependency Injection Using Templates'
 categories: coding cpp
 ---
 

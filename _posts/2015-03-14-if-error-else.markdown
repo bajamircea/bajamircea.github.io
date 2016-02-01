@@ -85,9 +85,9 @@ Every time we call `fopen` using this coding pattern we also need to repeat:
 - and 4 curly brackets
 
 For the [copy file example][copy-file] this approach takes the code from 28
-lines of code to **68 lines** of code, more than double. So much repetition has
-cascading effects that results on errors when coding and time waste when
-reading code.
+lines of code to **68 lines** of code, more than double. So much repetition
+obscures application core logic and has cascading effects that results on
+errors when coding and time waste when reading code.
 
 On one side this coding style at least tries to check systematically for
 errors. But, because of the repetition, there is repeated scope for error that

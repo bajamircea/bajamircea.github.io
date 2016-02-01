@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Anthropomorphic design'
+title: 'Anthropomorphic Design'
 categories: coding cpp
 ---
 

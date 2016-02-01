@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'C++ class taxonomy'
+title: 'C++ Class Taxonomy'
 categories: coding cpp
 ---
 

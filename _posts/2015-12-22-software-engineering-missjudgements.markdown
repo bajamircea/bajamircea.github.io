@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Software engineering missjudgements'
+title: 'Software Engineering Missjudgements'
 categories: coding cpp
 ---
 

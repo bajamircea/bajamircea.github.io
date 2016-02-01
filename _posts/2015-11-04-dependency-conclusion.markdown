@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Dependency injection: conclusion'
+title: 'Dependency Injection - Conclusion'
 categories: coding cpp
 ---
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Microsoft Band review'
+title: 'Microsoft Band - Review'
 categories: coding cpp
 ---
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Alternative dependency grouping'
+title: 'Alternative Dependency Grouping'
 categories: coding cpp
 ---
 
