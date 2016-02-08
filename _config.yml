@@ -6,3 +6,4 @@ markdown: kramdown
 paginate: 100
 title: bajamircea.github.io
 url: 'http://bajamircea.github.io'
+gems: [jekyll-paginate]
