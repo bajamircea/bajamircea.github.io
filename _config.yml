@@ -2,8 +2,8 @@ description: >
   Mircea Baja's Posts
 exclude: ['.ruby-version', 'Gemfile', 'Gemfile.lock']
 github_username:  bajamircea
-markdown: kramdown
 paginate: 100
 title: bajamircea.github.io
 url: 'http://bajamircea.github.io'
 gems: [jekyll-paginate]
+safe: true
