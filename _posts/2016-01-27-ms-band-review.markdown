@@ -102,7 +102,10 @@ the band.
 
 *Actually the device is well designed for fitness acivities.*
 
-It comes at a good price, it is priced to sell.
+It comes at a good price, it is priced to sell. *Update:* Prices change over
+time. When I wrote this article one could buy version 2 for about £170. A few
+days later it was priced at about £200. At this new price it's no longer priced
+to sell.
 
 I particularly like that it is designed as what it is. It does not pretend it's
 a watch. It is a wrist band packed with sensors. A watch has a dial and hands
