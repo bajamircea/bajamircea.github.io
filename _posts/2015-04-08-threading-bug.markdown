@@ -109,7 +109,7 @@ namespace
     }
 
   private:
-    virtual void on_fire()
+    void on_fire() override
     {
       std::cout << "Fire" << std::endl;
     }

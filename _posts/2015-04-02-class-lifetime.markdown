@@ -41,7 +41,7 @@ class SomeClass :
   SomeType a;
   SomeOtherType b;
 
-  virtual void some_method();
+  void some_method() override;
 };
 {% endhighlight %}
 
