@@ -26,7 +26,7 @@ required, but the move semantics render the source object unusable: with an
 invalid handle.
 
 {% highlight c++ linenos %}
-file::file(file && other) :
+file::file(file && other) noexcept :
   f_{ other_f }
 {
   other_.f = 0;
@@ -59,47 +59,6 @@ the file, I've added the `own_` boolean as a member variable.
 
 ## Full code
 
-### main.cpp
-{% highlight c++ linenos %}
-#include "file.h"
-#include <iostream>
-
-void copy_file()
-{
-  file src{ file::open("src.bin", "rb") };
-  file dst{ file::stdout() };
-  char buffer[1024];
-
-  do
-  {
-    size_t read_count = src.read(buffer, sizeof(buffer));
-
-    if (read_count > 0)
-    {
-      dst.write(buffer, read_count);
-      std::cout << '.';
-    }
-  } while ( ! src.is_eof());
-}
-
-int main ()
-{
-  try
-  {
-    copy_file();
-
-    std::cout << "\nSUCCESS\n";
-    return 0;
-  }
-  catch(const std::exception & e)
-  {
-    std::cerr << e.what() << std::endl;
-    return 1;
-  }
-}
-{% endhighlight %}
-
-
 ### file.h
 {% highlight c++ linenos %}
 #pragma once
@@ -118,8 +77,8 @@ private:
   file(const file &) = delete;
   file & operator=(const file &) = delete;
 public:
-  file(file && other);
-  file & operator=(file && other);
+  file(file && other) noexcept;
+  file & operator=(file && other) noexcept;
 
 public:
   static file open(const char * file_name, const char * mode);
@@ -155,7 +114,7 @@ file::~file()
   }
 }
 
-file::file(file && other) :
+file::file(file && other) noexcept :
   f_{ other.f_ },
   own_{ other.own_ }
 {
@@ -163,7 +122,7 @@ file::file(file && other) :
   other.own_ = false;
 }
 
-file & file::operator=(file && other)
+file & file::operator=(file && other) noexcept
 {
   if (this != &other)
   {
@@ -224,6 +183,48 @@ void file::log_and_throw(const char * message)
   throw std::runtime_error(message);
 }
 {% endhighlight %}
+
+
+### main.cpp
+{% highlight c++ linenos %}
+#include "file.h"
+#include <iostream>
+
+void copy_file()
+{
+  file src{ file::open("src.bin", "rb") };
+  file dst{ file::stdout() };
+  char buffer[1024];
+
+  do
+  {
+    size_t read_count = src.read(buffer, sizeof(buffer));
+
+    if (read_count > 0)
+    {
+      dst.write(buffer, read_count);
+      std::cout << '.';
+    }
+  } while ( ! src.is_eof());
+}
+
+int main ()
+{
+  try
+  {
+    copy_file();
+
+    std::cout << "\nSUCCESS\n";
+    return 0;
+  }
+  catch(const std::exception & e)
+  {
+    std::cerr << e.what() << std::endl;
+    return 1;
+  }
+}
+{% endhighlight %}
+
 
 
 ## Summary
