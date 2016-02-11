@@ -264,7 +264,7 @@ resources.
 I believe this is one aspect of what Bjarne Stroustrup [means when he
 says][finally-explain] that **"in realistic systems, there are far more
 resource acquisitions than kinds of resources, so the RAII technique leads to
-less code**. In this example the `file` class is used only twice but this is
+less code"**. In this example the `file` class is used only twice but this is
 compensated by the fact that library classes are used a lot (e.g. think
 `std::vector`).
 
