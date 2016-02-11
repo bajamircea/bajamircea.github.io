@@ -48,8 +48,8 @@ constructor. A file could be opened, or could be one of the 3 predefined values
 (input, output or error).
 
 {% highlight c++ linenos %}
-file x{ file::open("file.name", "rb") };
-file y{ file::stdout() };
+auto x = file::open("file.name", "rb");
+auto y = file::stdout();
 {% endhighlight %}
 
 When standard files are used there is also the question if we want to close
@@ -192,8 +192,8 @@ void file::log_and_throw(const char * message)
 
 void copy_file()
 {
-  file src{ file::open("src.bin", "rb") };
-  file dst{ file::stdout() };
+  auto src = file::open("src.bin", "rb");
+  auto dst = file::stdout();
   char buffer[1024];
 
   do
