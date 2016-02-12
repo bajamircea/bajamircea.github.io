@@ -10,29 +10,31 @@ executed in sequence in the order to build or cleanup a C++ class instance.
 
 ## Lifetime
 
-A class lives from when it's constructed, until it's destructed. The bodies of
-the constructor and the destructor help define how to build and cleanup an
-instance of that class.
+An instance of a class lives from when it's constructed, until it's destructed.
+Generally the scope controls the duration of the lifetime and the bodies of the
+constructor and the destructor define the actions to perform at the start and
+the end of the lifetime.
 
 {% highlight c++ linenos %}
-class SomeClass
+void some_fn()
 {
-  SomeClass()
+  SomeClass x; // x is constructed here
+  SomeClass y; // y is constructed here
+  // more code here
   {
-    // constructor body
+    SomeClass z; // z is constructed here
+    // more code here
+    // z is destructed when we exit this block
   }
-
-  ~SomeClass()
-  {
-    // destructor body
-  }
+  // even more code here
+  // x and y are destructed when we exit this block
+  // y is destructed first, then x
 };
 {% endhighlight %}
 
-When we zoom into the creation and destruction sequences, there is more than
-just the constructor and destructor bodies. Say we have a `SomeClass` derived
-from a `Base` class, with two member variables `a` and `b`, and with at least a
-virtual method that overrides the base class method:
+Say we have a `SomeClass` derived from a `Base` class, with two member
+variables `a` and `b`, and with at least a virtual method that overrides the
+base class method:
 
 {% highlight c++ linenos %}
 class SomeClass :
@@ -42,6 +44,18 @@ class SomeClass :
   SomeOtherType b;
 
   void some_method() override;
+
+public:
+  SomeClass()
+    // initialization here (before the body)
+  {
+    // constructor body here
+  }
+
+  ~SomeClass()
+  {
+    // destructor body here
+  }
 };
 {% endhighlight %}
 
@@ -82,7 +96,9 @@ class vtable.
 The member variables are then initialized **in the order in which they are
 declared**, not in the order they appear (if they appear) in the constructor's
 initialization list, though it is good practice to put them in the same order
-in the initialization list, if possible.
+in the initialization list, if possible. The same is true if there is more than
+one base classes, they are also initialized in the order in which they are
+declared.
 
 {% highlight c++ linenos %}
 SomeClass::SomeClass(int i, int j, int k) :
@@ -165,10 +181,7 @@ public:
 
   ~file()
   {
-    if (f)
-    {
-      ::fclose(f);
-    }
+    ::fclose(f);
   }
 };
 
