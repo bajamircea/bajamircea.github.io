@@ -55,17 +55,13 @@ namespace
 {
   class periodic_thread_base
   {
-    int interval_seconds_;
-    bool must_stop_;
-    std::mutex mutex_;
-    std::condition_variable condition_variable_;
-    std::thread thread_;
-
   public:
-    periodic_thread_base(int interval_seconds) :
-      interval_seconds_(interval_seconds),
-      must_stop_(false),
-      thread_(std::ref(*this))
+    explicit periodic_thread_base(
+      const std::chrono::seconds & sleep_duration
+      ) :
+      sleep_duration_{ sleep_duration },
+      must_stop_{ false },
+      thread_{ [this](){ this->run(); } }
     {
     }
 
@@ -74,19 +70,21 @@ namespace
       {
         std::lock_guard<std::mutex> lock(mutex_);
         must_stop_ = true;
-        condition_variable_.notify_one();
       }
+      condition_variable_.notify_one();
       thread_.join();
     }
 
-    void operator() ()
+    virtual void on_fire() = 0;
+
+  private:
+    void run() noexcept
     {
       std::unique_lock<std::mutex> lock(mutex_);
 
       while ( ! must_stop_)
       {
-        condition_variable_.wait_for(lock,
-          std::chrono::seconds(interval_seconds_));
+        condition_variable_.wait_for(lock, sleep_duration_);
         if (must_stop_)
         {
           return;
@@ -96,7 +94,11 @@ namespace
       }
     }
 
-    virtual void on_fire() = 0;
+    std::chrono::seconds sleep_duration_;
+    bool must_stop_;
+    std::mutex mutex_;
+    std::condition_variable condition_variable_;
+    std::thread thread_;
   };
 
   class periodic_thread :
@@ -104,7 +106,7 @@ namespace
   {
   public:
     periodic_thread() :
-      periodic_thread_base(2)
+      periodic_thread_base(std::chrono::seconds(2))
     {
     }
 
