@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Microsoft Band - Review'
-categories: coding cpp
+categories: embedded review
 ---
 
 Microsoft Band is a wearable device well designed for fitness activities, but

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'GertDuino Board Setup'
-categories: embedded raspberypi
+categories: embedded raspberrypi
 ---
 
 Initial setup steps for a GertDuino board with an existing Raspbery Pi 2
