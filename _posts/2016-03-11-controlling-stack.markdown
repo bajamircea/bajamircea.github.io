@@ -10,8 +10,6 @@ micro-controller using a web browser user interface.
 
 # What it is
 
-& Work in progress Hello
-
 This is a demo for a prototype application that I've put together in my spare
 time for a friend. It allows a user to change settings for a micro-controller
 through a web browser interface.
@@ -24,7 +22,7 @@ This image shows the high level architecture. It involves three devices:
 - a micro-controller (an Atmel Atmega-328, on a Gertduino board)
 - and a Raspberry Pi in the middle.
 
-& demo clip here
+<iframe width="420" height="315" src="https://www.youtube.com/embed/DIi9B4PD0-Q" frameborder="0" allowfullscreen></iframe>
 
 The user uses a browser on a laptop, PC, smartphone etc. The browser displays
 two sliders that the user can drag. The Gertduino board has a number of leds.
@@ -43,9 +41,6 @@ side.
 This image shows in more details the software stack involved. The boxes with a
 grey background show the components I wrote for the prototype (and the
 languages used).
-
-& For more details on how it works see my blog:
-http://bajamircea.github.io/embedded/raspberrypi/2016/03/11/controlling-stack.html
 
 The user points a browser on his device to the Raspberry Pi.
 
