@@ -22,7 +22,7 @@ This image shows the high level architecture. It involves three devices:
 - a micro-controller (an Atmel Atmega-328, on a Gertduino board)
 - and a Raspberry Pi in the middle.
 
-<iframe width="420" height="315" src="https://www.youtube.com/embed/DIi9B4PD0-Q" frameborder="0" allowfullscreen></iframe>
+<iframe width="420" height="315" src="https://www.youtube.com/embed/DIi9B4PD0-Q" frameborder="1" allowfullscreen></iframe>
 
 The user uses a browser on a laptop, PC, smartphone etc. The browser displays
 two sliders that the user can drag. The Gertduino board has a number of leds.
