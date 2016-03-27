@@ -52,9 +52,8 @@ essentially just move the list sentinel pointers, so it will work.
 
 Which leaves us with what happens if the `thread_pool` constructor fails in the
 body, e.g. if it creates a few threads, but if fails for one. Then that will
-throw, but the compiler will destroy the list. This will destroy it's elements,
-stopping the threads that were created before failing.  will destroy it's
-elements
+throw, but the compiler will destroy the list. This will destroy its elements,
+stopping the threads that were created before failing.
 
 
 ## Buffer
@@ -211,6 +210,9 @@ And here is a sample usage to handle `FILE *` [using a slim RAII][slim-raii] app
 
 {% highlight c++ linenos %}
 #include "unique_resource.h"
+#include <cstdio>
+#include <stdexcept>
+#include <iostream>
 
 struct file_resource_traits
 {
@@ -230,8 +232,6 @@ file open_a_file()
   }
   return x;
 }
-
-#include <iostream>
 
 int main()
 {

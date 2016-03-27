@@ -10,7 +10,10 @@ of a class: what it does when it's created, copied, moved and destroyed.
 
 ## Introduction
 
-The most important/special part about a class is what the class does when it's
+C++ provides a lot of control over the fundamental behaviour of user defined
+types while at the same time preserving runtime efficiency.
+
+The most fundamental/special part about a class is what the class does when it's
 created, copied, moved and destroyed. That is defined by:
 
 - constructors
@@ -23,7 +26,8 @@ constructors and `explicit` for copy constructors and focus on the core parts.
 
 ## Constructors
 
-Constuctors define how to initialize a class when it's created.
+In C++ the constructors are special functions that define what happens when we
+create a new instance of a class.
 
 {% highlight c++ linenos %}
 {
@@ -81,16 +85,17 @@ struct X
 };
 {% endhighlight %}
 
-The initialization section for a constructor is used to initialize: base
-class(es), member variables, or delegate to another of the constructors of the
-class.
+The initialization section for a constructor is used to initialize things
+before the body is exectued. You can initialize base class(es), member
+variables, or delegate to another of the constructors of the class.
 
 
 ## Constructor usage thricks
 
-The first one is that **if the constructor accepts one argument most of the time
-you want to make it an explicit**. That is because most of the time you want
-code as below to fail to compile.
+The first one is that **if the constructor (other than copy and move) accepts
+one argument, most of the time you want to make it explicit**. That is
+because most of the time you want code as below to fail to compile by
+preventing automatic conversion from the argument of the constructor.
 
 {% highlight c++ linenos %}
 struct X
@@ -235,6 +240,13 @@ struct X
 
 Bear in mind that when we copy from an object into another, the destructor is
 still called for both.
+
+But once we get over the syntax of the copy operation, what's important is the
+semantics:
+
+- is that a deep copy (e.g `std::vector`)
+- or is it a shallow, pointer semantics one (e.g. `std::shared_ptr`)
+- or does copy makes sense at all (e.g. copy a TCP socket)
 
 
 ## Move
