@@ -13,6 +13,9 @@ of a class: what it does when it's created, copied, moved and destroyed.
 C++ provides a lot of control over the fundamental behaviour of user defined
 types while at the same time preserving runtime efficiency.
 
+This is a first article that covers ways of defining aspects of a class related
+to it's [regularity][eop].
+
 The most fundamental/special part about a class is what the class does when it's
 created, copied, moved and destroyed. That is defined by:
 
@@ -45,25 +48,30 @@ The syntax for a constructor looks like a weird member function for the class.
 Like a member function it has:
 
 - a name
-- followed by arguments in the round brackets
+- followed by arguments in the round brackets (there can be multiple overloads
+  with different arguments)
 - and a body in curly brackets
-
-Also similar to a member function a class can have multiple overloaded
-constructors that have different arguments. Some overloads are even more
-special and I'll cover them in the copy and move sections.
 
 Unlike a regular member function:
 
 - the name must be the same as the class name
 - it has no return value
-- an optional initializing section between the arguments and the body
-- and a special try catch syntax we can ignore most of the time
+- it has an optional initializing section between the arguments and the body
+- and it has a special try catch syntax we can ignore most of the time
+
+The initialization section for a constructor is used to initialize things
+before the body is exectued. You can initialize base class(es), member
+variables, or delegate to another of the constructors of the class.
+
+The body of the constructor is used for additional work, after initialization.
+
+Because there is no return value, constructors fail by throwing.
 
 In the example below the class has a constructor that accepts two integer
-arguments.  It initializes a member variables to the sum and difference of the
-arguments.  In the constructor body it does additional work: it checks that the
-sum is not smaller than the difference.  On failiure to initialize a
-constructor throws.
+arguments. It initializes a member variables to the sum and difference of the
+arguments. In the constructor body it does additional work: it checks that the
+sum is not smaller than the difference.
+
 
 {% highlight c++ linenos %}
 struct X
@@ -85,17 +93,20 @@ struct X
 };
 {% endhighlight %}
 
-The initialization section for a constructor is used to initialize things
-before the body is exectued. You can initialize base class(es), member
-variables, or delegate to another of the constructors of the class.
+In the example above `sum` is initialized before `diff`[because of the order
+of declaration][class-lifetime], not because of the order in the constructor.
+However it's good practice to maintain in code a consistent order.
 
+Based on the arguments, some constructors are even more special:
 
-## Constructor usage thricks
-
-The first one is that **if the constructor (other than copy and move) accepts
-one argument, most of the time you want to make it explicit**. That is
-because most of the time you want code as below to fail to compile by
-preventing automatic conversion from the argument of the constructor.
+- default constructor: is the constructor with no arguments. Some algorithms
+  require types that have a default constructor. For some classes having a
+  constructor with no arguments does not make sense.
+- copy and move constructors: I'll cover them later in this article
+- constructors that accept just one argument (other than copy and move). **Most
+  of the time you want to make such a constructor explicit**. That is because
+  most of the time you want code as below to fail to compile by preventing
+  automatic conversion from the argument of the constructor.
 
 {% highlight c++ linenos %}
 struct X
@@ -110,10 +121,6 @@ int main()
   some_fn(42); // explicit makes this fail at compile time
 }
 {% endhighlight %}
-
-Another trick is that `sum` is initialized before `diff`[because of the order
-of declaration][class-lifetime], not because of the order in the constructor.
-However it's good practice to maintain in code a consistent order.
 
 
 ## Destructor
@@ -141,8 +148,9 @@ Destructors define how to cleanup for a class instance.
 }
 {% endhighlight %}
 
-A class can have at most a constructor. The name of the destructor is the name
-of the class prefixed with a `~`. It has no arguments.
+A class can have at most one destructor. The name of the destructor is the name
+of the class prefixed with a `~` (like in "not a constructor"). It has no
+arguments.
 
 {% highlight c++ linenos %}
 struct X
@@ -163,7 +171,7 @@ By default destructors are `noexcept`, which is a good default. There are no
 general schemes that make sense if the cleanup code throws. So the rule of the
 thumb is: **don't throw from destructors**.
 
-For the edge cases when that's not possible the 2nd best strategy is to
+For the edge cases when that's not possible, the 2nd best strategy is to
 terminate. `std::thread` uses this approach. Another example would be a RAII
 `relocker` class that needs to `lock` back a `std::mutex`. `lock` can throw, in
 which case the process will terminate: there is usually no good option
@@ -246,7 +254,7 @@ semantics:
 
 - is that a deep copy (e.g `std::vector`)
 - or is it a shallow, pointer semantics one (e.g. `std::shared_ptr`)
-- or does copy makes sense at all (e.g. copy a TCP socket)
+- or does copy makes sense at all (e.g. copy a resource like a TCP socket)
 
 
 ## Move
@@ -303,5 +311,5 @@ a = std::move(a);
 The naive implementation would have a `if (&other == this)` test in the move
 assignment. Usually this can be avoided by using a temporary variable.
 
-
+[eop]: http://www.amazon.co.uk/Elements-Programming-Alexander-A-Stepanov/dp/032163537X
 [class-lifetime]:     {% post_url 2015-04-02-class-lifetime %}

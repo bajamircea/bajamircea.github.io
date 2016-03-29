@@ -59,14 +59,13 @@ stopping the threads that were created before failing.
 ## Buffer
 
 Here is a `buffer` class that can be copied and moved. This is just an example.
-For production code you should consider using `std::vector` or
-`std::unique_ptr` instead.
+For production code you should consider using `std::vector` instead.
 
 {% highlight c++ linenos %}
 class buffer
 {
 public:
-  explicit buffer(size_t size) :
+  explicit buffer(size_t size = 0) :
     p_{ new char[size] },
     size_(size)
   {
