@@ -4,10 +4,10 @@ title: 'C++ std::move and std::forward'
 categories: coding cpp
 ---
 
-WORK IN PROGRESS.
-This article covers C++ lvalues, rvalues and references to get to the point that
-std::move does not move and std::forward does not forward, they are more akin
-to type casts instead.
+C++ std::move does not move and std::forward does not forward. This article
+covers a long list of rules on lvalues, rvalues, references, overloads and
+templates to be able to explain a few deceivingly simple lines of code using
+std::move and std::forward.
 
 
 ## Motivation
@@ -40,18 +40,17 @@ We'll start with the theory, but then dive quickly into C++ speciffics.
 
 ## Value categories (lvalue, prvalue and xvalue)
 
-A C++ expression has in addition to a type, a value category.  Traditionally
+A C++ expression has in addition to a type, a value category. Traditionally
 the main value categories were `lvalue` and `rvalue` with a rough meaning that
 it if could stand on the left side of an assignment it's an `lvalue`, otherwise
 it's an `rvalue`.
 
 With the advent of C++ 11, additional value categories have been identified and
 [organized in a systematic way][value-category-hist] based on the observation
-that there are two important properties of an expresion: **has identity** (i.e.
-'can we get its address') and **can be moved**.
+that **there are two important properties of an expresion: has identity (i.e.
+'can we get its address') and can be moved from**.
 
-If we ignore the combination where the expression has no identity and cannot be
-moved, the naming of the rest is ilustrated using Venn diagrams below.
+The naming of the main value categories is illustrated using Venn diagrams below.
 
 ![Value categories Venn diagrams](/assets/2016-04-07-move-forward/value-categories.png)
 
@@ -59,14 +58,16 @@ moved, the naming of the rest is ilustrated using Venn diagrams below.
   `rvalue`. A typical `lvalue` is a variable name `a`.
 - If it can be moved, but has no identity is a `prvalue` (pure right value);
   otherwise it's a `glvalue` (generalized left value). A typical `prvalue` is a
-  temporary resultint from a function call/operator (with a non-reference
+  temporary resulting from a function call/operator (with a non-reference
   return type) like `s.substr(1, 2)` or `a + b` or integral constant like `42`.
 - If it has an identity and can be moved it's an `xvalue` (because that was
   considered strange, and `x` is a good identifier for weird things). A typical
   `xvalue` is `std::move(a)`.
 
-One observation is that: **one can covert from a `lvalue` to a `rvalue` (to an
-`xvalue` more precisely) by using `std::move`**.
+The above categories are the principal ones. [There are additional
+ones][value-category-ref] (e.g. `void` has a category with no identity and that
+can't be moved from), but I'm going to skip over them in this article.
+
 
 ## References as function arguments (are lvalues)
 
@@ -104,9 +105,9 @@ int main()
 }
 {% endhighlight %}
 
-But inside the function body an argument, whether `lvalue reference` or
+But **inside the function body, an argument, whether `lvalue reference` or
 `rvalue reference`, is an `lvalue` itself: it has a name like any other
-variable.
+variable**.
 
 {% highlight c++ linenos %}
 void fn(X && x)
@@ -134,14 +135,12 @@ int main()
 
 ## References and function overloads
 
-[We could provide overloads][msdn] for `fn`, and we end up with three overload options
-(ignoring `const X &&` because it's more obscure). If for an expression the
-preferred overload is not available, there is a fallback mechanism until all
-options are exhausted, and then we get a compiler error.
+[We could provide overloads][msdn] for `fn`, and we end up with three main
+overload options . If for an expression the preferred overload is not
+available, there is a fallback mechanism until all options are exhausted, and
+then we get a compiler error.
 
 {% highlight c++ linenos %}
-#include <iostream>
-
 struct X {};
 
 // overloads
@@ -166,49 +165,109 @@ int main()
 }
 {% endhighlight %}
 
-## Reference colapsing rules
+There is of course the option of the overload with a `const X &&` argument, but
+I'm going to skip over it in this article.
 
-## std::move and std::forward possible implementation
+## Template argument deduction and reference colapsing rules
+
+If a templated function takes an `rvalue reference` template argument, [special
+template argument deduction rules kick in][thbecker].
+
+{% highlight c++ linenos %}
+template<typename T>
+void foo(T &&); // for this function
+
+template<typename T>
+void bar(std::vector<T> &&); // but not for this function
+{% endhighlight %}
+
+The rules allow the function `foo` above to be called with either an `lvalue`
+or an `rvalue:
+
+- When called with an `lvalue` of type `X`, then `T` resolves to `X &`
+- When called with and `rvalue` of type `X`, then `T` resolves to `X`
+
+When applying these rules we end up with an argument being `X & &&`. So there
+are even more rules to colapse the outcome:
+
+- `X & &` colapses to `X &`
+- `X & &&` colapses to `X &`
+- `X && &` colapses to `X &`
+- `X && &&` colapses to `X &&`
+
+Combining the two rules we can have:
+
+{% highlight c++ linenos %}
+template<typename T>
+void fn(T &&) { std::cout<< "template\n"; }
+
+int main()
+{
+  X a;
+  fn(a);
+  // argument expression is lvalue of type X
+  // resolves to T being X &
+  // X & && colapses to X &
+
+  fn(X());
+  // argument expression is rvalue of type X
+  // resolves to T being X
+  // X && stays X &&
+}
+{% endhighlight %}
+
+
+## Value category casting: static_cast, std::move and std::forward
+
+Once we have an expression of a value category, we can convert it to an expression
+of a different value category. If we have a `rvalue` we can assign it to a
+variable, or take a reference, hence becoming a `lvalue`. If we have a `lvalue`
+we can return it from a function, so we get a `rvalue`.
+
+TODO: sample move usage + diagram
+
+TODO: sample forward usage + diagram
+
+But one important rule is that: **one can covert from a `lvalue` to a `rvalue`
+(to an `xvalue` more precisely) by using static_cast<T&&> without creating
+temporaries**. And this is the last piece of the puzzle to understand
+`std::move` and `std::forward`. Here are possible implementations for them.
 
 {% highlight c++ linenos %}
 template<typename T> struct remove_reference { typedef T type; };
 template<typename T> struct remove_reference<T&> { typedef T type; };
 template<typename T> struct remove_reference<T&&> { typedef T type; };
 
+template<typename T> struct is_lvalue_reference { static constexpr bool value = false; };
+template<typename T> struct is_lvalue_reference<T&> { static constexpr bool value = true; };
+
 template<typename T>
-constexpr remove_reference<T>&& move(T && arg) noexcept
+constexpr typename remove_reference<T>::type && move(T && arg) noexcept
 {
-  return static_cast<remove_reference<T>&&>(arg);
+  return static_cast<typename remove_reference<T>::type &&>(arg);
 }
 
 template<typename T>
-constexpr T&& forward(typename remove_reference<T> & arg) noexcept
-{
-  return static_cast<T&&>(arg);
-}
-
-template<typename T>
-constexpr T&& forward(typename remove_reference<T> && arg) noexcept
+constexpr T&& forward(typename remove_reference<T>::type & arg) noexcept
 {
   return static_cast<T&&>(arg);
 }
 
+template<typename T>
+constexpr T&& forward(typename remove_reference<T>::type && arg) noexcept
+{
+  static_assert(!is_lvalue_reference<T>::value, "invalid lvalue to rvalue conversion");
+  return static_cast<T&&>(arg);
+}
 {% endhighlight %}
 
 
-## Move semantics
-
-## Perfect forwarding
-
 ## Conclusion
 
-- move and forward
-  - can look at them as casts
-  - move does not move
-  - forward is used mainly with the same type
-- move semantics
-- perfect forwarding
-- function overloading, template specialization
+There are a lot of rules that come into play for such deceivingly simple code.
+They are the result of maintaining backward compatibility and plumbing move
+semantics and perfect forwarding support on top of that, while making it so
+that most common scenarios are easy to write and read.
 
 [n4543]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4543.pdf
 [value-category-hist]: http://www.stroustrup.com/terminology.pdf
