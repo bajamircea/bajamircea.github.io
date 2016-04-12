@@ -140,6 +140,10 @@ overload options . If for an expression the preferred overload is not
 available, there is a fallback mechanism until all options are exhausted, and
 then we get a compiler error.
 
+It is these rules that kick in for a typical copy/move constructor/assignment
+quadruple. The functions that copy take a `const X &`, and the functions that
+move take `X &&`.
+
 {% highlight c++ linenos %}
 struct X {};
 
@@ -165,8 +169,10 @@ int main()
 }
 {% endhighlight %}
 
-There is of course the option of the overload with a `const X &&` argument, but
-I'm going to skip over it in this article.
+In addition to the three overloads above there is of course the option of the
+overload with a `const X &&` argument, but I'm going to skip over it in this
+article.
+
 
 ## Template argument deduction and reference colapsing rules
 
@@ -224,14 +230,11 @@ of a different value category. If we have a `rvalue` we can assign it to a
 variable, or take a reference, hence becoming a `lvalue`. If we have a `lvalue`
 we can return it from a function, so we get a `rvalue`.
 
-TODO: sample move usage + diagram
-
-TODO: sample forward usage + diagram
-
 But one important rule is that: **one can covert from a `lvalue` to a `rvalue`
 (to an `xvalue` more precisely) by using static_cast<T&&> without creating
 temporaries**. And this is the last piece of the puzzle to understand
-`std::move` and `std::forward`. Here are possible implementations for them.
+`std::move` and `std::forward`. Here are [possible implementations][n3143] for
+them.
 
 {% highlight c++ linenos %}
 template<typename T> struct remove_reference { typedef T type; };
@@ -261,17 +264,81 @@ constexpr T&& forward(typename remove_reference<T>::type && arg) noexcept
 }
 {% endhighlight %}
 
+`std::move` converts from either `lvalue` or `rvalue` to `rvalue`, so that when
+passed to a function it choose the overload that implements the move semantics.
+It deduces it's type `T`.
+
+`std::forward` has three possible conversions between `lvalue` and `rvalue`: it
+errors on attemtps to convert a `rvalue` to a `lvalue` (that would have the
+dangling reference problem: a reference pointing to a temporary long gone). You
+have to provide the type `T`. The return value can be more cv-qualified (i.e.
+can add a `const`). Also it allows for the case where the argument and return
+are different e.g. to forward expressions from derived type to it's base
+type.
+
+![Move vs forward](/assets/2016-04-07-move-forward/move-forward.png)
+
 
 ## Conclusion
 
-There are a lot of rules that come into play for such deceivingly simple code.
-They are the result of maintaining backward compatibility and plumbing move
-semantics and perfect forwarding support on top of that, while making it so
-that most common scenarios are easy to write and read.
+Going back to the code we started with:
+
+{% highlight c++ linenos %}
+std::map<std::string, std::function<void()>> commands;
+
+template<typename ftor>
+void install_command(std::string name, ftor && handler)
+{
+  commands.insert({
+    std::move(name),
+    std::forward<ftor>(handler)
+  });
+}
+{% endhighlight %}
+
+The first argument, `name`, for the function `install_command` is passed [by
+value][pass-by-value]. That is realy a temporary, but has a name, hence it's an
+`lvalue`. The second argument `handler` is a `rvalue reference`. Because it has
+a name, it's an `lvalue` as well.
+
+The `std::map` has an `insert` overload that accepts an templated `rvalue
+reference` for the key/value pair to insert. For the key we can provide an
+`rvalue` using `std::move` because really we don't need `name` any more. If we
+did not use `std::move` we would do a silly copy. For the value we provide
+whatever we the `install_command` was called with for the `handler`. We use
+`std::forward` to retrieve the original value category. If for the `handler` we
+provided an `rvalue` then `insert` will move from it. If for the `handler` we
+provided an `lvalue` then `insert` will copy it.
+
+There are a lot of rules that come into play for the inital deceivingly simple
+code. They are the result of maintaining backward compatibility and plumbing
+move semantics and perfect forwarding support on top of that, while making it
+so that most common scenarios are easy to write and read.
+
+
+## References
+
+- Stroustrup on C++ 11 value category classification:
+  [http://www.stroustrup.com/terminology.pdf][value-category-hist]
+- Cppreference with details on value category:
+  [http://en.cppreference.com/w/cpp/language/value_category][value-category-ref]
+- Thomas Becker on rvalue references:
+  [http://thbecker.net/articles/rvalue_references/section_08.html][thbecker]
+- MSDN on rvalue references:
+  [https://msdn.microsoft.com/en-us/library/dd293668.aspx][msdn]
+- Final C++ 11 versions of std::forward and std::move:
+  [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3143.html][n3143]
+- Use cases for std::forward:
+  [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2951.html][n2951]
+- On reference binding rules:
+  [http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2008/n2812.html][n2812]
 
 [n4543]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4543.pdf
 [value-category-hist]: http://www.stroustrup.com/terminology.pdf
 [value-category-ref]: http://en.cppreference.com/w/cpp/language/value_category
-[pass-by-value]: http://cpp-next.com/archive/2009/08/want-speed-pass-by-value/
+[pass-by-value]: https://web.archive.org/web/20140205194657/http://cpp-next.com/archive/2009/08/want-speed-pass-by-value/
 [thbecker]: http://thbecker.net/articles/rvalue_references/section_08.html
 [msdn]: https://msdn.microsoft.com/en-us/library/dd293668.aspx
+[n3143]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3143.html
+[n2951]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2951.html
+[n2812]: http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2008/n2812.html
