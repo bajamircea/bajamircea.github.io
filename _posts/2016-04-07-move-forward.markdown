@@ -5,17 +5,17 @@ categories: coding cpp
 ---
 
 C++ std::move does not move and std::forward does not forward. This article
-covers a long list of rules on lvalues, rvalues, references, overloads and
-templates to be able to explain a few deceivingly simple lines of code using
-std::move and std::forward.
+dives deep into a long list of rules on lvalues, rvalues, references, overloads
+and templates to be able to explain a few deceivingly simple lines of code
+using std::move and std::forward.
 
 
 ## Motivation
 
 [N4543][n4543] suggests a solution for when the content of a `std::function` is
-not copyable. But if first starts with the code below. It has a `commands`
-variable that maps strings to functions, and a utility function to insert a new
-command.
+not copyable. But if first starts with the code below (and I'm going to ignore
+the rest of N4543 here). It has a `commands` variable that maps strings to
+functions, and an utility function to insert a new command.
 
 {% highlight c++ linenos %}
 std::map<std::string, std::function<void()>> commands;
@@ -35,12 +35,14 @@ to provide enough background information to be able to understand in detail
 each line, in particular why does it use `std::move` in one place (at line 7)
 and `std::forward` in another (at line 8).
 
-We'll start with the theory, but then dive quickly into C++ speciffics.
+There is a lot of background information required. We'll start with the almost
+mathematical theory, but then dive quickly into C++ specifics and historical
+artfacts.
 
 
 ## Value categories (lvalue, prvalue and xvalue)
 
-A C++ expression has in addition to a type, a value category. Traditionally
+A C++ expression has, in addition to a type, a value category. Traditionally
 the main value categories were `lvalue` and `rvalue` with a rough meaning that
 it if could stand on the left side of an assignment it's an `lvalue`, otherwise
 it's an `rvalue`.
@@ -61,22 +63,25 @@ The naming of the main value categories is illustrated using Venn diagrams below
   temporary resulting from a function call/operator (with a non-reference
   return type) like `s.substr(1, 2)` or `a + b` or integral constant like `42`.
 - If it has an identity and can be moved it's an `xvalue` (because that was
-  considered strange, and `x` is a good identifier for weird things). A typical
+  considered strange, and `x` is a good prefix for weird things). A typical
   `xvalue` is `std::move(a)`.
 
-The above categories are the principal ones. [There are additional
+The above categories are the main ones. [There are additional
 ones][value-category-ref] (e.g. `void` has a category with no identity and that
 can't be moved from), but I'm going to skip over them in this article.
 
 
 ## References as function arguments (are lvalues)
 
+References as function arguments are relevant here because they allow us to
+bind to arguments depending on their value category.
+
 There are two types of reference declarations in C++. The pre-C++ 11 is called
 now `lvalue reference` (and uses one `&`), and the new C++ 11 called `rvalue
 reference` (that looks like `&&`).
 
-If a function has `lvalue reference` argument, then it accepts an `lvalue`,
-but not an `rvalue`.
+If a function has `lvalue reference` argument, then it can be called it with an
+`lvalue`, but not an `rvalue`.
 
 {% highlight c++ linenos %}
 void fn(X &) { std::cout<< "X &\n"; }
@@ -90,8 +95,8 @@ int main()
 }
 {% endhighlight %}
 
-Similarly if a function has a `rvalue reference` argument, then it accepts
-an `rvalue`, but not an `lvalue`.
+Similarly if a function has a `rvalue reference` argument, then it can be
+called with an `rvalue`, but not an `lvalue`.
 
 {% highlight c++ linenos %}
 void fn(X &&) { std::cout<< "X &&\n"; }
@@ -118,7 +123,8 @@ void fn(X && x)
 {% endhighlight %}
 
 From here, things get even more complicated when one notices that `const`
-matters.  In the example below, `fn` accepts both an `lvalue` and an `rvalue`.
+matters. In the example below, `fn` can be called with both an `lvalue` and an
+`rvalue`. This is pre-C++ 11 behaviour that is unchanged.
 
 {% highlight c++ linenos %}
 void fn(const X &) { std::cout<< "const X &\n"; }
@@ -136,13 +142,9 @@ int main()
 ## References and function overloads
 
 [We could provide overloads][msdn] for `fn`, and we end up with three main
-overload options . If for an expression the preferred overload is not
-available, there is a fallback mechanism until all options are exhausted, and
-then we get a compiler error.
-
-It is these rules that kick in for a typical copy/move constructor/assignment
-quadruple. The functions that copy take a `const X &`, and the functions that
-move take `X &&`.
+overload options. If for an expression the preferred overload is not available,
+there is a fallback mechanism until all options are exhausted, and then we get
+a compiler error.
 
 {% highlight c++ linenos %}
 struct X {};
@@ -172,6 +174,13 @@ int main()
 In addition to the three overloads above there is of course the option of the
 overload with a `const X &&` argument, but I'm going to skip over it in this
 article.
+
+A typical usage of this rules is for the typical copy/move
+constructor/assignment quadruple. For a user defined class `X` we expect two
+overloads requiring:
+
+- `const X &` for copy constructor or assignment
+- `X &&` for the move constructor or assignment
 
 
 ## Template argument deduction and reference colapsing rules
@@ -223,7 +232,7 @@ int main()
 {% endhighlight %}
 
 
-## Value category casting: static_cast, std::move and std::forward
+## static_cast<X &&>
 
 Once we have an expression of a value category, we can convert it to an expression
 of a different value category. If we have a `rvalue` we can assign it to a
@@ -231,24 +240,140 @@ variable, or take a reference, hence becoming a `lvalue`. If we have a `lvalue`
 we can return it from a function, so we get a `rvalue`.
 
 But one important rule is that: **one can covert from a `lvalue` to a `rvalue`
-(to an `xvalue` more precisely) by using static_cast<T&&> without creating
+(to an `xvalue` more precisely) by using static_cast<X &&> without creating
 temporaries**. And this is the last piece of the puzzle to understand
-`std::move` and `std::forward`. Here are [possible implementations][n3143] for
-them.
+`std::move` and `std::forward`.
+
+
+## std::move
+
+The idiomatic use of `std::move` is to ensure the argument passed to a function
+is an `rvalue` so that you can move from it (choose move semantics). By
+function I mean an actual function or a constructor or an operator (e.g.
+assignment operator).
+
+Here is an example where `std::move` is used twice in an idiomatic way:
+
+{% highlight c++ linenos %}
+struct X
+{
+  X(){}
+
+  X(const X & other) : s_{ other.s_ } {}
+
+  X(X && other) : s_{ std::move(other.s_) } {}
+  // other is an lvalue and so it's other.s_
+  // use std::move to force using the move constructor for s_
+  // don't use other.s_ after std::move (other than to destruct)
+
+  std::string s_;
+};
+
+int main()
+{
+  X a;
+
+  X b = std::move(a);
+  // a is an lvalue
+  // use std::move to convert to a rvalue,
+  // xvalue to be precise,
+  // so that the move constructor for X is used
+  // don't use a after std::move (other than to destruct)
+}
+{% endhighlight %}
+
+Here is a [possible implementations][n3143] for `std::move`.
 
 {% highlight c++ linenos %}
 template<typename T> struct remove_reference { typedef T type; };
 template<typename T> struct remove_reference<T&> { typedef T type; };
 template<typename T> struct remove_reference<T&&> { typedef T type; };
 
-template<typename T> struct is_lvalue_reference { static constexpr bool value = false; };
-template<typename T> struct is_lvalue_reference<T&> { static constexpr bool value = true; };
-
 template<typename T>
 constexpr typename remove_reference<T>::type && move(T && arg) noexcept
 {
   return static_cast<typename remove_reference<T>::type &&>(arg);
 }
+{% endhighlight %}
+
+First of all `std::move` is a template taking a `rvalue reference` argument
+which means that it can be called with either a `lvalue` or an `rvalue`, and
+the reference colapsing rules apply.
+
+Because the type `T` is deduced, we did not have to specify when **using**
+`std::move`.
+
+Then all it does is a `static_cast`.
+
+The `remove_reference` template specializations are used to get the underlying
+type for `T` without any references, and that type is decorated with `&&` for
+the `static_cast` and return type.
+
+In conclusion `std::move` does not move, all it does is to return a `rvalue` so
+that the function that actually moves, eventually receiving a `rvalue
+reference`, is selected by the compiler.
+
+
+## std::forward
+
+The idiomatic use of `std::forward` is inside a templated function with an
+`rvalue argument, where the argument are now `lvalue`, and to retrieve the
+original value category, that it was called with, and pass it on further down
+the call chain (perfect forwarding).
+
+Here is an example where `std::forward` is used twice in an idiomatic way:
+
+{% highlight c++ linenos %}
+struct Y
+{
+  Y(){}
+  Y(const Y &){ std::cout << "arg copied\n"; }
+  Y(Y &&){ std::cout << "arg moved\n"; }
+};
+
+struct X
+{
+  template<typename A, typename B>
+  X(A && a, B && b) :
+    // retrieve the original value category from constructor call
+    // and pass on to member variables
+    a_{ std::forward<A>(a) },
+    b_{ std::forward<B>(b) }
+  {
+  }
+
+  Y a_;
+  Y b_;
+};
+
+template<typename A, typename B>
+X factory(A && a, B && b)
+{
+  // retrieve the original value category from the factory call
+  // and pass on to X constructor
+  return X(std::forward<A>(a), std::forward<B>(b));
+}
+
+int main()
+{
+  Y y;
+  X two = factory(y, Y());
+  // the first argument is a lvalue, eventually a_ will have the
+  // copy constructor called
+  // the second argument is an rvalue, eventually b_ will have the
+  // move constructor called
+}
+
+// prints
+// arg copied
+// arg moved
+{% endhighlight %}
+
+Here is a [possible implementations][n3143] for `std::forward`.
+
+{% highlight c++ linenos %}
+template<typename T> struct is_lvalue_reference { static constexpr bool value = false; };
+template<typename T> struct is_lvalue_reference<T&> { static constexpr bool value = true; };
 
 template<typename T>
 constexpr T&& forward(typename remove_reference<T>::type & arg) noexcept
@@ -264,19 +389,22 @@ constexpr T&& forward(typename remove_reference<T>::type && arg) noexcept
 }
 {% endhighlight %}
 
-`std::move` converts from either `lvalue` or `rvalue` to `rvalue`, so that when
-passed to a function it choose the overload that implements the move semantics.
-It deduces it's type `T`.
+First of all `std::forward` is more complex than `std::move`. This version is
+the [result of several iterations][n2951].
 
-`std::forward` has three possible conversions between `lvalue` and `rvalue`: it
-errors on attemtps to convert a `rvalue` to a `lvalue` (that would have the
-dangling reference problem: a reference pointing to a temporary long gone). You
-have to provide the type `T`. The return value can be more cv-qualified (i.e.
-can add a `const`). Also it allows for the case where the argument and return
-are different e.g. to forward expressions from derived type to it's base
-type.
+The type `T` is not deduced, therefore we had to specify when **using**
+`std::forward`.
 
-![Move vs forward](/assets/2016-04-07-move-forward/move-forward.png)
+Then all it does is a `static_cast`.
+
+The `static_assert` is there to stop at compile time attempts to convert from an
+`rvalue` to an `lvalue` (that would have the dangling reference problem: a
+reference point to a temporary long gone).
+
+Some non-obvious properties are that the return value can be more cv-qualified
+(i.e.  can add a `const`). Also it allows for the case where the argument and
+return are different e.g. to forward expressions from derived type to it's base
+type (even some scenarios where the base is derived from as `private`).
 
 
 ## Conclusion
