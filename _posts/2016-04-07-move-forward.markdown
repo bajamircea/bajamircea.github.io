@@ -460,6 +460,8 @@ so that most common scenarios are easy to write and read.
   [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2951.html][n2951]
 - On reference binding rules:
   [http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2008/n2812.html][n2812]
+- Howard Hinnant on Stack Overflow:
+  [http://stackoverflow.com/a/9672202/5495780][so-hh]
 
 [n4543]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4543.pdf
 [value-category-hist]: http://www.stroustrup.com/terminology.pdf
@@ -470,3 +472,4 @@ so that most common scenarios are easy to write and read.
 [n3143]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3143.html
 [n2951]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2951.html
 [n2812]: http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2008/n2812.html
+[so-hh]: http://stackoverflow.com/a/9672202/5495780
