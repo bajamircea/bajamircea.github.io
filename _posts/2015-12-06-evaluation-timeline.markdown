@@ -144,9 +144,9 @@ struct logger
 };
 
 template<int severity>
-struct logger< severity, typename std::enable_if<
+struct logger< severity, typename std::enable_if_t<
   (severity > 2)
-  >::type>
+  >>
 {
   void operator()(const char * message)
   {
