@@ -186,14 +186,17 @@ overloads requiring:
 ## Template argument deduction and reference colapsing rules
 
 If a templated function takes an `rvalue reference` template argument, [special
-template argument deduction rules kick in][thbecker].
+template argument deduction rules kick in][thbecker]. Despite the syntactic
+similarites with the `rvalue reference` above, the rules for this case where
+specifically designed to support argument fowarding and are called [forwarding
+references][n4164].
 
 {% highlight c++ linenos %}
 template<typename T>
-void foo(T &&); // for this function
+void foo(T &&); // forwarding reference here
 
 template<typename T>
-void bar(std::vector<T> &&); // but not for this function
+void bar(std::vector<T> &&); // but not here
 {% endhighlight %}
 
 The rules allow the function `foo` above to be called with either an `lvalue`
@@ -472,4 +475,5 @@ so that most common scenarios are easy to write and read.
 [n3143]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3143.html
 [n2951]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2951.html
 [n2812]: http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2008/n2812.html
+[n4164]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4164.pdf
 [so-hh]: http://stackoverflow.com/a/9672202/5495780
