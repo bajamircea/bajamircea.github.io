@@ -1,0 +1,424 @@
+---
+layout: presentation
+title: Metaphoric programming
+---
+
+@ ACCU Oxford - Lightning Talks - 29th June 2016
+
+# Metaphoric programming
+
+---
+
+# What is a metaphor
+
+"My love is like a rose"
+
+--
+
+- this is NOT a metaphor, it's a simile
+- "is like", but not the same thing
+
+--
+
+"My love is a rose"
+
+- this IS a metaphor
+- the comparison is no longer explicit
+
+--
+
+When faced with a metaphor, we can
+
+- underreact: "yep, whatever", and move on
+- overreact: "that's a strange thing to say, the author could not have meant
+  that" "so then he must have elided the comparison" "let's understand to what
+  degree the comparison stands, and where it does not"
+- really understand: "duh! it's a metaphor"
+
+---
+
+# Agenda
+
+I'm going to illustrate the same metaphor mechanics in programming
+
+--
+
+We'll look at very simple (mostly C++) code samples that are like, but not quite the same
+thing, as what they appear to be
+
+```cpp
+severity > 2
+```
+
+```cpp
+wait_for(10s)
+```
+
+```cpp
+std::move(a)
+```
+
+---
+
+# Logger
+
+### Requirements
+
+- print log messages
+- messages have severity 1 to 4
+- only print errors (severity 4) and warnings (severity 3)
+
+
+--
+
+
+- only print if severity is greater than 2
+
+---
+
+### Possible solution
+
+```cpp
+void log(int severity, const char * message)
+{
+  if (severity > 2)
+  {
+    std::cout << message << std::endl;
+  }
+}
+
+int main()
+{
+  log(1, "debug message");
+  log(2, "verbose message");
+  log(3, "warning message");
+  log(4, "error message");
+}
+```
+
+---
+
+### Possible solution
+
+```cpp
+void log(int severity, const char * message)
+{
+  if (severity > 2)
+  {
+    std::cout << message << std::endl;
+  }
+}
+
+int main()
+{
+  log(1, "debug message");
+  log(2, "verbose message");
+* log(3, "warning message");
+* log(4, "error message");
+}
+```
+
+Outputs
+
+```
+warning message
+error message
+```
+
+---
+
+### Possible solution
+
+```cpp
+void log(int severity, const char * message)
+{
+* if (severity > 2)
+  {
+    std::cout << message << std::endl;
+  }
+}
+
+int main()
+{
+  log(1, "debug message");
+  log(2, "verbose message");
+  log(3, "warning message");
+  log(4, "error message");
+}
+```
+
+- "severity" is an "int"
+- "severity > 2" evaluates to "bool"
+
+---
+
+### Another solution
+
+```cpp
+int main()
+{
+  logger log{ severity > 2 };
+
+  log(1, "debug messsage");
+  log(2, "verbose message");
+  log(3, "warning message");
+  log(4, "error message");
+}
+```
+
+Outputs
+
+```
+warning message
+error message
+```
+
+--
+
+Underreaction
+
+- it's just like the other one, right?
+
+---
+
+### Another solution
+
+```cpp
+int main()
+{
+* logger log{ severity > 2 };
+
+  log(1, "debug messsage");
+  log(2, "verbose message");
+  log(3, "warning message");
+  log(4, "error message");
+}
+```
+
+--
+
+Overreaction. It's not like the first example
+
+- "log" is not a function, it's a variable
+- its type is "logger"
+- "severity > 2" is not a evaluated to a boolean
+- "severity" is not an int
+- so how does this work?
+
+---
+
+### Another solution
+
+```cpp
+*class logger
+{
+public:
+  explicit logger(
+*   std::function<bool(int, const char *)> filter) :
+    filter_{ filter }
+  {
+  }
+
+  void operator()(int s, const char * message)
+  {
+*   if(filter_(s, message))
+    {
+      std::cout << message << std::endl;
+    }
+  }
+private:
+  std::function<bool(int, const char *)> filter_;
+};
+```
+
+"logger" is a class that needs a function to filter messages
+
+---
+
+### Another solution
+
+```cpp
+*std::function<int(int, const char *)> severity =
+[](int s, const char *)
+{
+  return s;
+};
+
+*std::function<bool(int, const char*)> operator > (
+  std::function<int(int, const char *)> fn,
+  int level)
+{
+  return [=](int s, const char * message) -> bool
+  {
+*   return fn(s, message) > level;
+  };
+};
+```
+
+"severity" is a function
+
+---
+
+# Give up after a timeout
+
+### Requirements
+
+- start operation
+- detect (and give up) if operation did not complete in 10 seconds
+
+---
+
+### Possible solutions
+
+```cpp
+std::condition_variable cv;
+...
+*if(! cv.wait_for(lk, 10s, [&op](){ return op.is_complete(); }))
+{
+  // timed out
+}
+```
+
+---
+
+### Possible solutions
+
+```cpp
+std::condition_variable cv;
+...
+if(! cv.wait_for(lk, 10s, [&op](){ return op.is_complete(); }))
+{
+  // timed out
+}
+```
+
+```cpp
+std::future<result> f = ...;
+...
+*if(std::future_status::timeout ==  f.wait_for(10s))
+{
+  // timed out
+}
+```
+
+---
+
+### Possible solutions
+
+```cpp
+std::condition_variable cv;
+...
+if(! cv.wait_for(lk, 10s, [&op](){ return op.is_complete(); }))
+{
+  // timed out
+}
+```
+
+```cpp
+std::future<result> f = ...;
+...
+if(std::future_status::timeout ==  f.wait_for(10s))
+{
+  // timed out
+}
+```
+
+When "wait_for" is evaluated, we either
+
+- have a result for the operation (before the time-out interval)
+- or it times-out
+
+---
+
+### Another solution
+
+Sample code from N4045
+
+```cpp
+error_code ec;
+size_t n = async_read(
+  socket,
+  buffer,
+* block.wait_for(10s)[ec]));
+```
+
+--
+
+When "wait_for" is evaluated, it does not really wait (it would wait before we
+start the operation inside "async_read" and that would be silly)
+
+--
+
+Instead it returns a completion token which is used inside async_read to
+actually wait for the specified interval
+
+--
+
+It's a metaphor again!
+
+---
+
+# Move
+
+### Requirements
+
+- move an entity
+- from a source to a destination
+
+---
+
+### Possible solutions
+
+Move a file (using bash)
+
+```bash
+mv src.txt dst.txt
+```
+
+--
+
+Move a value (42) into a register (r12) (using assembly)
+
+```asm
+mov r12, #0x2a
+```
+
+--
+
+So the pattern for a move operation is:
+
+- specify source and destination as arguments
+- destination might the first argument, not the second
+
+---
+
+### Another solution
+
+```cpp
+std::move(a)
+```
+
+--
+
+Underreact
+- yeah, so what?
+
+--
+
+Overreact
+
+- so "std::move" has two arguments (source and destination) and when
+it returns the contents of the source has been moved to the destination
+- oh, no! it only has one argument
+- oh, no! "std::move" does not move
+
+--
+
+It's a metaphor again!
+
+- "std::move" is just a static cast to a rvalue reference (an xvalue in
+  particular)
+
+---
+
+# Questions?
