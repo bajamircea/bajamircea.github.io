@@ -13,9 +13,9 @@ A few example of customizing constructor, destructor, copy and move operations.
 
 Here is a sample class that implements a thread pool.
 
-It assumes there is a class `stoppable_thread` which requires a `void()` in the
-constructor (and starts the thread), and with a destructor that signals to stop
-and joins the thread.
+It assumes there is a class `stoppable_thread` which requires a `void()`
+function in the constructor (and starts the thread), and with a destructor that
+signals to stop and joins the thread.
 
 {% highlight c++ linenos %}
 #include "stoppable_thread.h"
@@ -67,7 +67,7 @@ class buffer
 public:
   explicit buffer(size_t size = 0) :
     p_{ new char[size] },
-    size_(size)
+    size_{ size }
   {
   }
 
@@ -91,6 +91,7 @@ public:
     if (this != &other)
     {
       delete[] p_;
+      p_ = nullptr; // set p_ in case new fails later
       size_ = other.size_;
       p_ = new char[size_];
       for(size_t i = 0 ; i < size_ ; ++i)
