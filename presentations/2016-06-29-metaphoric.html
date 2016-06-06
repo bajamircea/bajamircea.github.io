@@ -7,18 +7,17 @@ Mircea Baja @ ACCU Oxford - Lightning Talks - 29th June 2016
 
 # Metaphoric programming
 
+Three code samples that are like, but not quite the same thing, as what they
+appear to be
+
 ---
 
 # What is a metaphor
 
 "My love is like a rose"
 
---
-
 - this is NOT a metaphor, it's a simile
-- "is like", but not the same thing
-
---
+- "like", but not the same thing
 
 "My love is a rose"
 
@@ -29,22 +28,20 @@ Mircea Baja @ ACCU Oxford - Lightning Talks - 29th June 2016
 
 When faced with a metaphor, we can
 
-- underreact: "yep, whatever", and move on
-- overreact: "that's a strange thing to say, the author could not have meant
-  that" "so then he must have elided the comparison" "let's understand to what
-  degree the comparison stands, and where it does not"
-- really understand: "duh! it's a metaphor"
+- underreact: ignore it and move on
+- overreact: get confused and slowly work it through
+- understand it: be familiar with the idea of metaphor
 
 ---
 
 # Agenda
 
-I'm going to illustrate the same metaphor mechanics in programming
+I'm going to illustrate the same mechanics in programming, with code samples
+(mostly C++)
 
---
+- literal vs metaphorical meaning
+- the developer's reaction to encountering a metaphor
 
-We'll look at very simple (mostly C++) code samples that are like, but not quite the same
-thing, as what they appear to be
 
 ```cpp
 severity > 2
@@ -55,7 +52,7 @@ wait_for(10s)
 ```
 
 ```cpp
-std::move(a)
+move
 ```
 
 ---
@@ -66,35 +63,8 @@ std::move(a)
 
 - print log messages
 - messages have severity 1 to 4
-- only print errors (severity 4) and warnings (severity 3)
+- only print errors and warnings
 
-
---
-
-
-- only print if severity is greater than 2
-
----
-
-### Possible solution
-
-```cpp
-void log(int severity, const char * message)
-{
-  if (severity > 2)
-  {
-    std::cout << message << std::endl;
-  }
-}
-
-int main()
-{
-  log(1, "debug message");
-  log(2, "verbose message");
-  log(3, "warning message");
-  log(4, "error message");
-}
-```
 
 ---
 
@@ -161,8 +131,8 @@ int main()
 
   log(1, "debug messsage");
   log(2, "verbose message");
-  log(3, "warning message");
-  log(4, "error message");
+* log(3, "warning message");
+* log(4, "error message");
 }
 ```
 
@@ -172,8 +142,6 @@ Outputs
 warning message
 error message
 ```
-
---
 
 Underreaction
 
@@ -195,8 +163,6 @@ int main()
 }
 ```
 
---
-
 Overreaction. It's not like the first example
 
 - "log" is not a function, it's a variable
@@ -214,7 +180,7 @@ Overreaction. It's not like the first example
 {
 public:
   explicit logger(
-*   std::function<bool(int, const char *)> filter) :
+    std::function<bool(int, const char *)> filter) :
     filter_{ filter }
   {
   }
@@ -250,12 +216,13 @@ private:
 {
   return [=](int s, const char * message) -> bool
   {
-*   return fn(s, message) > level;
+    return fn(s, message) > level;
   };
 };
 ```
 
-"severity" is a function
+- "severity" is a function that extracts the actual severity from a log entry
+- "operator >" returns a function (the filter that the logger class needs)
 
 ---
 
@@ -347,12 +314,8 @@ size_t n = async_read(
 When "wait_for" is evaluated, it does not really wait (it would wait before we
 start the operation inside "async_read" and that would be silly)
 
---
-
 Instead it returns a completion token which is used inside async_read to
 actually wait for the specified interval
-
---
 
 It's a metaphor again!
 
@@ -416,8 +379,8 @@ it returns the contents of the source has been moved to the destination
 
 It's a metaphor again!
 
-- "std::move" is just a static cast to a rvalue reference (an xvalue in
-  particular)
+- "std::move" is just a static cast to a rvalue reference (with a xvalue value
+  category); it does not move, it "facilitates" move semantics
 
 ---
 
