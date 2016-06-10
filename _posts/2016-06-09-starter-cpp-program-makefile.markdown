@@ -39,12 +39,6 @@ SRC_DIR = src
 TMP_DIR = tmp
 ## build folder e.g. for object files and dependency files
 BUILD_DIR = $(TMP_DIR)/build
-## Output folders to 'mkdir -p'
-OUT_DIRS = $(BIN_DIR) $(BUILD_DIR)
-
-# Create output directories
-## Compromise to allow 'make clean all' to work
-$(shell mkdir -p $(OUT_DIRS))
 
 # Executable name
 TARGET = prog
@@ -52,14 +46,15 @@ TARGET = prog
 # Compiler flags
 CXX = g++
 ## -MMD creates dependency list, but ignores system includes
-## -MF specifies the dependency file name
-## -MP includes the dependency file as a target
-## -MT specifies the target (to get path qualified obj file name)
+## -MF specifies where to create the dependency file name
+## -MP creates phony targes for headers (deals with deleted headers after
+##  obj file has been compiled)
+## -MT specifies the dependency target (path qualified obj file name)
 DEP_FLAGS = -MT $@ -MMD -MP -MF $(BUILD_DIR)/$*.d
 STD_FLAGS = --std=c++14 -pthread
 WARN_FLAGS = -Wall -Werror
 CXXFLAGS = $(STD_FLAGS) $(DEP_FLAGS) $(WARN_FLAGS)
-LDFLAGS = $(STD_FLAGS)
+LDFLAGS = $(STD_FLAGS) $(WARN_FLAGS)
 
 # Things to build
 BIN_TARGET = $(BIN_DIR)/$(TARGET)
@@ -69,31 +64,42 @@ DEP_FILES := $(CPP_FILES:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.d)
 
 # Rules on how to build
 
+## To build all 'make'
 .DEFAULT: all
 
 .PHONY: all, clean, run
 
 all: $(BIN_TARGET)
 
-$(OBJ_FILES): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(BUILD_DIR)/%.d
+## Compilation rule (dependency on .d file ensures that if the .d file
+## is deleted, the obj file is created again in case a header is changed)
+$(OBJ_FILES): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(BUILD_DIR)/%.d | $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
-$(BIN_TARGET): $(OBJ_FILES)
+## Linkage rule
+$(BIN_TARGET): $(OBJ_FILES) | $(BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
-## 'mkdir -p' in clean is compromise to allow 'make clean all' to work
-clean:
-	rm -rf $(OUT_DIRS)
-	mkdir -p $(OUT_DIRS)
+## Folders creation
+$(BUILD_DIR):
+	mkdir -p $@
 
+$(BIN_DIR):
+	mkdir -p $@
+
+## To clean and build run 'make clean && make'
+clean:
+	rm -rf $(BIN_DIR) $(TMP_DIR)
+
+## To build and run the program 'make run'
 run: all
 	$(BIN_TARGET)
 
-# Handle better the case when dependency file depends on deleted file
+## Do not fail when dependency file is deleted (it is required by the compile
+## rule)
 $(DEP_FILES): $(BUILD_DIR)/%.d: ;
 
-# Include dependency files
-## ignore them if missing
+# Include dependency files (ignore them if missing)
 -include $(DEP_FILES)
 {% endhighlight %}
 
