@@ -9,6 +9,11 @@ common source of "mostly works" type of program. Try to spot the bug in the
 example below.
 
 
+# Discaimer
+
+DO NOT USE THE CODE BELOW BECAUSE IT CONTAINS BUGS. IT IS SIMPLY AN EXERCISE
+FOR FINDING THE BUGS.
+
 # The fair-weather coder pitch
 
 Let's try to explain the intent for the code below.
