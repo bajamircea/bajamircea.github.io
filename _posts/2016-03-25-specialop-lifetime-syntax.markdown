@@ -99,9 +99,11 @@ However it's good practice to maintain in code a consistent order.
 
 Based on the arguments, some constructors are even more special:
 
-- default constructor: is the constructor with no arguments. Some algorithms
-  require types that have a default constructor. For some classes having a
-  constructor with no arguments does not make sense.
+- default constructor: is the constructor with no arguments. For some classes
+  having a constructor with no arguments does not make sense. Some algorithms.
+  require types that have a default constructor which at minimum gets the
+  object in such a state that [it can be destroyed and it can be assigned
+  to][eop] (and can't be used in other ways unless it's assigned to).
 - copy and move constructors: I'll cover them later in this article
 - constructors that accept just one argument (other than copy and move). **Most
   of the time you want to make such a constructor explicit**. That is because
