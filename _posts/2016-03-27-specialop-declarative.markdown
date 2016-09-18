@@ -118,7 +118,8 @@ different from the choices above.
 
 Enter copy elision. Even before C++11 the compiler was allowed to optimize the
 code even if it would have side effects and remove the copy, on the idea that
-copy is supposed to copy, not to have side effects.
+copy is supposed to copy, not to have side effects. C++17 [guarantees copy
+elision][cpp17-copy-elision] in some cases.
 
 So in addition to the destructor, the copy and move (constructor and
 assignment) have a declarative nature: they declare how to copy and move, and
@@ -223,3 +224,5 @@ ignoring side effects.
 However we've also seen that the compiler does not indentify all the cases when
 a variable is no longer used, and we had to use `std::move` to communicate this
 intent.
+
+[cpp17-copy-elision]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/p0135r0.html
