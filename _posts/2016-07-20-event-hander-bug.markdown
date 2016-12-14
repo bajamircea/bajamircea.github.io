@@ -9,7 +9,7 @@ actually accomplishes, as this event handler code shows. Try to spot the bug in
 the example below.
 
 
-# Discaimer
+# Disclaimer
 
 DO NOT USE THE CODE BELOW BECAUSE IT CONTAINS BUGS. IT IS SIMPLY AN EXERCISE
 FOR FINDING THE BUGS.

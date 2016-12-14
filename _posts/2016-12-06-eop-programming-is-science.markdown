@@ -21,7 +21,7 @@ I came across the book while following the proposals for concepts in C++17 when
 I figured out that this book is where some of the original ideas for concepts
 came from. So I purchased the book, and I hoped I will read it in the evenings.
 But the first day I only managed a couple of pages, so then in my summer
-holiday I decided to not take my laptop and focus on the bool. And that worked
+holiday I decided to not take my laptop and focus on the book. And that worked
 at about 20 pages per day in almost two weeks ... I did it.
 
 Here are two examples of what I mean by difficult, but rewarding.
@@ -36,7 +36,7 @@ Here are two examples of what I mean by difficult, but rewarding.
 
 The book starts with a lot of definitions and dense statements like the ones
 above. For me that's one of the reasons I found it hard to read it at a
-leasurly pace in the evenings.
+leisurely pace in the evenings.
 
 The beauty is that these dense statements have long reaching consequences. For
 example that the classical object oriented programming way of using inheritance
@@ -97,16 +97,16 @@ For me the most important idea in the book is that programming is science. In
 particular the book makes a strong case in that there are strong connections
 with mathematics.
 
-This might soud trivial, but I see so many examples of pseudo-science in
+This might sound trivial, but I see so many examples of pseudo-science in
 programming.
 
-In particular when we have to make a judgment/or a decission (should we go with
+In particular when we have to make a judgment/or a decision (should we go with
 `A` or with `B`?) there are two valid approaches (or a combination of):
 
 - we're in a hurry, we make a arbitrary choice, we go on with the main task. If
-  we realise it was a bad choice that stops us from accomplising the task we go
+  we realise it was a bad choice that stops us from accomplishing the task we go
   back and make the other choice.
-- we make an informed choice based on rigurous reasoning
+- we make an informed choice based on rigorous reasoning
 
 The pseudo approach I often see is when an arbitrary choice was made, but it is
 presented as if it THE TRUE ONE when it is actually flawed logically.

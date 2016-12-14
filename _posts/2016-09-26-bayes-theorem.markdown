@@ -5,7 +5,7 @@ categories: maths statistics
 ---
 
 Bayes' theorem: what it is, a simple example, and a counter-intuitive example
-that demonstrates the base rate falacy.
+that demonstrates the base rate fallacy.
 
 {% include mathjax.html %}
 
@@ -35,7 +35,7 @@ $$
 
 For example with two dice, the probability to get a double six is
 $$\frac{1}{36}$$, which is $$\frac{1}6$$ (the probability to get a 6 on the
-first dice) multipled with $$\frac{1}6$$ (the probability to get a 6 on the
+first dice) multiplied with $$\frac{1}6$$ (the probability to get a 6 on the
 second dice).
 
 However if the two events are not independent, then given the notation $$P(A
@@ -103,7 +103,7 @@ $$
 $$
 
 
-# Base rate falacy
+# Base rate fallacy
 
 Say we have have drug test that is 99% correct (i.e. out of 100 results, one is
 wrong). Say an individual tests positive. What's the probability he is a user
@@ -139,4 +139,4 @@ $$
 
 The actual result of 17% is quite far from the wrong initial intuitive answer
 of 99%. This is because the intuition fails to take into account the base rate
-(the base rate falacy).
+(the base rate fallacy).

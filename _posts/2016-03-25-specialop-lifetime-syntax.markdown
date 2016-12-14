@@ -60,7 +60,7 @@ Unlike a regular member function:
 - and it has a special try catch syntax we can ignore most of the time
 
 The initialization section for a constructor is used to initialize things
-before the body is exectued. You can initialize base class(es), member
+before the body is executed. You can initialize base class(es), member
 variables, or delegate to another of the constructors of the class.
 
 The body of the constructor is used for additional work, after initialization.

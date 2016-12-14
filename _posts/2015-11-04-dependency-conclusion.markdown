@@ -111,7 +111,7 @@ It's difficult to find good names. In examples, I've chosen the easy ones from
 the physical world. We have a lot of words for objects in the physical word: a
 house has a room, the room has a TV, the TV has a remote, the remote has a
 button etc. In practice when coding for a new, unfamiliar domain that language
-just does not exist. There is no mecanical way to decompose it into classes,
+just does not exist. There is no mechanical way to decompose it into classes,
 and what looked like a good decomposition at some point, might not look the
 same later when we understand the domain differently and/or the requirements
 change.

@@ -4,7 +4,7 @@ title: 'Classic RAII'
 categories: coding cpp
 ---
 
-RAII (Resource Aquisition Is Initialization) is a difficult to say name that
+RAII (Resource Acquisition Is Initialization) is a difficult to say name that
 does not do justice to **one of the most useful programming idioms**. This
 article describes the classic way of using RAII, with the full example of the
 [copy file example][copy-file] rewritten.
@@ -67,8 +67,8 @@ succeeds or it throws.
 If `fopen` succeeds, then the constructor succeeds and the instance has a `f_`
 that is not null. `f_` can be used in other `file` class methods without the
 need to test for null, including in the destructor. This behaviour explains the
-complicated RAII name (Resource Aquisition Is Initialization): when the
-resource is aquired, the object is fully initialized.
+complicated RAII name (Resource Acquisition Is Initialization): when the
+resource is acquired, the object is fully initialized.
 
 If `fopen` fails, the constructor throws: the object is not constructed, the
 user can't call methods and the destructor is not called.

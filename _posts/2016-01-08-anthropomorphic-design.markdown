@@ -12,10 +12,10 @@ components as if they were people.
 
 In his book "Thinking Fast and Slow", Daniel Kahneman comments that by using
 "System 1" and "System 2" to describe the way we think he commits the sin of
-antropomorphism. "System 1" and "System 2" behave to a certain degree as people
-when in reality there is no dirrect mapping to a physical item, e.g. a neuron,
-to one of the two systems. He still thinks it helps us undestand how our mind
-works, because we are better equiped to think about interactions between people
+anthropomorphism. "System 1" and "System 2" behave to a certain degree as people
+when in reality there is no direct mapping to a physical item, e.g. a neuron,
+to one of the two systems. He still thinks it helps us understand how our mind
+works, because we are better equipped to think about interactions between people
 than to handle abstract concepts.
 
 Anthropomorphic design with regards to software components is when we think of
@@ -53,12 +53,12 @@ a task.
 # Alternative
 
 The option would have been to refactor the three original entities into more
-entities with single responsabilities.
+entities with single responsibilities.
 
 ![Refactored design](/assets/2016-01-08-anthropomorphic-design/03-single.png)
 
 The new DatabaseManager only puts the DatabaseLayer and Emailer together. The
 new DatabaseLayer only deals with the database. As we're going further away
 from an anthropomorphic design we end up with more components and we need more
-words to describe the functinality of each component, but each component is
+words to describe the functionality of each component, but each component is
 individually simpler.

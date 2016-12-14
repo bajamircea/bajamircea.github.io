@@ -16,14 +16,14 @@ refactoring to reduce dependencies.
 
 Large files. For me a source file above 500 lines is becoming large. One
 example exception is very simple, very low complexity code (e.g. some giant
-switch maping an enum to strings).
+switch mapping an enum to strings).
 
 Another smell is a large number of member variables in a class, with no (or
 very loose) relationship to each other.
 
 Another smell are classes called `SomethingManager`, `SomethingAgent` or
 similar that grew over time to contain all the code related to whatever
-`Something` is. They are symptoms of antropomorphic design (to cover in a following
+`Something` is. They are symptoms of anthropomorphic design (to cover in a following
 post).
 
 Related to the above is a large number of `#include` directives required to
@@ -37,7 +37,7 @@ link too many things together at the same time. Examples of exceptions are:
 - Would count a sequence including `<vector>`, `<set>`, `<map>` and
   `<algorithm>` like one (it's using some standard containers).
 - Some API header like `<windows.h>` would include lots of other headers.
-  Changing that might not be feasible for backward compatibilty reasons.
+  Changing that might not be feasible for backward compatibility reasons.
 
 Sometimes one can identify a group of member variables, that are used together
 in code, that are very loosely coupled with other groups of member variables of

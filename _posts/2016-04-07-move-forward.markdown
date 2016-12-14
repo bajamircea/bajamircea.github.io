@@ -37,7 +37,7 @@ and `std::forward` in another (at line 8).
 
 There is a lot of background information required. We'll start with the almost
 mathematical theory, but then dive quickly into C++ specifics and historical
-artfacts.
+artefacts.
 
 
 ## Value categories (lvalue, prvalue and xvalue)
@@ -187,8 +187,8 @@ overloads requiring:
 
 If a templated function takes an `rvalue reference` template argument, [special
 template argument deduction rules kick in][thbecker]. Despite the syntactic
-similarites with the `rvalue reference` above, the rules for this case where
-specifically designed to support argument fowarding and are called [forwarding
+similarities with the `rvalue reference` above, the rules for this case where
+specifically designed to support argument forwarding and are called [forwarding
 references][n4164].
 
 {% highlight c++ linenos %}
@@ -441,7 +441,7 @@ whatever we the `install_command` was called with for the `handler`. We use
 provided an `rvalue` then `insert` will move from it. If for the `handler` we
 provided an `lvalue` then `insert` will copy it.
 
-There are a lot of rules that come into play for the inital deceivingly simple
+There are a lot of rules that come into play for the initial deceivingly simple
 code. They are the result of maintaining backward compatibility and plumbing
 move semantics and perfect forwarding support on top of that, while making it
 so that most common scenarios are easy to write and read.

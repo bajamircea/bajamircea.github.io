@@ -59,10 +59,10 @@ public:
 };
 {% endhighlight %}
 
-The lifetime of the various parts of such a class are ilustrated on the diagram
+The lifetime of the various parts of such a class are illustrated on the diagram
 below. The dotted lines indicate what happens if an exception is thrown when
 something fails to construct, in which case the caller needs to deal with the
-exception and can't use the instance. The full loop indicates the successfull path.
+exception and can't use the instance. The full loop indicates the successful path.
 
 ![Lifetime diagram](/assets/2015-04-02-class-lifetime/lifetime.png)
 
@@ -73,10 +73,10 @@ memory required for an instance of `SomeClass` is the sum of:
   functions table; most of the C++ implementations use this technique for
   virtual functions)
 - the size of the member variables `a` and `b`
-- and potentially additional bytes due to allignment and padding issues
+- and potentially additional bytes due to alignment and padding issues
 
 Then the constructor for the base class is invoked. If that fails, the memory
-is dealocated. The constructor for `SomeClass` can pass additional arguments to
+is deallocated. The constructor for `SomeClass` can pass additional arguments to
 the base class in the constructor's initialization list, for example:
 
 {% highlight c++ linenos %}

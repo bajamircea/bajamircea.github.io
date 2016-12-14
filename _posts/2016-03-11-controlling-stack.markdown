@@ -77,11 +77,11 @@ choice.
 Bootstrap, Angular JS handle most of the browser/screen resolution variability.
 
 At the other end, micro-controllers are cheap and handle the real-time
-constraints of the application, but are not powerfull enough to handle HTTP
+constraints of the application, but are not powerful enough to handle HTTP
 well. Hence the Raspberry Pi board.
 
 The web server could have been cloud hosted, but for this application, based on
-the anticipated usage scenarious we decided to host the web server on the
+the anticipated usage scenarios we decided to host the web server on the
 Raspberry Pi.
 
 Nginx as a reverse proxy is a no-brainer. It routes the requests and serves the
@@ -89,7 +89,7 @@ static files. It also means that the server process only needs to implement
 HTTP 1.0.
 
 The server process is written in C++. It could have been written in Python as
-well. It's a matter of control/precission/quality vs. speed of development.
+well. It's a matter of control/precision/quality vs. speed of development.
 Usage of boost asio in particular made it possible for a single thread to
 concurrently handle multiple HTTP requests in parallel.
 

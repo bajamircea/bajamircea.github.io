@@ -15,7 +15,7 @@ article][dependency-reduction] with a C++ template-based approach.
 
 # Code
 
-Once I got the ideea of using dependency injection using interfaces and reaped
+Once I got the idea of using dependency injection using interfaces and reaped
 the benefit of more test coverage/less errors, I wondered why people don't beat
 the drum more about it. What would Alexander Stepanov do? Well, if you want to
 test a vector, you create an instrumented class and you create a vector of that
@@ -145,7 +145,7 @@ int main() {
 The need to have a place where the dependencies are instantiated is a mixed
 blessing. On one side it introduces another layer.
 
-Sometimes this layer is usefull, e.g. what if we wanted to decompose the
+Sometimes this layer is useful, e.g. what if we wanted to decompose the
 `house` class differently?  What if we wanted it to have a `kitchen` and a
 `living_room`, but the two rooms share the same `door`. Having a place where
 dependencies are created allows us to create a `door` then each room (and pass

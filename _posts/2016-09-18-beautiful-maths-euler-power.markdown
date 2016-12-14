@@ -5,8 +5,8 @@ categories: maths euler
 ---
 
 Starting with power series and building on derivation, factorials, exponential
-function, trignometry and complex numbers we'll get to Euler's formula; some of
-the most beautiful mathematics I've seen comming together.
+function, trigonometry and complex numbers we'll get to Euler's formula; some of
+the most beautiful mathematics I've seen coming together.
 
 {% include mathjax.html %}
 
@@ -38,7 +38,7 @@ $$
 $$
 
 We can create a function where we multiply each power of $$x$$ by some
-coeficient and we add up the infinite series:
+coefficient and we add up the infinite series:
 
 $$
 \begin{align}

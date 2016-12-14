@@ -61,7 +61,7 @@ the saga starts:
   disk, then install Android x86
 - The Microsoft Health app does not want to install on the virtual machine from
   the Google Play store
-- But I can dowload the apk file, and now it runs ... sideways. So I have move
+- But I can download the apk file, and now it runs ... sideways. So I have move
   the finger up and down the trackpad in order to move the cursor left and
   right.
 - And I can login, and see the device on bluetooth, but does not want to
@@ -89,7 +89,7 @@ However from time to time things don't work though:
   the one from the left side of the laptop.
 - For a couple of days the workout planner web page gave a "Oops, something
   went wrong" message.
-- And I get intermitently the 'Network error' below.
+- And I get intermittently the 'Network error' below.
 
 ![Error](/assets/2016-01-27-ms-band-review/error.png)
 
@@ -109,7 +109,7 @@ to sell.
 
 I particularly like that it is designed as what it is. It does not pretend it's
 a watch. It is a wrist band packed with sensors. A watch has a dial and hands
-that turn around hence the shape of a circle. Similar competitor producs
+that turn around hence the shape of a circle. Similar competitor products
 marketed for the luxury end of the market try to look like such a watch. The
 Microsoft Band does not try to fake it, it is what it is.
 
@@ -120,7 +120,7 @@ with virtually no learning curve. The only downside is that when finger and
 screen are slightly wet, it does not work so well.
 
 The alarm, timer and stopwatch I would liked to have them as separate tiles (or
-subtiles) rather than have to scroll withn the same tile.
+subtitles) rather than have to scroll within the same tile.
 
 The running tile is using the GPS positioning to allow you later to view the
 route. It does take sometimes a few minutes to find the GPS though.
@@ -157,9 +157,9 @@ The high level application architecture looks like in the diagram below.
 ![Architecture](/assets/2016-01-27-ms-band-review/architecture.png)
 
 To access this data, other than a summary, you need to pair it to a syncing
-application. The band processor is not powerfull enough to do all the
+application. The band processor is not powerful enough to do all the
 HTTPS/TCP/IP/WiFi stack to talk to the cloud on it's own. It needs to be paired
-to a device cappable of doing that.
+to a device capable of doing that.
 
 There are applications for smart phones (Windows Phone, iOS,
 Android), and PCs (Windows and Mac, but not for Linux). It connects to the
@@ -192,7 +192,7 @@ like Microsoft is not able to write reliable, bug free, applications given this
 proliferation of platforms.
 
 
-# Conclussion
+# Conclusion
 
 All in all I'm happy with the Microsoft Band for the time being, it helped me
 be more active in the last month.

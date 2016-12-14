@@ -94,9 +94,9 @@ errors. But, because of the repetition, there is repeated scope for error that
 for any but non-trivial projects results in mistakes that cumulate to a muddy
 code quality.
 
-One apparently trivial issue is the case of iregular error checking. Notice how
+One apparently trivial issue is the case of irregular error checking. Notice how
 in the example below `fread` does not have a `else` branch, instead it breaks
-out of the `for` loop on error. Also the success path is burried somewhere in
+out of the `for` loop on error. Also the success path is buried somewhere in
 the middle of the code. This kind of things have no impact on execution they
 just slow down understanding a program and the ability to change it easily.
 

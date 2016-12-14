@@ -221,7 +221,7 @@ compiler destructs, copies or moves an instance, and the compiler calls them as
 it needs to, on the assumption that they define how to destruct, copy or move,
 ignoring side effects.
 
-However we've also seen that the compiler does not indentify all the cases when
+However we've also seen that the compiler does not identify all the cases when
 a variable is no longer used, and we had to use `std::move` to communicate this
 intent.
 

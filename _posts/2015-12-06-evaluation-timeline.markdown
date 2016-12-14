@@ -21,7 +21,7 @@ the log entry can be evaluated at different moments in time:
 
 # Runtime immediate
 
-This is the straitforward example (only the warning and error messages are
+This is the straightforward example (only the warning and error messages are
 logged):
 
 - `severity > 2` is a `bool` evaluated at runtime
@@ -52,7 +52,7 @@ int main()
 # Runtime deferred
 
 In this example things are not what they look at first glance. In the main
-function below the code looks straigtforward: it creates a logger, it states
+function below the code looks straightforward: it creates a logger, it states
 the condition for the messages to be logger in the logger construction and then
 later only warning and error messages are logged.
 
@@ -64,7 +64,7 @@ int main()
 {
   logger log{ severity > 2 };
 
-  log(1, "debug messsage");
+  log(1, "debug message");
   log(2, "verbose message");
   log(3, "warning message");
   log(4, "error message");

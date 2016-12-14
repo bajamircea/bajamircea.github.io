@@ -11,7 +11,7 @@ dependencies.
 # Introduction
 
 This article builds on previous articles on dependency injection using C++ and
-ilustrates a different grouping to reduce dependencies for the `house` example,
+illustrates a different grouping to reduce dependencies for the `house` example,
 using interfaces. We'll group objects into a `living_room` and `kitchen` which
 share the same `door`.
 

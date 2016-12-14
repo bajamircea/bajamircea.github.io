@@ -14,9 +14,9 @@ I mentioned that there are variants of [RAII][classic-raii] (that include the
 [slim RAII][slim-raii]), and this describes a variant that adds more complexity
 in the classes that wrap C APIs with the goal of making it easier to use.
 
-The first issue is that copying a handle is not allways possible or cheap to
+The first issue is that copying a handle is not always possible or cheap to
 do, so usually, like in our classic RAII `file` class copying (constructor and
-assignment) are disabled. However it would be usefull if the class could be
+assignment) are disabled. However it would be useful if the class could be
 moved.
 
 To make the class movable, in addition to implementing the move constructor and

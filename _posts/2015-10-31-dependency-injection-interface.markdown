@@ -11,7 +11,7 @@ functions.
 
 # Introduction
 
-I first saw systematic use of dependency injection in AngularJS, a Javascript
+I first saw dependency injection used systematically in AngularJS, a Javascript
 framework. However the technique comes from Java and this example illustrates
 how it would apply to C++.
 
@@ -181,7 +181,7 @@ int main() {
 # Discussion
 
 Was it worth it? In the fictional example above, probably not. We went from 24
-lines of code in 2 files for the `house` class to I reccon in this example
+lines of code in 2 files for the `house` class to I recon in this example
 about 70 lines required to implement and support it.
 
 The advantages are:

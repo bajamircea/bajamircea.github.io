@@ -4,7 +4,7 @@ title: 'GertDuino Board Setup'
 categories: embedded raspberrypi
 ---
 
-Initial setup steps for a GertDuino board with an existing Raspbery Pi 2
+Initial setup steps for a GertDuino board with an existing Raspberry Pi 2
 system, and solve the Raspbery Pi reboot problem.
 
 
@@ -12,27 +12,27 @@ system, and solve the Raspbery Pi reboot problem.
 
 The steps below assume you have:
 
-- A Raspbery Pi 2, fully workable (power, network, display), running Raspbian
+- A Raspberry Pi 2, fully workable (power, network, display), running Raspbian
   (I had version 1.1)
 - [A GertDuino board][gertduino] (I had revision 5)
 
 First get and read the [GertDuino manual][manual].
 
 You would have learned that GertDuino board comes with two Atmel
-microcontrollers that can be programmed from Raspbery Pi: ATmega328p and
+microcontrollers that can be programmed from Raspberry Pi: ATmega328p and
 ATmega48pa.
 
 The following steps will get to the point where we load a program for each
-microcontroller from Raspbery Pi.
+microcontroller from Raspberry Pi.
 
 
 ## Mount GertDuino
 
-Ensure the Raspbery Pi 2 is not powered.
+Ensure the Raspberry Pi 2 is not powered.
 
-Mount the GertDuino board on top of the Raspbery Pi 2.
+Mount the GertDuino board on top of the Raspberry Pi 2.
 
-Now Raspbery Pi does not want to boot any more and displays:
+Now Raspberry Pi does not want to boot any more and displays:
 
 {% highlight text %}
 sh: can't access tty: job control turned off
@@ -56,7 +56,7 @@ to program the ATmega48pa (marked in red in the image from the manual below).
 
 ![Jumpers position to program ATmega48pa](/assets/2015-10-04-pi-gertduino-start/program-48-jumpers.jpg)
 
-The step above should allow the Raspbery Pi to boot. Power the system. It
+The step above should allow the Raspberry Pi to boot. Power the system. It
 should boot now.
 
 
@@ -137,7 +137,7 @@ sudo halt
 
 ## Load program to ATmega328p
 
-Ensure the Raspbery Pi 2 is not powered.
+Ensure the Raspberry Pi 2 is not powered.
 
 Use the four jumpers the GertDuino board comes with. Put them in the position
 to program the ATmega328p (marked in red in the image from the manual below).
@@ -181,11 +181,11 @@ Either:
 - or use the `reset_off` script from the `~/gertduino` folder
 
 The `reset_off` and `reset_on` scripts also have issues, possibly because GPIO
-8 on Raspbery Pi is now in default input mode. Commenting the last statement
+8 on Raspberry Pi is now in default input mode. Commenting the last statement
 (`# echo 8 > /sys/class/gpio/unexport`) gives mixed results. But that's a
 battle for another time.
 
-And that's the initial setup for the GertDuino board with a Raspbery Pi 2.
+And that's the initial setup for the GertDuino board with a Raspberry Pi 2.
 
 
 [gertduino]:  http://www.element14.com/community/community/raspberry-pi/raspberry-pi-accessories/gertduino

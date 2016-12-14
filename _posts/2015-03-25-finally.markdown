@@ -103,7 +103,7 @@ example that copies a file from a source to a destination, the `file` class
 that needs to close a file is used twice.
 
 The second issue is that in garbage collected languages usually memory is still
-only relased when garbage collected. In C++ memory is a resource in the same
+only released when garbage collected. In C++ memory is a resource in the same
 way as other resources.
 
 The third issue is that if you not use a try-finally or try-with-resource the
@@ -171,7 +171,7 @@ public void writeList() {
 In the code above, when would `out` be `null`? When either `FileWriter` or
 `PrintWriter` constructors fail. If `FileWriter` succeeds, but `PrintWriter`
 fails, then we're in trouble because we fail to close the file before we exit
-the function. However that constructor of `PrintWriter` is very unlikey to
+the function. However that constructor of `PrintWriter` is very unlikely to
 fail.
 
 ## Sumary

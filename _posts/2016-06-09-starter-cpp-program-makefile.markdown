@@ -20,7 +20,7 @@ uses the standard library.
 # Sample
 
 {% highlight make %}
-# Delete the default sufixes (otherwise visible in 'make -d')
+# Delete the default suffixes (otherwise visible in 'make -d')
 .SUFFIXES:
 
 # Cancel source control implicit rules (otherwise visible in 'make -d')
@@ -47,7 +47,7 @@ TARGET = prog
 CXX = g++
 ## -MMD creates dependency list, but ignores system includes
 ## -MF specifies where to create the dependency file name
-## -MP creates phony targes for headers (deals with deleted headers after
+## -MP creates phony targtes for headers (deals with deleted headers after
 ##  obj file has been compiled)
 ## -MT specifies the dependency target (path qualified obj file name)
 DEP_FLAGS = -MT $@ -MMD -MP -MF $(BUILD_DIR)/$*.d

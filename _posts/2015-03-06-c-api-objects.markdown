@@ -63,14 +63,14 @@ int main ()
 {% endhighlight %}
 
 **The example above is wrong**: for example it ignores that `fopen` might fail
-to open the file and continues regardles.
+to open the file and continues regardless.
 
 
 ## Handles
 
 In the example above, the constructor function `fopen` returns a `FILE *`.  In
 this case the handle is an explicit pointer. Implementation of say `fwrite`
-probably acceses fields from the `FILE` structure e.g. it would access the
+probably accesses fields from the `FILE` structure e.g. it would access the
 `_flag` member of the `FILE` structure like `stream->_flag`.
 
 Some APIs use an opaque approach. For example in Windows `CreateEvent` returns
@@ -148,7 +148,7 @@ for all object types.
 
 ![Hierarchy diagram](/assets/2015-03-06-c-api-objects/waitable.png)
 
-The object handle is not always returned, some APIs return the an error code
+The object handle is not always returned, some APIs return an error code
 and receive a pointer to the object handle e.g. `fopen_s`:
 
 {% highlight c++ linenos %}
@@ -168,7 +168,7 @@ handle value could change if the constructor function returns an error**.
 
 ## Usage
 
-After the object is successfuly constructed it can be used by passing the
+After the object is successfully constructed it can be used by passing the
 handle to other functions, usually as the first argument. That is similar to
 C++ object member methods where the `this` pointer is passed by the compiler as
 a hidden first argument.

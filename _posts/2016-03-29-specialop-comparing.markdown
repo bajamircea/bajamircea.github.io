@@ -154,9 +154,9 @@ addresses, not the actual pointed data.
 `float` and `double` are almost regular, except for `NaN` (all comparisons with
 `NaN` return `false`).
 
-Most basic containters are regular (assuming the `value_type` is regular)
+Most basic containers are regular (assuming the `value_type` is regular)
 though, unlike an `int`, copy might throw.  When compared, they do what you
-would expect, e.g. compare lexycographically.
+would expect, e.g. compare lexicographically.
 
 The unordered containers however only compare for equality, not for less than.
 The reason is runtime cost.

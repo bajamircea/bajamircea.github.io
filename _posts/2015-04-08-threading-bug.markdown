@@ -9,7 +9,7 @@ common source of "mostly works" type of program. Try to spot the bug in the
 example below.
 
 
-# Discaimer
+# Disclaimer
 
 DO NOT USE THE CODE BELOW BECAUSE IT CONTAINS BUGS. IT IS SIMPLY AN EXERCISE
 FOR FINDING THE BUGS.
@@ -21,7 +21,7 @@ Let's try to explain the intent for the code below.
 `std::thread` is a weird beast. Most classes perform cleanup on destructor.
 However `std::thread` requires you to perform cleanup, in this case to ensure
 that the thread is told to end before the destructor of `std::thread` , or else
-it [teminates the process][terminate-on-destruct].
+it [terminates the process][terminate-on-destruct].
 
 `peridic_thread_base` is intended as a reusable class that wraps a
 `std::thread` to address the issue above for the case where some action needs

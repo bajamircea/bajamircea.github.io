@@ -4,7 +4,7 @@ title: 'Reducing Dependencies'
 categories: coding cpp
 ---
 
-Reducing dependecies is a fundamental refactoring technique. It addresses the
+Reducing dependencies is a fundamental refactoring technique. It addresses the
 problem of too many dependencies by introducing additional abstractions, where
 each abstraction in turn is smaller and simpler.
 
@@ -16,7 +16,7 @@ several other contributors to do its `chillax` job: the `tea` and `cup`, the
 `knob`s and `hinge`, the `display` and `remote`.
 
 The refactoring below will increase the number of classes. New classes are
-introduced to capture abstractions like `cuppa`, `door` and `tv`. Each of theese classes
+introduced to capture abstractions like `cuppa`, `door` and `tv`. Each of these classes
 has fewer dependencies.
 
 
@@ -174,7 +174,7 @@ door. We have words for this. For some problem domains, e.g. networking, again
 we have words, we know what sockets, addresses, buffers etc. mean.
 
 But in practice it's difficult to find good names for some new problem domain.
-The risk is that thare are too many classes named
+The risk is that there are too many classes named
 like`SomeClassThatHoldsThoseOtherTwoThingsTogether` that are not going to make
 instant sense to another developer. I find that pairing and iteration helps
 here. If you can find a name that at least the pair of you agree then there is

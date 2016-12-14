@@ -10,7 +10,7 @@ This short article reminds that C++ structs are classes too.
 ## Class and struct
 
 There are two major ways of building new types. One is by putting together
-multiple pices of the same type. These are arrays.
+multiple pieces of the same type. These are arrays.
 
 The other one is by putting together pieces of different types. There are two
 keywords in C++ that allows us to do that: `class` and `struct`.
@@ -73,7 +73,7 @@ variables. Also note that only fields where the default value was not desired
 are initialized (default value for int-types is 0, false for bool and nullptr
 for pointers).
 
-Once initialied with data (e.g. from a stream), pass it by const reference to
+Once initialized with data (e.g. from a stream), pass it by const reference to
 make its fields read only.
 
 ## Summary
