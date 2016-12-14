@@ -113,7 +113,7 @@ presented as if it THE TRUE ONE when it is actually flawed logically.
 
 # References
 
-- [Elements of Programming - on amazon.co.uk][eop-amz]
+- [Elements of Programming - on amazon.co.uk][eop]
 
-[eop-amz]: https://www.amazon.co.uk/d/cka/Elements-Programming-Alexander-Stepanov/032163537X
+[eop]: http://www.amazon.co.uk/Elements-Programming-Alexander-A-Stepanov/dp/032163537X
 
