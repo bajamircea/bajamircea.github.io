@@ -135,7 +135,7 @@ int main()
 
 ## Meaning
 
-On one side we have [regular][eop] classes. Think of `int`. We can construct
+On one side we have [regular][regular] classes. Think of `int`. We can construct
 it (with a default constructor), we can copy and move it (both construct and
 assign), we can compare for equality and less than. And all of these properties
 play together as you would expect them to: the order is total (e.g. given
@@ -173,5 +173,4 @@ operators that return a `bool`.
 The above issues just scratch the surface of the subject, I'll leave to that
 for the moment.
 
-
-[eop]: http://www.amazon.co.uk/Elements-Programming-Alexander-A-Stepanov/dp/032163537X
+[regular]:     {% post_url 2016-12-15-eop-regular %}

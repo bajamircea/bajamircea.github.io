@@ -14,7 +14,7 @@ C++ provides a lot of control over the fundamental behaviour of user defined
 types while at the same time preserving runtime efficiency.
 
 This is a first article that covers ways of defining aspects of a class related
-to it's [regularity][eop].
+to it's [regularity][regular].
 
 The most fundamental/special part about a class is what the class does when it's
 created, copied, moved and destroyed. That is defined by:
@@ -313,5 +313,5 @@ a = std::move(a);
 The naive implementation would have a `if (&other == this)` test in the move
 assignment. Usually this can be avoided by using a temporary variable.
 
-[eop]: http://www.amazon.co.uk/Elements-Programming-Alexander-A-Stepanov/dp/032163537X
+[regular]:     {% post_url 2016-12-15-eop-regular %}
 [class-lifetime]:     {% post_url 2015-04-02-class-lifetime %}
