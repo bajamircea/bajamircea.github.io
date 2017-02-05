@@ -15,10 +15,9 @@ behave properly.
 
 By properly I mean things that are easy to expect intuitively like:
 
-- if you have a object of a regular type and you assign to it, then it's equal
-  to the source
-- if you have two object they are either equal or not equal; and if not equal,
-  one is ordered less than the other
+- if you have a object and you assign to it, then it's equal to the source
+- if you have two objects then they are either equal or not equal
+- if you have two objects that are not equal, then one is less than the other
 
 A subtle aspect is that the default constructor only has to initialize enough so
 that the object can either be assigned to, or destroyed.
