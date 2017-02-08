@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Starter C++ Project makefile'
-categories: coding cpp
+categories: coding tools
 ---
 
 Example of initial makefile for a simple C++ toy project
@@ -108,5 +108,7 @@ $(DEP_FILES): $(BUILD_DIR)/%.d: ;
 
 - [http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/][auto-dep]
 
+Also see a ['one exe per source file' makefile][starter-makefile].
 
 [auto-dep]: http://make.mad-scientist.net/papers/advanced-auto-dependency-generation/
+[starter-makefile]:    {% post_url 2016-06-10-one-to-one-makefile %}
