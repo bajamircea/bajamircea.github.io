@@ -57,7 +57,7 @@ void bad_usage()
 }
 {% endhighlight %}
 
-I'd like the accidental misuse called at compile time, and some generic
+I'd like the accidental misuse caught at compile time, and some generic
 solution for other similar classes.
 
 # Possible solution
