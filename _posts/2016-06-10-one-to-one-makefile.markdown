@@ -21,7 +21,7 @@ EXE_FILES := $(CPP_FILES:%.cpp=bin/%)
 all: $(EXE_FILES)
 
 bin/%: %.cpp | bin
-	g++ --std=c++14 -Wall -Werror -o $@ $<
+	g++ --std=c++14 -Wall -Werror -fno-rtti -o $@ $<
 
 bin:
 	mkdir bin
