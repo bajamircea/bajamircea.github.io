@@ -1,0 +1,69 @@
+---
+layout: post
+title: 'Using a tie in C++'
+categories: coding cpp
+---
+
+There are two major uses for `std::tie`: simple implementation for comparison
+operators for user defined data structures and unpacking pair/tuples (e.g.
+return values).
+
+# Implementing comparisons for user defined data structures
+
+In the code below the `person` is a user defined type that groups several
+member variables. One might want an easy way to implement the "less than"
+operator (e.g. to be able to use it as a key in an associative container like
+`std::set` or `std::map`).
+
+One solution is to use a helper function (`tie_members` in the code below) that
+returns an `std::tuple` of references to the member variables. If you're not
+familiar with `std::tuple` think of it as a generalization of `std::pair` that
+groups N items instead of only two. Using references avoids copying the values
+of the members. `std::tie` is used to build that `std::tuple` of references.
+
+Using the helper function one can define all the desired comparison operators
+("less than" shown below). `std::tuple` implements lexicographical comparison,
+i.e. compares the first member and based on the result it stops or continues
+with the second and so on.
+
+{% highlight c++ linenos %}
+// person.h header file
+
+#include <string>
+#include <tuple>
+
+struct person {
+  std::string first_name;
+  std::string last_name;
+  int age;
+};
+
+inline auto tie_members(const person & x) {
+  return std::tie(x.first_name, x.last_name, x.age);
+}
+
+inline bool operator<(const person & lhs, const person & rhs) {
+  return tie_members(lhs) < tie_members(rhs);
+}
+{% endhighlight %}
+
+
+# Unpacking return values
+
+An `lvalue` `std::tie` expression can be used to unpack and assign to variables
+the result of functions returning `std::pair` or `std::tuple`. For this usage
+there is an `std::ignore` to mark the positions to be ignored.
+
+{% highlight c++ linenos %}
+bool was_inserted;
+std::tie(std::ignore, was_inserted) = some_set.insert(some_value);
+{% endhighlight %}
+
+# References
+
+- [Tie][tie]
+- [Tuple comparison][tuple-compare]
+
+[tie]: http://en.cppreference.com/w/cpp/utility/tuple/tie
+[tuple-compare]: http://en.cppreference.com/w/cpp/utility/tuple/operator_cmp
+
