@@ -74,16 +74,15 @@ guarantees that the hash for a value is identical on different systems.
 
 The first thing to remember is that the default container should be
 `std::vector`. If data is available upfront, for a simple sorted vector the
-cost of each lookup is `O(log(n))`.The unordered containers were designed for
-special cases where:
-- the data is not all available upfront
-- the lookup is usually `O(1)`, but because of the memory jumps to reach the
-  nodes the constant is not small.
-- the lookup could degrade to `O(N)`.
+cost of each lookup is `O(log(n))`, but locality of data means that the
+constant is small.
 
-If data is not available upfront then one could use the [boost
-functions][boost-hash] to combine hashes, assuming it's not for scenarios where
-an attacker can exploit it for DOS attacks.
+The unordered containers were designed for special cases. For example where the
+data is not all available upfront. The lookup is usually `O(1)`, but because of
+the memory jumps to reach the nodes the constant is not small, and the lookup
+could degrade to `O(N)`. If data is not available upfront then one could use
+the [boost functions][boost-hash] to combine hashes, assuming it's not for
+scenarios where an attacker can exploit it for DOS attacks.
 
 An alternative is to use a key for which a hash is already defined (e.g.
 built-in type or `std::string`). My guess is that most of the users of
