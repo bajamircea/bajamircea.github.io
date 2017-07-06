@@ -1,0 +1,142 @@
+---
+layout: presentation
+title: C++ concepts basics
+---
+
+Mircea Baja @ ACCU Oxford - Lightning Talks - 18th July 2017
+
+# C++ concepts basics
+
+C++ concepts (N4647): cover the basics and show how they relate to templates
+(the "peel off onion layers" technique).
+
+---
+
+# Simple generic function
+
+```cpp
+template<typename T>
+const T & min(cons T & a, const T & b) {
+  // implementation here
+}
+```
+
+--
+```cpp
+if (a < b) return a; else return b;  // 1
+if (a <= b) return a; else return b; // 2
+if (a > b) return b; else return a;  // 3
+if (b < a) return b; else return a;  // 4
+```
+---
+
+# Concept definition
+
+```cpp
+template<typename T>
+concept bool StrictlyTotallyOrdered() {
+  return EqualityComparable<T>() &&
+    requires (const T a, const T b) {
+      { a < b } -> Boolean;
+      { a > b } -> Boolean;
+      { a <= b } -> Boolean;
+      { a >= b } -> Boolean;
+    };
+}
+```
+
+--
+
+requires above is a requires-expression
+
+
+---
+
+# Usage
+
+```cpp
+const StrictlyTotallyOrdered & min(const StrictTotallyOrdered & a,
+    const StrictTotallyOrdered & b) {
+  if (b < a) return b; else return a;
+}
+```
+
+--
+
+```cpp
+template<StrictlyTotallyOrdered T>
+const T & min(const T & a, T & b) {
+  if (b < a) return b; else return a;
+}
+```
+
+--
+
+```cpp
+template<typename T>
+  requires StrictlyTotallyOrdered<T>()
+const T & min(const T & a, T & b) {
+  if (b < a) return b; else return a;
+}
+```
+
+requires above is a requires-clause
+
+---
+
+# Constraints
+
+
+```cpp
+requires(const B b1, const B b2) {
+  bool(b1); // expression constraint
+  { !b1 } -> bool; // implicit conversion
+  { b1 && b2 } -> Same<bool>; // argument deduction
+}
+```
+
+--
+
+```cpp
+void fn(Same<bool> x); // invent
+f(b1 && b2); // check if it compiles
+```
+
+--
+
+```cpp
+template<Same<bool> T>
+void fn(T x);
+```
+
+--
+
+```cpp
+template<typename T>
+  requires Same<T, bool>
+void fn(T x);
+```
+
+
+---
+
+# References
+
+Concepts overview (Bjarne Stroustrup)
+
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0557r0.pdf
+
+Concepts proposal wording (Andrew Sutton)
+
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4674.pdf
+
+Ranges TS (Eric Niebler, Casey Carter)
+
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4671.pdf
+
+Elements of Programming (Alexander A. Stepanov and Paul McJones)
+
+---
+
+# Questions?
+
