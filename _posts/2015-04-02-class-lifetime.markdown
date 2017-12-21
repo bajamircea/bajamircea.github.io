@@ -29,7 +29,7 @@ void some_fn()
   // even more code here
   // x and y are destructed when we exit this block
   // y is destructed first, then x
-};
+}
 {% endhighlight %}
 
 Say we have a `SomeClass` derived from a `Base` class, with two member
@@ -85,7 +85,7 @@ SomeClass::SomeClass(int i, int j, int k) :
   Base{ i, j }
 {
   // constructor body
-};
+}
 {% endhighlight %}
 
 At some point, after the base class is constructed, the pointer to the virtual
@@ -108,7 +108,7 @@ SomeClass::SomeClass(int i, int j, int k) :
   b{}
 {
   // constructor body
-};
+}
 {% endhighlight %}
 
 The dotted arrows indicate what happens if an exception is thrown when

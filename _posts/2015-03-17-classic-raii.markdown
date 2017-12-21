@@ -111,9 +111,8 @@ No real issues, more like things to pay attention to:
   option is to delete them to ensure that destructor does not try to release
   twice the same resource.
 
-Note: I used std::unique_ptr as a buffer to have a comparable solution that
-allocates on the heap like the C example, without initializing with `0` like
-`std::vector` would.
+Note: Strictly speaking the std::vector would initialize to `0` which is
+additional work comparing with just allocating memory like the C example.
 
 ## Full code
 
@@ -208,22 +207,22 @@ void copy_file();
 #include "application.h"
 #include "file.h"
 #include <iostream>
-#include <memory>
+#include <vector>
 
 void copy_file()
 {
   file src{ "src.bin", "rb" };
   file dst{ "dst.bin", "wb" };
   constexpr size_t buffer_size{ 1024 };
-  auto buffer = std::make_unique<char[]>(buffer_size);
+  std::vector<char> buffer(buffer_size);
 
   do
   {
-    size_t read_count = src.read(buffer.get(), buffer_size);
+    size_t read_count = src.read(buffer.data(), buffer_size);
 
     if (read_count > 0)
     {
-      dst.write(buffer.get(), read_count);
+      dst.write(buffer.data(), read_count);
       std::cout << '.';
     }
   } while ( ! src.is_eof());
