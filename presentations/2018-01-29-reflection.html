@@ -12,16 +12,11 @@ class: large-points
 
 # Executive summary
 
+- Reflective metaprogramming = generate code based on code
 - We need better reflective metaprogramming facilities in C++
 - There are proposals to address it
 - It's a complex issue
 - Standardisation will likely happen after 2020
-
-
---
-
-- If you think 2020 is far, spare a though for the pioneers that dreamt it late
-  90s, early 2000.
 
 ---
 
@@ -369,9 +364,7 @@ class: large-points
 
 ---
 
-# Reflective metaprogramming
-
-Facilities to generate code based on existing code
+# Use cases for better facilities
 
 ---
 class: large-points
@@ -379,7 +372,7 @@ class: large-points
 # Use case: common operators
 
 - ==, < implemented lexicographically
-- implement !=, <=, >= etc. in terms of the above
+- implement !=, <=, >=, >  in terms of the above
 - std::hash
 
 
@@ -403,20 +396,29 @@ class: large-points
 - problems:
 - getting names of the parent context
 - getting the current function as input for reflection
+- getting source code line of the original constuct
 
 ---
 
 # Use case: enum to/from string
 
 ```cpp
-enum class foo_bar{ foo, bar };
+enum class foo_bar
+{
+  foo,
+  bar
+};
+
 auto to_string(foo_bar x) noexcept
 {
   switch (x)
   {
-  case foo_bar::foo: return "foo";
-  case foo_bar::bar: return "bar";
-  default: std::terminate();
+  case foo_bar::foo:
+    return "foo";
+  case foo_bar::bar:
+    return "bar";
+  default:
+    std::terminate();
   }
 }
 ```
@@ -443,6 +445,12 @@ class: large-points
 
 - currently they require macros
 
+- low hanging fruit from the code generation component of the problem
+
+---
+
+# Theory
+
 ---
 class: large-points
 
@@ -455,6 +463,18 @@ class: large-points
 - reflect on a source construct
 - analyse
 - generate something to execute
+
+the steps above for equlity or from_json:
+- get a reflection of the class
+- get a reflection of each member
+- maybe check the type of the member
+- generate a code snippet
+
+---
+
+# Domains and operators
+
+![Image](../assets/2018-01-29-reflection/operator_domains.png)
 
 ---
 
@@ -482,47 +502,19 @@ For C++ we want static reflection metaprogramming
 - code generation is based on a description of the source construct
 - it all happens at compile time
 
-
----
-
-# Domains and operators
-
-![Image](../assets/2018-01-29-reflection/operator_domains.png)
-
----
-
-Encoding reflection values:
+Important is the applicable domains, operators, and encoding reflection values:
 - as types: values have different types
 - as objects: values have same type
 
 ---
 
-for...
-(heterogenous constexpr for loop)
-
-dealing with strings at compile time
+# Proposals
 
 ---
 
-- introspection
+# P0194, P0385
+by Matus Chochlik, Axel Naumann, David Sankel
 
----
-reflexpr
-P0194R3 - 
-also P0578R0 
-@ 
-Jackie Kay: Practical (?) Applications of Reflection @ C++Now 2017
-https://www.youtube.com/watch?v=JrOJ012XxNg
-
-
-operator$/cpp3k
-P0590R0
-
-P0633R0
----
-Andrew Sutton's references:
-
-P0194, P0385 by Matus Chochlik, Axel Naumann, David Sankel
 Type-based reflection with template metaprogramming
 
 - uses 'reflexpr' as the reflection operator
@@ -541,7 +533,9 @@ Disadvantages:
 
 ---
 
-P0590, P0589, P0712 by Andrew Sutton, Herb Sutter
+# P0590, P0589, P0712
+by Andrew Sutton, Herb Sutter
+
 Type-based reflection with heterogenous containers
 
 - uses $ as the reflection operator
@@ -558,38 +552,151 @@ Type-based reflection with heterogenous containers
 
 - 'idexpr' useful when you build ids.
 
-P0633 by Daveed Vandevoorde, Louis Dionne
-Additional ideas
-
 ---
 
-Heterogenous loop
+# P0633
+by Daveed Vandevoorde, Louis Dionne
 
-aka. unrolled loop, loop expansion
-
-for... (auto x : $s.member_variables())
-{
-  std::cout << x.name();
-}
-
-expands to
-
-auto && tup = $s.member_variables();
-{ auto x = std::get<0>(tup); cout << x.name(); }
-{ auto x = std::get<1>(tup); cout << x.name(); }
-
----
+Good summary and additional ideas
 
 Ongoing work: using values to encode reflection
 
 ---
 
-# References
+for...
+(heterogenous constexpr for loop)
 
-CppCon 2017: Andrew Sutton "Reflection"
 
+Heterogenous loop
+
+aka. unrolled loop, loop expansion
+
+```cpp
+for... (auto x : $s.member_variables())
+{
+  std::cout << x.name();
+}
+```
+
+expands to
+
+```cpp
+auto && tup = $s.member_variables();
+{ auto x = std::get<0>(tup); cout << x.name(); }
+{ auto x = std::get<1>(tup); cout << x.name(); }
+```
+
+---
+
+std::const_vector
+
+---
+
+dealing with strings at compile time
+
+
+---
+- introspection
+
+
+---
+
+TODO
+message of hope:
+- it can be missused
+- but it cam be used for good as well
+
+---
+
+# References - 1
+
+Andrew Sutton<br/>
+CppCon 2017: Reflection<br/>
 https://www.youtube.com/watch?v=N2G-Frv1z5Q
 
+Andrew Sutton<br/>
+CppCon 2017: Meta<br/>
+https://www.youtube.com/watch?v=29IqPeKL_QY
+
+Herb Sutter<br/>
+CppCon 2017: Meta: Thoughts on generative C++<br/>
+https://www.youtube.com/watch?v=4AfRAVcThyA
+
+Herb Sutter<br/>
+Thoughts on Metaclasses - Keynote [ACCU 2017]<br/>
+https://www.youtube.com/watch?v=6nsyX37nsRs
+
+Matúš Chochlík, Axel Naumann, David Sankel<br/>
+Static Reflection in a Nutshell<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0578r1.html
+
+---
+
+# References - 2
+
+Matúš Chochlík, Axel Naumann, David Sankel<br/>
+Static reflection - Rationale, design and evolution<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0385r2.pdf
+
+Matúš Chochlík, Axel Naumann, David Sankel<br/>
+Static reflection<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0194r4.html
+
+Matúš Chochlík, Axel Naumann, David Sankel<br/>
+Static reflection of functions<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0670r1.html
+
+Andrew Sutton, Herb Sutter<br/>
+A design for static reflection<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0590r0.pdf
+
+Andrew Sutton<br/>
+Tuple-based for loops<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0589r0.pdf
+
+---
+
+# References - 3
+
+Andrew Sutton, Herb Sutter<br/>
+Implementing language support for compile-time metaprogramming<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0712r0.pdf
+
+Herb Sutter<br/>
+Metaclasses : Generative C++<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0707r2.pdf
+
+Daveed Vandevoorde, Louis Dionne<br/>
+Exploring the design space of metaprogramming and reflection<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0633r0.pdf
+
+Daveed Vandevoorde<br/>
+Reflect Through Values Instead of Types<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0598r0.html
+
+Daveed Vandevoorde<br/>
+Reflective Metaprogramming in C++ <b>2003</b><br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2003/n1471.pdf
+
+---
+
+# References - 4
+
+Mike Spertus<br/>
+Use Cases for Compile-Time Reflection<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3492.pdf
+
+Jeff Snyder, Chandler Carruth<br/>
+Call for Compile-Time Reflection Proposals<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3814.html
+
+Daveed Vandevoorde<br/>
+std::constexpr_vector<br/>
+http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0597r0.html
+
+Andrei Alexandrescu<br/>
+Fastware - ACCU 2016<br/>
+https://www.youtube.com/watch?v=AxnotgLql0k
 
 ---
 
