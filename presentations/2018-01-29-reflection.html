@@ -102,13 +102,11 @@ Physical layout:
 - dog struct is defined in dog.h
 - and serialization in dog_from_json.h and cpp.
 
-
 ---
 
 # Memory layout
 
 ![Image](../assets/2018-01-29-reflection/dog.png)
-
 
 ---
 
@@ -190,7 +188,7 @@ bool operator<(const dog & left, const dog & right) noexcept
     return left.name < right.name;
   }
   return left.breed < right.breed;
-} // disclaimer: neither option is great, can do better
+}
 ```
 
 ---
@@ -218,6 +216,16 @@ bool operator>=(const dog & left, const dog & right) noexcept
   return !(left < right);
 }
 ```
+
+---
+class: large-points
+
+# Note
+
+- implementation on previous slide is not optimal (reason: unnecesarry multiple traversal)
+- pure historical reasons for the compiler not implementing comparison operators by default
+- note that equality and comparison do not have the same cost
+- spaceship operator '<=>' proposal
 
 ---
 
@@ -292,18 +300,6 @@ Padding might be different.
 
 ![Image](../assets/2018-01-29-reflection/padding.png)
 
----
-
-# Historical side note
-
-The padding is the historical reason why the compiler does not automatically
-generate order operators in C (and inherited in C++).
-
-Copy was implemented as memcopy and comparing using memcmp was not right given the padding.
-
-Instead of memberwise comparing we got no automatically generated comparison.
-
-(source Alex Stepanov)
 
 ---
 
@@ -322,7 +318,8 @@ struct struct_layout<T0>
 template<typename T0, typename T1>
 struct struct_layout<T0, T1>
 {
-  T0 m0; T1 m1;
+  T0 m0;
+  T1 m1;
 };
 
 // and so on up to the max number of members you support
@@ -589,7 +586,7 @@ Type-based reflection with template metaprogramming
 - uses 'reflexpr' as the reflection operator
 - yields a new type for each reflection
 - properties are static members of the class
-- projection operators are type traits or 'unreflexpr' for more complex cases
+- code generation operators are type traits or 'unreflexpr' for more complex cases
 
 Advantages:
 - powerful
@@ -602,24 +599,56 @@ Disadvantages:
 
 ---
 
+# P0385 sample
+
+
+```cpp
+template<typename T>
+struct compare_data_members
+{
+  const T & a;
+  const T & b;
+  bool & result;
+
+  template<reflect::Object MetaDataMember>
+  void operator ()(MetaDataMember) const
+  {
+    auto mem_ptr = reflect::get_pointer_v<MetaDataMember>;
+    result &= a.*mem_ptr == b.*mem_ptr;
+  }
+};
+
+template<typename T>
+bool generic_equal(const T & a, const T & b)
+{
+  using metaT = $reflect(T);
+  bool result = true;
+
+  reflect::for_each<reflect::get_data_members_t<metaT>>(
+    compare_data_members<T>{a, b, result});
+
+  return result;
+}
+```
+
+---
+
 # P0590, P0589, P0712
 by Andrew Sutton, Herb Sutter
 
 Type-based reflection with heterogenous containers
 
 - uses $ as the reflection operator
-- $ applies to: variables, types, namespaces
+- $ applies to: variables, types, namespaces, functions
 - the return type depends on what was reflected on (it's a template
   specialization, but you would use auto all the time anyway)
 - properties are static constexpr members
-- projection operators as 'typename', 'namespace', 'idexpr'
+- code generation operators as 'typename', 'namespace', 'idexpr'
 
 - requires more compiler intrinsics
 - because they are template specialization properties are not instantiated
   until called (sometimes good, sometimes bad)
 - getting class members returns a heterogenous tuple-like container
-
-- 'idexpr' useful when you build ids
 
 Disadvantages:
 - still generates a lot of types: resource intensive compiler and complex usage style
@@ -653,23 +682,86 @@ auto && tup = $s.member_variables();
 
 - constexpr vs immediate
 
+- the ability to name
+
+---
+
+- injection statements
+
+---
+
+# Identifier generation
+
+```cpp
+void foo() { ...  }
+
+void foo_bar() { ... }
+
+void g()
+{
+  auto x = $foo;
+  return declname(x "_bar")();
+}
+```
+
 ---
 
 # Other plumbing
 
 - std::const_vector
 - handling strings at compile time
+- diagnostic
+  - custom error messages
+  - print generated constructs
 
 ---
-- introspection
 
+# P0707
+by Herb Sutter
+
+Advantages:
+- ability to create constructs that currently require new language features
+  like 'enum class'
 
 ---
 
-TODO
-message of hope:
+# Observations
+
+---
+
+# Relation to template metaprogramming
+
+- not clear if reflective metaprograming has the potential to replace most/all usage of template metaprogramming
+
+---
+
+# Relation to D lang introspection
+
+- what Andrei Alexandrescu called the need for compile time introspection facilities, criticising the concepts spec for C++
+- similarly Andrei Alexandrescu demonstrates the ability to develop new
+  features like bit-fields using existing language constructs rather than
+  having to add new language extensions
+  - this is one of the advantages of meta-classes
+
+---
+
+# Similaries to template instantiation
+
+Especially when we get to code generation:
+
+- at what time the meta data is captured, at what point evaluated?
+- with particular cases where the entity is not yet complete
+  - e.g. inside member function of a class
+  - or inside of a function ... what is the return type?
+  - or inside a template function
+
+---
+
+# Additional programming idioms
+
 - it can be missused
-- but it cam be used for good as well
+- but it can be used for good as well:  high return feature to eliminate boilerplate and most template programming
+- tooling improvements required
 
 ---
 
