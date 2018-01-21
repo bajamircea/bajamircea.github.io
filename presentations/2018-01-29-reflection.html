@@ -190,7 +190,7 @@ bool operator<(const dog & left, const dog & right) noexcept
     return left.name < right.name;
   }
   return left.breed < right.breed;
-}
+} // disclaimer: neither option is great, can do better
 ```
 
 ---
@@ -363,6 +363,15 @@ class: large-points
 - can't get names
 
 ---
+class: large-points
+
+# Other metaprogramming options
+
+- pre-processor
+- constexpr functions
+- other languages/tools outside C++ (e.g. MIDL compiler etc.)
+
+---
 
 # Use cases for better facilities
 
@@ -472,12 +481,6 @@ the steps above for equlity or from_json:
 
 ---
 
-# Domains and operators
-
-![Image](../assets/2018-01-29-reflection/operator_domains.png)
-
----
-
 # Static vs dynamic reflection
 
 A lot of languages support dynamic reflection:
@@ -502,13 +505,79 @@ For C++ we want static reflection metaprogramming
 - code generation is based on a description of the source construct
 - it all happens at compile time
 
-Important is the applicable domains, operators, and encoding reflection values:
-- as types: values have different types
-- as objects: values have same type
+---
+
+# Domains and operators
+
+![Image](../assets/2018-01-29-reflection/operator_domains.png)
+
+---
+
+# Input domain
+
+Yes:
+- class
+  - data members
+  - member functions
+  - member types
+- enumerators: e.g. serialization for enums
+- functions (overloads?)
+
+Maybe:
+- variables
+- class templates and function templates
+- attributes
+
+Probably not:
+- expressions
+
+---
+
+# Reflection result
+
+Options:
+- unique type for each reflection
+- objects, but still of unique type for each reflection
+- objects of a single type e.g. std::meta::info
+
+Metadata:
+- name (e.g. name of a class)
+- list of members
+- arguments of a function
+- etc.
+
+---
+
+# Code generation
+
+Options:
+- existing template metraprogramming
+- raw string (powerful, but could be opaque)
+- token sequence (e.g. -> { ...code here...})
+- abstract syntax tree creation API
+- metaclasses (associate a name as a shorthand for code generation)
 
 ---
 
 # Proposals
+
+---
+
+# Proposals stack
+
+Upper floor:
+- P0707 Metaclasses by Herb Sutter
+
+Ground floor:
+- P0194 by Matus Chochlik, Axel Naumann, David Sankel
+- P0590 by Andrew Sutton, Herb Sutter
+
+Plumbing:
+- constexpr_vector, heterogenous for loop
+
+---
+
+# Ground floor
 
 ---
 
@@ -518,18 +587,18 @@ by Matus Chochlik, Axel Naumann, David Sankel
 Type-based reflection with template metaprogramming
 
 - uses 'reflexpr' as the reflection operator
-- yields a new type describing the source construct
+- yields a new type for each reflection
 - properties are static members of the class
 - projection operators are type traits or 'unreflexpr' for more complex cases
 
 Advantages:
 - powerful
-- few compiler intrinsics
+- few additions to language, few compiler intrinsics
 
 Disadvantages:
 - but has downside of using templates machinery to perform
-  computation
-- a lot of classes generated: low compile-time performance
+  computation (complex style compared with plain C++ programming)
+- a lot of classes generated: low compile time performance
 
 ---
 
@@ -550,26 +619,20 @@ Type-based reflection with heterogenous containers
   until called (sometimes good, sometimes bad)
 - getting class members returns a heterogenous tuple-like container
 
-- 'idexpr' useful when you build ids.
+- 'idexpr' useful when you build ids
+
+Disadvantages:
+- still generates a lot of types: resource intensive compiler and complex usage style
 
 ---
 
-# P0633
-by Daveed Vandevoorde, Louis Dionne
-
-Good summary and additional ideas
-
-Ongoing work: using values to encode reflection
+# Plumbing
 
 ---
 
-for...
-(heterogenous constexpr for loop)
+# Heterogenous compile time 'for' loop
 
-
-Heterogenous loop
-
-aka. unrolled loop, loop expansion
+aka. unrolled loop, loop expansion, tuple-based for loop
 
 ```cpp
 for... (auto x : $s.member_variables())
@@ -588,12 +651,14 @@ auto && tup = $s.member_variables();
 
 ---
 
-std::const_vector
+- constexpr vs immediate
 
 ---
 
-dealing with strings at compile time
+# Other plumbing
 
+- std::const_vector
+- handling strings at compile time
 
 ---
 - introspection
