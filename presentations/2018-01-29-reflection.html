@@ -63,17 +63,17 @@ class: large-points
 
 # Issues with this traditional solution
 
-- reference semantings leading to
-- difficulty of local reasoning and
-- complex memory layout leading to
-- degraded performance
-- getter and setters leading to
-- combinatoric interface
-- init method leading to
-- multi-step initialization
-- multiple responsabilities leading to
-- maintenability and
-- testing dificulties
+- Reference semantings leading to
+- Difficulty of local reasoning and
+- Complex memory layout leading to
+- Degraded performance
+- Getter and setters leading to
+- Combinatoric interface
+- Init method leading to
+- Multi-step initialization
+- Multiple responsabilities leading to
+- Maintenability and
+- Testing dificulties
 
 ---
 
@@ -100,7 +100,7 @@ dog dog_from_json(const Json & doc);
 
 Physical layout:
 - dog struct is defined in dog.h
-- and serialization in dog_from_json.h and cpp.
+- Serialization in dog_from_json.h and cpp
 
 ---
 
@@ -222,10 +222,16 @@ class: large-points
 
 # Note
 
-- implementation on previous slide is not optimal (reason: unnecesarry multiple traversal)
-- pure historical reasons for the compiler not implementing comparison operators by default
-- note that equality and comparison do not have the same cost
-- spaceship operator '<=>' proposal
+- Implementation on previous slide is not optimal (reason: unnecesarry multiple traversal)
+- Pure historical reasons for the compiler not implementing comparison operators by default
+- Note that equality and comparison do not have the same cost
+- Spaceship operator '<=>' proposal
+
+---
+
+# Padding
+
+![Image](../assets/2018-01-29-reflection/padding.png)
 
 ---
 
@@ -296,13 +302,6 @@ Padding might be different.
 
 ---
 
-# Padding
-
-![Image](../assets/2018-01-29-reflection/padding.png)
-
-
----
-
 # Struct layout
 
 ```cpp
@@ -334,39 +333,39 @@ class: large-points
 
 # Issues with current metaprogramming in C++
 
-- it looks clever, but it is convoluted
-- relies on the historical accident that the templates machinery is Turing
+- It looks clever, but it is convoluted
+- Relies on the historical accident that the templates machinery is Turing
   complete
 
 
-- conditionals ('if') use oveloading/template specialization
-- iterations ('for') use use recursion (e.g. recursive inheritance)
-- store state as parametrized types and constants
-- instantiate template to trigger the computation
+- Conditionals ('if') use oveloading/template specialization
+- Iterations ('for') use use recursion (e.g. recursive inheritance)
+- Store state as parametrized types and constants
+- Instantiate template to trigger the computation
 
 ---
 class: large-points
 
 # Issues with current reflection support in C++
 
-- is very limited, relies on overloading, template specialization, concepts
+- Is very limited, relies on overloading, template specialization, concepts
 
 
-- can query for types e.g. std::is_pointer
-- can do simple type transformations e.g. std::make_unsigned
+- Can query for types e.g. std::is_pointer
+- Can do simple type transformations e.g. std::make_unsigned
 
 
-- can't enumerate members
-- can't get names
+- Can't enumerate members
+- Can't get names
 
 ---
 class: large-points
 
 # Other metaprogramming options
 
-- pre-processor
+- Pre-processor
 - constexpr functions
-- other languages/tools outside C++ (e.g. MIDL compiler etc.)
+- Other languages/tools outside C++ (e.g. MIDL compiler etc.)
 
 ---
 
@@ -382,11 +381,11 @@ class: large-points
 - std::hash
 
 
-- problems:
-- can you do all in one go or piecemeal?
-- hash might be in a different namespace (the need to specify where code
+## Problems
+- Can be do all in one go or piecemeal?
+- Some functions are, some function are not members of the class
+- std::hash might be in a different namespace (the need to specify where code
   generation takes place)
-- some functions are, some function are not members of the class
 
 ---
 class: large-points
@@ -399,10 +398,10 @@ class: large-points
 - ASSERT_EQ macro in tests
 
 
-- problems:
-- getting names of the parent context
-- getting the current function as input for reflection
-- getting source code line of the original constuct
+## Problems
+- Getting the current function as input for reflection
+- Getting names of the parent context
+- Getting source code line of the original constuct
 
 ---
 
@@ -439,10 +438,9 @@ class: large-points
 - member functions wrapping (e.g. with logging, locking, pimpl)
 - stand alone function wrapping (e.g. variations of error handling)
 
-
-- problems:
-- which file (even language) is the code generated in
-- dealing with templates (class or function)
+## Problems
+- Which file (even language) is the code generated in
+- Dealing with templates (class or function)
 
 ---
 class: large-points
@@ -583,39 +581,30 @@ by Matus Chochlik, Axel Naumann, David Sankel
 
 Type-based reflection with template metaprogramming
 
-- uses 'reflexpr' as the reflection operator
-- yields a new type for each reflection
-- properties are static members of the class
-- code generation operators are type traits or 'unreflexpr' for more complex cases
+- Uses 'reflexpr' as the reflection operator
+- Yields a new type for each reflection
+- Properties are static members of the class
+- Code generation operators are type traits or 'unreflexpr' for more complex cases
 
 Advantages:
-- powerful
-- few additions to language, few compiler intrinsics
+- Powerful
+- Few additions to language, few compiler intrinsics
 
 Disadvantages:
-- but has downside of using templates machinery to perform
+- But has downside of using templates machinery to perform
   computation (complex style compared with plain C++ programming)
-- a lot of classes generated: low compile time performance
+- A lot of classes generated: low compile time performance
 
 ---
 
-# P0385 sample
+# P0385 sample (part 1)
 
 
 ```cpp
 template<typename T>
 struct compare_data_members
 {
-  const T & a;
-  const T & b;
-  bool & result;
-
-  template<reflect::Object MetaDataMember>
-  void operator ()(MetaDataMember) const
-  {
-    auto mem_ptr = reflect::get_pointer_v<MetaDataMember>;
-    result &= a.*mem_ptr == b.*mem_ptr;
-  }
+  ...
 };
 
 template<typename T>
@@ -633,25 +622,47 @@ bool generic_equal(const T & a, const T & b)
 
 ---
 
+# P0385 sample (part 2)
+
+
+```cpp
+template<typename T>
+struct compare_data_members
+{
+  const T & a;
+  const T & b;
+  bool & result;
+
+  template<reflect::Object MetaDataMember>
+  void operator ()(MetaDataMember) const
+  {
+    auto mem_ptr = reflect::get_pointer_v<MetaDataMember>;
+    result &= a.*mem_ptr == b.*mem_ptr;
+  }
+};
+```
+
+---
+
 # P0590, P0589, P0712
 by Andrew Sutton, Herb Sutter
 
 Type-based reflection with heterogenous containers
 
-- uses $ as the reflection operator
+- Uses $ as the reflection operator
 - $ applies to: variables, types, namespaces, functions
-- the return type depends on what was reflected on (it's a template
+- The return type depends on what was reflected on (it's a template
   specialization, but you would use auto all the time anyway)
-- properties are static constexpr members
-- code generation operators as 'typename', 'namespace', 'idexpr'
+- Properties are static constexpr members
+- Code generation operators as 'typename', 'namespace', 'idexpr'
 
-- requires more compiler intrinsics
-- because they are template specialization properties are not instantiated
+- Requires more compiler intrinsics
+- Because they are template specialization properties are not instantiated
   until called (sometimes good, sometimes bad)
-- getting class members returns a heterogenous tuple-like container
+- Getting class members returns a heterogenous tuple-like container
 
 Disadvantages:
-- still generates a lot of types: resource intensive compiler and complex usage style
+- Still generates a lot of types: resource intensive compiler and complex usage style
 
 ---
 
@@ -680,7 +691,7 @@ auto && tup = $s.member_variables();
 
 ---
 
-- constexpr vs immediate
+# constexpr vs immediate
 
 - the ability to name
 
@@ -705,14 +716,14 @@ void g()
 ```
 
 ---
+class: large-points
 
 # Other plumbing
 
 - std::const_vector
-- handling strings at compile time
-- diagnostic
-  - custom error messages
-  - print generated constructs
+- Handling strings at compile time
+- Custom error messages (diagnostic)
+- Print generated constructs (diagnostic)
 
 ---
 
@@ -728,40 +739,43 @@ Advantages:
 # Observations
 
 ---
+class: large-points
 
 # Relation to template metaprogramming
 
-- not clear if reflective metaprograming has the potential to replace most/all usage of template metaprogramming
+- Reflective metaprograming has the potential to replace most/all usage of
+  template metaprogramming (but not clear to what degree)
 
 ---
+class: large-points
 
 # Relation to D lang introspection
 
-- what Andrei Alexandrescu called the need for compile time introspection facilities, criticising the concepts spec for C++
-- similarly Andrei Alexandrescu demonstrates the ability to develop new
+- What Andrei Alexandrescu called the need for compile time introspection
+  facilities, criticising the concepts spec for C++
+- Similarly Andrei Alexandrescu demonstrates the ability to develop new
   features like bit-fields using existing language constructs rather than
-  having to add new language extensions
-  - this is one of the advantages of meta-classes
+  having to add new language extensions (with metaclasses in particular)
 
 ---
+class: large-points
 
 # Similaries to template instantiation
 
-Especially when we get to code generation:
-
-- at what time the meta data is captured, at what point evaluated?
-- with particular cases where the entity is not yet complete
-  - e.g. inside member function of a class
-  - or inside of a function ... what is the return type?
-  - or inside a template function
+- Especially when we get to code generation at what time the metadata is
+  captured, at what point evaluated?
+- Entity is not yet complete inside member function of a class
+- Or inside of a function ... what is the return type if auto?
+- Or inside a template function
 
 ---
+class: large-points
 
-# Additional programming idioms
+# Famous last words
 
-- it can be missused
-- but it can be used for good as well:  high return feature to eliminate boilerplate and most template programming
-- tooling improvements required
+- It can be missused
+- But it can be used for good as well:  high return feature to eliminate boilerplate and most template programming
+- Tooling improvements required
 
 ---
 
