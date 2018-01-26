@@ -542,15 +542,15 @@ Metadata:
 - etc.
 
 ---
+class: large-points
 
-# Code generation
+# Code generation options
 
-Options:
 - existing template metraprogramming
 - raw string (powerful, but could be opaque)
 - token sequence (e.g. -> { ...code here...})
 - abstract syntax tree creation API
-- metaclasses (associate a name as a shorthand for code generation)
+- associate a name as a shorthand for code generation (e.g. metaclasses)
 
 ---
 
@@ -560,19 +560,19 @@ Options:
 
 # Proposals stack
 
-Upper floor:
+Upstairs:
 - P0707 Metaclasses by Herb Sutter
 
-Ground floor:
+Downstairs:
 - P0194 by Matus Chochlik, Axel Naumann, David Sankel
 - P0590 by Andrew Sutton, Herb Sutter
 
 Plumbing:
-- constexpr_vector, heterogenous for loop
+- A lot of plumbing required: e.g. constexpr_vector, heterogenous for loop
 
 ---
 
-# Ground floor
+# Downstairs
 
 ---
 
@@ -670,9 +670,23 @@ Disadvantages:
 
 ---
 
-# Heterogenous compile time 'for' loop
+# Reflection operator $
 
-aka. unrolled loop, loop expansion, tuple-based for loop
+```cpp
+void foo(int n) {
+  int x;
+  auto r1 = $int; // r1 has type meta::fundamental_type<X>
+  auto r2 = $foo; // r2 has type meta::function<X>
+  auto r3 = $n; // r3 has type meta::parameter<X>
+  auto r4 = $x; // r4 has type meta::variable<X>
+}
+```
+
+---
+
+# Heterogenous 'for' loop
+
+Aka. unrolled loop, loop expansion, tuple-based for loop
 
 ```cpp
 for... (auto x : $s.member_variables())
@@ -681,7 +695,8 @@ for... (auto x : $s.member_variables())
 }
 ```
 
-expands to
+--
+Expands to
 
 ```cpp
 auto && tup = $s.member_variables();
@@ -691,13 +706,88 @@ auto && tup = $s.member_variables();
 
 ---
 
+# Existing constexpr
+
+```cpp
+constexpr int one_bigger(int x)
+{
+  return ++x;
+}
+
+int some_array[one_bigger(6)];
+
+int main(int /*argc*/, char * argv[])
+{
+  std::cout << std::size(some_array) << '\n';
+
+  int argument = std::stoi(argv[1]);
+  int result = one_bigger(argument);
+  std::cout << result << '\n';
+}
+```
+
+---
+class: large-points
+
 # constexpr vs immediate
 
-- the ability to name
+- constexpr means 'it can be used at compile time'
+- constexpr does not mean 'it will be used at compile time'
 
 ---
 
-- injection statements
+# constexpr blocks
+
+```cpp
+constexpr
+{
+  // do some compile time programming here
+}
+```
+
+Can be placed in namespace, class, block scope.
+
+--
+
+Equivalent to:
+
+```cpp
+constexpr void __unnamed_fn()
+{
+  // compile time code here
+}
+constexpr int __unnamed_var = (__unnamed_fn(), 0);
+```
+
+---
+
+# Injection statement
+
+Can appear inside a constexpr block
+
+```cpp
+constexpr
+{
+  -> namespace { int f() { return 0; } }
+} // injection site is here
+```
+
+--
+Equivalent to:
+```cpp
+int f() { return 0; }
+```
+
+--
+
+Several options for the scope of the injection: namespace, class, block,
+expression.
+
+---
+
+# All together now
+
+TODO
 
 ---
 
@@ -727,7 +817,41 @@ class: large-points
 
 ---
 
-# P0707
+# Named constexpr blocks
+
+```cpp
+constexpr void make_links()
+{
+  -> class C
+  {
+    C * next;
+    C * prev;
+  }
+}
+
+struct list
+{
+  constexpr { make_links(); }
+};
+```
+
+--
+Equivalent to:
+```cpp
+struct list
+{
+  list * next;
+  list * prev;
+};
+```
+
+---
+
+# Upstairs
+
+---
+
+# P0707 Metaclasses
 by Herb Sutter
 
 Advantages:
