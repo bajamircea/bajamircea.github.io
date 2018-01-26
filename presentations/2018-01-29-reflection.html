@@ -787,7 +787,19 @@ expression.
 
 # All together now
 
-TODO
+```cpp
+template<Enum E>
+const char * to_string(E value)
+{
+  switch(value)
+  constexpr {
+    for... (auto e : $E.enumerators())
+    {
+      -> { case e.value(): return e.name(); }
+    }
+  }
+}
+```
 
 ---
 
@@ -851,12 +863,98 @@ struct list
 
 ---
 
+# Metaclass sample (part 1)
+
+```cpp
+interface Shape
+{
+  int area() const;
+  void scale_by(double factor);
+};
+```
+
+---
+
+# Metaclass sample (part 2)
+
+```cpp
+$class interface
+{
+  constexpr {
+    compiler.require($interface.variables().empty(),
+      "interfaces may not contain data");
+    for (auto f : $interface.functions())
+    {
+      compiler.require(!f.is_copy() && !f.is_move(),
+         "interfaces may not copy or move; consider a "
+         " virtual clone() instead");
+      if (!f.has_access()) f.make_public();
+      compiler.require(f.is_public(),
+        "interface functions must be public");
+      f.make_pure_virtual();
+    }
+  }
+  virtual ~interface() noexcept { }
+};
+```
+
+---
+class: large-points
+
+# Alternatives: Source to destination class
+
+- change in place
+- two types
+- two types (source is hidden)
+
+
+---
+
+# Metaclass sample (part 3)
+
+```cpp
+$class ordered
+{
+  constexpr {
+    if (! requires(ordered a) { a == a; })
+    -> {
+      friend bool operator == (const ordered& a, const ordered& b) {
+        constexpr {
+          for (auto o : ordered.variables())
+          -> { if (!(a.o.name$ == b.(o.name)$)) return false; }
+        }
+        return true;
+      }
+    }
+  //...
+  }
+};
+```
+
+---
+
+# .is and .as
+
+```cpp
+struct legacy_point { int x; int y; }; // in C++17 this is not comparable...
+set<legacy_point> s; // and so this is an error
+using ordered_point = $legacy_point.as(ordered); // ... but this is ordered
+set<ordered_point> s; // so this is OK
+```
+
+---
+
 # P0707 Metaclasses
 by Herb Sutter
 
 Advantages:
 - ability to create constructs that currently require new language features
   like 'enum class'
+- $T.as(M) is very powerful
+- composes (e.g. using inheritance syntax
+
+Maybe disadvantage:
+- a bit too class oriented (e.g. friend trick)
 
 ---
 
