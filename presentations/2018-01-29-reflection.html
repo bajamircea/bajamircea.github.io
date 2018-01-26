@@ -910,29 +910,6 @@ class: large-points
 
 ---
 
-# Metaclass sample (part 3)
-
-```cpp
-$class ordered
-{
-  constexpr {
-    if (! requires(ordered a) { a == a; })
-    -> {
-      friend bool operator == (const ordered& a, const ordered& b) {
-        constexpr {
-          for (auto o : ordered.variables())
-          -> { if (!(a.o.name$ == b.(o.name)$)) return false; }
-        }
-        return true;
-      }
-    }
-  //...
-  }
-};
-```
-
----
-
 # .is and .as
 
 ```cpp
@@ -956,6 +933,40 @@ Advantages:
 Maybe disadvantage:
 - a bit too class oriented (e.g. friend trick)
 
+---
+
+# Metaclass sample (part 3)
+
+```cpp
+$class ordered
+{
+  constexpr {
+    if (! requires(ordered a) { a == a; })
+    -> {
+      friend bool operator == (const ordered& a, const ordered& b) {
+        constexpr {
+          for (auto o : ordered.variables())
+          -> { if (!(a.o.name$ == b.(o.name)$)) return false; }
+        }
+        return true;
+      }
+    }
+  //...
+  }
+};
+```
+
+---
+
+# Metaclass sample (part 4)
+
+```cpp
+ordered dog
+{
+  std::string name;
+  std::string breed;
+};
+```
 ---
 
 # Observations
