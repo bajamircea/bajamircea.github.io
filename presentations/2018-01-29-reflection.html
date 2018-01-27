@@ -866,18 +866,6 @@ struct list
 # Metaclass sample (part 1)
 
 ```cpp
-interface Shape
-{
-  int area() const;
-  void scale_by(double factor);
-};
-```
-
----
-
-# Metaclass sample (part 2)
-
-```cpp
 $class interface
 {
   constexpr {
@@ -899,6 +887,18 @@ $class interface
 ```
 
 ---
+
+# Metaclass sample (part 2)
+
+```cpp
+interface Shape
+{
+  int area() const;
+  void scale_by(double factor);
+};
+```
+
+---
 class: large-points
 
 # Alternatives: Source to destination class
@@ -914,7 +914,9 @@ class: large-points
 
 ```cpp
 struct legacy_point { int x; int y; }; // in C++17 this is not comparable...
+
 set<legacy_point> s; // and so this is an error
+
 using ordered_point = $legacy_point.as(ordered); // ... but this is ordered
 set<ordered_point> s; // so this is OK
 ```
