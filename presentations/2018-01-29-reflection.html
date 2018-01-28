@@ -67,7 +67,7 @@ class: large-points
 
 # Issues with this traditional solution
 
-- Reference semantings leading to
+- Reference semantics leading to
 - Difficulty of local reasoning and
 - Complex memory layout leading to
 - Degraded performance
@@ -75,9 +75,9 @@ class: large-points
 - Combinatoric interface
 - Init method leading to
 - Multi-step initialization
-- Multiple responsabilities leading to
-- Maintenability and
-- Testing dificulties
+- Multiple responsibilities leading to
+- Maintainability and
+- Testing difficulties
 
 ---
 
@@ -226,7 +226,7 @@ class: large-points
 
 # Note
 
-- Implementation on previous slide is not optimal (reason: unnecesarry multiple traversal)
+- Implementation on previous slide is not optimal (reason: unnecessary multiple traversal)
 - Pure historical reasons for the compiler not implementing comparison operators by default
 - Note that equality and comparison do not have the same cost
 - Spaceship operator '<=>' proposal
@@ -342,8 +342,8 @@ class: large-points
   complete
 
 
-- Conditionals ('if') use oveloading/template specialization
-- Iterations ('for') use use recursion (e.g. recursive inheritance)
+- Conditionals ('if') use overloading/template specialization
+- Iterations ('for') use recursion (e.g. recursive inheritance)
 - Store state as parametrized types and constants
 - Instantiate template to trigger the computation
 
@@ -405,7 +405,7 @@ class: large-points
 ## Problems
 - Getting the current function as input for reflection
 - Getting names of the parent context
-- Getting source code line of the original constuct
+- Getting source code line of the original construct
 
 ---
 
@@ -472,7 +472,7 @@ class: large-points
 - analyse
 - generate something to execute
 
-the steps above for equlity or from_json:
+the steps above for equality or from_json:
 - get a reflection of the class
 - get a reflection of each member
 - maybe check the type of the member
@@ -485,7 +485,7 @@ the steps above for equlity or from_json:
 A lot of languages support dynamic reflection:
 
 - reflection/generation not at compile time
-- not a zero-cost abstraction, it forbits optimisations of original source code constructs.
+- not a zero-cost abstraction, it forbids optimisations of original source code constructs.
 - generation could mean "function invocation" at runtime
 
 
@@ -500,7 +500,7 @@ For C++ we want static reflection metaprogramming
 ???
 
 - based on a source construct
-- the reflection operator retuns a description of the source construct
+- the reflection operator returns a description of the source construct
 - code generation is based on a description of the source construct
 - it all happens at compile time
 
@@ -550,7 +550,7 @@ class: large-points
 
 # Code generation options
 
-- existing template metraprogramming
+- existing template metaprogramming
 - raw string (powerful, but could be opaque)
 - token sequence (e.g. -> { ...code here...})
 - abstract syntax tree creation API
@@ -982,7 +982,7 @@ class: large-points
 
 # Relation to template metaprogramming
 
-- Reflective metaprograming has the potential to replace most/all usage of
+- Reflective metaprogramming has the potential to replace most/all usage of
   template metaprogramming (but not clear to what degree)
 
 ---
@@ -999,7 +999,7 @@ class: large-points
 ---
 class: large-points
 
-# Similaries to template instantiation
+# Similarities to template instantiation
 
 - Especially when we get to code generation at what time the metadata is
   captured, at what point evaluated?
@@ -1012,7 +1012,7 @@ class: large-points
 
 # Famous last words
 
-- It can be missused
+- It can be misused
 - But it can be used for good as well:  high return feature to eliminate boilerplate and most template programming
 - Tooling improvements required
 
@@ -1108,9 +1108,15 @@ Andrei Alexandrescu<br/>
 Fastware - ACCU 2016<br/>
 https://www.youtube.com/watch?v=AxnotgLql0k
 
+Labrador picture<br/>
+https://pixabay.com/en/animal-dog-puppy-pet-photography-2184791/
+
 ---
 
 # Questions?
+
+Special thanks to Nigel Lester for organizing the talk and spell checking the
+presentation.
 
 https://bajamircea.github.io/presentations/2018-01-29-reflection.html
 
