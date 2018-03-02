@@ -1,0 +1,452 @@
+---
+layout: post
+title: 'Fit RAII'
+categories: coding cpp
+---
+
+This article looks at an idiom of wrapping C APIs that increases code reuse
+compared with the classic, slim and fat RAII variants described in previous
+articles.
+
+
+## Introduction
+
+In previous articles I've described several idioms of wrapping C APIs such as
+[classic RAII][classic-raii], [slim RAII][slim-raii] and [fat RAII][fat-raii].
+
+While they work, there are alternatives that scale better in larger projects.
+This article tries to sketch one such alternative. I'll call it 'fit RAII'.
+
+## Code
+
+### cpp_util_lib/raii_with_invalid_value.h
+
+First lets create a class template to deal with resources that have a invalid
+value. For this simple example is not necessary, because we'll only use it once
+with `FILE *`. The class is moveable, that means that it can be used as a
+function return value. However it's not copyable, that does make sense for most
+resources e.g.: it makes sense to copy the file contents, but not the file
+handle. The `get`, `reset` and `release` methods create some similarities in
+usage to smart pointers.
+
+{% highlight c++ linenos %}
+#pragma once
+namespace cpp_util
+{
+  template<typename Traits>
+  class raii_with_invalid_value
+  {
+    using Handle = typename Traits::Handle;
+    static constexpr auto invalid_value = Traits::invalid_value;
+
+    Handle h_;
+
+    public:
+    explicit raii_with_invalid_value(Handle h = invalid_value) :
+      h_{ h }
+    {
+    }
+
+    ~raii_with_invalid_value()
+    {
+      if (is_valid())
+      {
+        Traits::free_handle(h_);
+      }
+    }
+
+    raii_with_invalid_value(const raii_with_invalid_value &) = delete;
+    raii_with_invalid_value & operator=(const raii_with_invalid_value &) = delete;
+
+    raii_with_invalid_value(raii_with_invalid_value && other) noexcept :
+      h_{ other.h_ }
+    {
+      other.h_ = invalid_value;
+    }
+
+    raii_with_invalid_value & operator=(raii_with_invalid_value && other) noexcept
+    {
+      Handle tmp = other.h_;
+      other.h_ = nullptr;
+      if (is_valid())
+      {
+        Traits::free_handle(h_);
+      }
+      h_ = tmp;
+      return *this;
+    }
+
+    bool is_valid()
+    {
+      return h_ != invalid_value;
+    }
+
+    Handle get()
+    {
+      return h_;
+    }
+
+    Handle & handle_reference()
+    {
+      return h_;
+    }
+
+    Handle * handle_pointer()
+    {
+      return &h_;
+    }
+
+    void reset(Handle h = invalid_value) noexcept
+    {
+      if (is_valid())
+      {
+        Traits::free_handle(h_);
+      }
+      h_ = h;
+    }
+
+    Handle release() noexcept
+    {
+      Handle tmp = h_;
+      h_ = invalid_value;
+      return tmp;
+    }
+  };
+}
+{% endhighlight %}
+
+
+### cstdio_lib/file_raii.h
+
+Given `raii_with_invalid_value`, we can now easily create a wrapper for `FILE
+*`. It's single responsibility is to ensure that a valid `FILE *` is closed
+using `fclose` precisely once.
+
+{% highlight c++ linenos %}
+#pragma once
+
+#include "../cpp_util_lib/raii_with_invalid_value.h"
+#include <cstdio>
+
+namespace cstdio
+{
+  namespace detail
+  {
+    struct file_raii_traits
+    {
+      using Handle = FILE*;
+
+      static constexpr auto invalid_value = nullptr;
+
+      static void free_handle(Handle h) noexcept
+      {
+        static_cast<void>(fclose(h));
+      }
+    };
+  }
+
+  using file_raii = cpp_util::raii_with_invalid_value<detail::file_raii_traits>;
+}
+{% endhighlight %}
+
+
+### cstdio_lib/error.h
+
+These are just some functions to handle errors by raising exceptions. It turns
+out that there are recurring patterns of error handling.
+
+{% highlight c++ linenos %}
+#pragma once
+
+namespace cstdio::error
+{
+  void throw_errno(const char * function_name, int errno_value);
+  void throw_errno(const char * function_name);
+  void throw_failed(const char * function_name);
+}
+{% endhighlight %}
+
+
+### cstdio_lib/error.cpp
+{% highlight c++ linenos %}
+#include "error.h"
+
+#include <cstring>
+#include <stdexcept>
+#include <string>
+
+namespace cstdio::error
+{
+  void throw_errno(const char * function_name, int errno_value)
+  {
+    std::string message = "Function ";
+    message += function_name;
+    message += " failed. Error: ";
+    message += std::strerror(errno_value);
+
+    throw std::runtime_error(message);
+  }
+
+  void throw_errno(const char * function_name)
+  {
+    throw_errno(function_name, errno);
+  }
+
+  void throw_failed(const char * function_name)
+  {
+    std::string message = "Function ";
+    message += function_name;
+    message += " failed";
+
+    throw std::runtime_error(message);
+  }
+}
+{% endhighlight %}
+
+
+### cstdio_lib/file.h
+
+Here is the basic API wrapping level. It consists of functions grouped in a
+namespace. Their single responsibility it to be thin wrappers that deal with
+error handling.
+
+For input parameters they still require a `FILE *` which means they can be used
+with `stdout` as well.
+
+It is not the traditional OOP approach, which surprises some, but it has it's
+advantages.
+
+{% highlight c++ linenos %}
+#pragma once
+
+#include "file_raii.h"
+
+#include <cstdio>
+#include <cstddef>
+
+namespace cstdio::file
+{
+  file_raii open(const char * file_name, const char * mode);
+  size_t read(FILE * h, char * buffer, size_t size);
+  void write(FILE * h, const char * buffer, size_t size);
+  bool is_eof(FILE * h);
+  void close(file_raii & x);
+}
+{% endhighlight %}
+
+
+### cstdio_lib/file.cpp
+{% highlight c++ linenos %}
+
+#include "file.h"
+
+#include "error.h"
+
+namespace cstdio::file
+{
+  file_raii open(const char * file_name, const char * mode)
+  {
+    file_raii result{ std::fopen(file_name, mode) };
+    if (!result.is_valid())
+    {
+      error::throw_errno("fopen");
+    }
+    return result;
+  }
+
+  size_t read(FILE * h, char * buffer, size_t size)
+  {
+    size_t read_count{ std::fread(buffer, 1, size, h) };
+    if ((read_count != size) && ferror(h))
+    {
+      error::throw_errno("fread");
+    }
+    return read_count;
+  }
+
+  void write(FILE * h, const char * buffer, size_t size)
+  {
+    size_t write_count{ std::fwrite(buffer , 1, size, h) };
+    if (write_count != size)
+    {
+      error::throw_errno("fwrite");
+    }
+  }
+
+  bool is_eof(FILE * h)
+  {
+    return (0 != std::feof(h));
+  }
+
+  void close(file_raii & x)
+  {
+    int result = std::fclose(x.release());
+    if (result != 0)
+    {
+      error::throw_failed("fclose");
+    }
+  }
+}
+{% endhighlight %}
+
+
+### app_lib/file_util.h
+{% highlight c++ linenos %}
+#pragma once
+
+namespace app_lib::file_util
+{
+  void copy_file(
+    const char * src_file_name,
+    const char * dst_file_name);
+}
+{% endhighlight %}
+
+
+### app_lib/file_util.cpp
+
+`copy_file` is build on top of the basic API wrapping level. The whole point of
+this idiom is to make easy to write functions like this correctly.
+
+{% highlight c++ linenos %}
+#include "file_util.h"
+
+#include "../cstdio_lib/file.h"
+
+namespace app_lib::file_util
+{
+  void copy_file(
+    const char * src_file_name,
+    const char * dst_file_name)
+  {
+    auto src = cstdio::file::open(src_file_name, "rb");
+    auto dst = cstdio::file::open(dst_file_name, "wb");
+    char buffer[1024];
+
+    do
+    {
+      size_t read_count = cstdio::file::read(src.get(), buffer, sizeof(buffer));
+
+      if (read_count > 0)
+      {
+        cstdio::file::write(dst.get(), buffer, read_count);
+      }
+    } while ( ! cstdio::file::is_eof(src.get()));
+
+    cstdio::file::close(dst);
+  }
+}
+{% endhighlight %}
+
+
+### cpp_util_lib/console.h
+
+The function here is not strictly necessary for this simple example, but useful
+if you're writing more than one executable.
+
+It's responsibility is to handle exceptions at a boundary (e.g. main in this
+case) over which exceptions should not be thrown.
+
+{% highlight c++ linenos %}
+#pragma once
+
+#include <iostream>
+
+namespace cpp_util::console
+{
+  template<typename Fn>
+  int main_wrap(Fn fn)
+  {
+    try
+    {
+      fn();
+      std::cout << "\nOK\n";
+      return 0;
+    }
+    catch(const std::exception & e)
+    {
+      std::cerr << "\nException: " << e.what() << "\nFAILED\n";
+      return 1;
+    }
+  }
+}
+{% endhighlight %}
+
+
+### app/main.cpp
+
+The single responsibility of `main` is to provide the entry point into the
+application.
+
+{% highlight c++ linenos %}
+#include "../cpp_util_lib/console.h"
+#include "../app_lib/file_util.h"
+
+int main() {
+  return cpp_util::console::main_wrap([]() {
+    app_lib::file_util::copy_file("src.bin", "dst.bin");
+  });
+}
+{% endhighlight %}
+
+
+## Single responsibility
+
+In this idiom example I tried to show how to code in such a way that each unit
+(set of .h and .cpp files) has a clear responsibility. That is important for
+testability, reuse.
+
+
+## Checking return code for fclose
+
+Some functions that free resources cannot fail in a correctly written program,
+on correct hardware. E.g. `delete` will succeed (assuming that it's called
+correctly, once for memory allocated with `new`).
+
+Some functions that free resources return an error code. Of this
+category some only have a nominal error code, in practice with correct inputs
+they will succeed (they are similar to `delete` above).
+
+However `fclose` is different. Documentation might not be clear, but often
+inside `fclose` the file is flushed to the disk, which might fail (especially
+if the file is remote).
+
+The strategy here is:
+
+- We explicitly call `close` at the end of `copy_file`. If `fclose` fails,
+  `close` throws and `copy_file` trows as well, indicating failure.
+- Also `close` sets the `FILE *` to `nullptr` to ensure `fclose` will not be
+  called again in the destructor.
+- The return value of `fclose` in `file_raii_traits` is ignored. It is called
+  from destructors and move assignment, that is not the place to throw. Another
+  option would have been to call `std::terminate`, like in `std::thread`, but
+  this is probably not appropriate.
+
+
+## Argument validation
+
+One observation with the approach above is that there is no extensive runtime
+validation. Interface contracts are sometimes narrow. E.g. the functions in the
+`cstdio::file` namespace that receive a `FILE *` expect it to be valid, they do
+not validate it (not even checking for `nullptr`, though we could have put some
+debug build only asserts).
+
+The point is to address automatically some concerns, not to prevent logical
+errors at runtime cost.
+
+
+## Summary
+
+At a superficial look this approach looks more verbose than the 
+[classic RAII][classic-raii], [slim RAII][slim-raii], [fat RAII][fat-raii] and
+even [pure C approaches][if-error-goto]. __It totals 276 lines of code__.
+
+However it will pay off on various scenarios that are likely in a large
+project where you will write more code that reuses existing code in new
+combinations.
+
+
+[classic-raii]:  {% post_url 2015-03-17-classic-raii %}
+[slim-raii]:     {% post_url 2015-03-22-slim-raii %}
+[fat-raii]:      {% post_url 2015-03-23-fat-raii %}
+[if-error-goto]: {% post_url 2015-03-15-if-error-goto %}
