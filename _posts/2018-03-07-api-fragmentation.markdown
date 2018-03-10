@@ -152,9 +152,21 @@ this still adds additional choice to the user that wants to read the contents
 of a file.
 
 
+# Compile time vs. run time
+
+The API could look different if you choose things to be done compile time. E.g.
+you want a run time array: `std::vector`. To construct of a desired size you
+provide the desired size as an argument to the constructor. If you want fixed
+compile time size you might use `std::array`. To construct of the desired size
+you provide it as a template parameter.
+
+
 # What types should we accept?
 
-How much do we constrain the types we use in the API?
+For a function like `min`, do we have to have overloads with `const` arguments?
+
+The `const` variation is just the start. How much do we constrain the types we
+use in the API?
 
 - The `file_name` does it need to be a `std::string`, how about string
   literals like "config.ini"? Can address using some `gsl::zstring_span`
@@ -164,14 +176,13 @@ How much do we constrain the types we use in the API?
 - Does it even have to be a `vector`?
 - To support sentinels: do we have to have the same type for `first` and
   `last`?
-- For a function like `min`, do we have to have overloads with `const`
-  arguments?
+- To support ranges do we have to have an overload receiving a `range` instead
+  of `first` and `last`.
 
 But this can't be generalized forever:
 - likely the `file_name` has to be zero terminated so that it can be passed to
   the OS API that is typically a C function expecting a zero terminated string.
 - When `file_name` is a `string`: what encoding do we accept?
-
 
 
 # Conclusion
