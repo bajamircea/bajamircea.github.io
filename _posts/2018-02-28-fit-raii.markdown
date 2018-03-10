@@ -9,7 +9,7 @@ compared with the classic, slim and fat RAII variants described in previous
 articles.
 
 
-## Introduction
+# Introduction
 
 In previous articles I've described several idioms of wrapping C APIs such as
 [classic RAII][classic-raii], [slim RAII][slim-raii] and [fat RAII][fat-raii].
@@ -17,9 +17,9 @@ In previous articles I've described several idioms of wrapping C APIs such as
 While they work, there are alternatives that scale better in larger projects.
 This article tries to sketch one such alternative. I'll call it 'fit RAII'.
 
-## Code
+# Code
 
-### cpp_util_lib/raii_with_invalid_value.h
+## cpp_util_lib/raii_with_invalid_value.h
 
 First lets create a class template to deal with resources that have a invalid
 value. For this simple example is not necessary, because we'll only use it once
@@ -116,7 +116,7 @@ namespace cpp_util
 {% endhighlight %}
 
 
-### cstdio_lib/file_raii.h
+## cstdio_lib/file_raii.h
 
 Given `raii_with_invalid_value`, we can now easily create a wrapper for `FILE
 *`. It's single responsibility is to ensure that a valid `FILE *` is closed
@@ -150,7 +150,7 @@ namespace cstdio
 {% endhighlight %}
 
 
-### cstdio_lib/error.h
+## cstdio_lib/error.h
 
 These are just some functions to handle errors by raising exceptions. It turns
 out that there are recurring patterns of error handling.
@@ -167,7 +167,7 @@ namespace cstdio::error
 {% endhighlight %}
 
 
-### cstdio_lib/error.cpp
+## cstdio_lib/error.cpp
 {% highlight c++ linenos %}
 #include "error.h"
 
@@ -204,7 +204,7 @@ namespace cstdio::error
 {% endhighlight %}
 
 
-### cstdio_lib/file.h
+## cstdio_lib/file.h
 
 Here is the basic API wrapping level. It consists of functions grouped in a
 namespace. Their single responsibility it to be thin wrappers that deal with
@@ -235,7 +235,7 @@ namespace cstdio::file
 {% endhighlight %}
 
 
-### cstdio_lib/file.cpp
+## cstdio_lib/file.cpp
 {% highlight c++ linenos %}
 
 #include "file.h"
@@ -290,7 +290,7 @@ namespace cstdio::file
 {% endhighlight %}
 
 
-### app_lib/file_util.h
+## app_lib/file_util.h
 {% highlight c++ linenos %}
 #pragma once
 
@@ -303,7 +303,7 @@ namespace app_lib::file_util
 {% endhighlight %}
 
 
-### app_lib/file_util.cpp
+## app_lib/file_util.cpp
 
 `copy_file` is build on top of the basic API wrapping level. The whole point of
 this idiom is to make easy to write functions like this correctly.
@@ -339,7 +339,7 @@ namespace app_lib::file_util
 {% endhighlight %}
 
 
-### cpp_util_lib/console.h
+## cpp_util_lib/console.h
 
 The function here is not strictly necessary for this simple example, but useful
 if you're writing more than one executable.
@@ -373,7 +373,7 @@ namespace cpp_util::console
 {% endhighlight %}
 
 
-### app/main.cpp
+## app/main.cpp
 
 The single responsibility of `main` is to provide the entry point into the
 application.
@@ -390,14 +390,14 @@ int main() {
 {% endhighlight %}
 
 
-## Single responsibility
+# Single responsibility
 
 In this idiom example I tried to show how to code in such a way that each unit
 (set of .h and .cpp files) has a clear responsibility. That is important for
 testability, reuse.
 
 
-## Checking return code for fclose
+# Checking return code for fclose
 
 Some functions that free resources cannot fail in a correctly written program,
 on correct hardware. E.g. `delete` will succeed (assuming that it's called
@@ -423,7 +423,7 @@ The strategy here is:
   this is probably not appropriate.
 
 
-## Argument validation
+# Argument validation
 
 One observation with the approach above is that there is no extensive runtime
 validation. Interface contracts are sometimes narrow. E.g. the functions in the
@@ -435,7 +435,7 @@ The point is to address automatically some concerns, not to prevent logical
 errors at runtime cost.
 
 
-## Summary
+# Summary
 
 At a superficial look this approach looks more verbose than the 
 [classic RAII][classic-raii], [slim RAII][slim-raii], [fat RAII][fat-raii] and
