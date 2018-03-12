@@ -67,7 +67,7 @@ namespace cpp_util
     raii_with_invalid_value & operator=(raii_with_invalid_value && other) noexcept
     {
       Handle tmp = other.h_;
-      other.h_ = nullptr;
+      other.h_ = invalid_handle;
       if (is_valid())
       {
         Traits::free_handle(h_);
