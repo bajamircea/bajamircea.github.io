@@ -79,6 +79,13 @@ You will probably delegate the implementation of the throwing version to the
 non-throwing version of the API, but now there are two version of the API to
 choose from.
 
+Another related situation are functions that are called from destructors (say
+closing a file). You might have a version that is called as a normal function
+(which can throw), and a version that is called from a destructor. The version
+called from destructor (or move) does not throw. Instead of throwing it either
+ignores failure, just logs or event terminates the process (depending on the
+situation).
+
 
 # Performance vs. easy/local reasoning
 
