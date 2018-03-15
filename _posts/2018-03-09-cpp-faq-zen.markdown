@@ -13,6 +13,9 @@ Zen version for frequently asked questions related to C++
 - Q: Can you tell me what's the magic bullet?
 - A: There is no magic bullet.
 
+- Q: But still, what's the definite answer?
+- A: It depends.
+
 - Q: How can we develop faster?
 - A: It's a tortoise and hare story.
 
