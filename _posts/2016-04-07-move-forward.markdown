@@ -200,7 +200,7 @@ void bar(std::vector<T> &&); // but not here
 {% endhighlight %}
 
 The rules allow the function `foo` above to be called with either an `lvalue`
-or an `rvalue:
+or an `rvalue`:
 
 - When called with an `lvalue` of type `X`, then `T` resolves to `X &`
 - When called with and `rvalue` of type `X`, then `T` resolves to `X`
