@@ -288,6 +288,7 @@ void fn()
 }
 {% endhighlight %}
 
+NOTE: `std::uncaught_exceptions` can be used to detect stack unwinding.
 
 # References
 

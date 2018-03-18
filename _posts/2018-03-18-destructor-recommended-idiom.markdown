@@ -337,6 +337,6 @@ public:
 # References
 
 ReleaseMutex function<br/>
-[https://msdn.microsoft.com/en-us/library/windows/desktop/ms685066(v=vs.85).aspx][release-mutext]
+[https://msdn.microsoft.com/en-us/library/windows/desktop/ms685066(v=vs.85).aspx][release-mutex]
 
 [release-mutex]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms685066(v=vs.85).aspx
