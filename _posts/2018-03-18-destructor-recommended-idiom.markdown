@@ -165,6 +165,11 @@ public:
 };
 {% endhighlight %}
 
+Also note that in the destructor I'm not setting the resource value to invalid.
+The compiler might optimise it out as it knows that after the object is
+destroyed, it can't be accessed (except that everything can be accessed if one
+uses dangling pointers/references which you shouldn't).
+
 ## More than one resource
 
 How do we deal with code in the destructor if we need to free more than one
@@ -283,7 +288,7 @@ public:
 {% endhighlight %}
 
 
-## Return code that should allways be success
+## Return code that should always be success
 
 There are C functions that return an error code, but there is no reason for the
 function to fail assuming that preconditions are met.
@@ -293,15 +298,57 @@ Say for example `CloseHandle` in Windows to close a handle returned by
 it to fail if the handle is valid: to close the handle for an event only the
 CPU and memory get involved.
 
+There are two options: ignore the error, or terminate. Ignoring the error is
+less code. Terminating will give you the best chance to discover that the
+assumption or usage is incorrect. People argue at length for one option or
+another, but I think that if you're confident something will not happen neither
+choice will make much of a difference.
 
------------------
+{% highlight c++ linenos %}
+// here are the two options,
+// assuming the invalid value is NULL
+// (which is not true for all HANDLE)
+
+~X::X()
+{
+  if (NULL != h_) {
+    static_cast<void>(::CloseHandle(h_));
+  }
+}
+
+~Y::Y()
+{
+  if (NULL != h_) {
+    BOOL result = ::CloseHandle(h_);
+    if (0 == result) {
+      std::terminate();
+    }
+  }
+};
+{% endhighlight %}
+
+Just to make clear `CloseHandle` for files might or might not be different from
+the one for events. For the files see the flushing/`fclose` section below.
+
+# Complex cases
+
+In this section I'll describe situations that are counter-intuitive and error
+prone.
+
+## Termination is a better option
+
+------------------
 # WORK IN PROGRESS:
-
-- Ignore error
+------------------
 
 - Termination is sometimes a good option
 
 - also see std::thread
+
+Sometimes the preconditions are more complex with regards to the validity of
+the input. For example [ReleaseMutex][release-mutex] requires that the calling
+thread owns the mutex object.
+
 
 {% highlight c++ linenos %}
 class relocker
@@ -325,6 +372,25 @@ public:
 - Flushing
 
 - fclose
+{% highlight c++ linenos %}
+int fclose(FILE * fp)
+{
+  int r;
+  if (failed precondition check)
+  {
+    return EOF;
+  }
+  r = flush result;
+  if (failure to close)
+  {
+    r = EOF;
+  }
+  free used memory;
+  return r;
+}
+{% endhighlight %}
+
+- Ignore error
 
 - Bad APIs
 
@@ -336,7 +402,19 @@ public:
 
 # References
 
-ReleaseMutex function<br/>
+`fclose` function<br>
+[http://www.cplusplus.com/reference/cstdio/fclose/][fclose]
+
+`CloseHandle` function<br/>
+[https://msdn.microsoft.com/en-us/library/windows/desktop/ms724211(v=vs.85).aspx][close-handle]
+
+`ReleaseMutex` function<br/>
 [https://msdn.microsoft.com/en-us/library/windows/desktop/ms685066(v=vs.85).aspx][release-mutex]
 
+Rationale for `std::thread` destructor terminating<br/>
+[http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2802.html][std-thread]
+
+[close-handle]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms724211(v=vs.85).aspx
+[std-thread]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2802.html
+[fclose]: http://www.cplusplus.com/reference/cstdio/fclose/
 [release-mutex]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms685066(v=vs.85).aspx
