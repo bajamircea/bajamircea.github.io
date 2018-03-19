@@ -29,7 +29,7 @@ struct file
 {
   FILE * p;
 
-  explicit file(FILE * x) :
+  explicit file(FILE * x) noexcept :
     p{ x }
   {
   }

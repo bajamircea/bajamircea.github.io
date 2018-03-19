@@ -47,8 +47,8 @@ have an object of a type `Person`. And a person belongs to several categories
 (genera) like it is a mammal, a living being.
 
 When using classical interfaces you would create interfaces `Mammal`, and
-`LivingBeing` and, using inheritance, you would create a hierarchy `Person
-> Mammal > LivingBeing`. But over time we discover new genera that a type
+`LivingBeing` and, using inheritance, you would create a hierarchy `Person >
+Mammal > LivingBeing`. But over time we discover new genera that a type
 belongs to (I'm a citizen as well). In the classical inheritance approach we
 have to go back to each type and inherit from new interfaces. That might not be
 possible e.g. we can't change types in other libraries or fundamental types

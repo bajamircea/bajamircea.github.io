@@ -34,7 +34,7 @@ struct file
 {
   FILE * p;
 
-  explicit file(FILE * x) :
+  explicit file(FILE * x) noexcept :
     p{ x }
   {
   }
@@ -98,7 +98,7 @@ struct file
 {
   FILE * p;
 
-  explicit file(FILE * x) :
+  explicit file(FILE * x) noexcept :
     p{ x }
   {
   }
@@ -119,7 +119,7 @@ struct mem_buffer
 {
   char * p;
 
-  explicit mem_buffer(char * x) :
+  explicit mem_buffer(char * x) noexcept :
     p{ x }
   {
   }

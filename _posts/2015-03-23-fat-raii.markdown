@@ -29,7 +29,7 @@ invalid handle.
 file::file(file && other) noexcept :
   f_{ other_f }
 {
-  other_.f = 0;
+  other_.f = nullptr;
 }
 
 file::~file()
@@ -118,7 +118,7 @@ file::file(file && other) noexcept :
   f_{ other.f_ },
   own_{ other.own_ }
 {
-  other.f_ = 0;
+  other.f_ = nullptr;
   other.own_ = false;
 }
 
@@ -132,7 +132,7 @@ file & file::operator=(file && other) noexcept
     }
     f_ = other.f_;
     own_ = other.own_;
-    other.f_ = 0;
+    other.f_ = nullptr;
     other.own_ = false;
   }
   return *this;

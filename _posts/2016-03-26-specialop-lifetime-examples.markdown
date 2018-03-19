@@ -166,7 +166,7 @@ struct unique_resource :
 {
   explicit unique_resource(
     typename resource_traits::value_type x = resource_traits::invalid_value
-    ) :
+    ) noexcept :
     value{ x }
   {
   }
@@ -179,13 +179,13 @@ struct unique_resource :
     }
   }
 
-  unique_resource(unique_resource && other) :
+  unique_resource(unique_resource && other) noexcept :
     value{ other.value }
   {
     other.value = resource_traits::invalid_value;
   }
 
-  unique_resource & operator=(unique_resource && other)
+  unique_resource & operator=(unique_resource && other) noexcept
   {
     typename resource_traits::value_type temp = other.value;
     other.value = resource_traits::invalid_value;
@@ -197,7 +197,7 @@ struct unique_resource :
     return *this;
   }
 
-  bool is_valid()
+  bool is_valid() noexcept
   {
     return (resource_traits::invalid_value != value);
   }
@@ -218,7 +218,7 @@ struct file_resource_traits
 {
   using value_type = FILE *;
   static constexpr value_type invalid_value = nullptr;
-  static void close(value_type x) { fclose(x); }
+  static void close(value_type x) noexcept { fclose(x); }
 };
 
 using file = unique_resource<file_resource_traits>;

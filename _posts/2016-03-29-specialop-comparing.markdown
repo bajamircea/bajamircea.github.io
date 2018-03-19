@@ -39,18 +39,18 @@ function with two arguments and return a `bool`.
 class X
 {
   // as a member function
-  bool operator== (const X & other)
+  bool operator== (const X & other) noexcept
   {
     // ...
   }
 
   // when as a free function ofen declared as a friend
   // to allow it to access private members
-  friend bool operator== (const X & left, const X & right);
+  friend bool operator== (const X & left, const X & right) noexcept;
 };
 
 // OR as a free function
-bool operator== (const X & left, const X & right)
+bool operator== (const X & left, const X & right) noexcept
 {
   // ...
 }
@@ -60,14 +60,14 @@ You really need to define at most two of them: `==` and `<`, the others can be
 (and should be, to maintain sanity) implemented in terms of them e.g.:
 
 {% highlight c++ linenos %}
-bool operator!= (const X & left, const X & right)
+bool operator!= (const X & left, const X & right) noexcept
 {
   // calls 'operator ==' implementation
   // and negates result
   return !(left == right);
 }
 
-bool operator> (const X & left, const X & right)
+bool operator> (const X & left, const X & right) noexcept
 {
   // calls 'operator <' implementation
   // but with switched positions for left and right
@@ -91,20 +91,20 @@ struct X
   int i;
   std::string s;
 
-  auto members() const
+  auto members() noexcept const
   {
     // return tuple of const references to member variables
     return std::tie(i, s);
   }
 };
 
-bool operator== (const X & left, const X & right)
+bool operator== (const X & left, const X & right) noexcept
 {
   // rely on the std::tuple.operator== implementation
   return left.members() == right.members();
 }
 
-bool operator< (const X & left, const X & right)
+bool operator< (const X & left, const X & right) noexcept
 {
   // rely on the std::tuple.operator< implementation
   return left.members() < right.members();
@@ -112,7 +112,7 @@ bool operator< (const X & left, const X & right)
 
 // Implement the rest in terms of the two above
 // example below for !=, but similar for >, <=, >=
-bool operator!= (const X & left, const X & right)
+bool operator!= (const X & left, const X & right) noexcept
 {
   return !(left == right);
 }

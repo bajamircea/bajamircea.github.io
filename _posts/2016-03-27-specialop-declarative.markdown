@@ -36,8 +36,8 @@ struct X
   ~X() { std::cout << "Destructor\n"; }
   X(const X &) { std::cout << "Copy constructor\n"; }
   X& operator=(const X &) { std::cout << "Copy assignment\n"; return *this; }
-  X(X &&) { std::cout << "Move constructor\n"; }
-  X& operator=(X &&) { std::cout << "Move assignment\n"; return *this; }
+  X(X &&) noexcept { std::cout << "Move constructor\n"; }
+  X& operator=(X &&) noexcept { std::cout << "Move assignment\n"; return *this; }
 };
 
 int main()

@@ -83,7 +83,7 @@ to help ensure resources are released when it is destroyed.
 struct slim_raii :
   private non_copyable
 {
-  slim_raii(handle * h) : h_{ h } {}
+  slim_raii(handle * h) noexcept : h_{ h } {}
 
   ~slim_raii() {
     if (h_) {

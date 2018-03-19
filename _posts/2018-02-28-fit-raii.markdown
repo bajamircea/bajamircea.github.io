@@ -42,7 +42,7 @@ namespace cpp_util
     Handle h_;
 
     public:
-    explicit raii_with_invalid_value(Handle h = invalid_value) :
+    explicit raii_with_invalid_value(Handle h = invalid_value) noexcept :
       h_{ h }
     {
     }
@@ -76,22 +76,22 @@ namespace cpp_util
       return *this;
     }
 
-    bool is_valid()
+    bool is_valid() noexcept
     {
       return h_ != invalid_value;
     }
 
-    Handle get()
+    Handle get() noexcept
     {
       return h_;
     }
 
-    Handle & handle_reference()
+    Handle & handle_reference() noexcept
     {
       return h_;
     }
 
-    Handle * handle_pointer()
+    Handle * handle_pointer() noexcept
     {
       return &h_;
     }

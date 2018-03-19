@@ -38,11 +38,11 @@ struct person {
   int age;
 };
 
-inline auto tie_members(const person & x) {
+inline auto tie_members(const person & x) noexcept {
   return std::tie(x.first_name, x.last_name, x.age);
 }
 
-inline bool operator<(const person & lhs, const person & rhs) {
+inline bool operator<(const person & lhs, const person & rhs) noexcept {
   return tie_members(lhs) < tie_members(rhs);
 }
 {% endhighlight %}
