@@ -90,7 +90,7 @@ resource is gone, the destructor has nothing to do. Therefore once we add move
 to a class we need to add a test in the destructor to decide if we need to
 release the resource or not. The test usually involves testing for a invalid
 value (often `nullptr`) or testing for a `bool` member variable or sometimes
-can be skipped.
+can be skipped because it's performed elsewhere.
 
 Reason 2: Move assignment involves releasing the resource of the target object
 before assigning it the value of the source. Releasing the resource in move
@@ -393,9 +393,28 @@ public:
 
 ## Flushing required
 
-- Flushing
+This is the case of APIs that buffer writes, where to improve performance write
+returns success early, after it just copied data to a buffer, before it
+actually writes to the destination. This type of APIs require you to flush and
+it's then that an error is returned for data from a previous write.
 
-- fclose
+The reality of most distributed systems is that it's really difficult to ensure
+the data has been persisted at the destination. Even for a computer there are
+multiple levels at buffering at API level, OS level, even the hard disk might
+confirm write early (maybe speculating that it will have enough capacitive
+power to persist the internal buffers in case of a external power supply loss).
+
+A typical case is `fclose`, though `fclose` does not just flush. A typical
+`fclose does several things:
+
+- It verifies for potentential invalid inputs might return early
+- It might flush (it will not flush for a file that's read, but it might flush
+  even if `fflush` has just been called)
+- It might call some close method (that seems the case at least for network
+  mapped files). A close error might override the flush error.
+- It frees used memory, regardless of errors for flush and close
+- It returns an error if flush or close failed
+
 {% highlight c++ linenos %}
 int fclose(FILE * fp)
 {
@@ -414,12 +433,109 @@ int fclose(FILE * fp)
 }
 {% endhighlight %}
 
-- Ignore error
+To deal with the situation:
+
+1. Wrap `FILE *` in a resource class. In the destructor ignore errors.
+2. Create a function that throws on `fclose`
+3. Don't forget to call that function.
+
+{% highlight c++ linenos %}
+// 1
+class file
+{
+  FILE * f_;
+public:
+  explicit file(FILE * f) : f_{ f }
+  {
+  }
+
+  ~file()
+  {
+    if (f_ != nullptr)
+    {
+      static_cast<void>(fclose(f_)); // <-
+    }
+  }
+
+  file(const file &) = delete;
+  file & operator=(const file &) = delete;
+
+  FILE * get()
+  {
+    return f_;
+  }
+
+  FILE * release() noexcept
+  {
+    FILE * tmp = f_;
+    f_ = nullptr; // <-
+    return tmp;
+  }
+};
+
+// 2
+void close(file_raii & x)
+{
+  int result = std::fclose(x.release()); // <-
+  if (result != 0)
+  {
+    throw std::exception(); // <-
+  }
+}
+
+void write_to_file(const char * file_name)
+{
+  file f{ fopen(file_name, "wb") };
+  if (f.get() == nullptr)
+  {
+    throw std::exception();
+  }
+
+  if (1 != fwrite('x', 1, 1, f.get()))
+  {
+    throw std::exception();
+  }
+
+  // 3
+  close_file(f); // <-
+}
+{% endhighlight %}
+
+The code above checks for all errors and reports only one:
+- If `fclose` fails then `write_to_file` fails with an exception.
+- If `fwrite` fails then it's exception propages, though `fclose` is called from
+  the destructor
+
+## Bad APIs
+
+Sometimes the APIs a broken. Oh well, good luck, do your best.
+
+{% highlight c %}
+The EINTR error is a somewhat special case.  Regarding the EINTR
+error, POSIX.1-2013 says:
+
+       If close() is interrupted by a signal that is to be caught, it
+       shall return -1 with errno set to EINTR and the state of
+       fildes is unspecified.
+
+This permits the behavior that occurs on Linux and many other
+implementations, where, as with other errors that may be reported by
+close(), the file descriptor is guaranteed to be closed.  However, it
+also permits another possibility: that the implementation returns an
+EINTR error and keeps the file descriptor open.  (According to its
+documentation, HP-UX's close() does this.)  The caller must then once
+more use close() to close the file descriptor, to avoid file
+descriptor leaks.  This divergence in implementation behaviors
+provides a difficult hurdle for portable applications, since on many
+implementations, close() must not be called again after an EINTR
+error, and on at least one, close() must be called again.  There are
+plans to address this conundrum for the next major release of the
+POSIX.1 standard.
+{% endhighlight %}
+
 ------------------
 # WORK IN PROGRESS:
 ------------------
-
-- Bad APIs
 
 - Scope guard: flushing
   - Tear down
@@ -431,6 +547,9 @@ int fclose(FILE * fp)
 
 
 # References
+
+`close` function<br/>
+[http://man7.org/linux/man-pages/man2/close.2.html][close]
 
 `free` function<br/>
 [http://www.cplusplus.com/reference/cstdlib/free/][free]
@@ -447,6 +566,7 @@ int fclose(FILE * fp)
 Rationale for `std::thread` destructor terminating<br/>
 [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2802.html][std-thread]
 
+[close]: http://man7.org/linux/man-pages/man2/close.2.html
 [free]: http://www.cplusplus.com/reference/cstdlib/free/
 [fclose]: http://www.cplusplus.com/reference/cstdio/fclose/
 [close-handle]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms724211(v=vs.85).aspx
