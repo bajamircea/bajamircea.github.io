@@ -79,6 +79,9 @@ You will probably delegate the implementation of the throwing version to the
 non-throwing version of the API, but now there are two version of the API to
 choose from.
 
+NOTE: Allocations make it particularly difficult to have `noexcept` versions
+(see the Issues section in [this article][two-functions]).
+
 Another related situation are functions that are called from destructors (say
 closing a file). You might have a version that is called as a normal function
 (which can throw), and a version that is called from a destructor. The version
@@ -219,3 +222,4 @@ see the `FILE_FLAG_OVERLAPPED` flag) are really multiple APIs under disguise.
 [find]: http://en.cppreference.com/w/cpp/algorithm/find
 [exec-policy]: http://en.cppreference.com/w/cpp/algorithm/execution_policy_tag_t
 [create-file]: https://msdn.microsoft.com/en-us/library/windows/desktop/aa363858(v=vs.85).aspx
+[two-functions]: {% post_url 2018-03-15-two-functions-error-handling %}

@@ -89,7 +89,8 @@ Reason 1: If we move from an object it's destructor is still called, but the
 resource is gone, the destructor has nothing to do. Therefore once we add move
 to a class we need to add a test in the destructor to decide if we need to
 release the resource or not. The test usually involves testing for a invalid
-value (often `nullptr`) or testing for a `bool` member variable.
+value (often `nullptr`) or testing for a `bool` member variable or sometimes
+can be skipped.
 
 Reason 2: Move assignment involves releasing the resource of the target object
 before assigning it the value of the source. Releasing the resource in move
@@ -104,8 +105,12 @@ the approach of not throwing from move constructor and assignment either.
 Example: In the code below the `c_heap_ptr` is a version of `simple_c_heap_ptr`
 that was extended to support move semantics.
 
-NOTE: The noexcept defaults are currently different for move hence the need to
+NOTE: The `noexcept` defaults are currently different for move hence the need to
 be explicit.
+
+NOTE: The test can be skipped for things like `free` and `delete` that are
+documented to do nothing if the pointer is zero/`nullptr`. In the code below
+the test is commented, but left as an example for other cases.
 
 {% highlight c++ linenos %}
 class c_heap_ptr
@@ -129,7 +134,7 @@ public:
 
   ~c_heap_ptr()
   {
-    if (p_ != nullptr) // <-
+    // if (p_ != nullptr) // <-
     {
       free(p_); // <-
     }
@@ -148,7 +153,7 @@ public:
   {
     if (this != &other)
     {
-      if (p_ != nullptr) // <-
+      // if (p_ != nullptr) // <-
       {
         free(p_); // <-
       }
@@ -238,10 +243,10 @@ struct two_resources
 First of all, instead of using `delete` directly, consider using something like
 `std::unique_ptr` if possible. I'll continue for the sake of completeness. It
 is similar with `free` in that it largely operates on heap allocation,
-releasing memory. It is different in that it calls the destructor of the
-object. That theoretically could throw, but if you follow this idiom it won't.
-Another minor difference is that `delete` is documented to accept a (otherwise
-invalid value) of `nullptr` (and does nothing).
+releasing memory.  Also like `free`, `delete` is documented to accept a
+(otherwise invalid value) of `nullptr` (and does nothing).  It is different in
+that it calls the destructor of the object. That theoretically could throw, but
+if you follow this idiom it won't.
 
 {% highlight c++ linenos %}
 template<class T>
@@ -298,11 +303,17 @@ Say for example `CloseHandle` in Windows to close a handle returned by
 it to fail if the handle is valid: to close the handle for an event only the
 CPU and memory get involved.
 
-There are two options: ignore the error, or terminate. Ignoring the error is
-less code. Terminating will give you the best chance to discover that the
-assumption or usage is incorrect. People argue at length for one option or
-another, but I think that if you're confident something will not happen neither
-choice will make much of a difference.
+Sometimes the preconditions are more complex with regards to the validity of
+the input. For example [ReleaseMutex][release-mutex] requires that the calling
+thread owns the mutex object, but still this can be relatively easy ensured by
+correct code.
+
+There are two options of dealing with the returned error code for this
+situations: ignore the error, or terminate. Ignoring the error is less code.
+Terminating will give you the best chance to discover that the assumption or
+usage is incorrect. People argue at length for one option or another, but I
+think that if you're confident something will not happen neither choice will
+make much of a difference.
 
 {% highlight c++ linenos %}
 // here are the two options,
@@ -327,8 +338,11 @@ choice will make much of a difference.
 };
 {% endhighlight %}
 
-Just to make clear `CloseHandle` for files might or might not be different from
-the one for events. For the files see the flushing/`fclose` section below.
+Just to make clear: `CloseHandle` for files might or might not be different from
+the one for events. For the files see the flushing/`fclose` section below. It
+will turn out that if you're not sure what happens for files and you reuse the
+same class to `CloseHandle` on destruction, then you're better off ignoring the
+return code.
 
 # Complex cases
 
@@ -337,18 +351,22 @@ prone.
 
 ## Termination is a better option
 
-------------------
-# WORK IN PROGRESS:
-------------------
+Termination is sometimes a better option. There is a good explanation [why
+`std::thread` terminates if not joined][std-thread]. The summary of it is that
+the underlying APIs expect the user to come with a strategy to stop the thread
+in a controlled way. If the `std::thread` is destroyed, but the thread is still
+running, it means that the strategy to stop the thread was not implemented (or
+not implemented correctly) and the risk is that the thread continues to access
+shared data that will go out of scope, corrupting and crashing in ways that are
+difficult to point to a cause (as opposed to termination that points to the
+relevant `std::thread` object corresponding to the still running thread).
 
-- Termination is sometimes a good option
-
-- also see std::thread
-
-Sometimes the preconditions are more complex with regards to the validity of
-the input. For example [ReleaseMutex][release-mutex] requires that the calling
-thread owns the mutex object.
-
+Example: The class below can be used to create a scope where a `std::mutex` is
+unlocked and the mutex is locked back on scope exit (including exceptions). The
+`lock` method could throw (it should not for correct usage, but the
+documentation is not 100% clear as it depends on platform APIs). If it does,
+the mutex is not locked. The same reasoning as for `std::thread` applies.
+Better to terminate then corrupt and crash in unpredictable ways.
 
 {% highlight c++ linenos %}
 class relocker
@@ -366,8 +384,14 @@ public:
   {
     m_.lock(); // <- if this throws
   }
+
+  relocker(const relocker &) = delete;
+  relocker & operator=(const relocker &) = delete;
 };
 {% endhighlight %}
+
+
+## Flushing required
 
 - Flushing
 
@@ -391,18 +415,27 @@ int fclose(FILE * fp)
 {% endhighlight %}
 
 - Ignore error
+------------------
+# WORK IN PROGRESS:
+------------------
 
 - Bad APIs
 
-- Rollback
+- Scope guard: flushing
+  - Tear down
 
 - Scope guard: cleanup
 
-- Scope guard: flushing
+- Commit/Rollback
+
+
 
 # References
 
-`fclose` function<br>
+`free` function<br/>
+[http://www.cplusplus.com/reference/cstdlib/free/][free]
+
+`fclose` function<br/>
 [http://www.cplusplus.com/reference/cstdio/fclose/][fclose]
 
 `CloseHandle` function<br/>
@@ -414,7 +447,8 @@ int fclose(FILE * fp)
 Rationale for `std::thread` destructor terminating<br/>
 [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2802.html][std-thread]
 
-[close-handle]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms724211(v=vs.85).aspx
-[std-thread]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2802.html
+[free]: http://www.cplusplus.com/reference/cstdlib/free/
 [fclose]: http://www.cplusplus.com/reference/cstdio/fclose/
+[close-handle]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms724211(v=vs.85).aspx
 [release-mutex]: https://msdn.microsoft.com/en-us/library/windows/desktop/ms685066(v=vs.85).aspx
+[std-thread]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2802.html

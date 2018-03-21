@@ -119,7 +119,7 @@ namespace xyz::error
 {% endhighlight %}
 
 
-# api.h
+## api.h
 
 {% highlight c++ linenos %}
 #pragma once
@@ -145,6 +145,7 @@ namespace xyz::api
 {
   int some_fn(int arg1, int arg2, std::error_code & ec) noexcept
   {
+    ec = std::error_code();
     if (arg1 < 0)
     {
       ec = xyz::error_code::some_error;
@@ -197,6 +198,17 @@ Exception: some_fn: Some error
 */
 {% endhighlight %}
 
+# Issues
+
+One issue with this style of API is that one would expect that the version that
+has an error code as argument is `noexcept`. However it's not so easy in
+practice as a lot of containers throw `std::bad_alloc` when running out of
+memory. So then the options are either:
+
+- you're happy to terminate when out of memory
+- you try catch for `std::bad_alloc` inside the version with error code
+- you use custom containers that provide error codes as arguments instead of
+  throwing (dealing with challenges around copying)
 
 # References
 
