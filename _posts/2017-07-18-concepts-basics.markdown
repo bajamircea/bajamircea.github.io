@@ -38,7 +38,7 @@ Using C++ templates, the declaration would look like this:
 
 {% highlight c++ linenos %}
 template<typename T>
-const T & min(cons T & a, const T & b) {
+const T & min(const T & a, const T & b) {
   // implementation here
 }
 {% endhighlight %}

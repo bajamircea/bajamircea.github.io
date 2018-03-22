@@ -416,6 +416,7 @@ A typical case is `fclose`, though `fclose` does not just flush. A typical
 - It returns an error if flush or close failed
 
 {% highlight c++ linenos %}
+// WARNING: below is pseudocode, not real code
 int fclose(FILE * fp)
 {
   int r;

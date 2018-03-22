@@ -5,7 +5,7 @@ categories: coding cpp
 ---
 
 This article looks at handling errors in C APIs using an if-error-return
-codding pattern which uses a slimmed down RAII variant which is sometimes
+coding pattern which uses a slimmed down RAII variant which is sometimes
 useful.
 
 

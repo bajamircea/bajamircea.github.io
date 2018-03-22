@@ -120,13 +120,13 @@ For example a **naive implementation** of a class that handles to `FILE` pointer
 would look like:
 
 {% highlight c++ linenos %}
-class two_files
+class bad_two_files
 {
   FILE * src;
   FILE * dst;
 
 public:
-  two_files(const char * src_name, const char * dst_name) :
+  bad_two_files(const char * src_name, const char * dst_name) :
     src{},
     dst{}
   {
@@ -142,7 +142,7 @@ public:
     }
   }
 
-  ~two_files()
+  ~bad_two_files()
   {
     if (src)
     {

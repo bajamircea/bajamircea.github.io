@@ -4,7 +4,7 @@ title: 'If Error Else'
 categories: coding c
 ---
 
-This article looks at handling errors in C APIs using an if-error-else codding
+This article looks at handling errors in C APIs using an if-error-else coding
 pattern. It describes the issues and options when using this coding style, with
 the full example of the [copy file example][copy-file] rewritten.
 

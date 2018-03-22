@@ -106,7 +106,7 @@ int main()
   X a;
   fn(a); // compiler error, argument is an lvalue
 
-  fn(X()); // works, argument is an lvalue
+  fn(X()); // works, argument is an rvalue
 }
 {% endhighlight %}
 
@@ -183,7 +183,7 @@ overloads requiring:
 - `X &&` for the move constructor or assignment
 
 
-## Template argument deduction and reference colapsing rules
+## Template argument deduction and reference collapsing rules
 
 If a templated function takes an `rvalue reference` template argument, [special
 template argument deduction rules kick in][thbecker]. Despite the syntactic
@@ -206,12 +206,12 @@ or an `rvalue`:
 - When called with and `rvalue` of type `X`, then `T` resolves to `X`
 
 When applying these rules we end up with an argument being `X & &&`. So there
-are even more rules to colapse the outcome:
+are even more rules to collapse the outcome:
 
-- `X & &` colapses to `X &`
-- `X & &&` colapses to `X &`
-- `X && &` colapses to `X &`
-- `X && &&` colapses to `X &&`
+- `X & &` collapses to `X &`
+- `X & &&` collapses to `X &`
+- `X && &` collapses to `X &`
+- `X && &&` collapses to `X &&`
 
 Combining the two rules we can have:
 
@@ -225,7 +225,7 @@ int main()
   fn(a);
   // argument expression is lvalue of type X
   // resolves to T being X &
-  // X & && colapses to X &
+  // X & && collapses to X &
 
   fn(X());
   // argument expression is rvalue of type X
@@ -301,7 +301,7 @@ constexpr typename remove_reference<T>::type && move(T && arg) noexcept
 
 First of all `std::move` is a template taking a `rvalue reference` argument
 which means that it can be called with either a `lvalue` or an `rvalue`, and
-the reference colapsing rules apply.
+the reference collapsing rules apply.
 
 Because the type `T` is deduced, we did not have to specify when **using**
 `std::move`.

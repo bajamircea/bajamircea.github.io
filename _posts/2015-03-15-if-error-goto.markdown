@@ -4,7 +4,7 @@ title: 'If Error Goto'
 categories: coding c
 ---
 
-This article looks at handling errors in C APIs using an if-error-goto codding
+This article looks at handling errors in C APIs using an if-error-goto coding
 pattern which is an improvement over the [if-error-else][if-error-else]
 variant.
 
