@@ -73,7 +73,7 @@ namespace
     ~periodic_thread_base()
     {
       {
-        std::lock_guard<std::mutex> lock(mutex_);
+        std::scoped_lock lock(mutex_);
         must_stop_ = true;
       }
       condition_variable_.notify_one();
@@ -85,7 +85,7 @@ namespace
   private:
     void run() noexcept
     {
-      std::unique_lock<std::mutex> lock(mutex_);
+      std::unique_lock lock(mutex_);
 
       while ( ! must_stop_)
       {
@@ -140,7 +140,7 @@ int main()
 }
 
 // Compile with:
-//   g++ -std=c++11 -pthread main.cpp && ./a.out
+//   g++ -std=c++17 -pthread main.cpp && ./a.out
 // Prints:
 //   Fire
 //   Fire
