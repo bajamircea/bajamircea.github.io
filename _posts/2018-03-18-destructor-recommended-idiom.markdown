@@ -4,8 +4,9 @@ title: 'Destructors: Recommended Idiom for C++11/17'
 categories: coding cpp
 ---
 
-This is the second of three articles about C++ destructors. It describes the
-recommended idiom for most C++ applications.
+The C++11/17 recommended idiom for descrtuctor exception safety for most C++
+applications. Realistic cases of how to handle code that destructors call. I
+ignore cosmic rays damaging CPU or memory and bugs (OS, compiler, hardware).
 
 
 # Introduction
@@ -20,13 +21,6 @@ include:
 - Create a separate function that throws and don't forget to call it (outside
   destructors).
 
-The most common question programmers ask is "yes, but why not?" . I'll allude
-to it at the end of this article, but it's really the point of the next article
-to explore that question.
-
-Here I'll restrict to describing in detail realistic cases of how to handle
-code that destructors call. I ignore cosmic rays damaging CPU or memory and
-bugs (OS, compiler, hardware).
 
 # Simplest: resource release that do not fail
 
@@ -351,8 +345,8 @@ prone.
 
 ## Termination is a better option
 
-Termination is sometimes a better option. There is a good explanation [why
-`std::thread` terminates if not joined][std-thread]. The summary of it is that
+Termination is sometimes a better option. There is a good explanation why
+`std::thread` [terminates if not joined][std-thread]. The summary of it is that
 the underlying APIs expect the user to come with a strategy to stop the thread
 in a controlled way. If the `std::thread` is destroyed, but the thread is still
 running, it means that the strategy to stop the thread was not implemented (or
@@ -534,18 +528,10 @@ plans to address this conundrum for the next major release of the
 POSIX.1 standard.
 {% endhighlight %}
 
-------------------
-# WORK IN PROGRESS:
-------------------
 
-- Scope guard: flushing
-  - Tear down
+## External rollback
 
-- Scope guard: cleanup
-
-- Commit/Rollback
-
-
+TODO: Work in progress - removing a file
 
 # References
 
@@ -566,6 +552,7 @@ POSIX.1 standard.
 
 Rationale for `std::thread` destructor terminating<br/>
 [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2802.html][std-thread]
+
 
 [close]: http://man7.org/linux/man-pages/man2/close.2.html
 [free]: http://www.cplusplus.com/reference/cstdlib/free/

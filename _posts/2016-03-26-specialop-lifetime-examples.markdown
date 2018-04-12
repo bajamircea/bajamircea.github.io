@@ -62,74 +62,88 @@ Here is a `buffer` class that can be copied and moved. This is just an example.
 For production code you should consider using `std::vector` instead.
 
 {% highlight c++ linenos %}
-class buffer
+// correctnes is easier to ensure by using
+// a class helper just for the pointer lifetime
+struct buffer_impl
 {
-public:
-  explicit buffer(size_t size = 0) :
-    p_{ new char[size] },
-    size_{ size }
+  char * p;
+
+  explicit buffer_impl(size_t size = 0) :
+    p{ new char[size] }
   {
   }
 
-  ~buffer()
+  ~buffer_impl()
   {
-    delete[] p_;
+    delete[] p;
   }
 
-  buffer(const buffer & other) :
-    p_{ new char[other.size_] },
-    size_{ other.size_ }
+  buffer_impl(buffer_impl && other) noexcept :
+    p{ other.p }
   {
-    for(size_t i = 0 ; i < size_ ; ++i)
-    {
-      p_[i] = other.p_[i];
-    }
+    other.p = nullptr;
   }
 
-  buffer & operator=(const buffer & other)
+  buffer_impl & operator=(buffer_impl && other) noexcept
   {
-    if (this != &other)
-    {
-      delete[] p_;
-      p_ = nullptr; // set p_ in case new fails later
-      size_ = other.size_;
-      p_ = new char[size_];
-      for(size_t i = 0 ; i < size_ ; ++i)
-      {
-        p_[i] = other.p_[i];
-      }
-    }
+    // for the sake of example
+    // use temporary to deal with move assignment
+    // when (this == &other)
+    char * temp = other.p;
+    other.p = nullptr;
+    delete[] p;
+    p = temp;
 
     return *this;
   }
 
-  buffer(buffer && other) noexcept :
-    p_{ other.p_ },
-    size_{ other.size_ }
+  void set_contents(const buffer_impl & other, size_t size) noexcept
   {
-    // other.size_ need not be set, it's not used in
-    // the destructor
-    other.p_ = nullptr;
+    for(size_t i = 0 ; i < size ; ++i)
+    {
+      p[i] = other.p[i];
+    }
+  }
+};
+
+// using the class above the buffer becomes
+class buffer
+{
+  buffer_impl impl_;
+  size_t size_;
+
+public:
+  explicit buffer(size_t size = 0) :
+    impl_{ size },
+    size_{ size }
+  {
   }
 
-  buffer & operator=(buffer && other) noexcept
+  // destructor not required, default does the job
+
+  buffer(const buffer & other) :
+    impl_{ other.size_ },
+    size_{ other.size_ }
   {
-    // use temporary to deal with move assignment
-    // when (this == &other)
-    char * temp = other.p_;
-    other.p_ = nullptr;
-    delete[] p_;
-    p_ = temp;
+    impl_.set_contents(other.impl_, other.size_);
+  }
+
+  buffer & operator=(const buffer & other)
+  {
+    buffer_impl x{ other.size_ };
+    x.set_contents(other.impl_, other.size_);
+
+    impl_ = std::move(x);
     size_ = other.size_;
 
     return *this;
   }
 
-  // more methods here ...
+  // defaulting move is required because we defined copy
+  buffer(buffer && other) noexcept = default;
+  buffer & operator=(buffer && other) noexcept = default;
 
-private:
-  char * p_;
-  size_t size_;
+  // more methods here ...
 };
 {% endhighlight %}
 

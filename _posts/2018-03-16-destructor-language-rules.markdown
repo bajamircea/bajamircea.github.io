@@ -1,17 +1,12 @@
 ---
 layout: post
-title: 'Destructors: Language Rules in C++11/17'
+title: 'Destructors: Exception Safety Language Rules in C++11/17'
 categories: coding cpp
 ---
 
-This is the first of three articles about C++ destructors. It describes current
-language rules in C++11/17 for the layman.
-
-
-# Introduction
-
-This is the first of three articles about C++ destuctors. We'll look at the
-language rules as informal as possible without going into too much legalese.
+Summary of the C++11/17 language rules related to destructor exception safety.
+We'll look at the language rules as informal as possible without going into too
+much legalese.
 
 
 # Rule 1: Orderly destruction on (unexceptional) completion
@@ -288,7 +283,9 @@ void fn()
 }
 {% endhighlight %}
 
-NOTE: `std::uncaught_exceptions` can be used to detect stack unwinding.
+NOTE: `std::uncaught_exceptions` can be used to detect stack unwinding. The `s`
+at the end (as in plural) is very important. The version without `s` has
+problems and is deprecated.
 
 # References
 
