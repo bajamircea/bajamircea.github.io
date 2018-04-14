@@ -4,7 +4,7 @@ title: 'Destructors: Recommended Idiom for C++11/17'
 categories: coding cpp
 ---
 
-The C++11/17 recommended idiom for descrtuctor exception safety for most C++
+The C++11/17 recommended idiom for destructor exception safety for most C++
 applications. Realistic cases of how to handle code that destructors call. I
 ignore cosmic rays damaging CPU or memory and bugs (OS, compiler, hardware).
 
@@ -498,8 +498,8 @@ void write_to_file(const char * file_name)
 
 The code above checks for all errors and reports only one:
 - If `fclose` fails then `write_to_file` fails with an exception.
-- If `fwrite` fails then it's exception propages, though `fclose` is called from
-  the destructor
+- If `fwrite` fails then it's exception propagates, though `fclose` is called
+  from the destructor
 
 ## Bad APIs
 
@@ -529,9 +529,82 @@ POSIX.1 standard.
 {% endhighlight %}
 
 
-## External rollback
+## External cleanup/rollback
 
-TODO: Work in progress - removing a file
+A common misconception is that destructors alone are enough to deal with
+cleanup/rollback that is external to the CPU and memory machinery.
+
+For example when writing a file on a disk, using a destructor to ensure that
+the file is removed in case of failure is not enough.
+
+`free` and `delete` can fail due to bugs in software or hardware or ... cosmic
+rays, but removing a file can fail more often, hence cannot be guaranted to
+succeed.
+
+For example when writing product tests we want each test to start with a clean
+state and not fail because of artefacts produced by another test. Performing
+cleanup at the end of the test is frail.
+
+{% highlight c++ linenos %}
+class file_remover
+{
+  bool enabled_;
+  std::string file_name_;
+public:
+  explicit file_remover(const std::string & file_name) :
+    enabled_{ true };
+    file_name_{ file_name }
+  {
+  }
+
+  ~file_remover()
+  {
+    if (enabled_)
+    {
+      try
+      {
+        remove_file(file_name_);
+      } catch(...)
+      {
+      }
+    }
+  }
+};
+
+void bad_test_1()
+{
+  file_remover rollback{ "file.txt" };
+  write_file("file.txt"); // throws on failure
+}
+
+void bad_test_2()
+{
+  ASSERT_FALSE(file_exits("file.txt"));
+}
+{% endhighlight %}
+
+This approach above is not correct, if the first test fails to write, removing
+the file will also fail, the second test will also fail.
+
+The correct approach often needs to accept and deal with the situation
+where the file was partially written (such as from a previous failed run).
+Counterintuitively cleanup has to be done before the action, not after.
+
+{% highlight c++ linenos %}
+void test_1()
+{
+  write_file("file.txt");
+}
+
+void test_2()
+{
+  remove_file{ "file.txt" };
+  ASSERT_FALSE(file_exits("file.txt"));
+}
+{% endhighlight %}
+
+In rare cases one could use a combination of the two approaches if cleanup has
+a high chance to succeed even if the action fails.
 
 # References
 
