@@ -5,8 +5,9 @@ categories: coding cpp
 ---
 
 The C++11/17 recommended idiom for destructor exception safety for most C++
-applications. Realistic cases of how to handle code that destructors call. I
-ignore cosmic rays damaging CPU or memory and bugs (OS, compiler, hardware).
+applications. Realistic cases of how to handle code that destructors call.
+Cosmic rays damaging CPU or memory and bugs (OS, compiler, hardware) not
+included.
 
 
 # Introduction
@@ -575,6 +576,7 @@ void bad_test_1()
 {
   file_remover rollback{ "file.txt" };
   write_file("file.txt"); // throws on failure
+  ASSERT_TRUE(file_exits("file.txt"));
 }
 
 void bad_test_2()
@@ -594,6 +596,7 @@ Counterintuitively cleanup has to be done before the action, not after.
 void test_1()
 {
   write_file("file.txt");
+  ASSERT_TRUE(file_exits("file.txt"));
 }
 
 void test_2()

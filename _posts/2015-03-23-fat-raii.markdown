@@ -27,9 +27,9 @@ invalid handle.
 
 {% highlight c++ linenos %}
 file::file(file && other) noexcept :
-  f_{ other_f }
+  f_{ other.f_ }
 {
-  other_.f = nullptr;
+  other.f_ = nullptr;
 }
 
 file::~file()
@@ -108,7 +108,7 @@ file::file(FILE * f, bool own) :
 
 file::~file()
 {
-  if (own_ && f_)
+  if (own_)
   {
     fclose(f_);
   }
@@ -118,7 +118,6 @@ file::file(file && other) noexcept :
   f_{ other.f_ },
   own_{ other.own_ }
 {
-  other.f_ = nullptr;
   other.own_ = false;
 }
 
@@ -126,13 +125,12 @@ file & file::operator=(file && other) noexcept
 {
   if (this != &other)
   {
-    if (own_ && f_)
+    if (own_)
     {
       fclose(f_);
     }
     f_ = other.f_;
     own_ = other.own_;
-    other.f_ = nullptr;
     other.own_ = false;
   }
   return *this;
