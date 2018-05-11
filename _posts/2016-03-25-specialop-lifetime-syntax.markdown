@@ -266,10 +266,10 @@ with copy it can happen at construction time or through assignment.
 
 {% highlight c++ linenos %}
 X a;
-X b(std::move(a)); // copy construction happens here
+X b(std::move(a)); // move construction happens here
 X c = std::move(b); // and here
 X d;
-d = std::move(d); // copy assignment happens here
+d = std::move(d); // move assignment happens here
 {% endhighlight %}
 
 The syntax looks like:

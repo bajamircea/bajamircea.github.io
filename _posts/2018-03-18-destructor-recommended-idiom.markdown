@@ -549,25 +549,20 @@ cleanup at the end of the test is frail.
 {% highlight c++ linenos %}
 class file_remover
 {
-  bool enabled_;
   std::string file_name_;
 public:
   explicit file_remover(const std::string & file_name) :
-    enabled_{ true };
     file_name_{ file_name }
   {
   }
 
   ~file_remover()
   {
-    if (enabled_)
+    try
     {
-      try
-      {
-        remove_file(file_name_);
-      } catch(...)
-      {
-      }
+      remove_file(file_name_);
+    } catch(...)
+    {
     }
   }
 };

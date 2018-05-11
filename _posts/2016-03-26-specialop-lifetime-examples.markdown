@@ -87,8 +87,9 @@ struct buffer_impl
   buffer_impl & operator=(buffer_impl && other) noexcept
   {
     // for the sake of example
-    // use temporary to deal with move assignment
-    // when (this == &other)
+    // use temporary
+    // to deal with move self-assignment
+    // e.g. a = std::move(a)
     char * temp = other.p;
     other.p = nullptr;
     delete[] p;
@@ -201,13 +202,19 @@ struct unique_resource :
 
   unique_resource & operator=(unique_resource && other) noexcept
   {
-    typename resource_traits::value_type temp = other.value;
-    other.value = resource_traits::invalid_value;
-    if (is_valid())
+    // for the sake of example
+    // use test for (this != &other)
+    // to deal with move self-assignment
+    // e.g. a = std::move(a)
+    if (this != &other)
     {
-      resource_traits::close(value);
+      if (is_valid())
+      {
+        resource_traits::close(value);
+      }
+      value = other.value;
+      other.value = resource_traits::invalid_value;
     }
-    value = temp;
     return *this;
   }
 
