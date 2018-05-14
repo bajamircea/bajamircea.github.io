@@ -227,9 +227,9 @@ class: large-points
 # Note
 
 - Implementation on previous slide is not optimal (reason: unnecessary multiple traversal)
-- Pure historical reasons for the compiler not implementing comparison operators by default
-- Note that equality and comparison do not have the same cost
 - Spaceship operator '<=>' proposal
+- Note that equality and comparison do not have the same cost
+- Pure historical reasons for the compiler not implementing comparison operators by default
 
 ---
 
@@ -250,7 +250,7 @@ auto tie_members(const dog & x) noexcept
 {
   return std::tie(x.name, x.breed);
 }
-// returns a std::tuple<std::string &, std::string &>
+// returns a std::tuple<const std::string &, const std::string &>
 ```
 
 --
@@ -534,16 +534,16 @@ Probably not:
 
 # Reflection result
 
-Options:
-- unique type for each reflection
-- objects, but still of unique type for each reflection
-- objects of a single type e.g. std::meta::info
-
 Metadata:
 - name (e.g. name of a class)
 - list of members
 - arguments of a function
 - etc.
+
+Options:
+- unique type for each reflection
+- objects, but still of unique type for each reflection
+- objects of a single type e.g. std::meta::info
 
 ---
 class: large-points
@@ -552,8 +552,8 @@ class: large-points
 
 - existing template metaprogramming
 - raw string (powerful, but could be opaque)
-- token sequence (e.g. -> { ...code here...})
 - abstract syntax tree creation API
+- token sequence (e.g. -> { ...code here...})
 - associate a name as a shorthand for code generation (e.g. metaclasses)
 
 ---
@@ -1113,10 +1113,13 @@ https://pixabay.com/en/animal-dog-puppy-pet-photography-2184791/
 
 ---
 
+# Thanks
+
+Thanks go to Nigel Lester for organizing the original ACCU talk and spell
+checking the presentation.
+
+---
+
 # Questions?
 
-Special thanks to Nigel Lester for organizing the talk and spell checking the
-presentation.
-
-https://bajamircea.github.io/presentations/2018-01-29-reflection.html
-
+https://bajamircea.github.io/presentations/2018-05-15-reflection.html
