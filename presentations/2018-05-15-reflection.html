@@ -338,8 +338,6 @@ class: large-points
 # Issues with current metaprogramming in C++
 
 - It looks clever, but it is convoluted
-- Relies on the historical accident that the templates machinery is Turing
-  complete
 
 
 - Conditionals ('if') use overloading/template specialization
@@ -347,16 +345,20 @@ class: large-points
 - Store state as parametrized types and constants
 - Instantiate template to trigger the computation
 
+
+- Relies on the historical accident that the templates machinery is Turing
+  complete
+
 ---
 class: large-points
 
 # Issues with current reflection support in C++
 
-- Is very limited, relies on overloading, template specialization, concepts
-
-
 - Can query for types e.g. std::is_pointer
 - Can do simple type transformations e.g. std::make_unsigned
+
+
+- But is very limited, relies on overloading, template specialization, concepts
 
 
 - Can't enumerate members
