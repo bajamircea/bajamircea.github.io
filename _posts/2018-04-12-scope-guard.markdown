@@ -54,6 +54,7 @@ opposed to failure. The cleanup is a commit in this case.
 
 {% highlight c++ linenos %}
 #include "scope_failure.h"
+#include "scope_success.h"
 #include <iostream>
 
 void foo()
@@ -87,8 +88,8 @@ for a start lambdas were not available, macros were used as substitutes.
 ## scope_exit.h
 
 Here is a possible implementation of a `scope_exit` class. It calls a function
-when the scope is exited. The function is called in the destructor and stored
-in the constructor. A helper function is used to deduce the exact type of the
+when the scope is exited. The function is stored in the constructor and called
+in the destructor. A helper function is used to deduce the exact type of the
 function (e.g. it could be a functor, a function object, or a lambda, or just a
 function).
 
@@ -223,6 +224,14 @@ auto make_scope_failure(F && f)
 {% endhighlight %}
 
 
+## scope_success
+
+`scope_success` is dubious. One one side it compliments `scope_failure` and
+allows commit code to stay close to the related action. But using a destructor
+to call a function when no exception is thrown is convoluted compared with just
+calling the function.
+
+
 # Comparing approaches
 
 ## Compared with RAII
@@ -265,7 +274,9 @@ int main()
 ## Compared with using try-catch blocks
 
 Should you have a situation where there is an action with cleanup, rollback and
-commit the `try` `catch` approach takes the following shape.
+commit the `try` `catch` approach takes the following shape (assuming that
+cleanup, rollback and commit functions do not throw, otherwise more code is
+required).
 
 {% highlight c++ linenos %}
 #include <iostream>
@@ -299,6 +310,9 @@ void foo()
 //
 // foo exits with std::runtime_error("Failure")
 {% endhighlight %}
+
+The `try` `catch` block approach becomes unreadable for anything but the
+simplest cases.
 
 
 ## Compared with D
@@ -334,60 +348,118 @@ void bar()
 {% endhighlight %}
 
 
-# Exceptions while cleaning up
+# Exceptions
 
-TODO: Work in progress
+## While cleaning up
 
-{% highlight d linenos %}
-import std.stdio : writeln;
+One approach is to ensure that in cleanup (including rollback and commit work)
+exceptions are not thrown.
+
+But if an exception is thrown, then the simple approach we took will terminate
+the program because of the implicit `noexcept` for destructors. This would be a
+another approach.
+
+Another approach is the one took for by the D language, there cleanups can
+throw. To emulate this behaviour while still staying within the C++ language
+rules we can catch and ignore exceptions if stack unwinding and propagate them
+if not stack unwinding. The destructors for the scope guards need to then look
+like this:
+
+{% highlight c++ linenos %}
+  ~scope_exit() noexcept(false)
+  {
+    if (stack_unwinding_())
+    {
+      try { f_(); } catch (...) { }
+    }
+    else
+    {
+      f_();
+    }
+  }
+
+  ~scope_failure()
+  {
+    if (stack_unwinding_())
+    {
+      try { f_(); } catch (...) { }
+    }
+  }
+
+  ~scope_success() noexcept(false)
+  {
+    if (!stack_unwinding_())
+    {
+      f_();
+    }
+  }
+{% endhighlight %}
+
+With this change the code below will first execute a commit which throws
+triggering the failure scenario and hence subsequent rollback.
+
+{% highlight c++ linenos %}
+#include "scope_failure.h"
+#include "scope_success.h"
+#include <iostream>
 
 void foo()
 {
-    writeln("In foo");
-    throw new Exception("Foo exception");
+  std::cout << "Action 1\n";
+  auto scope_1 = make_scope_failure([](){
+    std::cout << "Rollback 1\n";
+    // for the sake of example throw an exception
+    throw std::runtime_error("Another failure");
+  });
+  auto scope_2 = make_scope_success([](){
+    std::cout << "Commit 1\n";
+    // for the sake of example throw an exception
+    throw std::runtime_error("Failure");
+  });
+
+  std::cout << "Success\n";
 }
-
-void main()
-{
-    try
-    {
-        writeln("Action 1");
-        scope(exit) writeln("Cleanup 1");
-        scope(failure) writeln("Rollback 1");
-        scope(success) writeln("Commit 1");
-
-        writeln("Action 2");
-        scope(exit) writeln("Cleanup 2");
-        scope(failure) writeln("Rollback 2");
-        scope(success) writeln("Commit 2");
-
-        foo();
-    }
-    catch(Exception e)
-    {
-        writeln(e.msg);
-    }
-}
-// Prints
+// Prints:
 // Action 1
-// Action 2
-// In foo
-// Rollback 2
-// Cleanup 2
+// Success
+// Commit 1
 // Rollback 1
-// Cleanup 1
-// Foo exception
+//
+// foo exits with std::runtime_error("Failure")
 {% endhighlight %}
 
+In the example above, faced with two exceptions while cleaning up, the function
+`foo` exits with the first exception. However the D equivalent code exits with
+the second exception.
 
+## While constructing scope objects
 
-## scope_success
-
-`scope_success` is dubious. Using a destructor to call a function when no
-exception is thrown is convoluted compared with just calling the function.
+Another issue to consider is the possibility of failure to construct the scope
+guard objects. One such situation could be if the lambda we provide captures
+something by value and that copy throws. Obviously in that case the cleanup
+will not be performed.
 
 
 # Conclusion
+
+When performing cleanup, using a `try` `catch` manual approach will not scale.
+
+RAII surely wins when a cleanup is used in many places in code, releasing
+resources such as freeing heap allocated memory, closing handles, unlocking
+mutexes.
+
+For cleanup actions that are one-offs, i.e. once or low single digit numbers,
+involving a external cleanup that succeeds most of the time, the scope guard
+approach saves some code compared with the RAII approach.
+
+However scope guards have issues:
+
+- Yet another idiom with subtle behaviours around exception handling that users
+  need to understand (in particular which are the choices made by the specific
+  scope guards used)
+- Equating exceptions with failures makes it suitable for some environments
+  only
+
 
 # References
 
