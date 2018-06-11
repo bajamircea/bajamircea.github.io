@@ -1,0 +1,52 @@
+---
+layout: post
+title: 'Books Read in 2018'
+categories: read book
+---
+
+List of books I've read in 2018
+
+- 2018-06-10 - James Comey: A Higher Loyalty
+
+- 2018-06-01 - Steven Pinker: Enlightenment Now
+: Very good book 10 out of 10 [see review][s-pinker-enlightenment-now]
+
+- 2018-05 - Francis-Noël Thomas and Mark Turner: Clear and simple as the
+  truth
+: Definition of style of writing as deep attitudes with regards to truth and
+the relationship between the writer and the reader. Presents the classic style
+as one where the writer has something meaningful to say, assumes that the truth
+can be presented, and that the reader will recognise.
+
+- 2018-04 - Steven Levitsky and Daniel Ziblatt: How Democracies Die
+: Two guys specialist on malfunctions of democracies (one in South America
+ones, the other in Easter Europe ones) said to each other: with Trump now we
+can apply the same to US. In a democratic regime the powers (e.g. executive,
+legislative, judiciary) restrain from using the full power of the law (e.g.
+Congress does not remove the president just because it has the majority to do
+so). The US politics have become polarized long before Trump.
+
+- 2018-04 Keith Hitchins: Românii. 1774-1866
+: Romanian history by an American. Covers about a century up to shortly after
+the Union Principalities of Moldavia and Wallachia. OK, but not as incisive as
+the works of Lucian Boia. Among other pieces of info: how small the population
+was, in particular in cities, how production of wheat was taken by the Turks,
+hence peasants were keen to plant other things like corn, why the national
+ideology about the Roman and Dacian origin (Roman provide reputation whereas
+Dacian extends timelines). Funny fact: aristocracy (boyars) tried at some point
+to define the day of work the serfs were obliged to provide to be longer than
+an actual day.
+
+- 2018-03 - Simon A. Herbert: Reason in Human Affairs
+: Great insight on how we take decisions.
+
+- 2018-02 - Chip and Dan Heath: Made to Stick
+
+- 2018-01 - Lucian Boia: Mitologia ştiinţifică a comunismului
+: There is nothing scientific about communism/marxism.
+
+- 2018-01 Carlo M. Cipolla: The Basic Laws of Human Stupidity
+: Tongue and cheek essay on human stupidity e.g. "Always and inevitably
+everyone underestimates the number of stupid individuals in circulation."
+
+[s-pinker-enlightenment-now]:  {% post_url 2018-05-03-enlightenment-now-s-pinker %}
