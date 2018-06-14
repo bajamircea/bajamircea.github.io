@@ -64,6 +64,19 @@ endif
 
 set tw=79
 set timeoutlen=1000 ttimeoutlen=0
+
+" e.g. type 'CTRL-K ia' for â
+dig aA 258 " Ă
+dig aa 259 " ă
+dig iA 194 " Â
+dig ia 226 " â
+dig iI 206 " Î
+dig ii 238 " î
+dig sS 536 " Ș
+dig ss 537 " ș
+dig tT 538 " Ț
+dig tt 539 " ț
+
 {% endhighlight %}
 
 # ~/.tmux.conf
