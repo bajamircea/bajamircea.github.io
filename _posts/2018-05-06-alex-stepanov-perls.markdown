@@ -8,11 +8,12 @@ Alex Stepanov's pontificative perls from Efficient Programming with Components
 (A9 Videos)
 
 
-Equality is not by default implemented for a `struct` in C++; this originates
-from C. For C copy was implemented by default (at some point) using `memcpy`,
-and the thinking was (wrongly) that `memcmp` needs to be used for equality, and
-that (correctly) `memcmp` would not be suitable because of padding. Instead of
-`memcmp` memberwise comparison should have been done by default.
+Equality is not by default implemented for a `struct` in C++. This comes from
+the historic link to C. Copy for `struct`s was implemented in C by default (at
+some point) using `memcpy`. The thinking was (wrongly) that `memcmp` needs to
+be used for equality, and that (correctly) `memcmp` would not be suitable
+because of padding. Instead of `memcmp` memberwise comparison should have been
+done by default.
 
 `enum`s were added in C by Dennis (Ritchie?) under duress (given know
 limitations like the difficulty to list the options, get the index of the
@@ -39,8 +40,8 @@ Do not do unnecessary work.
 
 Do not optimise uncommon cases.
 
-One reason for using '<' as the default comparison in algorithms is that
-sorting numbers with '<' results in an ascending sequence which is the natural
+One reason for using `<` as the default comparison in algorithms is that
+sorting numbers with `<` results in an ascending sequence which is the natural
 order for numbers.
 
 `std::max` is not ideal: for equal values it returns the first, hence is not
