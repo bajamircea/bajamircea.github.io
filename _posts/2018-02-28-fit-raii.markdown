@@ -22,18 +22,22 @@ This article tries to sketch one such alternative. I'll call it 'fit RAII'.
 ## cpp_util_lib/raii_with_invalid_value.h
 
 First lets create a class template to deal with resources that have a invalid
-value. For this simple example is not necessary, because we'll only use it once
-with `FILE *`. The class is moveable, that means that it can be used as a
-function return value. However it's not copyable, that does make sense for most
-resources e.g.: it makes sense to copy the file contents, but not the file
-handle. The `get`, `reset` and `release` methods create some similarities in
-usage to smart pointers.
+value. For this simple example is not strictly necessary, because we'll only
+use it once with `FILE *`. Other similar templates can be imagined for
+situations like where there is no invalid value and we need an extra `bool`, or
+for the case where additional data is required to free the resource.
 
 {% highlight c++ linenos %}
 #pragma once
 namespace cpp_util
 {
   template<typename Traits>
+  // requires Traits defines
+  // - a Handle type - the type of the handle
+  // - a function static void free_handle(Handle) noexcept - the function to
+  //   close the handle
+  // - and a invalid_value constant - the special value indicating no handle is
+  //   hold
   class raii_with_invalid_value
   {
     using Handle = typename Traits::Handle;
@@ -41,8 +45,13 @@ namespace cpp_util
 
     Handle h_;
 
-    public:
-    explicit raii_with_invalid_value(Handle h = invalid_value) noexcept :
+  public:
+    raii_with_invalid_value() noexcept :
+      h_{ invalid_value }
+    {
+    }
+
+    explicit raii_with_invalid_value(Handle h) noexcept :
       h_{ h }
     {
     }
@@ -115,6 +124,23 @@ namespace cpp_util
 }
 {% endhighlight %}
 
+The single purpose of the class is to free the resource on destructor, if it
+does not have the invalid value.
+
+The class is not copyable because the destructor would be called
+twice for both the original and the copy. This does not make sense for most
+resources e.g. it makes sense to copy the file contents, but not the file
+handle. Copying a file handle is either not possible or possible but
+undesirable most of the time.
+
+The class is moveable and has a default constructor which makes it useful in a
+variety of scenarios not ilustrated in the code below. E.g. when it needs to be
+default created and the handle is provided later even indirectly via the
+`handle_pointer` method.
+
+The `get`, `reset` and `release` methods create some similarities in usage to
+smart pointers.
+
 
 ## cstdio_lib/file_raii.h
 
@@ -134,7 +160,7 @@ namespace cstdio
   {
     struct file_raii_traits
     {
-      using Handle = FILE*;
+      using Handle = FILE *;
 
       static constexpr auto invalid_value = nullptr;
 
@@ -439,7 +465,7 @@ errors at runtime cost.
 
 At a superficial look this approach looks more verbose than the 
 [classic RAII][classic-raii], [slim RAII][slim-raii], [fat RAII][fat-raii] and
-even [pure C approaches][if-error-goto]. __It totals 276 lines of code__.
+even [pure C approaches][if-error-goto]. __It totals 287 lines of code__.
 
 However it will pay off on various scenarios that are likely in a large
 project where you will write more code that reuses existing code in new

@@ -211,6 +211,10 @@ Swiss-knife approaches like [`CreateFile`][create-file] where a single function
 has additional parameters or flags that fundamentally change behaviour (e.g.
 see the `FILE_FLAG_OVERLAPPED` flag) are really multiple APIs under disguise.
 
+Sometimes the term [bifurcation][bifurcation] is used instead, e.g. with regards to dealing
+with exceptions. but I think that the term fragmentation captures better the
+many axes of spliting a API.
+
 
 ## References
 
@@ -223,3 +227,4 @@ see the `FILE_FLAG_OVERLAPPED` flag) are really multiple APIs under disguise.
 [exec-policy]: http://en.cppreference.com/w/cpp/algorithm/execution_policy_tag_t
 [create-file]: https://msdn.microsoft.com/en-us/library/windows/desktop/aa363858(v=vs.85).aspx
 [two-functions]: {% post_url 2018-03-15-two-functions-error-handling %}
+[bifurcation]: http://open-std.org/JTC1/SC22/WG21/docs/papers/2016/p0364r0.pdf

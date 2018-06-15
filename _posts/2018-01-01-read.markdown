@@ -17,8 +17,7 @@ a flat surface it's π (pi). If it's not π, then the surface is not flat.
 - 2018-06-01 - Steven Pinker: Enlightenment Now
 : Very good book 10 out of 10 [see review][s-pinker-enlightenment-now]
 
-- 2018-05 - Francis-Noël Thomas and Mark Turner: Clear and simple as the
-  truth
+- 2018-05 - Francis-Noël Thomas and Mark Turner: Clear and simple as the truth
 : Definition of style of writing as deep attitudes with regards to truth and
 the relationship between the writer and the reader. Presents the classic style
 as one where the writer has something meaningful to say, assumes that the truth
