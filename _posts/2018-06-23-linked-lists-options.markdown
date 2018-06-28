@@ -34,11 +34,11 @@ There are several design choices that lead to different kinds of linked lists.
 
 Single linked lists have a pointer to the next node.
 
-![Single linked](/assets/2018-06-23-linked-lists-variations/01-single-linked.png)
+![Single linked](/assets/2018-06-23-linked-lists-options/01-single-linked.png)
 
 Double linked lists have an additional pointer to the previous node.
 
-![Double linked](/assets/2018-06-23-linked-lists-variations/02-double-linked.png)
+![Double linked](/assets/2018-06-23-linked-lists-options/02-double-linked.png)
 
 NOTE: In the diagram above the `prev` pointers would really point to node, not
 to the `prev` member of the node, but that more accurate diagram would have
@@ -53,12 +53,12 @@ There are two choices for the `next` pointer of the tail node (and for the
 It can be `nullptr`, not pointing to another node. In this case the list is
 linear.
 
-![Linear](/assets/2018-06-23-linked-lists-variations/03-linear.png)
+![Linear](/assets/2018-06-23-linked-lists-options/03-linear.png)
 
 Or it can close the loop pointing to the node at the other end of the chain. In
 this case the list is circular.
 
-![Circular](/assets/2018-06-23-linked-lists-variations/04-circular.png)
+![Circular](/assets/2018-06-23-linked-lists-options/04-circular.png)
 
 
 # Header - size
@@ -70,13 +70,13 @@ of lists, many of which are empty.
 
 For a linear list the header needs to contain a pointer to the head.
 
-![Header to head](/assets/2018-06-23-linked-lists-variations/05-header-head.png)
+![Header to head](/assets/2018-06-23-linked-lists-options/05-header-head.png)
 
 For a single linked circular list the header should have a pointer to the tail.
 This way the head can also be accessed in 2 steps (regardless of the length of
 the list).
 
-![Header to tail](/assets/2018-06-23-linked-lists-variations/06-header-tail.png)
+![Header to tail](/assets/2018-06-23-linked-lists-options/06-header-tail.png)
 
 Alternatively the header can be larger than just a pointer.
 
@@ -88,7 +88,7 @@ that does not need to contain a value (e.g. it's `reinterpret_cast`ed to a
 node), between the node for the front (the node of the first value) and the
 back (the node for the last value).
 
-![Dummy node](/assets/2018-06-23-linked-lists-variations/07-dummy-node.png)
+![Dummy node](/assets/2018-06-23-linked-lists-options/07-dummy-node.png)
 
 The dummy node for an empty list would have `next` and `prev` pointing to
 itself.
@@ -147,7 +147,7 @@ elsewhere e.g. if the meaning of `next` and `prev` is fixed just for the entry
 point in the list (e.g. the dummy node) while for the rest of the nodes is
 deduced.
 
-![Fast reversal](/assets/2018-06-23-linked-lists-variations/08-fast-reversal.png)
+![Fast reversal](/assets/2018-06-23-linked-lists-options/08-fast-reversal.png)
 
 
 # References
