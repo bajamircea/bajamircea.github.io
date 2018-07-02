@@ -41,7 +41,7 @@ Double linked lists have an additional pointer to the previous node.
 ![Double linked](/assets/2018-06-23-linked-lists-options/02-double-linked.png)
 
 NOTE: In the diagram above the `prev` pointers would really point to node, not
-to the `prev` member of the node, but that more accurate diagram would have
+to the `prev` member of the node, but that more precise diagram would have
 made for a more difficult read.
 
 
@@ -131,7 +131,8 @@ user of the list owns the nodes directly or indirectly (through the list).
 
 # Iterators
 
-The iterators for a list can be simply a pointer to a node.
+The iterators for a list can be simply a pointer to a node with simple logic to
+advance by one position by following `next` (or `prev`).
 
 Or they can be larger e.g. to allow for either a minimalistic header or a back
 insert operation.
@@ -142,10 +143,10 @@ insert operation.
 Most lists have fixed meaning for the pointers in the node (e.g. first is
 `next`, second is `prev`).
 
-Fast reverse of double linked lists can be achieved at additional cost
-elsewhere e.g. if the meaning of `next` and `prev` is fixed just for the entry
-point in the list (e.g. the dummy node) while for the rest of the nodes is
-deduced.
+Fast reverse of double linked lists can be achieved if the meaning of `next`
+and `prev` is fixed just for the entry point in the list (e.g. the dummy node)
+while for the rest of the nodes it is deduced. This obviously has additional cost
+for other operations.
 
 ![Fast reversal](/assets/2018-06-23-linked-lists-options/08-fast-reversal.png)
 
