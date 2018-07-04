@@ -13,8 +13,12 @@ Alex Stepanov mentions at some point that `std::vector` is just a kind of
 vector, there are many kinds of vector. It turns out that `std::list` is also
 just a kind of linked list, the are many kinds of linked lists.
 
-Linked lists are data structures that are implemented as a chain of nodes where
-each node stores a value and one or more pointers to adjacent nodes.
+Linked lists are dynamic-size data structures that are implemented as a chain
+of nodes. Each node stores a value and one or two pointers to adjacent nodes.
+
+A list has a header (consisting of the local parts, at fixed offsets from the
+list object address) and the chain of nodes (the remote parts). The chain is
+accessed through at least one pointer in the header.
 
 Like extent based data structures e.g. `std::vector`, linked lists expose a
 sequence of values. The differences are in terms of trade-offs for the cost of
@@ -47,8 +51,7 @@ made for a more difficult read.
 
 # Linear vs. Circular
 
-There are two choices for the `next` pointer of the tail node (and for the
-`prev` pointer for the head node).
+There are two choices for the `next` pointer of the tail node.
 
 It can be `nullptr`, not pointing to another node. In this case the list is
 linear.
@@ -60,38 +63,63 @@ this case the list is circular.
 
 ![Circular](/assets/2018-06-23-linked-lists-options/04-circular.png)
 
+Double linked lists have the same choice for the `prev` pointer for the head
+node. A double linked list is either linear for both chains or circular for
+both chains.
 
-# Header - size
 
-The list itself needs the means to access the chain of nodes.
+# Header - minimalistic
 
 A minimalistic header can have just one pointer. That's useful for large number
 of lists, many of which are empty.
 
-For a linear list the header needs to contain a pointer to the head.
+The minimalistic header can have a pointer to the head (e.g. a linear single
+linked list).
 
 ![Header to head](/assets/2018-06-23-linked-lists-options/05-header-head.png)
 
-For a single linked circular list the header should have a pointer to the tail.
-This way the head can also be accessed in 2 steps (regardless of the length of
-the list).
+Or the minimalistic header can have a pointer to the tail, This can work for
+circular lists, by providing access to the head as well in a constant number of
+steps regardless of the length of the list.
 
 ![Header to tail](/assets/2018-06-23-linked-lists-options/06-header-tail.png)
 
 Alternatively the header can be larger than just a pointer.
 
 
+# List size
+
+The list can store its size in the header and adjust it when values get
+inserted or removed.
+
+Or it can dispense with storing it and do a traversal to count the number of
+values in the list.
+
+
+# Links from remote parts to local parts
+
+One option is to only have links from the header (the local parts) to the nodes
+(the remote parts), but no links from the nodes (the remote parts) back to the
+header.
+
+The other option is to allow links from the nodes (the remote parts) back to
+the header (the local parts). This makes some operations a bit more complex
+(e.g.  move constructor and assignment need to also adjust the relevant
+pointers to point to the new header).
+
+
 # Dummy node
 
-For circular lists there is the option to introduce a dummy node
-that does not need to contain a value (e.g. it's `reinterpret_cast`ed to a
-node), between the node for the front (the node of the first value) and the
-back (the node for the last value).
+For circular lists there is the option to introduce a dummy node that does not
+need to contain a value (e.g. it's `reinterpret_cast`ed to a node), between the
+node for the front (the node of the first value) and the back (the node for the
+last value).
 
 ![Dummy node](/assets/2018-06-23-linked-lists-options/07-dummy-node.png)
 
 The dummy node for an empty list would have `next` and `prev` pointing to
 itself.
+
 
 # Dummy node - location
 
@@ -102,14 +130,42 @@ If the dummy node is allocated on the heap there are two choices:
 - or introduce a special state, when default constructed or moved from, where
   there is no dummy node
 
-Alternatively the dummy node can be part of the header.
+Alternatively the dummy node can be part of the header. This creates links from
+remote parts to local parts.
 
-# List size
 
-The list can store its size and adjust it when values get inserted or removed.
+# Iterators - minimalistic
 
-Or it can dispense with storing it and do a traversal to count the number of
-values in the list.
+A minimalistic list iterator can be simply a pointer to a node with simple
+logic to advance by one position by following `next` (or `prev`).
+
+Or they can be larger e.g. to allow for either a minimalistic header or a back
+insert operation.
+
+
+# Permanent end iterator
+
+The end iterator is one past the back. A permanent end iterator does not get
+invalidated as nodes get inserted or removed.
+
+NOTE: Examples of permanent end iterator:
+- a pointer to a dummy node
+- a `nullptr` in a minimalistic iterator
+- a non-minimalistic iterator containing a pointer to the header
+
+
+# ForwardIterator vs BidirectionalIterator
+
+All list iterators are at least `ForwardIterator`.
+
+Double linked lists iterators can be `BidirectionalIterator`. That is trivial to
+achieve when the iterator points to a node, but might require trade-offs
+elsewhere to reverse from the end iterator.
+
+
+# Allocators
+
+A variety of options can be made for how the nodes are allocated.
 
 
 # Intrusive vs. non-intrusive.
@@ -118,24 +174,40 @@ For non-intrusive lists the user of the list does not care about the layout of
 the node. They are easier to use.
 
 For intrusive lists the user of the list provides the layout of the node. They
-are more difficult to use but have the advantage that one can get the pointer
-to the node from a reference to the value, and that a value can be linked into
-multiple lists.
+are more difficult to use but have the advantage a value can be linked into
+multiple lists (or even other data structures).
 
 
-# Ownership and allocators
+# Getting an iterator from a reference to a value
 
-A variety of options can be made for how the nodes are allocated and if the
-user of the list owns the nodes directly or indirectly (through the list).
+One possible facility is to provide a mean to get an iterator from a reference
+to a value. This is usually the case for intrusive lists, but can be provided
+
+for non-intrusive lists as well.
+
+# Node ownership
+
+If the list owns the nodes, they get deleted when the list gets destroyed.
+
+The other option is that the list does not own the nodes. This is usually the
+case with intrusive lists, in particular when a node is part of more than a
+list, at most one list can own the nodes.
 
 
-# Iterators
+# Operations available
 
-The iterators for a list can be simply a pointer to a node with simple logic to
-advance by one position by following `next` (or `prev`).
+All lists provide:
+- constant time access to the front (the first value)
+- constant time `push_front`
+- constant time `pop_front`
+- constant time insertion and erasure after iterator (i.e. other than the end iterator)
 
-Or they can be larger e.g. to allow for either a minimalistic header or a back
-insert operation.
+Typical optional operations are:
+- constant time access to the back (the last value)
+- constant time `push_back`
+- constant time `pop_back`
+- constant time insertion and erasure before iterator
+- some form of constant time transfer of nodes to another list (splicing)
 
 
 # Meaning of pointers in the node

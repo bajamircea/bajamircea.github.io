@@ -18,21 +18,21 @@ generally slow because it cannot take advantage of cache prefetching).
 # Single linked lists
 
 Single linked lists have a `ForwardIterator`. They might offer constant time
-access to the front and `push_back`. They do not offer `pop_back` because it
+access to the back and `push_back`. They do not offer `pop_back` because it
 requires linear list traversal.
 
 
 ## Single linked basic
 
-A single linked basic list is a linear list, with a minimalistic header and
-iterator.
+A single linked basic list is linear, with a minimalistic header and iterator.
+The end iterator is just a `nullptr` value.
 
 ![Single linked basic](/assets/2018-06-28-linked-lists-examples/01-single-basic.png)
 
 It does not offer offer constant time access to the back and `push_back`.
 
-This is a good candidate for a `std::forward_list` implementation (i.e. a list
-with minimalistic memory usage).
+This is a good candidate for a `std::forward_list` implementation. Also it's a
+list with minimalistic memory usage (for a linked list).
 
 
 ## Single linked circular
