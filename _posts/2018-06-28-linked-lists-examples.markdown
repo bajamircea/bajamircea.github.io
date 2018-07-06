@@ -152,7 +152,7 @@ reference to the value, and then can remove the node from the list, all while
 keeping the rest as simple as possible.
 
 
-# Double linked circular
+## Double linked circular
 
 A circular double linked list without a dummy node has a minimalist header, but
 a (relatively) complex iterator and no fixed end iterator.
@@ -160,7 +160,7 @@ a (relatively) complex iterator and no fixed end iterator.
 ![Double linked circular](/assets/2018-06-28-linked-lists-examples/05-double-circular.png)
 
 
-# Double linked with allocated dummy node
+## Double linked with allocated dummy node
 
 A circular double linked list with an allocated dummy node has a minimalistic
 header and iterator.
