@@ -6,21 +6,7 @@ categories: coding cpp
 
 Example of linked lists types.
 
-# Common notes
-
-All lists allow constant time access to the front, `push_front`, `pop_front`,
-insertion and erasure after iterator.
-
-Finding an element by traversing from head to tail takes linear time (and
-unlike extent based data structure e.g.  `std::vector`, list traversal is
-generally slow because it cannot take advantage of cache prefetching).
-
-# Single linked lists
-
-Single linked lists have a `ForwardIterator`. They might offer constant time
-access to the back and `push_back`. They do not offer `pop_back` because it
-requires linear list traversal.
-
+# Single linked
 
 ## Single linked basic
 
@@ -55,37 +41,136 @@ different choices: it has a simple iterator, but header is not minimalistic.
 ![Single linked first-last](/assets/2018-06-28-linked-lists-examples/03-single-first-last.png)
 
 
-# Double linked lists
+## Single linked summary
 
-Double linked lists have a `BidirectionalIterator`.
+<table>
+  <thead>
+    <tr>
+      <th>Option vs. List type</th>
+      <th>Single linked basic</th>
+      <th>Single linked circular</th>
+      <th>Single linked first-last</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Single or Double linked</td>
+      <td>Single</td>
+      <td>Single</td>
+      <td>Single</td>
+    </tr>
+    <tr>
+      <td>Linear or Circular</td>
+      <td>Linear</td>
+      <td>Circular</td>
+      <td>Linear</td>
+    </tr>
+    <tr>
+      <td>Minimalistic header</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td><strong>No</strong></td>
+    </tr>
+    <tr>
+      <td>Links to local parts</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Dummy node</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td>Minimalistic iterator</td>
+      <td>Yes</td>
+      <td><strong>No</strong></td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Permanent end</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Iterator type</td>
+      <td><strong>Forward</strong></td>
+      <td><strong>Forward</strong></td>
+      <td><strong>Forward</strong></td>
+    </tr>
+    <tr>
+      <td>front, push_front, pop_front, insertion/erasure after</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>back, push_back</td>
+      <td><strong>No</strong></td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>pop_back</td>
+      <td><strong>No</strong></td>
+      <td><strong>No</strong></td>
+      <td><strong>No</strong></td>
+    </tr>
+    <tr>
+      <td>insert/erase at/before</td>
+      <td><strong>No</strong></td>
+      <td><strong>No</strong></td>
+      <td><strong>No</strong></td>
+    </tr>
+  </tbody>
+</table>
 
-They offer constant time access to the back, `push_back`, `pop_back`,and
-insertion and erasure before iterator. The latter operations enable splicing
-(efficient transfer of node ranges from a list to another).
+Options in **bold** are not the best compared with other list types.
 
-Some offer a fixed end iterator (one past the last element) for the lifetime of
-the list, which simplifies some algorithms.
+All single lists lack some features compared with some double linked lists.
+
+With regards to constant time `back` and `push_back` the options for single
+lists are:
+
+- do not provide
+- provide, but trade-off for either a non-minimalistic iterator or a
+  non-minimalistic header
+
+# Double linked
+
+## Double linked linear
+
+A double linked linear list with minimalist header and iterator.
+
+![Double linked linear](/assets/2018-06-28-linked-lists-examples/04-double-linear.png)
+
+This is useful for intrusive lists where you retrieve an iterator based on a
+reference to the value, and then can remove the node from the list, all while
+keeping the rest as simple as possible.
 
 
-## Double linked circular
+# Double linked circular
 
 A circular double linked list without a dummy node has a minimalist header, but
 a (relatively) complex iterator and no fixed end iterator.
 
-![Double linked circular](/assets/2018-06-28-linked-lists-examples/04-double-circular.png)
+![Double linked circular](/assets/2018-06-28-linked-lists-examples/05-double-circular.png)
 
 
-## Double linked with allocated dummy node
+# Double linked with allocated dummy node
 
 A circular double linked list with an allocated dummy node has a minimalistic
 header and iterator.
 
-![Double linked dummy node](/assets/2018-06-28-linked-lists-examples/05-double-dummy-node.png)
+![Double linked dummy node](/assets/2018-06-28-linked-lists-examples/06-double-dummy-node.png)
 
 There are however two options with regards to the presence of the dummy node,
 neither of which is particularly palatable.
 
-![Double linked dummy node options](/assets/2018-06-28-linked-lists-examples/06-double-dummy-node.png)
+![Double linked dummy node options](/assets/2018-06-28-linked-lists-examples/07-double-dummy-node.png)
 
 - One option (1) is to always ensure the dummy node is present. This means that
   it provides a fixed end iterator, but it leads to a throwing default
@@ -116,17 +201,127 @@ static_assert(std::is_nothrow_move_constructible_v<std::list<int>>,
 A circular double linked list with the dummy node in the header, does not has a
 minimalistic header, but has a minimalistic iterator and a fixed end iterator.
 
-![Double linked dummy node in header](/assets/2018-06-28-linked-lists-examples/07-double-dummy-in-header.png)
+![Double linked dummy node in header](/assets/2018-06-28-linked-lists-examples/08-double-dummy-in-header.png)
 
 The downside is that during move operation the pointers from the head and tail
 pointing back to the header need to be adjusted.
+
+
+## Double linked summary
+
+<table>
+  <thead>
+    <tr>
+      <th>Option vs. List type</th>
+      <th>Double linked linear</th>
+      <th>Double linked circular</th>
+      <th>Double linked allocated dummy node</th>
+      <th>Double linked dummy node in header</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Single or Double linked</td>
+      <td><strong>Double</strong></td>
+      <td><strong>Double</strong></td>
+      <td><strong>Double</strong></td>
+      <td><strong>Double</strong></td>
+    </tr>
+    <tr>
+      <td>Linear or Circular</td>
+      <td>Linear</td>
+      <td>Circular</td>
+      <td>Circular</td>
+      <td>Circular</td>
+    </tr>
+    <tr>
+      <td>Minimalistic header</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td><strong>No</strong></td>
+    </tr>
+    <tr>
+      <td>Links to local parts</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No</td>
+      <td><strong>Yes</strong></td>
+    </tr>
+    <tr>
+      <td>Dummy node</td>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Minimalistic iterator</td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Permanent end</td>
+      <td>Yes</td>
+      <td><strong>No</strong></td>
+      <td><strong>Maybe</strong></td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>Iterator type</td>
+      <td><strong>Forward</strong></td>
+      <td>Bidirectional</td>
+      <td>Bidirectional</td>
+      <td>Bidirectional</td>
+    </tr>
+    <tr>
+      <td>front, push_front, pop_front, insertion/erasure after</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>back, push_back</td>
+      <td><strong>No</strong></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>pop_back</td>
+      <td><strong>No</strong></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+    <tr>
+      <td>insert/erase at/before</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
+
+Options in **bold** are not the best compared with other list types.
+
+Double linked nodes are larger by one pointer size to the single linked ones,
+but they provide insert and erase before iterator.
+
+Double linked with allocated dummy node need an additional compromise if they
+have a permanent iterator.
 
 # Other variations
 
 Variations of the above are possible for:
 
-- intrusive vs. non-intrusive
 - cached list size in the header
+- allocator/ownership
+- intrusive vs. non-intrusive
 
 
 # References

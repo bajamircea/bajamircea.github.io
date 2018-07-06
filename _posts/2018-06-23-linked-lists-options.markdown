@@ -139,8 +139,7 @@ remote parts to local parts.
 A minimalistic list iterator can be simply a pointer to a node with simple
 logic to advance by one position by following `next` (or `prev`).
 
-Or they can be larger e.g. to allow for either a minimalistic header or a back
-insert operation.
+Or they can be larger (for advantages elsewhere).
 
 
 # Permanent end iterator
@@ -158,9 +157,11 @@ NOTE: Examples of permanent end iterator:
 
 All list iterators are at least `ForwardIterator`.
 
-Double linked lists iterators can be `BidirectionalIterator`. That is trivial to
-achieve when the iterator points to a node, but might require trade-offs
-elsewhere to reverse from the end iterator.
+Double linked lists iterators can be `BidirectionalIterator`. That is trivial
+to achieve when the iterator points to a node, but might require trade-offs
+elsewhere to reverse from the end iterator (e.g. an end iterator that is just a
+`nullptr` pointer is not reversible rendering the whole iterator type
+`ForwardIterator`).
 
 
 # Allocators
@@ -182,7 +183,6 @@ multiple lists (or even other data structures).
 
 One possible facility is to provide a mean to get an iterator from a reference
 to a value. This is usually the case for intrusive lists, but can be provided
-
 for non-intrusive lists as well.
 
 # Node ownership
@@ -206,8 +206,13 @@ Typical optional operations are:
 - constant time access to the back (the last value)
 - constant time `push_back`
 - constant time `pop_back`
-- constant time insertion and erasure before iterator
+- constant time insertion and erasure before (and at) iterator
 - some form of constant time transfer of nodes to another list (splicing)
+
+NOTE: splicing a range (transfer a range of nodes to another list) is constant
+time if the size is not cached in the header, but linear time with the number
+of nodes transferred (to calculate the count of nodes transferred in order to
+update the cached size).
 
 
 # Meaning of pointers in the node
@@ -221,6 +226,13 @@ while for the rest of the nodes it is deduced. This obviously has additional cos
 for other operations.
 
 ![Fast reversal](/assets/2018-06-23-linked-lists-options/08-fast-reversal.png)
+
+
+# Conclusion
+
+The linked lists are one of the simplest data structures, and yet there is a
+large number of design options; some are totally independent, some are
+trade-offs.
 
 
 # References

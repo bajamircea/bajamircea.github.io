@@ -3,9 +3,9 @@
  */
 body, h1, h2, h3, h4, h5, h6,
 p, blockquote, pre, hr,
-dl, dd, ol, ul, figure {
-    margin: 0;
-    padding: 0;
+dl, dd, ol, ul, figure, table {
+  margin: 0;
+  padding: 0;
 }
 
 
@@ -13,13 +13,13 @@ dl, dd, ol, ul, figure {
  * Basic styling
  */
 body {
-    font-family: $base-font-family;
-    font-size: $base-font-size;
-    line-height: $base-line-height;
-    font-weight: 300;
-    color: $reverse-text-color;
-    background-color: $reverse-background-color;
-    -webkit-text-size-adjust: 100%;
+  font-family: $base-font-family;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+  font-weight: 300;
+  color: $reverse-text-color;
+  background-color: $reverse-background-color;
+  -webkit-text-size-adjust: 100%;
 }
 
 
@@ -28,9 +28,9 @@ body {
  */
 h1, h2, h3, h4, h5, h6,
 p, blockquote,
-ul, ol, dl, figure,
+ul, ol, dl, figure, table,
 %vertical-rhythm {
-    margin-bottom: $spacing-unit / 2;
+  margin-bottom: $spacing-unit / 2;
 }
 
 
@@ -38,8 +38,8 @@ ul, ol, dl, figure,
  * Images
  */
 img {
-    max-width: 100%;
-    vertical-align: middle;
+  max-width: 100%;
+  vertical-align: middle;
 }
 
 
@@ -47,11 +47,11 @@ img {
  * Figures
  */
 figure > img {
-    display: block;
+  display: block;
 }
 
 figcaption {
-    font-size: $small-font-size;
+  font-size: $small-font-size;
 }
 
 
@@ -59,14 +59,14 @@ figcaption {
  * Lists
  */
 ul, ol {
-    margin-left: $spacing-unit;
+  margin-left: $spacing-unit;
 }
 
 li {
-    > ul,
-    > ol {
-         margin-bottom: 0;
-    }
+  > ul,
+  > ol {
+   margin-bottom: 0;
+  }
 }
 
 
@@ -74,11 +74,11 @@ li {
  * Headings
  */
 h1, h2, h3, h4, h5, h6 {
-    font-weight: 300;
+  font-weight: 300;
 }
 
 strong {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 
@@ -86,15 +86,15 @@ strong {
  * Blockquotes
  */
 blockquote {
-    color: $grey-color;
-    border-left: 4px solid $grey-color-light;
-    padding-left: $spacing-unit / 2;
-    font-size: 15px;
-    font-style: italic;
+  color: $grey-color;
+  border-left: 4px solid $grey-color-light;
+  padding-left: $spacing-unit / 2;
+  font-size: 15px;
+  font-style: italic;
 
-    > :last-child {
-        margin-bottom: 0;
-    }
+  > :last-child {
+    margin-bottom: 0;
+  }
 }
 
 
@@ -109,29 +109,60 @@ code {
 }
 
 code {
-    padding: 1px 5px;
+  padding: 1px 5px;
 }
 
 figure > pre {
-    padding: 8px 12px;
-    overflow-x: auto;
+  padding: 8px 12px;
+  overflow-x: auto;
 
-    > code, pre {
-        border: 0;
-        padding-right: 0;
-        padding-left: 0;
-    }
+  > code, pre {
+    border: 0;
+    padding-right: 0;
+    padding-left: 0;
+  }
 }
 
+/**
+ * Tables
+ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table tr th {
+  font-weight: bold;
+  color: $text-color;
+  background-color: #f6f8fa;
+}
+
+table tr th,
+table tr td {
+  border: 1px solid $grey-color-light;
+  text-align: left;
+  padding: 3px 6px;
+  margin: 0;
+}
+
+table tr th.c,
+table tr td.c {
+  text-align: center;
+}
+
+table tr th.r,
+table tr td.r {
+  text-align: right;
+}
 
 /**
  * Clearfix
  */
 %clearfix {
 
-    &:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 }
