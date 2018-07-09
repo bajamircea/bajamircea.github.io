@@ -3,7 +3,8 @@
  */
 body, h1, h2, h3, h4, h5, h6,
 p, blockquote, pre, hr,
-dl, dd, ol, ul, figure, table {
+dl, dd, ol, ul, figure,
+article > table {
   margin: 0;
   padding: 0;
 }
@@ -28,7 +29,8 @@ body {
  */
 h1, h2, h3, h4, h5, h6,
 p, blockquote,
-ul, ol, dl, figure, table,
+ul, ol, dl, figure,
+article > table,
 %vertical-rhythm {
   margin-bottom: $spacing-unit / 2;
 }
@@ -126,33 +128,36 @@ figure > pre {
 /**
  * Tables
  */
-table {
+article > table {
   width: 100%;
   border-collapse: collapse;
-}
 
-table tr th {
-  font-weight: bold;
-  color: $text-color;
-  background-color: #f6f8fa;
-}
+  tr {
 
-table tr th,
-table tr td {
-  border: 1px solid $grey-color-light;
-  text-align: left;
-  padding: 3px 6px;
-  margin: 0;
-}
+    th {
+      font-weight: bold;
+      color: $text-color;
+      background-color: #f6f8fa;
+    }
 
-table tr th.c,
-table tr td.c {
-  text-align: center;
-}
+    th,
+    td {
+      border: 1px solid $grey-color-light;
+      text-align: left;
+      padding: 3px 6px;
+      margin: 0;
+    }
 
-table tr th.r,
-table tr td.r {
-  text-align: right;
+    th.c,
+    td.c {
+      text-align: center;
+    }
+
+    th.r,
+    td.r {
+      text-align: right;
+    }
+  }
 }
 
 /**
