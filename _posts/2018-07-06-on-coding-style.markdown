@@ -4,7 +4,7 @@ title: 'On coding style'
 categories: coding cpp
 ---
 
-Applying writing style theory to code writing
+<<WORK IN PROGRESS>> Applying writing style theory to code writing.
 
 # Introduction
 
@@ -40,16 +40,16 @@ This is Kipper, it's a Labrador.
 Should we need to transmit information about the dog, a JSON text format would
 be reasonable:
 
-```json
+{% highlight json linenos %}
 {
   "name": "Kipper",
   "breed": "Labrador"
 }
-```
+{% endhighlight %}
 
-# Solution 1: OOP
+# OOP Solution:
 
-```cpp
+{% highlight c++ linenos %}
 class dog
 {
 private:
@@ -65,25 +65,21 @@ public:
 
   void init(const Json & doc);
 };
-```
+{% endhighlight %}
 
 ![Image](/assets/2018-07-06-on-coding-style/01-oop-layout.png)
 
-# Better C++ solution
+# Classic solution
 
-```cpp
+{% highlight c++ linenos %}
 struct dog
 {
   std::string name;
   std::string breed;
 };
 
-
 dog dog_from_json(const Json & doc);
-```
-Physical layout:
-- dog struct is defined in dog.h
-- Serialization in dog_from_json.h and cpp
+{% endhighlight %}
 
 ![Image](/assets/2018-07-06-on-coding-style/02-classic-layout.png)
 
