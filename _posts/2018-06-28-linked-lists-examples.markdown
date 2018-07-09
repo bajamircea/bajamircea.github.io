@@ -252,8 +252,8 @@ pointing back to the header need to be adjusted.
       <td>Dummy node</td>
       <td>No</td>
       <td>No</td>
-      <td>Yes</td>
-      <td>Yes</td>
+      <td><strong>Yes</strong></td>
+      <td>in header</td>
     </tr>
     <tr>
       <td>Minimalistic iterator</td>
