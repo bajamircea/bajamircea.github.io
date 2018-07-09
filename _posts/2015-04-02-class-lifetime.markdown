@@ -153,6 +153,37 @@ public:
       ::fclose(dst);
     }
   }
+
+  bad_two_files(const bad_two_files &) = delete;
+  bad_two_files & operator= (const bad_two_files &) = delete;
+
+  bad_two_files(bad_two_files && other) :
+    src{ other.src },
+    dst{ other.dst }
+  {
+    other.src = nullptr;
+    other.dst = nullptr;
+  }
+
+  bad_two_files & operator= (bad_two_files && other)
+  {
+    if (this != &other)
+    {
+      if (src)
+      {
+        ::fclose(src);
+      }
+      if (dst)
+      {
+        ::fclose(dst);
+      }
+      src = other.src;
+      dst = other.dst;
+      other.src = nullptr;
+      other.dst = nullptr;
+    }
+    return *this;
+  }
 };
 {% endhighlight %}
 
@@ -181,7 +212,33 @@ public:
 
   ~file()
   {
-    ::fclose(f);
+    if (f)
+    {
+      ::fclose(f);
+    }
+  }
+
+  file(const file &) = delete;
+  file & operator= (const file &) = delete;
+
+  file(file && other) :
+    f{ other.f }
+  {
+    other.f = nullptr;
+  }
+
+  file & operator= (file && other)
+  {
+    if (this != &other)
+    {
+      if (f)
+      {
+        ::fclose(f);
+      }
+      f = other.f;
+      other.f = nullptr;
+    }
+    return *this;
   }
 };
 
@@ -201,7 +258,7 @@ public:
 
 This way, if opening the destination file fails, then creating the instance of
 `two_files` fails, but not before the source file is closed. It also comes to
-pretty much the same number of code lines.
+pretty much the same number of code lines (fewer lines of code in fact).
 
 ## Summary
 
