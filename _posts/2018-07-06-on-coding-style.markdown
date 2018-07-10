@@ -4,7 +4,7 @@ title: 'On coding style'
 categories: coding cpp
 ---
 
-<<WORK IN PROGRESS>> Applying writing style theory to code writing.
+Applying writing style theory to code writing.
 
 # Introduction
 
@@ -27,7 +27,7 @@ usage/default style.
 
 This approach on general writing is reflected in code (i.e. programming) style.
 
-# Samples
+# Sample
 
 Let's look at a few samples.
 
@@ -47,7 +47,7 @@ be reasonable:
 }
 {% endhighlight %}
 
-# OOP Solution:
+# OOP style
 
 {% highlight c++ linenos %}
 class dog
@@ -57,19 +57,71 @@ private:
   std::shared_ptr<std::string> breed_;
 
 public:
-  std::shared_ptr<std::string> get_name();
-  void set_name(std::shared_ptr<std::string> value);
+  std::shared_ptr<std::string> get_name()
+  {
+    return name_;
+  }
+  void set_name(std::shared_ptr<std::string> value)
+  {
+    name_ = value;
+  }
 
-  std::shared_ptr<std::string> get_breed();
-  void set_breed(std::shared_ptr<std::string> value);
+  std::shared_ptr<std::string> get_breed()
+  {
+    return breed_;
+  }
+  void set_breed(std::shared_ptr<std::string> value)
+  {
+    breed_ = value;
+  }
 
-  void init(const Json & doc);
+  void init(const Json & doc) {
+    name_ = doc.get_string("name");
+    breed_ = doc.get_string("breed");
+  }
 };
 {% endhighlight %}
 
+This solution takes the dogmatic view that problems should be represented as
+objects, and a particular kind of object: with getters and setters, reference
+semantics, initialization after construction.
+
+This naive view has many consequences, including a complex memory layout.
+
 ![Image](/assets/2018-07-06-on-coding-style/01-oop-layout.png)
 
-# Classic solution
+
+## Lambda style
+
+{% highlight c++ linenos %}
+void dog_from_json(
+  std::function<std::string(const char * key)> property,
+  std::function<const std::string & name, const std::string & breed> callback)
+{
+  callback(property("name"), property("breed"));
+}
+
+[&doc]() {
+  std::string name;
+  std::string breed;
+  dog_from_json([&doc](const char * key) {
+    return doc.get_string(key);
+  }, [&] (const std::string & name_, const std::string & breed_) {
+    name = name_;
+    breed = breed_;
+  });
+  // use name and breed here ...
+} ();
+
+{% endhighlight %}
+
+This solution takes the dogmatic view that problems should be represented as
+functions.
+
+This naive view comes with it's own undesirable consequences.
+
+
+## Classic style
 
 {% highlight c++ linenos %}
 struct dog
@@ -78,10 +130,59 @@ struct dog
   std::string breed;
 };
 
-dog dog_from_json(const Json & doc);
+dog dog_from_json(const Json & doc)
+{
+  return { doc.get_string("name"), doc.get_string("breed") };
+}
 {% endhighlight %}
 
+This solution takes the equally dogmatic view that there are many ways
+representing reality and that a `struct` is the right way to group a number of
+fields, and that functions are the right way to transform a type to another
+type.
+
+This solution has it's own problems, such as the lack of compiler defined
+comparisons for user defined types, but it does address the memory layout.
+
 ![Image](/assets/2018-07-06-on-coding-style/02-classic-layout.png)
+
+
+## Performance style
+
+{% highlight c++ linenos %}
+void dog_from_json(char * json_buffer, char ** name, char ** breed)
+{
+  // gets a non-const buffer of characters and will point name and breed
+  // to values in the buffer
+}
+{% endhighlight %}
+
+This solution takes the view that it can obtain better performance by using
+risky techniques such as a non-const input that it will mutate in order to
+avoid allocating the output strings. It also avoids abstractions such as
+`std::string`.
+
+
+# On styles
+
+There are a multitude of coding styles.
+
+They are defined by attitudes to truth, representation, abstraction usage and
+generality.
+
+Programmers should use the classic style. It takes the view that there are
+multiple ways to represent reality, and that there is an appropriate
+representation that needs to be identified. It assumes that there is such a
+one true representation and that one can identify it through careful reasoning,
+avoiding pitfalls such as object only or lambda only narrow views. It's a style
+that does not shy away from using abstractions. It aims for a certain
+generality.
+
+That is not the only valid style, we've seen for example a performance style.
+It does not aim for generality, it's supposed to be aimed to the specific
+situations where the riskier to use, lower level interface gives performance
+benefits (based on measurement).
+
 
 # References
 

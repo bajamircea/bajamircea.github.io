@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Linked Lists - Implementation Options'
+title: 'Linked Lists - Options'
 categories: coding cpp
 ---
 
