@@ -1,0 +1,207 @@
+---
+layout: presentation
+title: On coding style
+---
+
+Mircea Baja
+
+# On coding style
+
+---
+
+# On general writing style
+
+"The Elements of Style" by William Strunk and E. B. White:
+<blockquote>
+Form the possessive singular of nouns by adding 's.
+</blockquote>
+
+"Clear and simple as the truth: writing classic prose" by
+Francis-Noël Thomas and Mark Turner:
+
+<blockquote>
+A style is defined by it's conceptual stand on truth, presentation, writer,
+reader, thought, language, and their relationship 
+</blockquote>
+
+---
+
+# Sample problem
+
+---
+
+background-image: url(/assets/2018-01-29-reflection/labrador.jpg)
+
+---
+
+# Data
+
+```json
+{
+  "name": "Kipper",
+  "breed": "Labrador"
+}
+```
+
+---
+
+# OOP style
+
+```cpp
+class dog {
+private:
+  std::shared_ptr<std::string> name_;
+  std::shared_ptr<std::string> breed_;
+
+public:
+  std::shared_ptr<std::string> get_name() {
+    return name_;
+  }
+  void set_name(std::shared_ptr<std::string> value) {
+    name_ = value;
+  }
+  std::shared_ptr<std::string> get_breed() {
+    return breed_;
+  }
+  void set_breed(std::shared_ptr<std::string> value) {
+    breed_ = value;
+  }
+  void init(const Json & doc) {
+    name_ = doc.get_string("name");
+    breed_ = doc.get_string("breed");
+  }
+};
+```
+---
+
+# Consequences
+
+![Image](/assets/2018-07-06-on-coding-style/01-oop-layout.png)
+
+---
+
+# Lambda style
+
+```cpp
+void dog_from_json(
+  std::function<std::string(const char * key)> property,
+  std::function<const std::string & name, const std::string & breed> callback)
+{
+  callback(property("name"), property("breed"));
+}
+
+[&doc]() {
+  std::string name;
+  std::string breed;
+  dog_from_json([&doc](const char * key) {
+    return doc.get_string(key);
+  }, [&] (const std::string & name_, const std::string & breed_) {
+    name = name_;
+    breed = breed_;
+  });
+  // use name and breed here ...
+} ();
+```
+---
+
+# Classic style
+
+```cpp
+struct dog
+{
+  std::string name;
+  std::string breed;
+};
+
+dog dog_from_json(const Json & doc)
+{
+  return { doc.get_string("name"), doc.get_string("breed") };
+}
+```
+
+---
+
+# Consequences
+
+![Image](/assets/2018-07-06-on-coding-style/02-classic-layout.png)
+
+---
+
+# Performance style
+
+```cpp
+void dog_from_json(char * json_buffer, char ** name, char ** breed)
+{
+  // gets a non-const buffer of characters and will point name and breed
+  // to values in the buffer
+}
+```
+
+---
+
+# On styles
+
+There are a multitude of coding styles (but some are better than others)
+
+They are defined by
+- attitudes to truth
+- representation
+- abstraction usage
+- generality
+- relation between the writer and reader.
+
+---
+
+# Classic style
+
+- assumes there is one true, identifiable representation
+- that the right representation needs to be chosen (e.g. objects vs. functions)
+- uses abstractions as necessary
+- aims for a certain generality and elegance
+- simplicity hides the effort to achieve it
+
+
+---
+
+# Superficial elements
+
+Indentation and tab wars.
+
+Notice the similarity between the first rule in "The Elements of Style":
+
+<blockquote>
+Form the possessive singular of nouns by adding 's. [...] Exceptions are the
+possessive of ancient proper names ending in -es and is, [...]
+</blockquote>
+
+and the first rule in the "Google C++ Style Guide":
+
+<blockquote>
+In general, every .cc file should have an associated .h file. There are some
+common exceptions, such as unittests and small .cc files containing just a
+main() function.
+</blockquote>
+
+---
+
+# References
+
+Francis-Noël Thomas and Mark Turner:<br/>
+Clear and simple as the truth: writing classic prose<br/>
+2nd edition
+
+William Strunk and E. B. White:<br/>
+The Elements of Style
+
+Labrador picture<br/>
+https://pixabay.com/en/animal-dog-puppy-pet-photography-2184791/
+
+Google C++ Style Guide<br/>
+https://google.github.io/styleguide/cppguide.html
+
+
+---
+
+# Questions?
+
+https://bajamircea.github.io/presentations/2018-07-06-on-coding-style.html

@@ -7,14 +7,15 @@ categories: coding cpp
 C++ concepts (N4647): cover the basics and show how they relate to templates
 (the "peel off onion layers" technique).
 
+This article is also available as [presentation
+slides](/presentations/2017-07-18-concepts-basics.html)
+
+# Introduction
 
 The fundamental claim is that we use concepts to model the world, in the same
 way we use types and instances of a type. See the abstract/concrete genus on
 the 2nd page of "Elements of programming" for this claim. The question is
 how to best represent them in C++.
-
-
-# Introduction
 
 The C++ concepts (as in the [N4647][n4647] proposal for the C++ language) are
 part of the continuing the work on providing better support for generic
@@ -27,6 +28,7 @@ to the current proposal for which this article will cover the basics.
 Concepts also have a close relationship to templates. This article will also
 cover the "peel off onion layers" technique of incrementally decomposing
 concept usage to its templates equivalents.
+
 
 # Context - generic min
 
@@ -351,17 +353,14 @@ We live on shoulders of giants. For refernce see below:
 
 Elements of Programming (book by Alexander A. Stepanov and Paul McJones)
 
-Concepts overview (Bjarne Stroustrup)  
+Concepts overview (Bjarne Stroustrup)<br/>
 [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0557r0.pdf](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0557r0.pdf)
 
-Concepts proposal wording (Andrew Sutton)  
+Concepts proposal wording (Andrew Sutton)<br/>
 [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4674.pdf](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4674.pdf)
 
-Ranges TS (Eric Niebler, Casey Carter)  
+Ranges TS (Eric Niebler, Casey Carter)<br/>
 [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4671.pdf](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4671.pdf)
-
-Also  
-[this humble article as a presentation](/presentations/2017-07-18-concepts-basics.html)
 
 [n4647]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4674.pdf
 
