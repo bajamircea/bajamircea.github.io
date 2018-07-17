@@ -7,7 +7,7 @@ categories: read book
 List of books I've read in 2018
 
 - 2018-06-14 Albert Einstein: Teoria relativității pe înțelesul tuturor
-Should you be an imaginary creature living in a 2D surface, you can figure out
+: Should you be an imaginary creature living in a 2D surface, you can figure out
 if the space is is flat or not (e.g. a plane or the surface of a sphere) by
 measuring the ratio between the circumference of a circle and the diameter. For
 a flat surface it's π (pi). If it's not π, then the surface is not flat.
