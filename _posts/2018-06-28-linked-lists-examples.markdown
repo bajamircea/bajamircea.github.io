@@ -195,6 +195,8 @@ static_assert(std::is_nothrow_move_constructible_v<std::list<int>>,
   do not throw, but lose a fixed end iterator and a (relatively) more complex
   logic to deal with a potentially missing dummy node.
 
+I find option (1) particularly troubling and not a choice to take with ease:
+throwing default and move constructors are highly irregular.
 
 ## Double linked with dummy node in header
 
@@ -266,7 +268,7 @@ pointing back to the header need to be adjusted.
       <td>Permanent end</td>
       <td>Yes</td>
       <td><strong>No</strong></td>
-      <td><strong>Maybe</strong></td>
+      <td><strong>No</strong> / Yes</td>
       <td>Yes</td>
     </tr>
     <tr>
@@ -304,6 +306,13 @@ pointing back to the header need to be adjusted.
       <td>Yes</td>
       <td>Yes</td>
     </tr>
+    <tr>
+      <td>Throwing default/move</td>
+      <td>No</td>
+      <td>No</td>
+      <td>No / <strong>Yes</strong></td>
+      <td>No</td>
+    </tr>
   </tbody>
 </table>
 
@@ -312,8 +321,15 @@ Options in **bold** are not the best compared with other list types.
 Double linked nodes are larger by one pointer size to the single linked ones,
 but they provide insert and erase before iterator.
 
-Double linked with allocated dummy node need an additional compromise if they
-have a permanent iterator.
+Double linked with allocated dummy node need to make choose between:
+
+- No permanent end
+- Or throwing default and move constructors
+
+Double linked with dummy node in header is a good choice overall. Note that
+although it uses additional space for the dummy node, we already counted this
+as a downside for the non-minimalistic header.
+
 
 # Other variations
 

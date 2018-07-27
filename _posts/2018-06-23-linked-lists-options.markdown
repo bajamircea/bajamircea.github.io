@@ -169,7 +169,7 @@ elsewhere to reverse from the end iterator (e.g. an end iterator that is just a
 A variety of options can be made for how the nodes are allocated.
 
 
-# Intrusive vs. non-intrusive.
+# Intrusive vs. non-intrusive
 
 For non-intrusive lists the user of the list does not care about the layout of
 the node. They are easier to use.
