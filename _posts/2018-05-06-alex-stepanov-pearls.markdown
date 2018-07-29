@@ -1,10 +1,10 @@
 ---
 layout: post
-title: 'Efficient Programming with Components - Perls'
+title: 'Efficient Programming with Components - Pearls'
 categories: coding cpp
 ---
 
-Alex Stepanov's pontificative perls from Efficient Programming with Components
+Alex Stepanov's pontificative pearls from Efficient Programming with Components
 (A9 Videos)
 
 
@@ -30,7 +30,7 @@ possible in the language. Absolute efficiency refers to a solution that is as
 efficient as possible on that hardware (i.e. as assembly).
 
 As a quick method to evaluate a language pay attention on how the following
-three functions can be implemented: swap, min and linear find.
+three functions can be implemented: `min`, `swap` and linear `find`.
 
 Implicit conversions in C++ come from C. The need for them in C arises from
 needs to deal with functions like `double sqrt(double);` and the lack of better

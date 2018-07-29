@@ -48,7 +48,7 @@ const T & min(const T & a, const T & b) {
 In the code above, `min` is a template function with a type `T` as a parameter.
 It takes two arguments by `const` reference of `T` which means that they will
 not be copied, and could be either some variables or temporaries. The return
-value type is the same of the the two arguments.
+value type is the same of the two arguments.
 
 Note that, you might also consider an overload that takes non-const references
 (unlike the current standard `std::min`).

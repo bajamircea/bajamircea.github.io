@@ -162,6 +162,14 @@ this still adds additional choice to the user that wants to read the contents
 of a file.
 
 
+# Eager vs. deferred
+
+To filter a sequence, `copy_if` can be used to copy then and there the values
+that meet a predicate (the eager approach), or you provide a view into the
+sequence i.e. you return an iterator which only when incremented will apply the
+predicate until it reaches a satisfying value.
+
+
 # Compile time vs. run time
 
 The API could look different if you choose things to be done compile time. E.g.

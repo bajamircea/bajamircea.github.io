@@ -63,7 +63,8 @@ std::tie(std::ignore, was_inserted) = some_set.insert(some_value);
 
 - [Tie][tie]
 - [Tuple comparison][tuple-compare]
+- [Complete usage][complete] for pre-reflection `StrictTotallyOrdered` structs
 
 [tie]: http://en.cppreference.com/w/cpp/utility/tuple/tie
 [tuple-compare]: http://en.cppreference.com/w/cpp/utility/tuple/operator_cmp
-
+[complete]:  {% post_url 2018-07-27-strict-ordered-structs %}
