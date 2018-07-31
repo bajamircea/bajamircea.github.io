@@ -1,0 +1,246 @@
+---
+layout: post
+title: 'Min and max internals'
+categories: coding cpp
+---
+
+Finding the smaller and the larger of two values, how hard can it be, right?
+
+
+# Introduction
+
+To evaluate the capabilities of a programming language it's practical to start
+by examining in detail just three functions: `min`, `swap` and linear search
+(`find`). Despite their presumed simplicity, it's difficult, but important
+that they are done right. For example, the three functions contain the
+fundamentals for constructing `sort`, itself an important building block for
+many programs.
+
+Here I'm going to focus mainly on `min`, a function that takes two arguments
+and returns the smallest of the two, and look at a C++ implementation.
+Essentially we're going to implement `std::min` from the standard C++ library,
+but we're going to make subtly different choices, because the focus here is on
+what's ideal, without any pressure to be backwards compatible.
+
+Here is a sample C++ implementation.
+
+{% highlight c++ linenos %}
+namespace algs {
+  struct less
+  {
+    template<typename T, typename U>
+    bool operator()(T && a, U && b) const {
+      return std::forward<T>(a) < std::forward<U>(b);
+    }
+  };
+
+  struct identity
+  {
+    template<typename T>
+    T && operator()(T && x) const {
+      return std::forward<T>(x);
+    }
+  };
+
+  // generalized min taking comparison and projection
+  template<typename T, typename Cmp, typename Proj>
+  // requires Cmp is a weak ordering for projection Proj of T
+  const T & min(const T & a, const T & b, Cmp cmp, Proj proj) {
+    if (cmp(std::invoke(proj, b), std::invoke(proj, a))) return a;
+    return b;
+  }
+
+  // generalized min taking comparison
+  template<typename T, typename Cmp>
+  // requires Cmp is a weak ordering for T
+  const T & min(const T & a, const T & b, Cmp cmp) {
+    return min(a, b, cmp, identity());
+  }
+
+  // straight forward min
+  template<typename T>
+  // requires T is StrictTotallyOrdered
+  const T & min(const T & a, const T & b) {
+    return min(a, b, less());
+  }
+}
+{% endhighlight %}
+
+The rest of the article is about how did we get there.
+
+
+# Generic
+
+Using a non-generic approach is repetitive as demonstrated below for `int` and
+`double`:
+
+{% highlight c++ linenos %}
+int min_int(int a, int b) {
+  if (a < b) return a;
+  return b;
+}
+
+double min_double(double a, double b) {
+  if (a < b) return a;
+  return b;
+}
+{% endhighlight %}
+
+This approach might just about do for `min`, but it does not work for more
+complex algorithms. Formally it's the `N x M` problem: given `N` data types and
+`M` algorithms we want to avoid having to write `N x M` implementations.
+
+Using C++ templates, `min` can be a function template with a type `T` as a
+parameter:
+
+{% highlight c++ linenos %}
+namespace algs {
+  template<typename T>
+  const T & min(const T & a, const T & b) {
+    // implementation here
+  }
+}
+{% endhighlight %}
+
+This allows a generic solution that can be implemented once and then work with
+a variety of types like: `int`, `double`, other built-in types, `std::string`,
+`std::vector`, other containers, user defined types.
+
+
+# Namespace
+
+We want to be able to use `min` like this:
+
+{% highlight c++ linenos %}
+std::string x{ "Alice" };
+std::string y{ "Charlie" };
+std::cout << min(x, y) << '\n';
+// Prints: Alice
+{% endhighlight %}
+
+Now, if this example compiles, it's likely that it uses `std::min` because of
+rules that will look for functions in the same namespace of the arguments, aka.
+[argument dependent lookup][adl] (ADL).
+
+To avoid ambiguity, we'll define our `min` implementation in a namespace
+`algs`, and we'll qualify the call explicitly:
+
+{% highlight c++ linenos %}
+std::cout << algs::min(x, y) << '\n';
+{% endhighlight %}
+
+
+# Arguments and return value
+
+Arguments are passed by reference which has the advantage that larger types do
+not get copied unnecessarily.
+
+Arguments are passed by `const` reference, which has the advantage that
+literals can also be used as arguments:
+
+{% highlight c++ linenos %}
+int x = 7;
+std::cout << algs::min(x, 3) << '\n';
+{% endhighlight %}
+
+Another advantage of this declaration is that the type `T` is automatically
+deduced: most of the time does not need to be specified by the user.
+
+However one disadvantage is that we can't mutate the returned value, because
+there is no overload for non-`const` reference.
+
+{% highlight c++ linenos %}
+void increment_smallest(int & x, int & y) {
+  int & z = algs::min(x, 3); // Fails to compile
+  ++z;
+}
+{% endhighlight %}
+
+
+# Implementation - options
+
+As for the implementation, we've got several options:
+
+{% highlight c++ linenos %}
+if (a < b) return a; else return b;  // Option 1
+if (a <= b) return a; else return b; // Option 2
+if (a > b) return b; else return a;  // Option 3
+if (b < a) return b; else return a;  // Option 4
+{% endhighlight %}
+
+When the arguments are equal, option 1 returns `b`, the other options return
+`a`. Options 2, 3 and 4 differ in the exact operator used.
+
+The canonical implementation is the equivalent of option 4.
+
+If the arguments are equal, it should not matter which one is returned. However
+equal does not mean identical, and one can probe the address of the returned
+value to see which one is returned. We'll come back to this later.
+
+Also `min` does not exist in isolation, but in relationship with other
+algorithms, and that's what clarifies what's the most coherent implementation
+option.
+
+
+# Relationship with other algorithms
+
+First of all we have similar algorithms that differ by the value returned:
+
+- `max` which returns the larger of two
+- `minmax` which returns a pair (smallest first, larger second) out of two
+
+When values are equal, it makes sense for `min` to return one, and for `max` to
+return the other, this least to the following `max` canonical implementation:
+
+{% highlight c++ linenos %}
+if (b < a) return a; else return b;
+{% endhighlight %}
+
+Note that the above is not what `std::max` does, because it's standardised to
+do the wrong thing.
+
+Then we have algorithms that operate on a sequence:
+
+- `min_element` which returns an iterator to the smallest out of a sequence
+- `max_element` which returns an iterator to the larger out of a sequence
+- `minmax_element` returns a pair of the two out of a sequence
+
+Then we algorithms that use the order to do sequence permutations:
+
+- `nth_element` which sorts up to the n-th position (`min` is a very basic
+  version of this, getting just the smallest value)
+- `sort` which sorts an entire sequence
+- `stable_sort` which also sorts, but preserves the order of equal elements
+
+It is the relationship with `sort` that makes `<` the implicit comparison
+choice. E.g. it has the advantage that the sequence will be sorted ascending,
+which is the natural order.
+
+The stability property refers to preserving the order of equal elements. For
+sorting there are two different function because achieving stability comes
+there at an additional computational effort. If `min` (and `max`) can have the
+stability property at no additional cost, we should not give that up lightly.
+
+And finally we have versions of `min`:
+
+- with two arguments: implicitly using `<` for comparisons
+- with three arguments: adds an explicit comparison function
+- with four arguments: adds a projection function that specifies what to compare
+
+If you try to invoke the straight forward `min` with an unsuitable type you'll
+get an error that basically follows the nesting of whatever the implementation
+happens to be:
+
+
+# References
+
+- Elements of Programming (book by Alexander A. Stepanov and Paul McJones)
+
+- Some [ADL comments][adl]
+- [Concepts basics][concepts-basics] for more details on enforcing requirements
+
+
+[adl]:             {% post_url 2017-02-22-noncopyable-adl %}
+[concepts-basics]: {% post_url 2017-07-18-concepts-basics %}
+[tie-trick]:       {% post_url 2017-03-10-std-tie %}
+
