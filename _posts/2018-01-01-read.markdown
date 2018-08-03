@@ -6,16 +6,33 @@ categories: read book
 
 List of books I've read in 2018
 
+<img
+  align="right"
+  alt="Book cover"
+  src="/assets/2018-08-22-annotated-turing/book_cover.jpg">
+
+- 2018-08-04 - Charles Petzold: The Annotated Turing
+: [See review][c-petzold-turing].
+Difficulty rating: 10 pages per evening.
+
 - 2018-06-14 Albert Einstein: Teoria relativității pe înțelesul tuturor
 : Should you be an imaginary creature living in a 2D surface, you can figure out
 if the space is is flat or not (e.g. a plane or the surface of a sphere) by
 measuring the ratio between the circumference of a circle and the diameter. For
 a flat surface it's π (pi). If it's not π, then the surface is not flat.
+Difficulty rating: 10 pages per evening.
 
 - 2018-06-10 - James Comey: A Higher Loyalty
+: Difficulty rating: 50 pages per evening.
+
+<img
+  align="right"
+  alt="Book cover"
+  src="/assets/2018-05-03-enlightenment-now-s-pinker/book_cover.jpg">
 
 - 2018-06-01 - Steven Pinker: Enlightenment Now
-: Very good book 10 out of 10 [see review][s-pinker-enlightenment-now]
+: Very good book 10 out of 10 [see review][s-pinker-enlightenment-now].
+Difficulty rating: 30 pages per evening.
 
 - 2018-05 - Francis-Noël Thomas and Mark Turner: Clear and simple as the truth
 : Definition of style of writing as deep attitudes with regards to truth and
@@ -54,4 +71,10 @@ an actual day.
 : Tongue and cheek essay on human stupidity e.g. "Always and inevitably
 everyone underestimates the number of stupid individuals in circulation."
 
+NOTE: Some books are rated for difficulty. That's an estimation of pages I can
+read in a work day evening (after putting children to bed, dinner, catch-up
+with The Important One, etc.). An easy read equates to more pages per evening,
+a difficult read equates to less pages.
+
 [s-pinker-enlightenment-now]:  {% post_url 2018-05-03-enlightenment-now-s-pinker %}
+[c-petzold-turing]:            {% post_url 2018-08-22-annotated-turing %}
