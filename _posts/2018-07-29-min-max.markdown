@@ -19,10 +19,10 @@ many programs.
 Here I'm going to focus mainly on `min`, a function that takes two arguments
 and returns the smallest of the two, and look at a C++ implementation.
 Essentially we're going to implement `std::min` from the standard C++ library,
-but we're going to make subtly different choices, because the focus here is on
-what's ideal, without any pressure to be backwards compatible.
 
-Here is a sample C++ implementation.
+Here is a sample C++ implementation, with subtly different choices, mainly
+because the focus here is on what's ideal, without any pressure to be backwards
+compatible.
 
 {% highlight c++ linenos %}
 namespace algs {
@@ -71,6 +71,8 @@ The rest of the article is about how did we get there.
 
 # Generic
 
+The implementation of algorithms like `min` has to be generic.
+
 Using a non-generic approach is repetitive as demonstrated below for `int` and
 `double`:
 
@@ -90,8 +92,8 @@ This approach might just about do for `min`, but it does not work for more
 complex algorithms. Formally it's the `N x M` problem: given `N` data types and
 `M` algorithms we want to avoid having to write `N x M` implementations.
 
-Using C++ templates, `min` can be a function template with a type `T` as a
-parameter:
+Using C++ templates, we defined `min` as a function template with a type `T` as
+a parameter:
 
 {% highlight c++ linenos %}
 namespace algs {
@@ -122,7 +124,7 @@ Now, if this example compiles, it's likely that it uses `std::min` because of
 rules that will look for functions in the same namespace of the arguments, aka.
 [argument dependent lookup][adl] (ADL).
 
-To avoid ambiguity, we'll define our `min` implementation in a namespace
+To avoid ambiguity, we defined our `min` implementation in a namespace
 `algs`, and we'll qualify the call explicitly:
 
 {% highlight c++ linenos %}
@@ -190,7 +192,8 @@ First of all we have similar algorithms that differ by the value returned:
 - `minmax` which returns a pair (smallest first, larger second) out of two
 
 When values are equal, it makes sense for `min` to return one, and for `max` to
-return the other, this least to the following `max` canonical implementation:
+return the other, this leads to requiring that the canonical implementation for
+`max` does the equivalent of:
 
 {% highlight c++ linenos %}
 if (b < a) return a; else return b;
@@ -231,6 +234,80 @@ If you try to invoke the straight forward `min` with an unsuitable type you'll
 get an error that basically follows the nesting of whatever the implementation
 happens to be:
 
+
+# StrictTotallyOrdered
+
+The version of `min` with two arguments uses `<` for comparison and [has the
+requirement][concept-basics] that the type `T` is `StrictTotallyOrdered`. That
+means that not only `<` is implemented, but also all the other comparisons,
+including equality are defined, and they work sanely e.g.: given arbitrary `a`
+and `b`, one an only one is true: `a < b` or `a == b` or `a > b`.
+
+
+# Comparison
+
+The version with three arguments adds an explicit comparison function. This
+version has relaxed requirements. The comparison can be weak. Unlike `<`, the
+counterpart is a equivalence relation, not equality. E.g. we can compare
+instances of `person` by `age` (instances that have different names, but same
+age are equivalent). It's here that it does matter which one is returned out of
+two equivalent values.
+
+{% highlight c++ linenos %}
+person x{ "Alice", "Wonderland", 7 };
+person y{ "Bob", "Builder", 5 };
+std::string result = algs::min(x, y, [](const person & a, const person & b) {
+  return a.age < b.age;
+}).first_name;
+// result is "Bob"
+{% endhighlight %}
+
+
+# Projection
+
+Projection is applied before using the values (passing them to the comparison
+function.
+
+{% highlight c++ linenos %}
+  if (cmp(proj(b), proj(a))) return a;
+{% endhighlight %}
+
+This allows a different way to compare by `age`:
+
+{% highlight c++ linenos %}
+person x{ "Alice", "Wonderland", 7 };
+person y{ "Bob", "Builder", 5 };
+std::string result = algs::min(x, y, algs::less(), [](const person & a) {
+  return a.age;
+}).first_name;
+// result is "Bob"
+{% endhighlight %}
+
+In the implementation above `std::invoke` was used instead.
+{% highlight c++ linenos %}
+  if (cmp(std::invoke(proj, b), std::invoke(proj, a))) return a;
+{% endhighlight %}
+
+This allows a simpler call then the projection only takes a member variable:
+
+{% highlight c++ linenos %}
+person x{ "Alice", "Wonderland", 7 };
+person y{ "Bob", "Builder", 5 };
+std::string result = algs::min(x, y, algs::less(), &person::age).first_name;
+// result is "Bob"
+{% endhighlight %}
+
+
+# Less - function object
+
+In the code above `less` is a struct and only it's `operator()` is a function
+template. This choice is more similar to `std::less<>` which for backward
+compatibility reasons is a specialization for `std::less` for `void`.
+
+Notice that the arguments `T` and `U` can be different types. `min` does not
+use this, but it's useful for things like `std::set<std::string>` when we want
+to find using a literal string, so comparison is between a `const std::string
+&` and a `const char *`.
 
 # References
 
