@@ -6,6 +6,39 @@ categories: read book
 
 List of books I've read in 2018
 
+- 2018-08-20: Mircea Eliade: Istoria Credințelor și ideilor religioase (vol I, second ed. 1991)
+: Encyclopedic coverage. Four out of five stars. Debatable statement that
+religion is integral part of conscience. Sexist statement that in early humans
+men were hunting because women could not provide enough food by gathering
+(equally one could say that women had to gather because men were not providing
+enough food hunting). Covers: early humans, Mesopotamia, Egypt, megaliths,
+Hittits & Canaanites, early Jewish, India before Gautama-Buddha, Zeus,
+Olympians, Greek Heroes, Eleusis misteries, Zarathustra, Dionysus.
+
+- 2018-08-15 Radu Preda: Jurnal cu Petru Țuțea
+: Interview notes with Petru Țuțea. Having spent 13 years in the communist
+prisons, P. Țuțea appeared as an intriguing character in the Romanian media
+in the years after the 1989 revolution. I'm sure the author is a nice person,
+but the book is full of mistico-regligios-heroic-nationalistic non-sense. A bad
+read, not recommended.
+
+<img
+  align="right"
+  alt="Book cover"
+  src="/assets/2018-01-01-read/book_cover_ret_dsna.jpg">
+
+- 2018-08-14 Robert Endre Tarjan: Data Structures and Network Algorithms
+: Very good introduction to graph algorithms in a short book. The style is
+dense, but correct (one could provide more details, but would need to use more
+words). It has 9 chapters: 1 of basics, 4 on helper data structures and 4 on
+graph algorithms.  I did not quite get the last and a half chapters very
+difficult. The disjoined sets (one of the data structures) were easy to
+understand once the usage was clarified. However the analysis of the complexity
+of the disjoined sets operations is cool, but very difficult: it's the first
+time when I saw the Ackerman function used meaningfully for anything else other
+then a short statement "here is a function that grows faster than exponential".
+Difficulty rating: 3 pages per evening.
+
 <img
   align="right"
   alt="Book cover"
