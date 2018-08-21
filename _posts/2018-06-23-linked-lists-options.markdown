@@ -92,8 +92,11 @@ Alternatively the header can be larger than just a pointer.
 The list can store its size in the header and adjust it when values get
 inserted or removed.
 
-Or it can dispense with storing it and do a traversal to count the number of
-values in the list.
+Or it can dispense with storing it. This leads to a smaller header. It requires
+`O(N)` to calculate the list size (traversing and counting the list nodes).
+This is not as bad as it sounds as more often the question is whether the list
+is empty or not (which can be exposed in constant time) rather than the list
+size.
 
 
 # Links from remote parts to local parts
@@ -102,24 +105,33 @@ One option is to only have links from the header (the local parts) to the nodes
 (the remote parts), but no links from the nodes (the remote parts) back to the
 header.
 
+![No links to local](/assets/2018-06-23-linked-lists-options/07-no-links-to-local.png)
+
 The other option is to allow links from the nodes (the remote parts) back to
 the header (the local parts). This makes some operations a bit more complex
 (e.g.  move constructor and assignment need to also adjust the relevant
 pointers to point to the new header).
 
+![Links to local](/assets/2018-06-23-linked-lists-options/08-links-to-local.png)
+
 
 # Dummy node
 
-For circular lists there is the option to introduce a dummy node that does not
-need to contain a value (e.g. it's `reinterpret_cast`ed to a node), between the
-node for the front (the node of the first value) and the back (the node for the
-last value).
+Dummy nodes refer to nodes that just have the linking pointers, but not the
+value (e.g. they are effectively `reinterpret_cast`ed to a node), with the goal
+of simplifying code in some cases.
 
-![Dummy node](/assets/2018-06-23-linked-lists-options/07-dummy-node.png)
+In the example below a dummy node is inserted between the node for the front
+(the node of the first value) and the back (the node for the last value) for a
+double linked list. This simplifies the code dealing with insertion and removal
+of nodes. The dummy node for an empty list would have `next` and `prev`
+pointing to itself.
 
-The dummy node for an empty list would have `next` and `prev` pointing to
-itself.
+![Dummy node](/assets/2018-06-23-linked-lists-options/09-dummy-node.png)
 
+Another possible usage is for a single linked linear list where a dummy node
+inserted before the first node simplifies the code dealing with an empty list
+(no longer a special case).
 
 # Dummy node - location
 
@@ -128,7 +140,8 @@ If the dummy node is allocated on the heap there are two choices:
 - ensure that list always have a dummy node, which leads to a potentially
   throwing default constructor and move constructor
 - or introduce a special state, when default constructed or moved from, where
-  there is no dummy node
+  there is no dummy node (this option partially negates the advantages of
+  having a dummy node)
 
 Alternatively the dummy node can be part of the header. This creates links from
 remote parts to local parts.
@@ -157,16 +170,21 @@ NOTE: Examples of permanent end iterator:
 
 All list iterators are at least `ForwardIterator`.
 
-Double linked lists iterators can be `BidirectionalIterator`. That is trivial
-to achieve when the iterator points to a node, but might require trade-offs
-elsewhere to reverse from the end iterator (e.g. an end iterator that is just a
-`nullptr` pointer is not reversible rendering the whole iterator type
-`ForwardIterator`).
+Double linked lists iterators can be `BidirectionalIterator`. Not all double
+linked lists expose a `BidirectionalIterator`. For example if the permanent end
+iterator is a just a `nullptr` pointer, it cannot implement the `operator--`
+leading to a `ForwardIterator` only.
+
+NOTE: there is a difference between the ability to traverse a sequence in the
+reverse orderer (back to front), which all double linked lists can have, and
+a `BidirectionalIterator` that requires the ability to change the direction of
+travel.
 
 
 # Allocators
 
-A variety of options can be made for how the nodes are allocated.
+A variety of options can be made for how the nodes are allocated. Allocating
+nodes on the heap is usually the default option.
 
 
 # Intrusive vs. non-intrusive
@@ -184,6 +202,7 @@ multiple lists (or even other data structures).
 One possible facility is to provide a mean to get an iterator from a reference
 to a value. This is usually the case for intrusive lists, but can be provided
 for non-intrusive lists as well.
+
 
 # Node ownership
 
@@ -225,7 +244,7 @@ and `prev` is fixed just for the entry point in the list (e.g. the dummy node)
 while for the rest of the nodes it is deduced. This obviously has additional cost
 for other operations.
 
-![Fast reversal](/assets/2018-06-23-linked-lists-options/08-fast-reversal.png)
+![Fast reversal](/assets/2018-06-23-linked-lists-options/10-fast-reversal.png)
 
 
 # Conclusion

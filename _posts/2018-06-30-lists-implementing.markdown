@@ -19,8 +19,9 @@ The `dl_list` class below is a template on the sequence type for:
 - a double linked list
 - circular
 - with dummy node in the header
-- intrusive
-- no custom allocator
+- non-intrusive (nodes are provided by the list class)
+- nodes are allocated on the heap (no custom allocator) and list owns the
+  nodes
 - getting size is linear time with number of elements (but slice is constant
   time)
 

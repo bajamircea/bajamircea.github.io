@@ -159,6 +159,8 @@ a (relatively) complex iterator and no fixed end iterator.
 
 ![Double linked circular](/assets/2018-06-28-linked-lists-examples/05-double-circular.png)
 
+A minor variation that has a fixed end iterator can be achieved by having in
+the iterator a pointer to the list instead of a pointer to the tail node.
 
 ## Double linked with allocated dummy node
 
@@ -260,14 +262,14 @@ pointing back to the header need to be adjusted.
     <tr>
       <td>Minimalistic iterator</td>
       <td>Yes</td>
-      <td>No</td>
+      <td><strong>No</strong></td>
       <td>Yes</td>
       <td>Yes</td>
     </tr>
     <tr>
       <td>Permanent end</td>
       <td>Yes</td>
-      <td><strong>No</strong></td>
+      <td><strong>No</strong> / Yes</td>
       <td><strong>No</strong> / Yes</td>
       <td>Yes</td>
     </tr>
