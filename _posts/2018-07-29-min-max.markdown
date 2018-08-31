@@ -44,7 +44,7 @@ namespace algs {
 
   // generalized min taking comparison and projection
   template<typename T, typename Cmp, typename Proj>
-  // requires Cmp is a weak ordering for projection Proj of T
+  // requires Cmp is a strict weak ordering for projection Proj of T
   const T & min(const T & a, const T & b, Cmp cmp, Proj proj) {
     if (cmp(std::invoke(proj, b), std::invoke(proj, a))) return a;
     return b;
@@ -52,7 +52,7 @@ namespace algs {
 
   // generalized min taking comparison
   template<typename T, typename Cmp>
-  // requires Cmp is a weak ordering for T
+  // requires Cmp is a strict weak ordering for T
   const T & min(const T & a, const T & b, Cmp cmp) {
     return min(a, b, cmp, identity());
   }
@@ -238,7 +238,7 @@ happens to be:
 # StrictTotallyOrdered
 
 The version of `min` with two arguments uses `<` for comparison and [has the
-requirement][concept-basics] that the type `T` is `StrictTotallyOrdered`. That
+requirement][concepts-basics] that the type `T` is `StrictTotallyOrdered`. That
 means that not only `<` is implemented, but also all the other comparisons,
 including equality are defined, and they work sanely e.g.: given arbitrary `a`
 and `b`, one an only one is true: `a < b` or `a == b` or `a > b`.
@@ -312,7 +312,6 @@ to find using a literal string, so comparison is between a `const std::string
 # References
 
 - Elements of Programming (book by Alexander A. Stepanov and Paul McJones)
-
 - Some [ADL comments][adl]
 - [Concepts basics][concepts-basics] for more details on enforcing requirements
 
