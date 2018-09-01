@@ -175,6 +175,33 @@ two values of either of the two approaches above by exposing methods like
 `begin`, `end`, `size`. That's a range object.
 
 
+# Versions accepting range objects
+
+When creating versions of `find` that accept range objects there is the problem
+of how to disambiguate between functions with the same number of arguments
+e.g. both functions below have three arguments:
+
+{% highlight c++ linenos %}
+namespace algs {
+  template<typename I, typename S, typename T>
+  I find(I f, S l, const T & v) {
+    // ...
+  }
+
+  namespace range {
+    template<typename Range, typename T, typename Cmp>
+    auto find(Range & r, const T & v, Cmp cmp) {
+      // ...
+    }
+
+  }
+}
+{% endhighlight %}
+
+The choice I've made above is to use an additional namespace for the functions
+receiving a range object. That's maybe not ideal.
+
+
 # Passing range objects as arguments
 
 Standard containers such as `std::vector`, `std::list`, `std::set` etc. can be
