@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Min and max internals'
+title: 'Min and max basics'
 categories: coding cpp
 ---
 

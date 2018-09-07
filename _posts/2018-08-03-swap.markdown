@@ -1,0 +1,128 @@
+---
+layout: post
+title: 'Swap basics'
+categories: coding cpp
+---
+
+Swapping two values
+
+
+# Introduction
+
+`swap` is a function that swaps two values. Essentially we're going to
+implement `std::swap` from the standard C++ library (see the article on `min`
+[as to why][min]).
+
+{% highlight c++ linenos %}
+namespace algs {
+
+  template<typename T>
+  // requires T is move constructible and move assignable
+  void swap(T & x, T & y) {
+    T tmp = std::move(x);
+    x = std::move(y);
+    y = std::move(tmp);
+  }
+}
+{% endhighlight %}
+
+The rest of the article is about how did we get there.
+
+
+# Basic usage
+
+Basic usage of `swap` looks like this:
+
+{% highlight c++ linenos %}
+  std::vector<int> a{ 1, 2, 3 };
+  std::vector<int> b;
+  algs::swap(a, b);
+  std::cout << a.size() << ' ' << b.size() << '\n';
+  // Prints: 0 3
+{% endhighlight %}
+
+
+# The idea
+
+One intuitive explanation uses cups. Two cups are filled: one with tea, the
+other with coffee. Using an additional empty cup switch the contents of the
+first two cups.
+
+![Cups](/assets/2018-08-03-swap/01-cups.png)
+
+
+# Move or copy
+
+In our code above, `std::move` [actually moves only if][move] the type has the
+move constructor and move assignment defined. Otherwise it will use the copy
+constructor and copy assignment.
+
+
+# Noexcept
+
+Practically speaking, if the move constructor and the move assignment do not
+throw, then swap is also guaranteed to not throw (i.e. it's `noexcept`). Then
+`swap` is useful to perform commit of the results at the end of a chain of
+operations that might throw to indicate error.
+
+Beware the case where swap might throw. One such case is if as explained above
+copy is actually used (e.g. class does not have move defined) and copying might
+throw.
+
+Note that it is possible to swap objects and guarantee `noexcept` even if say
+move constructor might throw. For example in the case of a [double linked list
+with allocated dummy node always present][list], the move constructor might
+throw because it has to allocate an additional dummy node. However to swap the
+value no allocation is required, hence it can be guaranteed to not throw.
+
+
+# Customisation points
+
+By customisation points I mean the mechanism through which a class can
+define/customise it's behaviour. This is a complex subject that I'm not
+addressing fully here.
+
+Pre C++11, customisation for `std::swap` was achieved by providing
+specializations/overloads for a type e.g.:
+
+{% highlight c++ linenos %}
+template<typename T, typename Alloc>
+void swap(vector<T, Alloc> & x, vector<T, Alloc> & y) {
+  // swap the vector pointers here
+}
+{% endhighlight %}
+
+That lead to the following idiomatic usage of swap for a class, so that if
+there is a swap in the namespace of the arguments then [ADL][adl] will select
+it, otherwise `swap` will be looked in the `std` namespace.
+
+{% highlight c++ linenos %}
+  using namespace std;
+  swap(x, y);
+{% endhighlight %}
+
+In the implementation of `algs::swap` above customisation is achieved by
+defining move constructor and move assignment for a type.
+
+NOTE: The customisation points can have names very similar to what we try to
+customise (e.g. specializations of the function, i.e. using the same name, e.g.
+`swap`) OR can look very different (e.g. move constructor and assignment).
+
+
+# Related algorithms
+
+- `iter_swap` (which swaps values pointed by iterators)
+- `exchange` (set object to new value and return the old value of the object)
+
+
+# References
+
+- [Article on implementing min][min]
+- [Article on std move and forward][move]
+- Some [ADL comments][adl]
+
+
+[adl]:  {% post_url 2017-02-22-noncopyable-adl %}
+[min]:  {% post_url 2018-07-29-min-max %}
+[move]: {% post_url 2016-04-07-move-forward %}
+[list]: {% post_url 2018-06-28-linked-lists-examples %}

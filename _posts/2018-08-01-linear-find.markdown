@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'Linear find internals'
+title: 'Linear find basics'
 categories: coding cpp
 ---
 
@@ -113,7 +113,7 @@ Basic usage of `find` looks like this:
   else {
     std::cout << "Found: " << *it << '\n';
   }
-// Prints: Found: 42
+  // Prints: Found: 42
 {% endhighlight %}
 
 
@@ -148,10 +148,10 @@ A common usage scenario is to increment the first pointer until it becomes
 equal to the last:
 
 {% highlight c++ linenos %}
-    while (f != l) {
-      // some code here using the dereferenced value *f
-      ++f;
-    }
+  while (f != l) {
+    // some code here using the dereferenced value *f
+    ++f;
+  }
 {% endhighlight %}
 
 
