@@ -54,14 +54,14 @@ namespace algs {
   template<typename T, typename Cmp>
   // requires Cmp is a strict weak ordering for T
   const T & min(const T & a, const T & b, Cmp cmp) {
-    return min(a, b, cmp, identity());
+    return min(a, b, cmp, algs::identity());
   }
 
   // straight forward min
   template<typename T>
   // requires T is StrictTotallyOrdered
   const T & min(const T & a, const T & b) {
-    return min(a, b, less());
+    return min(a, b, algs::less());
   }
 }
 {% endhighlight %}

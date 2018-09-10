@@ -55,7 +55,7 @@ namespace algs {
   //   S is a sentinel for I,
   //   Cmp is an equivalence relation between T and ValueType(I)
   I find(I f, S l, const T & v, Cmp cmp) {
-    return find(f, l, v, cmp, identity());
+    return find(f, l, v, cmp, algs::identity());
   }
 
   // straight forward find
@@ -64,7 +64,7 @@ namespace algs {
   //   S is a sentinel for I,
   //   T is equality comparable with ValueType(I)
   I find(I f, S l, const T & v) {
-    return find(f, l, v, equal());
+    return find(f, l, v, algs::equal());
   }
 
   namespace range {
