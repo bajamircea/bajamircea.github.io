@@ -12,9 +12,14 @@ Finding the partition point for a partitioned range
 We're going to have a look at a function similar to `std::partition_point` from
 the standard C++ library with some differences.
 
+Here is a sample where the range has a partition point where we transition from
+vowels to consonants.
+
 ![Partition point](/assets/2018-08-07-partition-point/01-partition_point.png)
 
-See the article on `min` [as to why][min].
+See the article on `min` [as to why we care][min].
+
+A possible implementation looks like:
 
 {% highlight c++ linenos %}
 namespace algs {
@@ -41,7 +46,7 @@ namespace algs {
   // generalized partition point taking predicate and projection
   template<typename I, typename S, typename Pred, typename Proj>
   // requires I is an ForwardIterator,
-  //   N is a distance for I
+  //   S is a sentinel for I
   //   Pred is an unary predicate on projection Proj of ValueType(I)
   I partition_point(I f, S l, Pred pred, Proj proj) {
     auto n = std::distance(f, l);
@@ -86,9 +91,17 @@ It turns out that implementing `partition_point` is just a wrapper for an
 algorithm that takes a [counted range][find] consisting of an iterator and a
 count: `partition_point_n`.
 
-![Partition point n](/assets/2018-08-07-partition-point/02-partition_point_n.png)
+For `partition_point_n` we start with a counted range that we don't know
+initially where is the partition point, and by halving at each step we
+determine on which side of the partition we are, and if we need to continue to
+the right or to the left.
 
-The return value is one past the last element in the first range.
+Below is an example searching for the point where the range transitions from
+vowels to consonants. The return value is one past the last element in the the
+vowels range.
+
+
+![Partition point n](/assets/2018-08-07-partition-point/02-partition_point_n.png)
 
 # Algorithmic complexity
 
@@ -96,9 +109,13 @@ The function takes `O(lg(n))` predicate applications in the worst case. Notice
 however that if the iterator is only `ForwardIterator` then calculating the
 distances degrades to `O(n)` steps. If the iterator is `RandomAccessIterator`
 distances between iterators can be calculated in constant time leading to
-`O(lg(n)` time complexity. Using this algorithm for `ForwarIterator` is
+`O(lg(n))` time complexity. Using this algorithm for `ForwarIterator` is
 worthwhile only in some cases where predicate applications are much more
 expensive than traversals.
+
+It is particularly suited for cases where the input is a sorted extent based
+(i.e. array-like) data structure, because it uses less memory and is cache
+friendly compared with node based data structures (i.e. linked lists, trees).
 
 
 # Related algorithms
