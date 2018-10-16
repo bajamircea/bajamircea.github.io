@@ -6,7 +6,23 @@ categories: read book
 
 List of books I've read in 2018
 
-- 2018-08-20: Mircea Eliade: Istoria Credințelor și ideilor religioase (vol I, second ed. 1991)
+
+<img
+  align="right"
+  alt="Book cover"
+  style="padding: 10px 40px"
+  src="/assets/2018-01-01-read/book_cover_lb_imcr.jpg">
+
+- 2018-10-16 Lucian Boia: Istorie şi mit în conştiinţa românească
+: I learned the history of the textbooks in school. I faced the propaganda, in
+the media about the Romanian past: 'our Dacian origins', 'the Latin purity of
+our language', 'Mihai Viteazu united the Romanian principates', 'our national
+poet: Mihai Eminescu'. These ideas smell, do not sound truthful, but as a pupil
+I did not know better. Lucian Boia explains them as myths, and explores their
+origins and political motivations.
+
+
+- 2018-08-20 Mircea Eliade: Istoria Credințelor și ideilor religioase (vol I, second ed. 1991)
 : Encyclopedic coverage. Four out of five stars. Debatable statement that
 religion is integral part of conscience. Sexist statement that in early humans
 men were hunting because women could not provide enough food by gathering
