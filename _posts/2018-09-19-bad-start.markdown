@@ -1,0 +1,111 @@
+---
+layout: post
+title: 'Bad start'
+categories: coding cpp
+---
+
+Regard classes with start and stop methods with suspicion
+
+
+# Init method in a sheep's clothing
+
+{% highlight c++ linenos %}
+class some_class {
+public:
+  void start() {
+    // ...
+  }
+
+  void stop() {
+    // ...
+  }
+};
+{% endhighlight %}
+
+Innocent classes with `start` and `stop` methods are looking for trouble. They
+are just aliases for classes with `init` and `cleanup` methods. Or they came
+with different names (`setup` and `teardown` are popular with test frameworks)
+
+They raise questions like:
+
+- how does the user of the class ensure `stop` is always called?
+- how do the constructor and `start` divide the responsibility to initialize?
+- if `start` fails (e.g. throws), is then `stop` also called?
+- what happens if `stop` throws?
+- how do the destructor and `stop` divide the responsibility to cleanup?
+
+Some people think they have obvious answers to the above questions, but the
+more you did, the less palatable the outcomes.
+
+To pick just the first question, here is a potential (bad) answer:
+
+{% highlight c++ linenos %}
+void some_fn() {
+  some_class a;
+  bool need_to_stop = true;
+  try
+  {
+    a.start();
+    // ...
+    need_to_stop = true;
+    a.stop();
+  }
+  catch(...)
+  {
+    if (need_to_stop) {
+      a.stop();
+    }
+  }
+}
+{% endhighlight %}
+
+Compare that with using constructor/destructor (even with a complex
+initialization):
+
+{% highlight c++ linenos %}
+void some_fn() {
+  some_class a = complex_initialization_fn();
+  // ...
+}
+{% endhighlight %}
+
+
+# So what's the solution?
+
+Don't use classes with `start`/`stop` methods.
+
+
+# But I have to use a start method
+
+Say you're dealing with legacy code e.g. using a test framework with `setup`
+and `teardown`. Then the solution of containment might work. See
+[here for how to bridge to using the standard C++ lifetime
+workflow][avoid-too-many].
+
+
+# But I really have to use a start method
+
+For example to fix [this threading bug][threading-bug]. There we have base
+class `periodic_thread` that might call a method of the derived class
+`on_fire`, from a different thread, before the derived class
+`some_periodic_thread` virtual table was initialized.
+
+The naive solution is to defer starting the thread in a `start` method for the
+`periodic_thread` class. In addition to the problems mentioned above, this
+approach spreads. The derived class `some_periodic_thread` needs to have a
+`start` method, and it's usage in a function is more complex.
+
+Whenever you use the class you need additional work whenever it is used, either
+directly in a function, or when aggregated either as a member or as a base
+class.
+
+For an alternative, look at the `std::thread` class. It does not have
+`start`/`stop`. Instead, it receive the things it needs (e.g. the function to
+call), in the constructor. That means that natural usage requires that the
+scope of the function to call from the thread will extend the life of the
+`std::thread` instance.
+
+
+[avoid-too-many]: {% post_url 2018-09-17-avoid-too-many-smart-pointers %}
+[threading-bug]:  {% post_url 2015-04-08-threading-bug %}
+

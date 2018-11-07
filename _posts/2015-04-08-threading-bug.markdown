@@ -23,18 +23,20 @@ However `std::thread` requires you to perform cleanup, in this case to ensure
 that the thread is told to end before the destructor of `std::thread` , or else
 it [terminates the process][terminate-on-destruct].
 
-`peridic_thread_base` is intended as a reusable class that wraps a
-`std::thread` to address the issue above for the case where some action needs
-to be performed periodically. Using a carefully balanced combination of
-`std::mutex` and `std::condition_variable`, it calls periodically a virtual
-function `on_fire` and orchestrates the thread startup (in constructor) and
-shutdown (and destructor).
+`peridic_thread` is intended as a reusable class that wraps a `std::thread` to
+address the issue above for the case where some action needs to be performed
+periodically. Using a carefully balanced combination of `std::mutex` and
+`std::condition_variable`, it calls periodically a virtual function `on_fire`
+and orchestrates the thread startup (in constructor) and shutdown (and
+destructor).
 
-`peridic_thread` is an example of using `periodic_thread_base`. It derives from
-it and configures the interval to be every 2 seconds. It also implements `on_fire`.
+`some_peridic_thread` is an example of using `periodic_thread`. It derives from
+it and configures the interval to be every 2 seconds. It also implements
+`on_fire`.
 
-`main` instantiates a `periodic_thread` and then it waits a bit (5 seconds).
-That's just enough time for the `on_fire` function to be called twice.
+`main` instantiates a `some_periodic_thread` and then it waits a bit (5
+seconds).  That's just enough time for the `on_fire` function to be called
+twice.
 
 # The reality
 
@@ -58,10 +60,10 @@ Try to spot the bug.
 
 namespace
 {
-  class periodic_thread_base
+  class periodic_thread
   {
   public:
-    explicit periodic_thread_base(
+    explicit periodic_thread(
       const std::chrono::seconds & sleep_duration
       ) :
       sleep_duration_{ sleep_duration },
@@ -70,7 +72,7 @@ namespace
     {
     }
 
-    ~periodic_thread_base()
+    ~periodic_thread()
     {
       {
         std::scoped_lock lock(mutex_);
@@ -106,11 +108,11 @@ namespace
     std::thread thread_;
   };
 
-  class periodic_thread :
-    private periodic_thread_base
+  class some_periodic_thread :
+    private periodic_thread
   {
   public:
-    periodic_thread() :
+    some_periodic_thread() :
       periodic_thread_base(std::chrono::seconds(2))
     {
     }
@@ -133,7 +135,7 @@ namespace
 int main()
 {
   {
-    periodic_thread p;
+    some_periodic_thread p;
     wait_a_bit();
   }
   std::cout << "Done" << std::endl;
