@@ -320,7 +320,7 @@ reference`, is selected by the compiler.
 ## std::forward
 
 The idiomatic use of `std::forward` is inside a templated function with an
-`rvalue argument, where the argument are now `lvalue`, and to retrieve the
+`rvalue argument`, where the argument is now `lvalue`, used to retrieve the
 original value category, that it was called with, and pass it on further down
 the call chain (perfect forwarding).
 
