@@ -1,6 +1,6 @@
 description: >
   Mircea Baja's Posts
-exclude: ['.ruby-version', 'Gemfile', 'Gemfile.lock']
+exclude: ['.ruby-version', 'Gemfile', 'Gemfile.lock', 'code']
 github_username:  bajamircea
 paginate: 100
 title: bajamircea.github.io
