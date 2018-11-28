@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20181107-02-1" width="30%" viewBox="0 0 60.0 45.0">
+  <style>
+    #svg20181107-02-1 {
+      border: 1px solid #e8e8e8;
+    }
+    .svg20181107-02-l1 {
+      stroke: black;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+    .svg20181107-02-t1 {
+      font-family: serif;
+      font-size: 6px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .svg20181107-02-t2 {
+      font-family: serif;
+      font-size: 6px;
+      dominant-baseline: middle;
+    }
+  </style>
+  <path class="svg20181107-02-l1" d="M 10.0 35.0 L 10.0 5.0 L 40.0 35.0 Z"/>
+  <text class="svg20181107-02-t1" x="5.0" y="20.0">1</text>
+  <text class="svg20181107-02-t1" x="25.0" y="40.0">1</text>
+  <text class="svg20181107-02-t2" x="30.0" y="15.0">sqrt(2)</text>
+</svg>

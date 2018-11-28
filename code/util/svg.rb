@@ -95,10 +95,6 @@ def svg(attrs={}, &block)
   node
 end
 
-def make_id(offset)
-  return "svg20181107-" + offset.to_s
-end
-
 def save_to_file(folder, file, contents)
   FileUtils.mkdir_p folder
   path = File.join folder, file
