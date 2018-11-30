@@ -87,6 +87,14 @@ steps regardless of the length of the list.
 Alternatively the header can be larger than just a pointer.
 
 
+# Iterators - minimalistic
+
+A minimalistic list iterator can be simply a pointer to a node with simple
+logic to advance by one position by following `next` (or `prev`).
+
+Or they can be larger (for advantages elsewhere).
+
+
 # List size
 
 The list can store its size in the header and adjust it when values get
@@ -97,6 +105,36 @@ Or it can dispense with storing it. This leads to a smaller header. It requires
 This is not as bad as it sounds as more often the question is whether the list
 is empty or not (which can be exposed in constant time) rather than the list
 size.
+
+
+# Splicing
+
+Splicing refer to the operation of transferring list nodes from one list to
+another. It can be total, when all the nodes are transferred from the source
+list, or partial, when a range of nodes are transferred.
+
+NOTE: Splicing usually involves adjusting pointers of the end of the
+transferred range and can have constant time complexity. If the list size is
+cached in the header, splicing time complexity might be linear, proportional
+with the number of nodes transferred (to calculate the count of nodes
+transferred in order to update the cached size).
+
+
+# Operations available
+
+All lists provide:
+- constant time access to the front (the first value)
+- constant time `push_front`
+- constant time `pop_front`
+- constant time insertion and erasure after iterator (i.e. other than the end iterator)
+- some form of splicing
+
+Typical optional operations are:
+- constant time access to the back (the last value)
+- constant time `push_back`
+- constant time `pop_back`
+- constant time insertion and erasure before (and at) iterator
+- constant time partial splicing
 
 
 # Links from remote parts to local parts
@@ -133,6 +171,7 @@ Another possible usage is for a single linked linear list where a dummy node
 inserted before the first node simplifies the code dealing with an empty list
 (no longer a special case).
 
+
 # Dummy node - location
 
 If the dummy node is allocated on the heap there are two choices:
@@ -145,14 +184,6 @@ If the dummy node is allocated on the heap there are two choices:
 
 Alternatively the dummy node can be part of the header. This creates links from
 remote parts to local parts.
-
-
-# Iterators - minimalistic
-
-A minimalistic list iterator can be simply a pointer to a node with simple
-logic to advance by one position by following `next` (or `prev`).
-
-Or they can be larger (for advantages elsewhere).
 
 
 # Permanent end iterator
@@ -181,20 +212,19 @@ a `BidirectionalIterator` that requires the ability to change the direction of
 travel.
 
 
-# Allocators
-
-A variety of options can be made for how the nodes are allocated. Allocating
-nodes on the heap is usually the default option.
-
-
 # Intrusive vs. non-intrusive
 
-For non-intrusive lists the user of the list does not care about the layout of
+For non-intrusive lists, the user of the list does not care about the layout of
 the node. They are easier to use.
 
-For intrusive lists the user of the list provides the layout of the node. They
-are more difficult to use but have the advantage a value can be linked into
-multiple lists (or even other data structures).
+For the intrusive lists, the user of the list has to be aware of the layout of
+the node. They know for a node the offsets for the value and pointer(s) to the
+adjacent nodes.
+
+Intrusive lists are more difficult to use than non-intrusive lists, but have
+advantages. E.g. they allow for more explicit memory management, different
+exception safety guarantees, ability to have a node part of multiple lists/data
+structures.
 
 
 # Getting an iterator from a reference to a value
@@ -213,25 +243,10 @@ case with intrusive lists, in particular when a node is part of more than a
 list, at most one list can own the nodes.
 
 
-# Operations available
+# Allocators
 
-All lists provide:
-- constant time access to the front (the first value)
-- constant time `push_front`
-- constant time `pop_front`
-- constant time insertion and erasure after iterator (i.e. other than the end iterator)
-
-Typical optional operations are:
-- constant time access to the back (the last value)
-- constant time `push_back`
-- constant time `pop_back`
-- constant time insertion and erasure before (and at) iterator
-- some form of constant time transfer of nodes to another list (splicing)
-
-NOTE: splicing a range (transfer a range of nodes to another list) is constant
-time if the size is not cached in the header, but linear time with the number
-of nodes transferred (to calculate the count of nodes transferred in order to
-update the cached size).
+A variety of options can be made for how the nodes are allocated. Allocating
+nodes on the heap is usually the default option.
 
 
 # Meaning of pointers in the node

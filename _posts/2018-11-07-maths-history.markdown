@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "It ain't simple"
-categories: maths simple
+title: "Pythagoras"
+categories: maths history
 ---
 
-Enough maths history to make sense of why things aren't as simple as they seem.
+Maths history: Pythagoras or the Greek breakthrough
 
 TODO: this is work in progress
 
@@ -26,11 +26,13 @@ TODO: this is work in progress
 
 # Peano
 
-# Devid Hilbert
+# David Hilbert
 
 # Bertrand Russell
 
 # Kurt Gödel
+
+Why things aren't as simple as they seem.
 
 # Turing, Alonzo Church
 
