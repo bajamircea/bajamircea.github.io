@@ -29,28 +29,35 @@ to the minute, 60 minutes to the hour, eggs are sold to the dozen etc.
 
 # Pythagoras or the Greek breakthrough
 
-Mathematics flourished in the ancient Greek culture, and one milestone in this
-development was Pythagoras (around 500 BC).
-
-From Babylonians, Pythagoras took tables of triples of integers such as as
-$$(3, 4, 5)$$, $$(5, 12, 13)$$, that can form right angled triangles.
-
 <div align="center">
 {% include assets/2018-11-07-maths-history/01-three_four_five.svg %}
 </div>
 
-But he took it further, from a catalogue of numbers that happen to have a
-relation, to the general theorem stating that:
+Triplets such as $$(3, 4, 5)$$, $$(5, 12, 13)$$, $$(6, 8, 10)$$, $$(7, 24,
+25)$$ [have been known][plimpton] since about 2000 BC by the Egyptians and
+Babylonians, first on the basis of 'here are some values that have a certain
+property', later as a rule, introduced to the Greeks by Pythagoras (around 500
+BC) as:
 
-> In any right-angled triangle the square of the side opposite the right angle
+> In a right-angled triangle the square of the side opposite the right angle
 > equals the sum of the squares of the other two sides
 
-So far so good: look at this beauty that links geometry to natural numbers.
+It is believed that one of the initial proves of the rule involved sliding
+around same sized right angled triangles inside a square:
 
-However it soon become evident that natural numbers are not enough, because of
-he realised that the diagonal of a square, does not have a common unit with the
-side of the square. In modern language we would say that they discovered that
-$$\sqrt{2}$$ is irrational, i.e. that it has an infinite number of decimals.
+<div align="center">
+{% include assets/2018-11-07-maths-history/03-pythagoras.svg %}
+</div>
+
+For a while it looked like there is a beautiful link between numbers and
+geometry.
+
+By numbers they meant strictly positive integers and rational numbers (i.e.
+ratios). However it soon become evident that they are not enough to reflect
+sizes in geometry. The diagonal of a square, does not have a common unit with
+the side of the square. In modern language we would say that they discovered
+that $$\sqrt{2}$$ is irrational, i.e. that it has an infinite number of
+decimals.
 
 <div align="center">
 {% include assets/2018-11-07-maths-history/02-square-2.svg %}
@@ -62,8 +69,11 @@ throughout the mathematics history.
 
 # Euclid
 
+Mathematics flourished in the ancient Greek culture, and in Euclid's Elements
+it reached it's peak.
+
 <div align="center">
-{% include assets/2018-11-07-maths-history/03-euclid.svg %}
+{% include assets/2018-11-07-maths-history/04-euclid.svg %}
 </div>
 
 # Diophantus
@@ -90,4 +100,4 @@ Why things aren't as simple as they seem.
   SmartFriends U, September 27, 2003][as-gcd]
 
 [as-gcd]: https://www.youtube.com/watch?v=fanm5y00joc
-
+[plimpton]: https://en.wikipedia.org/wiki/Plimpton_322

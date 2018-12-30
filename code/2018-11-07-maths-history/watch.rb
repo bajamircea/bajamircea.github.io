@@ -2,17 +2,34 @@
 
 require 'listen'
 
+class Runner
+  def initialize()
+    @failed = []
+  end
+
+  def run(script)
+    success = system(script)
+    unless success
+      @failed.push(script)
+    end
+  end
+
+  def print_result()
+    if @failed.empty?
+      puts 'OK'
+    else
+      puts 'FAILED: ' + @failed.to_s
+    end
+  end
+end
 
 listener = Listen.to('.') do |m,c,r|
   puts 'changed'
-  success = system('./draw-01.rb')
-  success = system('./draw-02.rb')
-  success = system('./draw-03.rb')
-#  if success
-#    puts 'OK'
-#  else
-#    puts 'FAILED'
-#  end
+  r = Runner.new()
+  Dir.glob('./draw-*.rb').each do |script|
+    r.run(script)
+  end
+  r.print_result()
 end
 
 listener.start

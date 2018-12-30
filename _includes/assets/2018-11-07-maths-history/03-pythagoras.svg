@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20181107-03-1" width="75%" viewBox="0 0 180.0 90.0">
+  <style>
+    #svg20181107-03-1 {
+      border: 1px solid #e8e8e8;
+    }
+    .svg20181107-03-l1 {
+      fill: none;
+      stroke: black;
+    }
+    .svg20181107-03-l2 {
+      fill: none;
+      stroke: black;
+      stroke-width: 0.5;
+    }
+    .svg20181107-03-f1 {
+      fill: #ffccff;
+    }
+    .svg20181107-03-f2 {
+      fill: #ccffcc;
+    }
+    .svg20181107-03-t1 {
+      font-family: serif;
+      font-size: 8px;
+      text-anchor: end;
+      dominant-baseline: middle;
+    }
+    .svg20181107-03-t2 {
+      font-family: serif;
+      font-size: 4px;
+      text-anchor: start;
+    }
+  </style>
+  <path class="svg20181107-03-f1" d="M 50.0 10.0 L 80.0 10.0 L 80.0 50.0 Z"/>
+  <path class="svg20181107-03-f2" d="M 50.0 10.0 L 80.0 50.0 L 50.0 50.0 Z"/>
+  <path class="svg20181107-03-f1" d="M 10.0 80.0 L 50.0 50.0 L 50.0 80.0 Z"/>
+  <path class="svg20181107-03-f2" d="M 10.0 50.0 L 50.0 50.0 L 10.0 80.0 Z"/>
+  <path class="svg20181107-03-l2" d="M 50.0 10.0 L 80.0 10.0 L 80.0 50.0 Z"/>
+  <path class="svg20181107-03-l2" d="M 50.0 10.0 L 80.0 50.0 L 50.0 50.0 Z"/>
+  <path class="svg20181107-03-l2" d="M 10.0 80.0 L 50.0 50.0 L 50.0 80.0 Z"/>
+  <path class="svg20181107-03-l2" d="M 10.0 50.0 L 50.0 50.0 L 10.0 80.0 Z"/>
+  <path class="svg20181107-03-l1" d="M 10.0 10.0 L 80.0 10.0 L 80.0 80.0 L 10.0 80.0 Z"/>
+  <text class="svg20181107-03-t1" x="32.0" y="30.0">b</text>
+  <text class="svg20181107-03-t2" x="32.0" y="30.0">2</text>
+  <text class="svg20181107-03-t1" x="67.0" y="65.0">a</text>
+  <text class="svg20181107-03-t2" x="67.0" y="65.0">2</text>
+  <path class="svg20181107-03-f1" d="M 140.0 10.0 L 170.0 10.0 L 170.0 50.0 Z"/>
+  <path class="svg20181107-03-f1" d="M 170.0 50.0 L 170.0 80.0 L 130.0 80.0 Z"/>
+  <path class="svg20181107-03-f2" d="M 130.0 80.0 L 100.0 80.0 L 100.0 40.0 Z"/>
+  <path class="svg20181107-03-f2" d="M 100.0 40.0 L 100.0 10.0 L 140.0 10.0 Z"/>
+  <path class="svg20181107-03-l2" d="M 140.0 10.0 L 170.0 50.0 L 130.0 80.0 L 100.0 40.0 Z"/>
+  <path class="svg20181107-03-l1" d="M 100.0 10.0 L 170.0 10.0 L 170.0 80.0 L 100.0 80.0 Z"/>
+  <text class="svg20181107-03-t1" x="137.0" y="45.0">c</text>
+  <text class="svg20181107-03-t2" x="137.0" y="45.0">2</text>
+</svg>
