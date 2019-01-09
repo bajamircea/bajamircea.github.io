@@ -114,22 +114,55 @@ And if a proposition asks for a construction, the solution ends in QEF, "quod
 erat faciendum", while if the proposition requires a proof, then then the
 solution ends in QED, "quod erat demonstrandum".
 
+Euclid marked an apex of logic that was not matched until around the 19th
+century. Until most of the contents of the Elements became part of the standard
+maths eduction in the 20th century, reading Euclid's Elements was The Thing
+that every truly educated man was supposed to know.
+
+
 # The Greek legacy
 
-Zeno is famous for his paradoxes such as Achilles and the tortoise:
+From the ancient Greeks we got a lot of inconsistent, invalid, confused text.
+But we got Euclid. And other than Euclid there are still plenty of gems.
+
+**Zeno** is famous for his paradoxes such as Achilles and the tortoise:
 
 > Achilles will never reach the tortoise as by the time Achiles reaches the
 > place where the tortoise has been, the tortoise has already moved away.
 
+On the surface, it seems nonsense for which the calculus seems to offer an
+explanation with regards to adding infinite sums of ever smaller quantities.
+But I think Zeno's paradoxes are deeper than that. For example the paradox
+above suggests that maybe modelling the word using Euclidean geometry does not
+work at tiny scales. We really can't just divide a line in smaller and smaller
+parts forever.
 
-Diophantus (around 300 AD) left Arithmetica, a collection of problems where the
-solutions are integers (or rationals). Each problem had a unique way of being
-solved. However this book will inspire the development of algebra.
+
+**Diophantus** (around 300 AD) left Arithmetica, a collection of problems.
+
+One such problem states that a person had a was a boy for a sixth of his life,
+a twelve more till his beard started to grow, and so on, asking for the age of
+a person.
+
+This kind of problems look like equations for which the solution must be an
+integer, the age of the person in years for the problem above, or rational
+numbers.
+
+Each problem had a unique way of being solved. Solving 100 of such problems
+give little insight on how to solve the 101th. However this book will inspire
+the development of algebra.
 
 
 # al-Khwarizmi - the Arabs
 
-# Euler - the Infinite Series
+Unlike the Romans, which, when encountering the Euclid's Elements did not
+preserve or care much about the proofs, the Arabs, when encountering the Greek
+culture, preserved and studied as much as they could get their hands on.
+
+Through the Arabs, around the 12th century AD, the Europeans rediscovered the
+Greeks, the Arabic numerals and the idea of zero, originating from India, and
+also additions such as algebra.
+
 
 # Peano - Formalization
 
