@@ -160,11 +160,52 @@ preserve or care much about the proofs, the Arabs, when encountering the Greek
 culture, preserved and studied as much as they could get their hands on.
 
 Through the Arabs, around the 12th century AD, the Europeans rediscovered the
-Greeks, the Arabic numerals and the idea of zero, originating from India, and
-also additions such as algebra.
+Greeks, got the Arabic numerals and the idea of zero, originating from India,
+and also additions such as algebra.
 
 
 # Peano - Formalization
+
+As mathematics started to flourish again in Europe following the rediscovery of
+Greeks, it generally still suffered by poor notation and lack of logical
+rigour.
+
+This changed in the 19th century, when mathematicians started to work on formal
+systems.
+
+Peano's axioms are an example of such formalization efforts, introducing
+notation that formalizes integer arithmetic axioms in a familiar form on the
+lines of:
+
+$$
+\begin{align}
+  &\forall x\in\mathbb{N}~(0 \neq S(x))\\
+  &\forall x, y\in\mathbb{N}~((S(x) = S(y) \Rightarrow x = y)\\
+  &\forall x\in\mathbb{N}~(x + 0 = x)\\
+  &\forall x, y\in\mathbb{N}~(x + S(y) = S(x + y))\\
+  &\forall x\in\mathbb{N}~(x \times 0 = 0)\\
+  &\forall x, y\in\mathbb{N}~(x \times S(y) = x \times y + x)\\
+  &\forall \bar{y}(\varphi(0, \bar{y}) \land \forall x(\varphi(x,\bar{y})
+  \Rightarrow \varphi(S(x),\bar{y})) \Rightarrow \forall x~\varphi(x,\bar{y})
+\end{align}
+$$
+
+The axioms above define the natural numbers in terms of rules with regards to a
+successor function $$S$$. For example the first one states that zero is not a
+successor for any other natural number. The last one is the induction rule,
+$$\bar{y}$$ stands for $$y_1,\dots,y_k$$ :if
+some formula is true for 0, and if true for x is true for the successor of x,
+then it's true for all natural numbers.
+
+In general, a formal system would use symbols like $$\forall$$, $$($$, $$x$$
+etc. and build sentences. There is a grammar as to what a valid sentence is.
+e.g. $$($$ is not valid because for example it does not have a closing
+parenthesis. Some sentences are given as axioms. And then there are rules on
+how to build further sentences.
+
+Around the end of the 19th century, a number of such formal systems were
+developed.
+
 
 # Cantor - Counting
 
