@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Premature optimisation - reading notes'
-categories: coding eop
+categories: review book
 ---
 
 Reading notes on Knuth's article
