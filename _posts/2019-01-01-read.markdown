@@ -1,0 +1,16 @@
+---
+layout: post
+title: 'Books Read in 2019'
+categories: read book
+---
+
+List of books I've read in 2019
+
+
+- 2019-01-18 Donald E. Knuth: Structured Programming with go to Statements
+: Not a book, an article, but full of gems including "Premature optimisation is
+the root of all evil" and "people have a natural tendency to set up all easily
+understood quantitative goal [...] instead of working directly for a
+qualitative goal". See [reading notes][premature-optimisation].
+
+[premature-optimisation]: {% post_url 2019-01-18-premature-optimisation %}
