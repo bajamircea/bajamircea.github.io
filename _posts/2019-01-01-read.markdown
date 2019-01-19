@@ -7,10 +7,28 @@ categories: read book
 List of books I've read in 2019
 
 
+- 2019-01-18 - Hans Rosling: Factfulness
+: In style of Stephen Pinker's [Enlightenement
+Now][s-pinker-enlightenment-now], it's data supporting a view of the world such
+that the world is improving and it is possible to improve further. It describes
+a yardstick measure of life at four income levels. It describes the gap
+instinct of expecting to identify clear boundaries between categories where in
+reality things are murky and conflated. Also why war zone immigrants arrive in
+inflatable boats: because regulation prevents them to fly, which costs less,
+and the better boats get confiscated at arrival. Difficulty rating: 30 pages
+per evening.
+
 - 2019-01-18 Donald E. Knuth: Structured Programming with go to Statements
 : Not a book, an article, but full of gems including "Premature optimisation is
 the root of all evil" and "people have a natural tendency to set up all easily
 understood quantitative goal [...] instead of working directly for a
-qualitative goal". See [reading notes][premature-optimisation].
+qualitative goal". See [reading notes][premature-optimisation]. Difficulty
+rating: 6 pages per evening.
+
+NOTE: Some books are rated for difficulty. That's an estimation of pages I can
+read in a work day evening (after putting children to bed, dinner, catch-up
+with The Important One, etc.). An easy read equates to more pages per evening,
+a difficult read equates to less pages.
 
 [premature-optimisation]: {% post_url 2019-01-18-premature-optimisation %}
+[s-pinker-enlightenment-now]: {% post_url 2018-05-03-enlightenment-now-s-pinker %}
