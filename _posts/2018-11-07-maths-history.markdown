@@ -70,9 +70,9 @@ throughout the mathematics history.
 
 # Euclid - the Greek Apex
 
-Proposition 47. Mathematics flourished in the ancient Greek culture, and in
-Euclid's Elements (13 books) it reached it's peak. The Pythagorean theorem is
-captured in Euclid's Elements in Book I Proposition 47.
+Mathematics flourished in the ancient Greek culture, and in Euclid's Elements
+(13 books) it reached it's peak. The Pythagorean theorem is captured in
+Euclid's Elements in Book I Proposition 47.
 
 <div align="center">
 {% include assets/2018-11-07-maths-history/04-euclid.svg %}
@@ -206,8 +206,43 @@ how to build further sentences.
 Around the end of the 19th century, a number of such formal systems were
 developed.
 
+An example would be using sets. The empty sets corresponds to zero, the set
+containing the empty set to one, and so on.
+
 
 # Cantor - Counting
+
+Cantor had amazing insights to the simple question of: given two sets, how do
+we compare them for size.
+
+If the elements can be counted then the counts can be compared. For sets of
+infinite number of elements he proposed using cardinality:
+- Two sets have the same cardinality if there is a function that maps 1-to-1
+  between elements of the two sets.
+- The cardinality of the set of natural numbers is $$\aleph_0$$. Sets of this
+  cardinality are set to be countable.
+
+Based on these definitions, he derived (in increasing order of complexity):
+- The set of even numbers and the set of odd numbers have the same cardinality
+- The set of even numbers is countable. It has the same cardinality as the set
+  of natural numbers, despite the former being a proper subset of the latter.
+  This was known as the Galileo's paradox.
+- The set of rational numbers is also countable.
+- The set of rational numbers between 0 and 1 is also countable.
+- The set of points in the square of side 1 with rational coordinates is also
+  countable.
+- The set of polynomials with integer coefficients is also countable.
+- The set algebraic numbers (solutions that cause the polynomials with integer
+  coefficients to be zero) is also countable. This set includes all rational
+  numbers, but also numbers like $$\sqrt{2}$$. However this does not include
+  transcendental numbers like $$\pi$$ and $$e$$.
+- However real numbers are not countable, they have a higher cardinality,
+  $$\aleph_1$$.
+- But there are as many real numbers between 0 and 1 as there are real numbers.
+- And there are as many real in the square of side 1 as there are real numbers.
+
+At that point in time, it was not clear if there are additional infinities
+between $$\aleph_0$$ and $$\aleph_1$$.
 
 # David Hilbert - We will know
 
