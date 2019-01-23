@@ -29,13 +29,17 @@ publication.
 
 - "then we will be almost certain that these programs cannot lead us into any
   trouble, but of course we won't be able to solve many problems." [p263]
+  - This comment was made in the context of suggestions to ban all unsafe
+    features in programming languages
   - It is as old as ever that there is often a compromise between safety and
     performance
 
 - "And ouch, what subscript checking does to the inner loop execution times!"
   [p269]
   - Compiler generated bounds-checking adds to safety, but reduced performance.
-    This is an example of compromise between safety and performance.
+    This is an example of compromise between safety and performance. I've
+    experienced the performance implications of checked iterators in Visual
+    Studio
 
 - "I do consider assignment statements and pointer variables to be among
   computer science's "most valuable treasures!"" [p263].
@@ -56,7 +60,7 @@ publication.
     make performance gains possible
 
 - "In established engineering disciplines a 12% improvement, easily obtained,
-  is never considered marginal; and I belie the same viewpoint should prevail
+  is never considered marginal; and I believe the same viewpoint should prevail
   in software engineering. Of course I wouldn't bother making such
   optimizations on a one-shot job, but when it's a question of preparing
   quality programs, I don't want to restrict myself to tools that deny me such
@@ -114,7 +118,7 @@ publication.
 
 - code like the one on p277:
 ```
-  "for i := 1 step 1 until m do
+  for i := 1 step 1 until m do
     if A[i] = x then found(i) fi;
   m := m + 1; A[m] := x; found(m);
 ```
@@ -151,7 +155,7 @@ publication.
   completely the other levels. This is not true." [p292]
   - An aspect of this is functions having expectations about the input (e.g.
     type and values) e.g. `lower_bound` expects the input range is partitioned
-    by the value searched.
+    by the value searched. These kind of concerns might cross a few levels.
 
 
 # Reference
