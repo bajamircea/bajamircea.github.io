@@ -6,6 +6,12 @@ categories: read book
 
 List of books I've read in 2019
 
+- 2019-02-06: N. Wirth: Programming Development by Stepwise Refinement / Communications of the ACM, Vol. 14, No. 4, p221-227, April 1971.
+: Not a book, an article. Describes the eight queens problem. OK-ish.
+
+- 2019-01-21: Edsger W. Dijkstra: The Humble Programmer / ACM Turing Lecture 1972
+: Not a book, an article. Gem about the nature of developing software. See
+[reading-notes][humble]. Good.
 
 - 2019-01-18 - Hans Rosling: Factfulness
 : In style of Stephen Pinker's [Enlightenement
@@ -18,17 +24,18 @@ inflatable boats: because regulation prevents them to fly, which costs less,
 and the better boats get confiscated at arrival. Difficulty rating: 30 pages
 per evening.
 
-- 2019-01-18 Donald E. Knuth: Structured Programming with go to Statements
-: Not a book, an article, but full of gems including "Premature optimisation is
-the root of all evil" and "people have a natural tendency to set up all easily
-understood quantitative goal [...] instead of working directly for a
-qualitative goal". See [reading notes][premature-optimisation]. Difficulty
-rating: 6 pages per evening.
+- 2019-01-18 Donald E. Knuth: Structured Programming with go to Statements / Computing Surveys, Vol. 6, No. 4, December 1974
+: Not a book, a long-ish article, but full of gems including "Premature
+optimisation is the root of all evil" and "people have a natural tendency to
+set up all easily understood quantitative goal [...] instead of working
+directly for a qualitative goal". See [reading notes][premature-optimisation].
+Difficulty rating: 6 pages per evening.
 
 NOTE: Some books are rated for difficulty. That's an estimation of pages I can
 read in a work day evening (after putting children to bed, dinner, catch-up
 with The Important One, etc.). An easy read equates to more pages per evening,
 a difficult read equates to less pages.
 
+[humble]: {% post_url 2019-01-21-humble-programmer %}
 [premature-optimisation]: {% post_url 2019-01-18-premature-optimisation %}
 [s-pinker-enlightenment-now]: {% post_url 2018-05-03-enlightenment-now-s-pinker %}
