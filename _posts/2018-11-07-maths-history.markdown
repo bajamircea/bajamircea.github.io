@@ -4,7 +4,7 @@ title: "Mathematics History"
 categories: maths history
 ---
 
-Very short mathematics history
+Very short mathematics history. Also very wrong, but approximately right.
 
 **TODO: this is work in progress**
 
@@ -244,13 +244,46 @@ Based on these definitions, he derived (in increasing order of complexity):
 At that point in time, it was not clear if there are additional infinities
 between $$\aleph_0$$ and $$\aleph_1$$.
 
+
 # David Hilbert - We will know
+
+However despite formalisation efforts, paradoxes coming all the way from the
+ancient Greeks continued to haunt mathematicians.
+
+One such was "This sentence is false". If true, then it states that it's false.
+If false, then the negation is true, stating the contrary.
+
+Another is the barber's paradox: "On an island, a barber shaves all those, but
+only those, who do not shave themselves. Does the barber shave himself?". If
+yes, then he shaves a man that shaves himself. If no, then there is a man not
+shaved by the barber.
+
+So what does a barber have to do with maths? Well, a similar question arises in
+set theory about the set of all the sets that do not contain themselves. Does
+this set contain itself?
+
+Inconsistencies are also important, based on the assumption that if a formal
+system can prove both a statement and it's negation, then it's inconsistent,
+and an inconsistent system can then prove everything, making it useless.
+
+Enter David Hilbert a highly influential German mathematician that led a
+program with the aim of clarifying the foundations of mathematics that were
+found to suffer of paradoxes and inconsistencies.
+
 
 # Bertrand Russell - Principia Mathematica
 
+One such attempt was Bertrand Russell's Principia Mathematica published around
+1910, that famously takes hundreds of pages to prove that $$1 + 1 = 2$$.
+It builds on Peano's formalism with great care on avoiding self referencing,
+the idea being that the issue with the paradoxes above is that they allow
+statements about the statement itself.
+
+
 # Kurt Gödel - the Limits
 
-Why things aren't as simple as they seem.
+
+
 
 # Turing, Alonzo Church - the Computers Link
 
