@@ -71,19 +71,31 @@ ones][value-category-ref] (e.g. `void` has a category with no identity and that
 can't be moved from), but I'm going to skip over them in this article.
 
 
-## References as function arguments (are lvalues)
+## References as function parameters (are lvalues)
 
-References as function arguments are relevant here because they allow us to
+References as function parameters are relevant here because they allow us to
 bind to arguments depending on their value category.
+
+{% highlight c++ linenos %}
+// i is a function parameter
+void fn(int i) { }
+
+int main() {
+  int j = 42;
+  // j is a function argument
+  fn(j);
+}
+{% endhighlight %}
 
 There are two types of reference declarations in C++. The pre-C++ 11 is called
 now `lvalue reference` (and uses one `&`), and the new C++ 11 called `rvalue
 reference` (that looks like `&&`).
 
-If a function has `lvalue reference` argument, then it can be called it with an
-`lvalue`, but not an `rvalue`.
+If a function has `lvalue reference` parameter, then it can be called with an
+`lvalue` argument, but not an `rvalue` argument.
 
 {% highlight c++ linenos %}
+// parameter is lvalue reference
 void fn(X &) { std::cout<< "X &\n"; }
 
 int main()
@@ -95,10 +107,11 @@ int main()
 }
 {% endhighlight %}
 
-Similarly if a function has a `rvalue reference` argument, then it can be
-called with an `rvalue`, but not an `lvalue`.
+Similarly if a function has a `rvalue reference` parameter, then it can be
+called with an `rvalue` argument, but not an `lvalue` argument.
 
 {% highlight c++ linenos %}
+// parameter is rvalue reference
 void fn(X &&) { std::cout<< "X &&\n"; }
 
 int main()
@@ -110,23 +123,25 @@ int main()
 }
 {% endhighlight %}
 
-But **inside the function body, an argument, whether `lvalue reference` or
-`rvalue reference`, is an `lvalue` itself: it has a name like any other
-variable**.
+But **when used inside the function body, a parameter, whether `lvalue
+reference` or `rvalue reference`, is an `lvalue` itself: it has a name like any
+other variable**.
 
 {% highlight c++ linenos %}
+// parameter is rvalue reference
 void fn(X && x)
 {
-  // x is an lvalue here
+  // but here expression x has an lvalue value category
   // can use std::move to convert it to an xvalue
 }
 {% endhighlight %}
 
 From here, things get even more complicated when one notices that `const`
 matters. In the example below, `fn` can be called with both an `lvalue` and an
-`rvalue`. This is pre-C++ 11 behaviour that is unchanged.
+`rvalue` argument. This is pre-C++ 11 behaviour that is unchanged.
 
 {% highlight c++ linenos %}
+// parameter is const rvalue reference
 void fn(const X &) { std::cout<< "const X &\n"; }
 
 int main()
@@ -330,8 +345,8 @@ Here is an example where `std::forward` is used twice in an idiomatic way:
 struct Y
 {
   Y(){}
-  Y(const Y &){ std::cout << "arg copied\n"; }
-  Y(Y &&){ std::cout << "arg moved\n"; }
+  Y(const Y &){ std::cout << "Copy constructor\n"; }
+  Y(Y &&){ std::cout << "Move constructor\n"; }
 };
 
 struct X
@@ -367,9 +382,9 @@ int main()
   // move constructor called
 }
 
-// prints
-// arg copied
-// arg moved
+// prints:
+// Copy constructor
+// Move constructor
 {% endhighlight %}
 
 Here is a [possible implementations][n3143] for `std::forward`.
@@ -387,7 +402,7 @@ constexpr T&& forward(typename remove_reference<T>::type & arg) noexcept
 template<typename T>
 constexpr T&& forward(typename remove_reference<T>::type && arg) noexcept
 {
-  static_assert(!is_lvalue_reference<T>::value, "invalid lvalue to rvalue conversion");
+  static_assert(!is_lvalue_reference<T>::value, "invalid rvalue to lvalue conversion");
   return static_cast<T&&>(arg);
 }
 {% endhighlight %}
@@ -395,19 +410,27 @@ constexpr T&& forward(typename remove_reference<T>::type && arg) noexcept
 First of all `std::forward` is more complex than `std::move`. This version is
 the [result of several iterations][n2951].
 
-The type `T` is not deduced, therefore we had to specify when **using**
+The type `T` is not deduced, therefore we had to specify it when **using**
 `std::forward`.
 
 Then all it does is a `static_cast`.
 
-The `static_assert` is there to stop at compile time attempts to convert from an
-`rvalue` to an `lvalue` (that would have the dangling reference problem: a
-reference point to a temporary long gone).
+The `static_assert` is there to stop at compile time attempts to convert from
+an `rvalue` to an `lvalue` (that would have the dangling reference problem: a
+reference pointing to a temporary long gone). This is explained in more details
+in [N2835][n2835], but the gist is:
 
-Some non-obvious properties are that the return value can be more cv-qualified
-(i.e.  can add a `const`). Also it allows for the case where the argument and
-return are different e.g. to forward expressions from derived type to it's base
-type (even some scenarios where the base is derived from as `private`).
+{% highlight c++ linenos %}
+forward<const Y&>(Y()); // does not compile
+// static assert in forward triggers compilation failure for line above
+// with "invalid rvalue to lvalue conversion"
+{% endhighlight %}
+
+Some non-obvious properties of `std::forward` are that the return value can be
+more cv-qualified (i.e.  can add a `const`). Also it allows for the case where
+the argument and return are different e.g. to forward expressions from derived
+type to it's base type (even some scenarios where the base is derived from as
+`private`).
 
 
 ## Conclusion
@@ -427,10 +450,11 @@ void install_command(std::string name, ftor && handler)
 }
 {% endhighlight %}
 
-The first argument, `name`, for the function `install_command` is passed [by
+The first parameter, `name`, for the function `install_command` is passed [by
 value][pass-by-value]. That is realy a temporary, but has a name, hence it's an
-`lvalue`. The second argument `handler` is a `rvalue reference`. Because it has
-a name, it's an `lvalue` as well.
+`lvalue` expression inside `install_command`. The second parameter `handler` is
+a `rvalue reference`. Because it has a name, it's an `lvalue` expression as
+well inside `install_command`.
 
 The `std::map` has an `insert` overload that accepts an templated `rvalue
 reference` for the key/value pair to insert. For the key we can provide an
@@ -461,6 +485,8 @@ so that most common scenarios are easy to write and read.
   [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3143.html][n3143]
 - Use cases for std::forward:
   [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2951.html][n2951]
+- Explaining the static_assert in std::forward:
+  [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2835.html][n2835]
 - On reference binding rules:
   [http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2008/n2812.html][n2812]
 - Howard Hinnant on Stack Overflow:
@@ -474,6 +500,7 @@ so that most common scenarios are easy to write and read.
 [msdn]: https://msdn.microsoft.com/en-us/library/dd293668.aspx
 [n3143]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2010/n3143.html
 [n2951]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2951.html
+[n2835]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2009/n2835.html
 [n2812]: http://www.open-std.org/JTC1/SC22/WG21/docs/papers/2008/n2812.html
 [n4164]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n4164.pdf
 [so-hh]: http://stackoverflow.com/a/9672202/5495780
