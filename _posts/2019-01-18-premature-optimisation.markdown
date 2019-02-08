@@ -161,4 +161,4 @@ publication.
 # Reference
 
 Donald E. Knuth: Structured Programming with go to Statements<br/>
-from Computing Surveys, Vol. 6, No. 4, December 1974
+Computing Surveys, Vol. 6, No. 4, December 1974

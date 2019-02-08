@@ -6,6 +6,10 @@ categories: read book
 
 List of books I've read in 2019
 
+- 2019-02-08: articles on unreasonable effectiveness of mathematics
+: See [reading notes][effectiveness]. Hamming's one is particularly
+interesting.
+
 - 2019-02-06: N. Wirth: Programming Development by Stepwise Refinement / Communications of the ACM, Vol. 14, No. 4, p221-227, April 1971.
 : Not a book, an article. Describes the eight queens problem. OK-ish.
 
@@ -36,6 +40,7 @@ read in a work day evening (after putting children to bed, dinner, catch-up
 with The Important One, etc.). An easy read equates to more pages per evening,
 a difficult read equates to less pages.
 
+[effectiveness]: {% post_url 2019-02-08-unreasonable-effectiveness %}
 [humble]: {% post_url 2019-01-21-humble-programmer %}
 [premature-optimisation]: {% post_url 2019-01-18-premature-optimisation %}
 [s-pinker-enlightenment-now]: {% post_url 2018-05-03-enlightenment-now-s-pinker %}

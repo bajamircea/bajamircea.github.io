@@ -32,6 +32,6 @@ can lead to lower development costs.
 
 # Reference
 
-Edsger W. Dijkstra: The Humble Programmer
+Edsger W. Dijkstra: The Humble Programmer<br/>
 ACM Turing Lecture 1972
 
