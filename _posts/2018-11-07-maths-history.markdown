@@ -289,11 +289,15 @@ statements about the statement itself.
 
 # References
 
-- [Alexander Stepanov | Greatest Common Measure: The Last 2500 Years | @
-  SmartFriends U, September 27, 2003][as-gcd]
-- Euclid The Thirteen Books of the Elements - translated and commentary by Sir Thomas L. Heath
+- Alexander Stepanov: [Greatest Common Measure: The Last 2500 Years | @
+  SmartFriends U][as-gcd], 27 September 2003
+- Euclid: The Thirteen Books of the Elements - translated and commentary by Sir
+  Thomas L. Heath
 - Charles Petzold: The Annotated Turing
 - [Plimpton 322 tablets][plimpton]
+- John Dersch: [50 Centuries in 50 minutes (A Brief History of
+  Mathematics)][fifty], 19 Sept 2012
 
 [as-gcd]: https://www.youtube.com/watch?v=fanm5y00joc
 [plimpton]: https://en.wikipedia.org/wiki/Plimpton_322
+[fifty]: https://www.youtube.com/watch?v=YsEcpS-hyXw
