@@ -4,7 +4,7 @@ title: "Mathematics History"
 categories: maths history
 ---
 
-Very short mathematics history. Also very wrong, but approximately right.
+Very short mathematics history. Also wrong, but approximately right.
 
 **TODO: this is work in progress**
 
@@ -43,8 +43,8 @@ BC) as:
 > In a right-angled triangle the square of the side opposite the right angle
 > equals the sum of the squares of the other two sides
 
-It is believed that one of the initial proves of the rule involved sliding
-around same sized right angled triangles inside a square:
+It is believed that one early proofs of the rule involved sliding around same
+sized right angled triangles inside a square:
 
 <div align="center">
 {% include assets/2018-11-07-maths-history/03-pythagoras.svg %}
@@ -151,6 +151,15 @@ numbers.
 Each problem had a unique way of being solved. Solving 100 of such problems
 give little insight on how to solve the 101th. However this book will inspire
 the development of algebra.
+
+
+**The fifth postulate** also known as the parallel axiom haunted mathematicians
+for the simple reason that it was more complex that any of Euclid's axioms. For
+about a couple of thousands years there were attempts to prove it from the
+other axioms, and Euclidian geometry was regarded as the Truth (the only
+possible geometry). Eventually different axiomatic choices were shown to be
+possible in the 19th Century, resulting in non-Euclidian geometries where the
+name non-Euclidian however refers to the choice of axioms.
 
 
 # al-Khwarizmi - the Arabs

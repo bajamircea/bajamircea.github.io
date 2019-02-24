@@ -25,32 +25,56 @@ dy_pos = cy_pos
 onex_pos = ax_pos + four
 oney_pos = ay_pos + four
 
-asqx_pos = (cx_pos + onex_pos) / 2.0 + 2.0
-asqy_pos = (cy_pos + oney_pos) / 2.0
+alx_pos = onex_pos + (cx_pos - onex_pos) / 2.0
+aly_pos = oney_pos + margin / 2.0
 
-bsqx_pos = (ax_pos + onex_pos) / 2.0 + 2.0
-bsqy_pos = (ay_pos + oney_pos) / 2.0
+blx_pos = onex_pos - margin * 3.0 / 4.0
+bly_pos = (ay_pos + oney_pos) / 2.0
+
+clx_pos = alx_pos + margin / 4.0
+cly_pos = bly_pos
 
 ex_pos = bx_pos + 2 * margin
 ey_pos = margin
-edot_pos = ex_pos + four
 
 fx_pos = ex_pos + sq_len
 fy_pos = ey_pos
-fdot_pos = fy_pos + four
 
 gx_pos = fx_pos
 gy_pos = ey_pos + sq_len
-gdot_pos = gx_pos - four
 
 hx_pos = ex_pos
 hy_pos = gy_pos
-hdot_pos = hy_pos - four
 
-csqx_pos = (ex_pos + gx_pos) / 2.0 + 2.0
-csqy_pos = (ey_pos + gy_pos) / 2.0
+twox_pos = ex_pos + four
+twoy_pos = ey_pos + four
 
-svg_width = 4 * margin + 2 * sq_len
+asqx_pos = (gx_pos + twox_pos) / 2.0 + 2.0
+asqy_pos = (gy_pos + twoy_pos) / 2.0
+
+bsqx_pos = (ex_pos + twox_pos) / 2.0 + 2.0
+bsqy_pos = (ey_pos + twoy_pos) / 2.0
+
+ix_pos = fx_pos + 2 * margin
+iy_pos = margin
+idot_pos = ix_pos + four
+
+jx_pos = ix_pos + sq_len
+jy_pos = iy_pos
+jdot_pos = jy_pos + four
+
+kx_pos = jx_pos
+ky_pos = iy_pos + sq_len
+kdot_pos = kx_pos - four
+
+lx_pos = ix_pos
+ly_pos = ky_pos
+ldot_pos = ly_pos - four
+
+csqx_pos = (ix_pos + kx_pos) / 2.0 + 2.0
+csqy_pos = (iy_pos + ky_pos) / 2.0
+
+svg_width = 6 * margin + 3 * sq_len
 svg_height = 2 * margin + sq_len
 
 def make_id(offset)
@@ -59,7 +83,7 @@ end
 
 image = svg({
   id: make_id(1),
-  width: "75%",
+  width: "100%",
   viewBox: "0 0 #{svg_width} #{svg_height}",
   }) do
 
@@ -81,6 +105,11 @@ image = svg({
     }
     .#{make_id("f2")} {
       fill: #ccffcc;
+    }
+    .#{make_id("t0")} {
+      font-family: serif;
+      font-size: 8px;
+      dominant-baseline: middle;
     }
     .#{make_id("t1")} {
       font-family: serif;
@@ -132,6 +161,56 @@ image = svg({
     d: "M #{ax_pos} #{ay_pos} L #{bx_pos} #{by_pos} L #{cx_pos} #{cy_pos} L #{dx_pos} #{dy_pos} Z",
     )
   text(
+    class: make_id("t0"),
+    x: alx_pos, y: aly_pos,
+    ).add_text("a")
+  text(
+    class: make_id("t0"),
+    x: blx_pos, y: bly_pos,
+    ).add_text("b")
+  text(
+    class: make_id("t0"),
+    x: clx_pos, y: cly_pos,
+    ).add_text("c")
+
+  # second square
+  path(
+    class: make_id("f1"),
+    d: "M #{twox_pos} #{fy_pos} L #{fx_pos} #{fy_pos} L #{fx_pos} #{twoy_pos} Z",
+    )
+  path(
+    class: make_id("f2"),
+    d: "M #{twox_pos} #{fy_pos} L #{fx_pos} #{twoy_pos} L #{twox_pos} #{twoy_pos} Z",
+    )
+  path(
+    class: make_id("f1"),
+    d: "M #{hx_pos} #{hy_pos} L #{twox_pos} #{twoy_pos} L #{twox_pos} #{hy_pos} Z",
+    )
+  path(
+    class: make_id("f2"),
+    d: "M #{hx_pos} #{twoy_pos} L #{twox_pos} #{twoy_pos} L #{hx_pos} #{hy_pos} Z",
+    )
+  path(
+    class: make_id("l2"),
+    d: "M #{twox_pos} #{fy_pos} L #{fx_pos} #{fy_pos} L #{fx_pos} #{twoy_pos} Z",
+    )
+  path(
+    class: make_id("l2"),
+    d: "M #{twox_pos} #{fy_pos} L #{fx_pos} #{twoy_pos} L #{twox_pos} #{twoy_pos} Z",
+    )
+  path(
+    class: make_id("l2"),
+    d: "M #{hx_pos} #{hy_pos} L #{twox_pos} #{twoy_pos} L #{twox_pos} #{hy_pos} Z",
+    )
+  path(
+    class: make_id("l2"),
+    d: "M #{hx_pos} #{twoy_pos} L #{twox_pos} #{twoy_pos} L #{hx_pos} #{hy_pos} Z",
+    )
+  path(
+    class: make_id("l1"),
+    d: "M #{ex_pos} #{ey_pos} L #{fx_pos} #{fy_pos} L #{gx_pos} #{gy_pos} L #{hx_pos} #{hy_pos} Z",
+    )
+  text(
     class: make_id("t1"),
     x: bsqx_pos, y: bsqy_pos,
     ).add_text("b")
@@ -148,30 +227,30 @@ image = svg({
     x: asqx_pos, y: asqy_pos,
     ).add_text("2")
 
-  # second square
+  # third square
   path(
     class: make_id("f1"),
-    d: "M #{edot_pos} #{ey_pos} L #{fx_pos} #{fy_pos} L #{fx_pos} #{fdot_pos} Z",
+    d: "M #{idot_pos} #{iy_pos} L #{jx_pos} #{jy_pos} L #{jx_pos} #{jdot_pos} Z",
     )
   path(
     class: make_id("f1"),
-    d: "M #{fx_pos} #{fdot_pos} L #{gx_pos} #{gy_pos} L #{gdot_pos} #{gy_pos} Z",
+    d: "M #{jx_pos} #{jdot_pos} L #{kx_pos} #{ky_pos} L #{kdot_pos} #{ky_pos} Z",
     )
   path(
     class: make_id("f2"),
-    d: "M #{gdot_pos} #{gy_pos} L #{hx_pos} #{hy_pos} L #{hx_pos} #{hdot_pos} Z",
+    d: "M #{kdot_pos} #{ky_pos} L #{lx_pos} #{ly_pos} L #{lx_pos} #{ldot_pos} Z",
     )
   path(
     class: make_id("f2"),
-    d: "M #{hx_pos} #{hdot_pos} L #{ex_pos} #{ey_pos} L #{edot_pos} #{ey_pos} Z",
+    d: "M #{lx_pos} #{ldot_pos} L #{ix_pos} #{iy_pos} L #{idot_pos} #{iy_pos} Z",
     )
   path(
     class: make_id("l2"),
-    d: "M #{edot_pos} #{ey_pos} L #{fx_pos} #{fdot_pos} L #{gdot_pos} #{gy_pos} L #{hx_pos} #{hdot_pos} Z",
+    d: "M #{idot_pos} #{iy_pos} L #{jx_pos} #{jdot_pos} L #{kdot_pos} #{ky_pos} L #{lx_pos} #{ldot_pos} Z",
     )
   path(
     class: make_id("l1"),
-    d: "M #{ex_pos} #{ey_pos} L #{fx_pos} #{fy_pos} L #{gx_pos} #{gy_pos} L #{hx_pos} #{hy_pos} Z",
+    d: "M #{ix_pos} #{iy_pos} L #{jx_pos} #{jy_pos} L #{kx_pos} #{ky_pos} L #{lx_pos} #{ly_pos} Z",
     )
   text(
     class: make_id("t1"),
