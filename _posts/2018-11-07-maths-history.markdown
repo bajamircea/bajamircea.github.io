@@ -291,10 +291,50 @@ statements about the statement itself.
 
 # Kurt Gödel - the Limits
 
+Gödel took on Bertrand Russell's Principia Mathematica and started with two
+major insights.
 
+First is that statements can be associated to numbers and on top of statements
+about numbers one can make statements about statements. Today we know that in
+computing we associate text, statements to a binary representation that can be
+interpreted as a number, but at the time Gödel used prime numbers.
 
+The second insight is that truth and provability are different things,
+therefore one can ponder about the truths of statements like "This statement is
+not provable".
+
+This led to his two inconsistency theorems:
+
+> In a formal system about as powerful as natural numbers, either the system is
+> inconsistent (i.e. useless) or there are true statements that cannot be
+> proved (i.e. potential additional axioms)
+
+and
+
+> In a formal system about as powerful as natural numbers, either the system is
+> inconsistent or it's consistency cannot be proved within the system
+
+On one side the theorems seem to have a depressing meaning, setting limits to
+what can be achieved ultimately by the formalisations based on natural numbers,
+and "what we can know".
+
+With the first theorem one faced with a true statement that cannot be proved,
+the statement can be added as a new theorem creating a new formal system, but
+then either the new system becomes inconsistent, or another (unprovable)
+statement can be added creating yet another formal system and so on.
+
+With the second theorem we can't prove the consistency of a formal system based
+on natural numbers. We could prove it using a superset, but then the superset
+might be inconsistent.
+
+But then there is a optimistic interpretation. Maybe for example we can prove
+the inconsistency of the natural numbers using a formal system that is not a
+superset of the natural numbers. Or maybe we need to go back to foundational
+questions like: "what are zero and one?" or "what does <<for any>> means?".
 
 # Turing, Alonzo Church - the Computers Link
+
+Alonzo Church 
 
 # References
 
