@@ -153,3 +153,26 @@ I've also learned another fallacy (that I'm vulnerable to as well): the failure
 to apply knowledge to unfamiliar situations (e.g. one can be familiar with the
 evolution theory but not understand it or fail to apply it outside the animal
 kingdom)
+
+<br/>
+
+**2019-03-19 Update:** The following points are additional ideas that I got from
+attending a Steven Pinker public talk in Oxford yesterday on the topic of this
+book.
+
+
+# Convincing others
+
+Data and arguments alone are not always going to convince others. Often people
+make claims, or have systems of belief that are based on belonging to a group
+of people that make similar noises.
+
+There are dark arts of persuasion, but that's not the line taken by Pinker in
+the book. Self-confessedly those dark arts are outside his core skill set,
+instead he sets the arguments and data.
+
+
+# Why Enlightenment
+
+It's a catchy title. The subtitle is more important: "the case for reason,
+science, humanism and progress".
