@@ -174,5 +174,30 @@ instead he sets the arguments and data.
 
 # Why Enlightenment
 
-It's a catchy title. The subtitle is more important: "the case for reason,
+It's just a catchy title. The subtitle is more important: "the case for reason,
 science, humanism and progress".
+
+
+# Current political issues
+
+With regards to the rejection of expert advice from the Brexit leave campaign:
+It is true that one should not blindly trust experts, it is important that
+experts have their facts and arguments right, it is important that they are
+experts on the field that they provide advice (not on another field). But it is
+easy to see the source of the fallacy. All plane crashes have a trained pilot,
+all surgery deaths have a surgeon performing the operation. Correlation is not
+necessarily cause.
+
+With regards to the support base for the recent populist surge being old people
+in rural areas. The demographics work against it for the long term. It looks
+like a Cohort Effect (people born at certain times having similar behaviour)
+rather than Lifecycle Effect (people's behaviour changing predictably as they
+become older). Also rural population tends to decrease over the long term.
+
+
+# References
+
+Stephen Pinker: On "Enlightenment Now" one year later<br/>
+[https://quillette.com/2019/01/14/enlightenment-wars-some-reflections-on-enlightenment-now-one-year-later/][year-later]
+
+[year-later]: https://quillette.com/2019/01/14/enlightenment-wars-some-reflections-on-enlightenment-now-one-year-later/
