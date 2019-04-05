@@ -8,11 +8,11 @@ Brexit is not just a series of accidental shambles with large and long term
 negative consequences. It comes with an internal logic driven by ideology. The
 ideology is fundamentally flawed and that will lead to it's eventual failure.
 
-Theoretically one can argue about the merits of UK leaving EU on a purely
+Theoretically, one can argue about the merits of UK leaving EU on a purely
 rational merit. But the Brexit is driven instead by a right-wing ideology with
 three pillars:
 
-- the primacy of will and emotion vs. reason an careful analysis
+- the primacy of will and emotion vs. reason and careful analysis
 - tribal division vs. cooperation
 - violence vs. compassion
 
@@ -22,7 +22,7 @@ three pillars:
 This is best captured by "the will of the people" as enough argument to drive
 Brexit. It assumes that people cannot change their minds, it is used as a
 pressure to not think, to not look at the facts. It assumes that there is
-little value in reason, that one can argue for anything anyway therefore the
+little value in reason, that one can argue for anything anyway, therefore the
 only valid compass is "the will".
 
 Another example is "leave means leave" or "Brexit means Brexit". These are
@@ -41,8 +41,8 @@ like EU membership.
 
 From this ideological point of view, free movement of people, goods and
 services, that we have within Europe, is perceived as burden, not as an asset.
-This stems from seeing the world as a zero-sum situation, that is when one
-wins, someone else must loose.
+This stems from seeing the world as a zero-sum situation, assuming that when
+one wins, someone else must loose.
 
 This drives separation of UK from Europe on as many cooperation structures as
 possible, the focus on borders and immigration, separation into Leavers and
@@ -66,9 +66,9 @@ of scale, in a way that we have never seen before [audience cheers] and if that
 happens ...  then I will be forced to don kaki, pick up a rifle, and head from
 the front line [more audience cheers]".
 
-There the extreme views result in wide publicity in the media, and it's
-tolerated more than it should be, as long as the speaker smiles and issues
-timely "it was taken out of context" statements.
+These extreme views result in wider publicity in the media than they deserve,
+and it's tolerated more than it should be, as long as the speaker smiles and
+issues timely "it was taken out of context" statements.
 
 But it continues in mainstream Government Brexit strategy.
 
@@ -84,9 +84,9 @@ or no deal", knowing that no deal is the worse scenario? As a threat, to
 distract from the observation that "my deal" is only better than a very bad
 deal ("no deal"), but worse than staying in EU.
 
-When the Government got to promote 'will vs. reason' and 'division vs.
-cooperation', it can only push the Brexit agenda by using force, threats,
-pressure, coercion.
+Like the communist regimes that required violence to get into power and last,
+Brexit needs force, threats, pressure and coercion because it is lacking
+convincing arguments.
 
 
 # Bad Maths
@@ -118,8 +118,8 @@ Government working hard to deliver a right-wing ideology bad idea.
 EU is not perfect. There are many countries involved, there is almost always
 some misguided lunatic in power in one of them, making collaboration harder
 than it should be, as Britain clearly proves these days. But Britain will be
-better off by working closely together EU. It can shape and influence it's fate
-better from within.
+better off by working closely together with its neighbours in the EU. It can
+shape and influence it's fate better from within.
 
 To say that good things will happen out of Brexit is to say that disease
 resulted in good things like vaccines and antibiotics. Some good things will
