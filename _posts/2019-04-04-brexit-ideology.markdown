@@ -109,7 +109,7 @@ preference. This will eventually loose even the 'will of the people' argument.
 
 In the response of the Government to the [petition signed by 6 million people
 to revoke article 50 and remain in the
-EU](https://petition.parliament.uk/petitions/241584), the argument again that
+EU](https://petition.parliament.uk/petitions/241584), the argument is that
 that's what people wanted, and misleadingly implies a 80% majority behind it.
 **It lacks any argument that Brexit is objectively a good idea compared with
 staying in EU**. What we have, due to an unfortunate sequence of events, is a
