@@ -77,6 +77,11 @@ dig ss 537 " ș
 dig tT 538 " Ț
 dig tt 539 " ț
 
+" Disable arrows
+noremap <Up> <NOP>
+noremap <Down> <NOP>
+noremap <Left> <NOP>
+noremap <Right> <NOP>
 {% endhighlight %}
 
 # ~/.tmux.conf
