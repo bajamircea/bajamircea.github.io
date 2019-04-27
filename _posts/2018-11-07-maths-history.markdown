@@ -6,8 +6,6 @@ categories: maths history
 
 Very short mathematics history. Also wrong, but approximately right.
 
-**TODO: this is work in progress**
-
 {% include mathjax.html %}
 
 # Babylonians - the Early Mathematics
@@ -332,9 +330,19 @@ the inconsistency of the natural numbers using a formal system that is not a
 superset of the natural numbers. Or maybe we need to go back to foundational
 questions like: "what are zero and one?" or "what does <<for any>> means?".
 
+
 # Turing, Alonzo Church - the Computers Link
 
-Alonzo Church 
+Alonzo Church's lambdas and Alan Turing's machine, that turned out to be
+influential in computer theory, are actually mathematical work exploring the
+limits of logic and maths on the trail set by David Hilbert and Kurt Gödel. In
+particular their objective was the clarity and simplicity of the proofs, not
+the runtime efficiency (and it's highly likely they were aware of that).
+
+Fun fact: The story goes that Alonzo Church's usage of lambdas was accidental.
+Originally he wanted to use a caret i.e. `^` over one or more letters like `x`
+and `y`. But the printers had a technical issue, so the closest compromise
+option was to use the Greek letter `λ` as a prefix in front of `x` and `y`.
 
 # References
 
@@ -342,7 +350,7 @@ Alonzo Church
   SmartFriends U][as-gcd], 27 September 2003
 - Euclid: The Thirteen Books of the Elements - translated and commentary by Sir
   Thomas L. Heath
-- Charles Petzold: The Annotated Turing
+- Charles Petzold: [The Annotated Turing][turing]
 - [Plimpton 322 tablets][plimpton]
 - John Dersch: [50 Centuries in 50 minutes (A Brief History of
   Mathematics)][fifty], 19 Sept 2012
@@ -350,3 +358,4 @@ Alonzo Church
 [as-gcd]: https://www.youtube.com/watch?v=fanm5y00joc
 [plimpton]: https://en.wikipedia.org/wiki/Plimpton_322
 [fifty]: https://www.youtube.com/watch?v=YsEcpS-hyXw
+[turing]: {% post_url 2018-08-22-annotated-turing %}

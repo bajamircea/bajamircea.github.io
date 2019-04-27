@@ -82,6 +82,9 @@ noremap <Up> <NOP>
 noremap <Down> <NOP>
 noremap <Left> <NOP>
 noremap <Right> <NOP>
+
+" No banner for directory browsing
+let g:netrw_banner=0
 {% endhighlight %}
 
 # ~/.tmux.conf

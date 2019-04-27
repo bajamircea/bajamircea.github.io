@@ -6,6 +6,18 @@ categories: read book
 
 List of books I've read in 2019
 
+<img
+  align="right"
+  alt="Book cover"
+  height="218px"
+  style="padding: 10px 40px"
+  src="/assets/2019-01-01-read/book_cover_euclid.jpg">
+
+
+- 2019-04-27 Euclid: The Thirteen Books of the Elements / Translated and commentary by Sir Thomas L. Heath / Vol.1 (Books I and II)
+: Beautiful insights into logic and reasoning from a book written more than
+2300 years ago. Very very good. Difficulty rating: 3 pages per evening.
+
 - 2019-02-08: articles on unreasonable effectiveness of mathematics
 : See [reading notes][effectiveness]. Hamming's one is particularly
 interesting.
