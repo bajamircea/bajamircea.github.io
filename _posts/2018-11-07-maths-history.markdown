@@ -303,32 +303,35 @@ not provable".
 
 This led to his two inconsistency theorems:
 
-> In a formal system about as powerful as natural numbers, either the system is
-> inconsistent (i.e. useless) or there are true statements that cannot be
+> In a formal system that includes a certain amount of arithmetic, either the
+> system is inconsistent (i.e. useless) or there are statements that cannot be
 > proved (i.e. potential additional axioms)
 
 and
 
-> In a formal system about as powerful as natural numbers, either the system is
-> inconsistent or it's consistency cannot be proved within the system
+> In a formal system that includes a certain amount of arithmetic, either the
+> system is inconsistent or it's consistency cannot be proved within the system
+> itself
 
 On one side the theorems seem to have a depressing meaning, setting limits to
-what can be achieved ultimately by the formalisations based on natural numbers,
-and "what we can know".
+what can be achieved ultimately by the formalisations based on elementary
+natural numbers arithmetic and "what we can know".
 
-With the first theorem one faced with a true statement that cannot be proved,
-the statement can be added as a new theorem creating a new formal system, but
-then either the new system becomes inconsistent, or another (unprovable)
-statement can be added creating yet another formal system and so on.
+With the first theorem one faced with a statement that cannot be proved (or
+disproved), the statement can be added as a new theorem creating a new formal
+system, but then either the new system becomes inconsistent, or another
+(unprovable) statement can be added creating yet another formal system and so
+on.
 
 With the second theorem we can't prove the consistency of a formal system based
 on natural numbers. We could prove it using a superset, but then the superset
 might be inconsistent.
 
 But then there is a optimistic interpretation. Maybe for example we can prove
-the inconsistency of the natural numbers using a formal system that is not a
-superset of the natural numbers. Or maybe we need to go back to foundational
-questions like: "what are zero and one?" or "what does <<for any>> means?".
+the inconsistency for a formal system using another formal system that does not
+have the kind or arithmetic that implies the inconsistency theorem.  Or maybe
+we need to go back to foundational questions like: "what are zero and one?" or
+"what does <<for any>> means?".
 
 
 # Turing, Alonzo Church - the Computers Link
@@ -354,6 +357,7 @@ option was to use the Greek letter `λ` as a prefix in front of `x` and `y`.
 - [Plimpton 322 tablets][plimpton]
 - John Dersch: [50 Centuries in 50 minutes (A Brief History of
   Mathematics)][fifty], 19 Sept 2012
+- Torkel Franzén: Gödel's Theorem, An Incomplete Guide To Its Use And Abuse
 
 [as-gcd]: https://www.youtube.com/watch?v=fanm5y00joc
 [plimpton]: https://en.wikipedia.org/wiki/Plimpton_322
