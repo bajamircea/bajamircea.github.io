@@ -78,3 +78,6 @@ greater picture, and what a good name for that component would be, before
 writing a test trying to construct a not-yet-implemented component just to a
 achieve a red-green routine.
 
+# References
+
+The video of [Uncle Bob's talk](https://www.youtube.com/watch?v=BHnMItX2hEQ)
