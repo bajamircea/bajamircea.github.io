@@ -6,6 +6,11 @@ categories: read book
 
 List of books I've read in 2019
 
+
+- 2019-05-11 Torkel Franzén: Gödel's Theorem - An Incomplete Guide To Its Use And Abuse
+: An accessible exploration of what can and what cannot be implied from
+Gödel's theorems. Good. Difficulty rating: 12 pages per evening
+
 <img
   align="right"
   alt="Book cover"
