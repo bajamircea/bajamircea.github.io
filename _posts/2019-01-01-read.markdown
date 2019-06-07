@@ -7,12 +7,20 @@ categories: read book
 List of books I've read in 2019
 
 
+- 2019-06-07 Kurt Gödel: On Formally Undecidable Propositions of Principia Mathematica and Related Systems
+: This 1962 translation by B. Meltzer comes with an introduction by R. B.
+Braithwaite. The introduction is not good. The actual paper is difficult, but
+it makes sense. I've only skimmed my way through. It's worthy of a more
+detailed reading, though I'll try to see if there are better
+translations/version available (in particular with regards to notation and
+typography)
+
 - 2019-05-17 Lucian Boia: Între înger şi fiară - Mitul omului diferit din Antichitate până în zilele noastre
 : A history of the myths of 'them' vs. 'us'. Not the best of his books, mainly
 due to the fact that it's a history of nonsensical ideas. An example to
 remember is how during Enlightenment, thinking still dominated by religious
 ideas, meant that the other planets of the Solar System had to have a reason to
-exist, therefore they were inhabited, some thinkers were therefore trying to
+exist, therefore they were inhabited; some thinkers were therefore trying to
 use reason to figure out `what kind` of people were living on the other planets,
 not questioning `if`.
 
