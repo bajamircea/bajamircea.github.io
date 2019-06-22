@@ -7,6 +7,14 @@ categories: read book
 List of books I've read in 2019
 
 
+- 2019-06-18 Wilfrid Hodges: Logic - an introduction to elementary logic
+: The good parts: samples of English sentences that are ambiguos (hence the
+difficulty of translating them in formal logic) and examples with solutions.
+The bad parts: not clear and precise where it should be. E.g. first-order
+predicate logic might be the crowning achievement of modern logic, but stating
+this sheds little light on what is first-order predicate logic. Also too much
+time spent on the tableaux method.
+
 - 2019-06-07 Kurt Gödel: On Formally Undecidable Propositions of Principia Mathematica and Related Systems
 : This 1962 translation by B. Meltzer comes with an introduction by R. B.
 Braithwaite. The introduction is not good. The actual paper is difficult, but

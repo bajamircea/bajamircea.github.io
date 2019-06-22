@@ -6,6 +6,14 @@ categories: coding tools
 
 Survey of the available keyboards on the market; for the coder.
 
+<img
+  width="100%"
+  alt="Unicomp classic"
+  style="padding: 10px"
+  src="/assets/2019-04-20-keyboards/unicomp.jpg">
+
+
+# Market survey
 
 The keyboard at work, which I had for a while (many years), does not feel
 right.  It feels like I have to press it all the way to the bottom where it
@@ -41,10 +49,13 @@ the switch type and the ergonomic sculptured layout of key rows.
 
 I think I'm going to give it a try.
 
-# [2019-05-11] Update
 
-I eventually bought a [Unicomp Ultra Classic keyboard][my-review]. Good
-keyboard, satisfied overall.
+# Unicomp Ultra Classic
+
+**[2019-05-11] Update:**
+
+I eventually bought a [Unicomp Ultra Classic keyboard][my-review] (pictured
+above). Good keyboard, satisfied overall.
 
 I previously put off purchasing one because of the price. I chose this buckling
 spring one because I've tried some Brown Cherry ones and they felt scratchy to
