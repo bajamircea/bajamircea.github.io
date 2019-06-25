@@ -20,12 +20,12 @@ See the article on `min` [as to why][min].
 
 {% highlight c++ linenos %}
 namespace algs {
-  // generalized partition taking predicate and projection
+  // generalized partition forward taking predicate and projection
   template<typename I, typename S, typename Pred, typename Proj>
   // requires I is an ForwardIterator,
   //   S is a sentinel for I,
   //   Pred is an unary predicate on projection Proj of ValueType(I)
-  I partition(I f, S l, Pred pred, Proj proj) {
+  I partition_forward(I f, S l, Pred pred, Proj proj) {
     f = algs::find_if(f, l, pred, proj);
     if (f == l) return f;
 
@@ -59,7 +59,7 @@ Basic usage of `partition` looks like this:
     }
   };
 
-  auto pr = algs::range::partition(v, is_consonant);
+  auto pr = algs::range::partition_forward(v, is_consonant);
 
   for (auto c : v) {
     std::cout << c; // Prints aeidbfghc
@@ -75,16 +75,32 @@ Basic usage of `partition` looks like this:
 
 # How it works
 
+![Partition](/assets/2018-08-05-partition/01-partition.png)
+
+
+# Which range first
+
 This implementation is different from `std::partition` in that the range is
 partitioned so that the values for which the predicate returns `false` preceed
 the values for which the predicate returns `true`. It makes better sense when
 thinking about similar functions where the paritioning function returns more
-than two values (say 0, 1 or 2).
+than two values (say -1, 0 or 1 for a three way partitioning).
 
-![Partition](/assets/2018-08-05-partition/01-partition.png)
 
-The first range is stable (preserves the initial order of values). The second
-range is not.
+# Stability
+
+`partition_forward` is partially stable in that it preserves the order of the
+values for which the predicate returns `false`, but does not preserve the order
+of the values for which the predicate retrns `true`.
+
+Other related algorithms make different choices.
+
+One choice is to not give any stability guarantees. That's what
+`std::partition` does. For bidirectional iterators there is an algorithm that
+has fewer swaps, but gives up any stability guarantees.
+
+The other choice is to provide stability guarantees for all the values in the
+sequence, at the cost of more work. That's what `stable_partition` does.
 
 
 # Algorithmic complexity
@@ -96,6 +112,7 @@ range).
 # Related algorithms
 
 - `partition_point` (find the partition point, assuming input is partitioned)
+- `partition` (no stability guarantees, less swaps for bidirectional iterators)
 - `stable_partition` (partition, but stable, higher algorithmic complexity)
 - `sort` (sorts values)
 
