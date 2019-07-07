@@ -7,6 +7,9 @@ categories: read book
 List of books I've read in 2019
 
 
+- 2019-07-07 Rose George: Nine Pints
+: Book about blood. Journalistic style. OK, but not great.
+
 - 2019-06-18 Wilfrid Hodges: Logic - an introduction to elementary logic
 : The good parts: samples of English sentences that are ambiguos (hence the
 difficulty of translating them in formal logic) and examples with solutions.

@@ -47,6 +47,19 @@ order for numbers.
 `std::max` is not ideal: for equal values it returns the first, hence is not
 stable.
 
+"A groupoid, or, as my old friend Nicolas Bourbaki calls it, a magma, is a set
+with a binary operation with no associativity or any other property assumed"
+(Search Nicolas Bourbaki. The insider joke is that Nicolas Bourbaki was not an
+actual person. This is also related to Alex Stepanov's effort to debourbakisize
+himself)
+
+"Using examples is frowned upon nowadays; one of the people who attended my
+course was so disgusted with my explanation of this algorithm from examples
+that he quit after letting me know that I will turn my students into really
+terrible programmers. I would, however, like to know what he would say if he
+ever read Diophantus, who constructed what is probably the second most
+important book in the history of mathematics as a list of well-chosen examples"
+(The most important book in history of mathematics being Euclid's Elements)
 
 # References
 
@@ -54,8 +67,12 @@ A9 Videos: Efficient Programming with Components<br/>
 [https://www.youtube.com/watch?v=aIHAEYyoTUc&list=PLHxtyCq_WDLXryyw91lahwdtpZsmo4BGD][a9-efficient]
 
 Bjarne Stroustrup - The Essence of C++: With Examples in C++84, C++98, C++11,
-and C++14<br >
+and C++14<br/>
 [https://www.youtube.com/watch?v=D5MEsboj9Fc][cpp-essence]
+
+Alex Stepanov - Notes on Programming<br/>
+[http://stepanovpapers.com/notes.pdf][notes]
 
 [a9-efficient]: https://www.youtube.com/watch?v=aIHAEYyoTUc&list=PLHxtyCq_WDLXryyw91lahwdtpZsmo4BGD
 [cpp-essence]: https://www.youtube.com/watch?v=D5MEsboj9Fc
+[notes]: http://stepanovpapers.com/notes.pdf
