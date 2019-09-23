@@ -35,7 +35,7 @@ They raise questions like:
 - how do the destructor and `stop` divide the responsibility to cleanup?
 
 Some people think they have obvious answers to the above questions, but the
-more you did, the less palatable the outcomes.
+more you dig, the less palatable the outcomes.
 
 To pick just the first question, here is a potential (bad) answer:
 
