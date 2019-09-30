@@ -191,7 +191,7 @@ index 0 to 9. Let's assume the enumeration reaches the value at index 5. If
 another process removes the value that used to be at index 3, the entries will
 be reordered, probably so that for entries greater than 3 the index becomes one
 smaller. When the enumeration reaches the value at index 6, it will get what
-used to be at index 7, and the enumeration will stop at index 9. In this case
+used to be at index 7, and the enumeration will stop at index 8. In this case
 we missed the value that originally was at index 6 (which had nothing to do
 with the value deleted).
 
