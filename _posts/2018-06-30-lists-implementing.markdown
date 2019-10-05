@@ -22,7 +22,7 @@ The `dl_list` class below is a template on the sequence type for:
 - non-intrusive (nodes are provided by the list class)
 - nodes are allocated on the heap (no custom allocator) and list owns the
   nodes
-- getting size is linear time with number of elements (but slice is constant
+- getting size is linear time with number of elements (but splice is constant
   time)
 
 The short name is misleading. To be explicit about all these variations would

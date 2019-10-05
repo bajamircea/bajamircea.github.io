@@ -202,9 +202,10 @@ NOTE: Examples of permanent end iterator:
 All list iterators are at least `ForwardIterator`.
 
 Double linked lists iterators can be `BidirectionalIterator`. Not all double
-linked lists expose a `BidirectionalIterator`. For example if the permanent end
-iterator is a just a `nullptr` pointer, it cannot implement the `operator--`
-leading to a `ForwardIterator` only.
+linked lists expose a `BidirectionalIterator`. Typically the problem is with
+moving backwards from the end iterator. For example if the end iterator is a
+just a `nullptr` pointer, it cannot implement the `operator--` leading to a
+`ForwardIterator` only.
 
 NOTE: there is a difference between the ability to traverse a sequence in the
 reverse orderer (back to front), which all double linked lists can have, and
