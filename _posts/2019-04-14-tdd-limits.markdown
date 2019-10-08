@@ -7,12 +7,14 @@ categories: coding tools
 TDD is a useful tool to have in programming. But it has limits.
 
 
-Robert C. Martin aka. Uncle Bob of 'Clean coder', Agile Manifesto and TDD fame
+**Robert C. Martin** aka. Uncle Bob of 'Clean coder', Agile Manifesto and TDD fame
 was in town last week, and I was lucky to attend his talk at the local .NET
 group. He was in great form, full of energy. The talk covered the evolution of
 computing from 1940s to present like the hardware, the demographics of
 programmers and development methodologies. In the talk he only touched briefly
-directly on TDD.
+directly on TDD. Instead he did a long parable that painted TDD in pink
+colours. **His reasoning is faulty and in fact shows the limits of TDD**.
+Despite this I still enjoyed the talk.
 
 
 # The case for TDD as a routine
@@ -37,6 +39,8 @@ The other routine they had was related to writing the word God. Before writing
 it, the copyist would stop, wash himself properly. Then he would write the word
 God. Then he would stop, wash himself properly again. Then he would continue
 with the remaining text.
+
+Robert C. Martin refers to this story as the **Scribe's Oath**.
 
 Towards the end of the talk Robert Martin gets to TDD and makes the argument
 that, similar to the Bible copyist, other professions have routines. The
