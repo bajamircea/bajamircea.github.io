@@ -22,28 +22,16 @@ directory **is empty** actually and can be deleted manually. What's happening?
 One of the most relevant searches leads to a Stackoverflow question titled
 [Batch - Getting “The directory is not empty” on rmdir command][so]:
 
-<img
-  width="100%"
-  alt="question"
-  style="padding: 10px"
-  src="/assets/2019-09-28-remove-folder-part-4-twice/so_question.png">
+![Question](/assets/2019-09-28-remove-folder-part-4-twice/so_question.png)
 
 And the answer is ... **do it twice**:
 
-<img
-  width="100%"
-  alt="question"
-  style="padding: 10px"
-  src="/assets/2019-09-28-remove-folder-part-4-twice/so_answer.png">
+![Answer 1](/assets/2019-09-28-remove-folder-part-4-twice/so_answer.png)
 
 And the even better answer (with more votes) is ... **do it twice, but ignore
 errors and don't log the first time**:
 
-<img
-  width="100%"
-  alt="question"
-  style="padding: 10px"
-  src="/assets/2019-09-28-remove-folder-part-4-twice/so_answer2.png">
+![Answer 2](/assets/2019-09-28-remove-folder-part-4-twice/so_answer2.png)
 
 That can't be true, can it?
 

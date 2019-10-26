@@ -6,12 +6,8 @@ categories: coding tools
 
 Survey of the available keyboards on the market; for the coder.
 
-<img
-  width="100%"
-  alt="Unicomp classic"
-  style="padding: 10px"
-  src="/assets/2019-04-20-keyboards/unicomp.jpg">
 
+![Unicomp classic](/assets/2019-04-20-keyboards/unicomp.jpg)
 
 # Market survey
 

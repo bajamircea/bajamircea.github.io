@@ -86,7 +86,7 @@ magnitude.
 
 And some look at the weird looking `duration_cast` and claim that there must be
 something wrong with it: **look, it uses templates, so it must be wrong, oh why
-don't we use the good ol' ::GetTickCount()?**.
+don't we use the good ol' GetTickCount?**.
 
 
 # Measuring the duration using GetTickCount
@@ -173,27 +173,28 @@ So then we look at the assembly in the executable that the compiler generates.
 
 The compiler reordered the code it generated.
 
-In particular it called `::GetTickCount()` twice in succession (lines 1 to 7
-above) to obtain `start` and `stop`, and the calculation for `fib(42)` is only
-done later (starting at line 8). That explains why the difference `(stop -
+In particular it called `GetTickCount` twice in succession (lines from 1 to
+7 above) to obtain `start` and `stop`, and the calculation for `fib(42)` is
+only done later (starting at line 8). That explains why the difference `(stop -
 start)` is almost always `0`.
 
-Functions like `GetTickCount()` and printing the output could have visible side
+In this case it seems that the compiler chose to defer the calculation of
+`fib(42)` so that the second call to `GetTickCount` at line 7 can reuse the
+value of `esi` set at line 2 to the pointer to `GetTickCount`.
+
+Functions like `GetTickCount` and printing the output could have visible side
 effects and their relative order is preserved by the compiler. But for others,
 like `fib(42)`, the compiler has full visibility, and it has significant
 flexibility, as long as it's calculated before it's printed.
-
-In this case it seems that the compiler chose to defer the calculation of
-`fib(42)` so that the second call to `::GetTickCount()` can reuse the value of
-`esi` containing the pointer to `::GetTickCount()`.
 
 The calculation for `fib(42)` was unrolled a bit. `29h` at line 9 is equal to
 `41` decimal and will be used to calculate `fib(42-1)`. `28h` at line 14 is
 equal to `40` decimal and will be used to calculate `fib(42-2)`. The results
 will be added to calculate `fib(42) = fib(42-1) + fib(42-2)`. This unrolling
-saves a couple of tests for the argument being less than `2`.
+saves one test for the argument `42` being less than `2`, but in this
+particular case it's not a significant optimisation.
 
-We can't really complain about the optimisation for `::GetTickCount()`. Ideally
+We can't really complain about the optimisation for `GetTickCount`. Ideally
 the compiler would have gone further and figured out the result of `fib(42)` at
 compile time and just printed the constant (a `constexpr` decoration would
 probably helped, but it's not a requirement for such optimisations).
@@ -201,7 +202,7 @@ probably helped, but it's not a requirement for such optimisations).
 As a side note there is also some interleaving of operations. One example:
 `ecx` is set to `29h` at line 9, before calling `fib` at line 13 (part of
 eventually calculating `fib(42)`), but in between the result of
-`::GetTickCount` is moved from `eax` to `esi` at line 11 (which is the
+`GetTickCount` is moved from `eax` to `esi` at line 11 (which is the
 assignment of `stop`).
 
 
@@ -211,10 +212,7 @@ Another way of looking at it is that the compiler generates a graph of
 operations. Ignoring details like the lower level interleaving, the graph looks
 like this:
 
-<img
-  alt="operations graph"
-  style="padding: 10px"
-  src="/assets/2019-10-23-compiler-reordering/graph.png">
+![Operations Graph](/assets/2019-10-23-compiler-reordering/graph.png)
 
 The compiler in effect performs a topological sort and there is more than one
 possible ordering, some of which executes `fib(42)` after assigning `stop`.
