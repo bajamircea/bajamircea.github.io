@@ -117,7 +117,17 @@ multi-threading in particular **just because the code seems to work is not
 guarantee that it always really works**.
 
 
-# Generated code
+# Conclusion
+
+Before C++11, the C++ standard only referred to single threaded applications.
+While in practice multi-threaded applications were written, and compilers
+restricted optimisations around external functions, someone had to implement
+those functions. **Threading cannot be implemented as a library without
+compiler support.** Without clear specifications even experts struggled,
+examples were Linux kernel locks, Java VM garbage collectors etc.
+
+
+# Appendix: generated code
 
 For reference, here is an example of the generated assembly code for the
 example above:
@@ -198,3 +208,10 @@ example above:
  call        std::operator<<<std::char_traits<char> > (0F011D0h)
 {% endhighlight %}
 
+
+# References
+
+- Hans-J. Boehm: [Threads Cannot be Implemented as a Library][library], 12 Nov
+  2004
+
+[library]: http://www.hpl.hp.com/techreports/2004/HPL-2004-209.pdf
