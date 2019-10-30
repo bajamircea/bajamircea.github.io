@@ -6,6 +6,11 @@ categories: read book
 
 List of books I've read in 2019
 
+- 2019-10-30 Lucian Boia: "Germanofilii" - Elita intelectualã româneascã în anii Primului Rãzboi Mondial
+: Another myth busting book. Against the traditional nationalistic discourse
+portrayal of the First World War, Lucian Boia shows the variety of viewpoints
+held by writers, journalists, politicians, academic at the time, and their
+individual destinies.
 
 - 2019-07-07 Rose George: Nine Pints
 : Book about blood. Journalistic style. OK, but not great.
@@ -33,7 +38,9 @@ remember is how during Enlightenment, thinking still dominated by religious
 ideas, meant that the other planets of the Solar System had to have a reason to
 exist, therefore they were inhabited; some thinkers were therefore trying to
 use reason to figure out `what kind` of people were living on the other planets,
-not questioning `if`.
+not questioning `if`. **Update 2019-10-30**: in time I have come to appreciate
+the book when I recognise patters in the portrayal of others in the current
+political discourse.
 
 - 2019-05-11 Torkel Franzén: Gödel's Theorem - An Incomplete Guide To Its Use And Abuse
 : An accessible exploration of what can and what cannot be implied from
