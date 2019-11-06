@@ -127,11 +127,11 @@ scenario:
   reads `a` and `b`.
 
 From the point of view of the programmer there is an implied dependency as
-shown in the following graph. For example in this case it does not matter in
-which order `a` and `b` are written, but it does matter that both `a` and `b`
-are written before the `flag` is written: we don't want the producer to read
-the `flag` and infer that it can then read `a` or `b` before they were set to
-the intended values.
+shown in the following graph using solid lines. For example in this case it
+does not matter in which order `a` and `b` are written, but it does matter that
+both `a` and `b` are written before the `flag` is written: we don't want the
+producer to read the `flag` and infer that it can then read `a` or `b` before
+they were set to the intended values.
 
 ![Memory fence motivation](/assets/2019-10-25-cpu-memory-model/mem-fence-motivation.png)
 
