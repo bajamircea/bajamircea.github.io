@@ -1,0 +1,11 @@
+---
+layout: post
+title: 'Books Read in 2020'
+categories: read book
+---
+
+List of books I've read in 2020
+
+- 2020-01-04 James Morton: Super Sourdough
+: Bread making book. OK.
+
