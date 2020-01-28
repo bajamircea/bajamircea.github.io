@@ -93,15 +93,6 @@ than two values (say -1, 0 or 1 for a three way partitioning).
 values for which the predicate returns `false`, but does not preserve the order
 of the values for which the predicate retrns `true`.
 
-Other related algorithms make different choices.
-
-One choice is to not give any stability guarantees. That's what
-`std::partition` does. For bidirectional iterators there is an algorithm that
-has fewer swaps, but gives up any stability guarantees.
-
-The other choice is to provide stability guarantees for all the values in the
-sequence, at the cost of more work. That's what `stable_partition` does.
-
 
 # Algorithmic complexity
 
@@ -109,10 +100,35 @@ The function takes `O(n)` predicate applications (one for each element in the
 range).
 
 
+# Other choices
+
+Other related algorithms make different choices.
+
+One choice is to not give any stability guarantees. That's what
+`std::partition` does. For bidirectional iterators there is an algorithm that
+has fewer swaps, but gives up any stability guarantees.
+
+Another choice is to provide stability guarantees for all the values in the
+sequence, at the cost of more work or space. That's what `stable_partition` does.
+
+If the data is stored in a linked list, an algorithm that is stable is possible
+by traversing the list, splitting the nodes into two lists based on the
+predicate, then joining the two lists before returning.
+
+When the predicate is only applied once it does not need to be a regular
+function: a **pseudopredicate**. A regular function consistently returns the
+same results for the same values. For example the sequence can contain HTTP
+URLs and it can be partitioned based on a function that checks if the download
+time is less than 200ms.
+
+Some algorithms could choose to remove the guarantee that the predicate is
+applied only once for each value.
+
+
 # Related algorithms
 
 - `partition_point` (find the partition point, assuming input is partitioned)
-- `partition` (no stability guarantees, less swaps for bidirectional iterators)
+- `partition` (no stability guarantees, predicate applied once)
 - `stable_partition` (partition, but stable, higher algorithmic complexity)
 - `sort` (sorts values)
 
