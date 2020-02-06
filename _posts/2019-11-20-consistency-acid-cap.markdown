@@ -8,6 +8,8 @@ Introduction to consistency problems in distributed systems
 
 # Consistency - introduction
 
+**Work in progress**
+
 In everyday life **consistency** means "to act in the same way over time".
 
 In logic/mathematics roughly **consistency** means "free of contradictions".

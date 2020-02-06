@@ -3,26 +3,193 @@ layout: presentation
 title: Irregularity
 ---
 
-Mircea Baja @ ACCU Oxford - TBD Feb 2020
+Mircea Baja @ ACCU Oxford - 26 Feb 2020
 
-# Irregularity
+# Irregularity in generic programming
 
-<br/>
+???
 
-Diversity in data structures and algorithms and consequences for generic
-solutions: the irregularity continuum and the irregularity conjecture.
+The original idea of this talk is that diversity in data structures and
+algorithms results in generic solutions being quirky and not universal (the
+irregularity conjecture).
+
+To get there, we're going to have a bit of fun with simple data structures
+(linked lists) and simple algorithms (linear find and partition), see what
+(C++20) concepts are, to build towards the more philosophical part
+on the design and usage of generic code.
 
 ---
 class: large-points
 
-# Executive summary
-://www.bbc.co.uk/newslass: large-points
+# Objective
 
-- Reflective metaprogramming = generate code based on code
-- We need better reflective metaprogramming facilities in C++
-- There are proposals to address it
-- It's a complex issue
-- Standardisation will likely happen after 2020
+- What is irregularity?
+- What is regularity?
+- The naming quirks
+- The irregularity continuum
+- The irregularity conjecture
+- A list/vector is just a kind of list/vector
+
+---
+class: large-points
+
+# The vector theorem
+
+- Theorem: `std::vector` is just a kind of vector (Alex Stepanov)
+
+--
+- Lemma: `std::list` is just a kind of linked list
+- However, if you can only remember one thing: you shall use a `std::vector` by
+  default (i.e. a memory contiguous data structure, the linked lists are for
+  rare special situations)
+
+--
+- Many choices for linked lists, not all independent (orthogonal)
+
+---
+
+# Single linked
+
+![Image](../assets/2018-06-23-linked-lists-options/01-single-linked.png)
+
+--
+
+# Double linked
+
+![Image](../assets/2018-06-23-linked-lists-options/02-double-linked.png)
+
+---
+
+# Linear
+
+![Image](../assets/2018-06-23-linked-lists-options/03-linear.png)
+
+--
+
+# Circular
+
+![Image](../assets/2018-06-23-linked-lists-options/04-circular.png)
+
+---
+
+# Header - minimalistic
+
+- pointer to head
+
+![Image](../assets/2018-06-23-linked-lists-options/05-header-head.png)
+
+- pointer to tail
+
+![Image](../assets/2018-06-23-linked-lists-options/06-header-tail.png)
+
+--
+
+- or not minimalistic
+
+---
+class: large-points
+
+# Iterators - minimalistic
+
+--
+
+# List size
+
+--
+# Splicing
+
+- partial
+- total
+
+--
+
+# Operations available
+
+- e.g. constant time `push_back()`
+
+---
+
+# Links to local parts
+
+- no
+
+![Image](../assets/2018-06-23-linked-lists-options/07-no-links-to-local.png)
+
+- yes
+
+![Image](../assets/2018-06-23-linked-lists-options/08-links-to-local.png)
+
+---
+
+# Dummy node
+
+![Image](../assets/2018-06-23-linked-lists-options/09-dummy-node.png)
+
+- meaning (end iterator, none/simplify empty list case)
+- location (heap, header)
+- if on the heap: always present?
+- can dereference/does it have a value?
+
+---
+class: large-points
+
+# More
+
+- Permanent end iterator
+- Forward/Bidirectional iterator
+- Intrusive/non-intrusive
+- Iterator from reference to value
+- Node ownership
+- Allocators
+- Meaning of node pointers
+- Thread safety
+
+---
+
+# Single linked basic
+
+![Image](../assets/2018-06-28-linked-lists-examples/01-single-basic.png)
+
+- no constant time `push_back()`
+- `std::forward_list`
+
+---
+
+# Single linked circular
+
+![Image](../assets/2018-06-28-linked-lists-examples/02-single-circular.png)
+
+---
+
+# Single linked first-last
+
+![Image](../assets/2018-06-28-linked-lists-examples/03-single-first-last.png)
+
+---
+class: large-points
+
+# Single linked summary
+
+- the price to pay for constant time `push_back()` either: iterator not
+  minimalistic OR header not minimalistic
+
+---
+
+
+
+Irregularity is the property of generic data structures and algorithms of being
+quirky and avoiding universality. 
+
+- Euclid's Elements
+- Stepanov's Elements of Programming
+- Regularity is a fundamental concept
+- In practice, various degrees of regularity
+
+Diversity in data structures and algorithms and consequences for generic
+solutions: the irregularity continuum and the irregularity conjecture (that
+generic solutions are quirky and escape universality)
+
+
 
 ---
 
@@ -1028,93 +1195,6 @@ Andrew Sutton<br/>
 CppCon 2017: Reflection<br/>
 https://www.youtube.com/watch?v=N2G-Frv1z5Q
 
-Andrew Sutton<br/>
-CppCon 2017: Meta<br/>
-https://www.youtube.com/watch?v=29IqPeKL_QY
-
-Herb Sutter<br/>
-CppCon 2017: Meta: Thoughts on generative C++<br/>
-https://www.youtube.com/watch?v=4AfRAVcThyA
-
-Herb Sutter<br/>
-Thoughts on Metaclasses - Keynote [ACCU 2017]<br/>
-https://www.youtube.com/watch?v=6nsyX37nsRs
-
-Matúš Chochlík, Axel Naumann, David Sankel<br/>
-Static Reflection in a Nutshell<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0578r1.html
-
----
-
-# References - 2
-
-Matúš Chochlík, Axel Naumann, David Sankel<br/>
-Static reflection - Rationale, design and evolution<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0385r2.pdf
-
-Matúš Chochlík, Axel Naumann, David Sankel<br/>
-Static reflection<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0194r4.html
-
-Matúš Chochlík, Axel Naumann, David Sankel<br/>
-Static reflection of functions<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0670r1.html
-
-Andrew Sutton, Herb Sutter<br/>
-A design for static reflection<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0590r0.pdf
-
-Andrew Sutton<br/>
-Tuple-based for loops<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0589r0.pdf
-
----
-
-# References - 3
-
-Andrew Sutton, Herb Sutter<br/>
-Implementing language support for compile-time metaprogramming<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0712r0.pdf
-
-Herb Sutter<br/>
-Metaclasses : Generative C++<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0707r2.pdf
-
-Daveed Vandevoorde, Louis Dionne<br/>
-Exploring the design space of metaprogramming and reflection<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0633r0.pdf
-
-Daveed Vandevoorde<br/>
-Reflect Through Values Instead of Types<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0598r0.html
-
-Daveed Vandevoorde<br/>
-Reflective Metaprogramming in C++ <b>2003</b><br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2003/n1471.pdf
-
----
-
-# References - 4
-
-Mike Spertus<br/>
-Use Cases for Compile-Time Reflection<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3492.pdf
-
-Jeff Snyder, Chandler Carruth<br/>
-Call for Compile-Time Reflection Proposals<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2013/n3814.html
-
-Daveed Vandevoorde<br/>
-std::constexpr_vector<br/>
-http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0597r0.html
-
-Andrei Alexandrescu<br/>
-Fastware - ACCU 2016<br/>
-https://www.youtube.com/watch?v=AxnotgLql0k
-
-Labrador picture<br/>
-https://pixabay.com/en/animal-dog-puppy-pet-photography-2184791/
-
 ---
 
 # Thanks
@@ -1126,4 +1206,4 @@ checking the presentation.
 
 # Questions?
 
-https://bajamircea.github.io/presentations/2018-05-15-reflection.html
+https://bajamircea.github.io/presentations/2020-02-26-irregularity.html

@@ -263,6 +263,12 @@ for other operations.
 ![Fast reversal](/assets/2018-06-23-linked-lists-options/10-fast-reversal.png)
 
 
+# Thread safety
+
+There is the option to use synchronization primitives such as
+compare-and-swap that support concurrent usage from multiple threads.
+
+
 # Conclusion
 
 The linked lists are one of the simplest data structures, and yet there is a
