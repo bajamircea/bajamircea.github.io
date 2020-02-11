@@ -265,8 +265,12 @@ for other operations.
 
 # Thread safety
 
-There is the option to use synchronization primitives such as
-compare-and-swap that support concurrent usage from multiple threads.
+There is the option to use synchronization primitives such as compare-and-swap
+that support concurrent usage from multiple threads. Sometimes these are
+presented as lock-free lists, but bear in mind that lock-free does not mean
+synchronization-free, so the actual difference in performance compared with a
+list synchronized with locks needs to be measured, don't assume the "free" one
+is faster.
 
 
 # Conclusion

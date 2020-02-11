@@ -31,6 +31,15 @@ pointer to the head), and two step head access.
 
 It allows constant time access to the back and `push_back`.
 
+The iterator needs to know the tail so that iterating past the tail results in
+reaching the end as opposed to starting again from the beginning. There are
+several options with regards on how the iterator can get the value of the tail.
+It can contain the pointer to the tail directly, as shown above, or it can
+contain a pointer to the list header and dereference it to get the tail
+(indirectly). These choices result in different behaviours when the list has
+additional nodes added at the end while enumerating, and also in the number of
+operations required to increment an iterator.
+
 
 ## Single linked first-last
 
@@ -159,8 +168,9 @@ a (relatively) complex iterator and no fixed end iterator.
 
 ![Double linked circular](/assets/2018-06-28-linked-lists-examples/05-double-circular.png)
 
-A minor variation that has a fixed end iterator can be achieved by having in
-the iterator a pointer to the list instead of a pointer to the tail node.
+Like the single linked circular, there are two option on how the iterator gets
+the value of the tail: directly, as above, or indirectly, through the header.
+
 
 ## Double linked with allocated dummy node
 

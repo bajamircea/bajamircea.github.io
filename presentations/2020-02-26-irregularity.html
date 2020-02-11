@@ -26,6 +26,7 @@ class: large-points
 - What is irregularity?
 - What is regularity?
 - The naming quirks
+- Concepts (C++ 20)
 - The irregularity continuum
 - The irregularity conjecture
 - A list/vector is just a kind of list/vector
@@ -35,13 +36,13 @@ class: large-points
 
 # The vector theorem
 
-- Theorem: `std::vector` is just a kind of vector (Alex Stepanov)
+- Theorem: `std::vector` is just a kind of vector (approx. quote of Alex Stepanov)
 
 --
 - Lemma: `std::list` is just a kind of linked list
 - However, if you can only remember one thing: you shall use a `std::vector` by
-  default (i.e. a memory contiguous data structure, the linked lists are for
-  rare special situations)
+  default (i.e. a memory contiguous data/extent based structure, the linked
+  lists are for rare special situations)
 
 --
 - Many choices for linked lists, not all independent (orthogonal)
@@ -159,6 +160,10 @@ class: large-points
 
 ![Image](../assets/2018-06-28-linked-lists-examples/02-single-circular.png)
 
+- two choices on accessing tail from the iterator:
+  - directly: as above
+  - indirectly: through the header
+
 ---
 
 # Single linked first-last
@@ -175,13 +180,239 @@ class: large-points
 
 ---
 
+# Double linked linear
 
+![Image](../assets/2018-06-28-linked-lists-examples/04-double-linear.png)
+
+---
+
+# Double linked circular
+
+![Image](../assets/2018-06-28-linked-lists-examples/05-double-circular.png)
+
+---
+
+# Double linked with allocated dummy node
+
+![Image](../assets/2018-06-28-linked-lists-examples/06-double-dummy-node.png)
+
+- `std::list` in Visual C++ 2017
+
+---
+
+# Allocated dummy node
+
+![Image](../assets/2018-06-28-linked-lists-examples/07-double-dummy-node.png)
+
+--
+
+```cpp
+static_assert(std::is_nothrow_default_constructible_v<std::list<int>>,
+  "Default constructor may throw");
+
+static_assert(std::is_nothrow_move_constructible_v<std::list<int>>,
+  "Move constructor may throw");
+
+// both assert in Visual Studio C++ 2017
+```
+
+---
+
+# Double linked with dummy node in header
+
+![Image](../assets/2018-06-28-linked-lists-examples/08-double-dummy-in-header.png)
+
+- `move` invalidates end
+
+---
+class: large-points
+
+# Double linked summary
+
+- does this remind you of Bubba from the Forest Gump film talking about shrimp?
+
+---
+
+# Implementing one
+
+```cpp
+template<typename T>
+class dl_list {
+  struct node;
+  struct links {
+    node * next_;
+    node * prev_;
+  };
+  struct node : public links {
+    T value_;
+    //...
+```
+
+- a double linked list
+- circular
+- with dummy node in the header
+- non-intrusive (nodes are provided by the list class)
+- nodes are allocated on the heap (no custom allocator)
+- list owns the nodes
+- no cached size
+
+---
+class: large-points
+
+# The naming quirks
+
+- a lot of info is required to provide a complete description
+- a pragmatic solution: reduced vocabulary
+- `std::list` and `std::forward_list`
+- `std::shared_ptr` and `std::unique_ptr`
+
+---
+
+# Incidental linear find
+
+- find and replace the first `5` with `42`
+
+```cpp
+int data[] = {2, 5, 7, 1, 22};
+
+for(int i = 0; i < 6; ++i);
+{
+  if (data[i] == 5) {
+    // found
+    data[i] = 42;
+    return;
+  }
+}
+// not found
+```
+
+--
+- this was a trick question, code above is wrong
+
+---
+
+# Iterators: generalized pointers
+
+- points to/hardware view
+
+![Image](../assets/2020-02-26-irregularity/05-iterator-hardware.png)
+
+- points between/Sean Parent view
+
+![Image](../assets/2020-02-26-irregularity/06-iterator-sp.png)
+
+
+---
+
+# Linear find with pointers
+
+```cpp
+int * find(int * f, int * l, int x) {
+  while ((f != l) && (*f != x)) ++f;
+  return f;
+}
+```
+
+```cpp
+int data[] = {2, 5, 7, 1, 22};
+
+int * it = find(std::begin(data), std::end(data), 5);
+if (it != l) {
+  // found
+  *it = 42;
+}
+else {
+  // not found
+}
+```
+
+- note we compare f with l twice
+
+---
+
+# Linear find template - toy
+
+```cpp
+template<typename It, typename T>
+It find(It f, It l, T x) {
+  while ((f != l) && (*f != x)) ++f;
+  return f;
+}
+```
+
+- toy example, `x` is (sometimes) copied
+
+---
+class: large-points
+
+# Requirements syntactic
+
+- we can compare for equality `f` and `l`
+- we can dereference `f`
+- the iterator type has an associated value type
+- dereferencing `f` is reference to the value type
+- we can advance `f` (with `++`)
+
+---
+class: large-points
+
+# Requirements semantic
+
+- we can reach `l` from `f`
+- once `f` equals `l`, it stays that way, we can compare again and get the same
+  result
+- and that's true even for a copy of `f`
+
+---
+
+# Linear find using concepts
+
+```cpp
+template<typename It>
+using ValueType = typename It::value_type;
+
+template<typename It>
+concept InputIterator = requires(It a, It b)
+{
+    {a == b} -> std::boolean;
+    {a != b} -> std::boolean;
+    typename ValueType<It>;
+    {*a} -> std::common_reference_with<ValueType<It>>;
+    ++a;
+};
+
+template<typename It>
+  requires InputIterator<It>
+It find(It f, It l, const ValueType<It> & x)
+{
+    while ((f != l) && (*f != x)) ++f;
+    return f;
+}
+```
+
+- still toy example
+
+---
+
+# Linear find - industrial version
+
+```cpp
+template<InputIterator I, Sentinel<I> S, class T, class Proj = ranges::identity >
+  requires IndirectRelation<ranges::equal_to<>, projected<I, Proj>, const T*>
+I find(I f, S l, const T& x, Proj proj = Proj{})
+{
+  while ((f != l) && (ranges::invoke(proj, *f) != x)) ++f;
+  return f;
+}
+```
+
+---
+
+- non-intuitive synthetic names e.g. iterator
 
 Irregularity is the property of generic data structures and algorithms of being
 quirky and avoiding universality. 
 
-- Euclid's Elements
-- Stepanov's Elements of Programming
 - Regularity is a fundamental concept
 - In practice, various degrees of regularity
 
@@ -192,1018 +423,48 @@ generic solutions are quirky and escape universality)
 
 
 ---
-
-# Sample problem
-
----
-
-background-image: url(../assets/2018-01-29-reflection/labrador.jpg)
-
----
-
-# Data
-
-```json
-{
-  "name": "Kipper",
-  "breed": "Labrador"
-}
-```
-
----
-
-# Traditional bad C++ solution
-
-```cpp
-class bad_dog
-{
-private:
-  std::shared_ptr<std::string> name_;
-  std::shared_ptr<std::string> breed_;
-
-public:
-  std::shared_ptr<std::string> get_name();
-  void set_name(std::shared_ptr<std::string> value);
-
-  std::shared_ptr<std::string> get_breed();
-  void set_breed(std::shared_ptr<std::string> value);
-
-  void init(const Json & doc);
-};
-```
----
-class: large-points
-
-# Issues with this traditional solution
-
-- Reference semantics leading to
-- Difficulty of local reasoning and
-- Complex memory layout leading to
-- Degraded performance
-- Getter and setters leading to
-- Combinatoric interface
-- Init method leading to
-- Multi-step initialization
-- Multiple responsibilities leading to
-- Maintainability and
-- Testing difficulties
-
----
-
-# Bad memory layout
-
-![Image](../assets/2018-01-29-reflection/bad_dog.png)
-
----
-
-# Better C++ solution
-
-```cpp
-struct dog
-{
-  std::string name;
-  std::string breed;
-};
-
-
-dog dog_from_json(const Json & doc);
-```
-
---
-
-Physical layout:
-- dog struct is defined in dog.h
-- Serialization in dog_from_json.h and cpp
-
----
-
-# Memory layout
-
-![Image](../assets/2018-01-29-reflection/dog.png)
-
----
-
-# Boilerplate
-
----
-
-# Deserialization
-
-```cpp
-dog dog_from_json(const Json & doc)
-{
-  dog x;
-
-  x.name = doc['name'].as_string();
-  x.breed = doc['breed'].as_string();
-
-  return x;
-}
-```
---
-```cpp
-dog dog_from_json(const Json & doc)
-{
-  return {
-    doc['name'].as_string(),
-    doc['breed'].as_string()
-  };
-}
-```
-
----
-
-# Equality
-
-```cpp
-bool operator==(const dog & left, const dog & right) noexcept
-{
-  if (left.name != right.name)
-  {
-    return false;
-  }
-  return left.breed == right.breed;
-}
-```
---
-```cpp
-bool operator==(const dog & left, const dog & right) noexcept
-{
-  return (left.name == right.name) &&
-    (left.breed == right.breed);
-}
-```
-
----
-
-# Order
-
-```cpp
-bool operator<(const dog & left, const dog & right) noexcept
-{
-  if (left.name < right.name)
-  {
-    return true;
-  }
-  if (left.name > right.name)
-  {
-    return false;
-  }
-  return left.breed < right.breed;
-}
-```
---
-```cpp
-bool operator<(const dog & left, const dog & right) noexcept
-{
-  if (left.name != right.name)
-  {
-    return left.name < right.name;
-  }
-  return left.breed < right.breed;
-}
-```
-
----
-
-# Other comparison operators
-
-```cpp
-bool operator!=(const dog & left, const dog & right) noexcept
-{
-  return !(left == right);
-}
-
-bool operator<=(const dog & left, const dog & right) noexcept
-{
-  return !(right < left);
-}
-
-bool operator>(const dog & left, const dog & right) noexcept
-{
-  return right < left;
-}
-
-bool operator>=(const dog & left, const dog & right) noexcept
-{
-  return !(left < right);
-}
-```
-
----
-class: large-points
-
-# Note
-
-- Implementation on previous slide is not optimal (reason: unnecessary multiple traversal)
-- Spaceship operator '<=>' proposal
-- Note that equality and comparison do not have the same cost
-- Pure historical reasons for the compiler not implementing comparison operators by default
-
----
-
-# Padding
-
-![Image](../assets/2018-01-29-reflection/padding.png)
-
----
-
-# Metaprogramming currently
-
----
-
-# Tie members alternative
-
-```cpp
-auto tie_members(const dog & x) noexcept
-{
-  return std::tie(x.name, x.breed);
-}
-// returns a std::tuple<const std::string &, const std::string &>
-```
-
---
-```cpp
-bool operator==(const dog & left, const dog & right) noexcept
-{
-  return tie_members(left) == tie_members(right);
-}
-
-bool operator<(const dog & left, const dog & right) noexcept
-{
-  return tie_members(left) < tie_members(right);
-}
-
-// etc.
-```
-
----
-
-# Tie with (some) check
-
-```cpp
-template<class T, typename ... Args>
-auto tie_with_check(Args & ... args) noexcept
-{
-  static_assert(sizeof(T) == sizeof(std::tuple<Args...>),
-    "You forgot a member variable");
-  return std::tie(args...);
-}
-```
---
-```cpp
-auto tie_members(const dog & x) noexcept
-{
-  return tie_with_check<dog>(x.name, x.breed);
-}
-```
-
---
-
-'tuple' is usually implemented using recursive derivation, not as side by
-side member declaration as a struct.
-
-Therefore there is no guarantee that std::tuple has the same layout as the struct.
-
-Padding might be different.
-
----
-
-# Tuple inheritance
-
-![Image](../assets/2018-01-29-reflection/tuple_inheritance.png)
-
----
-
-# Struct layout
-
-```cpp
-template<typename ... Args>
-struct struct_layout;
-
-template<typename T0>
-struct struct_layout<T0>
-{
-  T0 m0;
-};
-
-template<typename T0, typename T1>
-struct struct_layout<T0, T1>
-{
-  T0 m0;
-  T1 m1;
-};
-
-// and so on up to the max number of members you support
-```
---
-```cpp
-  static_assert(sizeof(T) == sizeof(struct_layout<Args...>),
-    "You forgot a member variable");
-```
----
-class: large-points
-
-# Issues with current metaprogramming in C++
-
-- It looks clever, but it is convoluted
-
-
-- Conditionals ('if') use overloading/template specialization
-- Iterations ('for') use recursion (e.g. recursive inheritance)
-- Store state as parametrized types and constants
-- Instantiate template to trigger the computation
-
-
-- Relies on the historical accident that the templates machinery is Turing
-  complete
-
----
-class: large-points
-
-# Issues with current reflection support in C++
-
-- Can query for types e.g. std::is_pointer
-- Can do simple type transformations e.g. std::make_unsigned
-
-
-- But is very limited, relies on overloading, template specialization, concepts
-
-
-- Can't enumerate members
-- Can't get names
-
----
-class: large-points
-
-# Other metaprogramming options
-
-- Pre-processor
-- constexpr functions
-- Other languages/tools outside C++ (e.g. MIDL compiler etc.)
-
----
-
-# Use cases for better facilities
-
----
-class: large-points
-
-# Use case: common operators
-
-- ==, < implemented lexicographically
-- implement !=, <=, >=, >  in terms of the above
-- std::hash
-
-
-## Problems
-- Can be do all in one go or piecemeal?
-- Some functions are, some function are not members of the class
-- std::hash might be in a different namespace (the need to specify where code
-  generation takes place)
-
----
-class: large-points
-
-# Use case: serialization
-
-- to/from JSON/XML
-- relational database mapping
-- logging function arguments
-- ASSERT_EQ macro in tests
-
-
-## Problems
-- Getting the current function as input for reflection
-- Getting names of the parent context
-- Getting source code line of the original construct
-
----
-
-# Use case: enum to/from string
-
-```cpp
-enum class foo_bar
-{
-  foo,
-  bar
-};
-
-auto to_string(foo_bar x) noexcept
-{
-  switch (x)
-  {
-  case foo_bar::foo:
-    return "foo";
-  case foo_bar::bar:
-    return "bar";
-  default:
-    std::terminate();
-  }
-}
-```
-
----
-class: large-points
-
-# Use case: transformation
-
-- C structure mapping a C++ structure members
-- mock class for a interface
-- member functions wrapping (e.g. with logging, locking, pimpl)
-- stand alone function wrapping (e.g. variations of error handling)
-
-## Problems
-- Which file (even language) is the code generated in
-- Dealing with templates (class or function)
-
----
-class: large-points
-
-# Use case: identifiers on the fly
-
-- currently they require macros
-
-- low hanging fruit from the code generation component of the problem
-
----
-
-# Theory
-
----
-class: large-points
-
-# Reflection workflow
-
-![Image](../assets/2018-01-29-reflection/reflection_workflow.png)
-
-???
-
-- reflect on a source construct
-- analyse
-- generate something to execute
-
-the steps above for equality or from_json:
-- get a reflection of the class
-- get a reflection of each member
-- maybe check the type of the member
-- generate a code snippet
-
----
-
-# Static vs dynamic reflection
-
-A lot of languages support dynamic reflection:
-
-- reflection/generation not at compile time
-- not a zero-cost abstraction, it forbids optimisations of original source code constructs.
-- generation could mean "function invocation" at runtime
-
-
-For C++ we want static reflection metaprogramming
-
----
-
-# Static reflection
-
-![Image](../assets/2018-01-29-reflection/static_reflection.png)
-
-???
-
-- based on a source construct
-- the reflection operator returns a description of the source construct
-- code generation is based on a description of the source construct
-- it all happens at compile time
-
----
-
-# Domains and operators
-
-![Image](../assets/2018-01-29-reflection/operator_domains.png)
-
----
-
-# Input domain
-
-Yes:
-- class
-  - data members
-  - member functions
-  - member types
-- enumerators: e.g. serialization for enums
-- functions (overloads?)
-
-Maybe:
-- variables
-- class templates and function templates
-- attributes
-
-Probably not:
-- expressions
-
----
-
-# Reflection result
-
-Metadata:
-- name (e.g. name of a class)
-- list of members
-- arguments of a function
-- etc.
-
-Options:
-- unique type for each reflection
-- objects, but still of unique type for each reflection
-- objects of a single type e.g. std::meta::info
-
----
-class: large-points
-
-# Code generation options
-
-- existing template metaprogramming
-- raw string (powerful, but could be opaque)
-- abstract syntax tree creation API
-- token sequence (e.g. -> { ...code here...})
-- associate a name as a shorthand for code generation (e.g. metaclasses)
-
----
-
-# Proposals
-
----
-
-# Proposals stack
-
-Upstairs:
-- P0707 Metaclasses by Herb Sutter
-
-Downstairs:
-- P0194 by Matus Chochlik, Axel Naumann, David Sankel
-- P0590 by Andrew Sutton, Herb Sutter
-
-Plumbing:
-- A lot of plumbing required: e.g. constexpr_vector, heterogenous for loop
-
----
-
-# Downstairs
-
----
-
-# P0194, P0385
-by Matus Chochlik, Axel Naumann, David Sankel
-
-Type-based reflection with template metaprogramming
-
-- Uses 'reflexpr' as the reflection operator
-- Yields a new type for each reflection
-- Properties are static members of the class
-- Code generation operators are type traits or 'unreflexpr' for more complex cases
-
-Advantages:
-- Powerful
-- Few additions to language, few compiler intrinsics
-
-Disadvantages:
-- But has downside of using templates machinery to perform
-  computation (complex style compared with plain C++ programming)
-- A lot of classes generated: low compile time performance
-
----
-
-# P0385 sample (part 1)
-
-
-```cpp
-template<typename T>
-struct compare_data_members
-{
-  ...
-};
-
-template<typename T>
-bool generic_equal(const T & a, const T & b)
-{
-  using metaT = $reflect(T);
-  bool result = true;
-
-  reflect::for_each<reflect::get_data_members_t<metaT>>(
-    compare_data_members<T>{a, b, result});
-
-  return result;
-}
-```
-
----
-
-# P0385 sample (part 2)
-
-
-```cpp
-template<typename T>
-struct compare_data_members
-{
-  const T & a;
-  const T & b;
-  bool & result;
-
-  template<reflect::Object MetaDataMember>
-  void operator ()(MetaDataMember) const
-  {
-    auto mem_ptr = reflect::get_pointer_v<MetaDataMember>;
-    result &= a.*mem_ptr == b.*mem_ptr;
-  }
-};
-```
-
----
-
-# P0590, P0589, P0712
-by Andrew Sutton, Herb Sutter
-
-Type-based reflection with heterogenous containers
-
-- Uses $ as the reflection operator
-- $ applies to: variables, types, namespaces, functions
-- The return type depends on what was reflected on (it's a template
-  specialization, but you would use auto all the time anyway)
-- Properties are static constexpr members
-- Code generation operators as 'typename', 'namespace', 'idexpr'
-
-- Requires more compiler intrinsics
-- Because they are template specialization properties are not instantiated
-  until called (sometimes good, sometimes bad)
-- Getting class members returns a heterogenous tuple-like container
-
-Disadvantages:
-- Still generates a lot of types: resource intensive compiler and complex usage style
-
----
-
-# Plumbing
-
----
-
-# Reflection operator $
-
-```cpp
-void foo(int n) {
-  int x;
-  auto r1 = $int; // r1 has type meta::fundamental_type<X>
-  auto r2 = $foo; // r2 has type meta::function<X>
-  auto r3 = $n; // r3 has type meta::parameter<X>
-  auto r4 = $x; // r4 has type meta::variable<X>
-}
-```
-
----
-
-# Heterogenous 'for' loop
-
-Aka. unrolled loop, loop expansion, tuple-based for loop
-
-```cpp
-for... (auto x : $s.member_variables())
-{
-  std::cout << x.name();
-}
-```
-
---
-Expands to
-
-```cpp
-auto && tup = $s.member_variables();
-{ auto x = std::get<0>(tup); cout << x.name(); }
-{ auto x = std::get<1>(tup); cout << x.name(); }
-```
-
----
-
-# Existing constexpr
-
-```cpp
-constexpr int one_bigger(int x)
-{
-  return ++x;
-}
-
-int some_array[one_bigger(6)];
-
-int main(int /*argc*/, char * argv[])
-{
-  std::cout << std::size(some_array) << '\n';
-
-  int argument = std::stoi(argv[1]);
-  int result = one_bigger(argument);
-  std::cout << result << '\n';
-}
-```
-
----
-class: large-points
-
-# constexpr vs immediate
-
-- constexpr means 'it can be used at compile time'
-- constexpr does not mean 'it will be used at compile time'
-
----
-
-# constexpr blocks
-
-```cpp
-constexpr
-{
-  // do some compile time programming here
-}
-```
-
-Can be placed in namespace, class, block scope.
-
---
-
-Equivalent to:
-
-```cpp
-constexpr void __unnamed_fn()
-{
-  // compile time code here
-}
-constexpr int __unnamed_var = (__unnamed_fn(), 0);
-```
-
----
-
-# Injection statement
-
-Can appear inside a constexpr block
-
-```cpp
-constexpr
-{
-  -> namespace { int f() { return 0; } }
-} // injection site is here
-```
-
---
-Equivalent to:
-```cpp
-int f() { return 0; }
-```
-
---
-
-Several options for the scope of the injection: namespace, class, block,
-expression.
-
----
-
-# All together now
-
-```cpp
-template<Enum E>
-const char * to_string(E value)
-{
-  switch(value)
-  constexpr {
-    for... (auto e : $E.enumerators())
-    {
-      -> { case e.value(): return e.name(); }
-    }
-  }
-}
-```
-
----
-
-# Identifier generation
-
-```cpp
-void foo() { ...  }
-
-void foo_bar() { ... }
-
-void g()
-{
-  auto x = $foo;
-  return declname(x "_bar")();
-}
-```
-
----
-class: large-points
-
-# Other plumbing
-
-- std::const_vector
-- Handling strings at compile time
-- Custom error messages (diagnostic)
-- Print generated constructs (diagnostic)
-
----
-
-# Named constexpr blocks
-
-```cpp
-constexpr void make_links()
-{
-  -> class C
-  {
-    C * next;
-    C * prev;
-  }
-}
-
-struct list
-{
-  constexpr { make_links(); }
-};
-```
-
---
-Equivalent to:
-```cpp
-struct list
-{
-  list * next;
-  list * prev;
-};
-```
-
----
-
-# Upstairs
-
----
-
-# Metaclass sample (part 1)
-
-```cpp
-$class interface
-{
-  constexpr {
-    compiler.require($interface.variables().empty(),
-      "interfaces may not contain data");
-    for (auto f : $interface.functions())
-    {
-      compiler.require(!f.is_copy() && !f.is_move(),
-         "interfaces may not copy or move; consider a "
-         " virtual clone() instead");
-      if (!f.has_access()) f.make_public();
-      compiler.require(f.is_public(),
-        "interface functions must be public");
-      f.make_pure_virtual();
-    }
-  }
-  virtual ~interface() noexcept { }
-};
-```
-
----
-
-# Metaclass sample (part 2)
-
-```cpp
-interface Shape
-{
-  int area() const;
-  void scale_by(double factor);
-};
-```
-
----
-class: large-points
-
-# Alternatives: Source to destination class
-
-- change in place
-- two types
-- two types (source is hidden)
-
-
----
-
-# .is and .as
-
-```cpp
-struct legacy_point { int x; int y; }; // in C++17 this is not comparable...
-
-set<legacy_point> s; // and so this is an error
-
-using ordered_point = $legacy_point.as(ordered); // ... but this is ordered
-set<ordered_point> s; // so this is OK
-```
-
----
-
-# P0707 Metaclasses
-by Herb Sutter
-
-Advantages:
-- ability to create constructs that currently require new language features
-  like 'enum class'
-- $T.as(M) is very powerful
-- composes (e.g. using inheritance syntax
-
-Maybe disadvantage:
-- a bit too class oriented (e.g. friend trick)
-
----
-
-# Metaclass sample (part 3)
-
-```cpp
-$class ordered
-{
-  constexpr {
-    if (! requires(ordered a) { a == a; })
-    -> {
-      friend bool operator == (const ordered& a, const ordered& b) {
-        constexpr {
-          for (auto o : ordered.variables())
-          -> { if (!(a.o.name$ == b.(o.name)$)) return false; }
-        }
-        return true;
-      }
-    }
-  //...
-  }
-};
-```
-
----
-
-# Metaclass sample (part 4)
-
-```cpp
-ordered dog
-{
-  std::string name;
-  std::string breed;
-};
-```
 ---
 
-# Observations
+# Books
 
----
-class: large-points
 
-# Relation to template metaprogramming
+<table>
+<tr>
+<td><img src="../assets/2020-02-26-irregularity/01-euclid.jpg" style="width: 100%" /></td>
+<td><img src="../assets/2020-02-26-irregularity/02-goedel.jpg" style="width: 100%" /></td>
+<td><img src="../assets/2020-02-26-irregularity/03-eop.jpg" style="width: 100%" /></td>
+<td><img src="../assets/2020-02-26-irregularity/04-tarjan.jpg" style="width: 100%" /></td>
+</tr>
+</table>
 
-- Reflective metaprogramming has the potential to replace most/all usage of
-  template metaprogramming (but not clear to what degree)
-
 ---
-class: large-points
-
-# Relation to D lang introspection
 
-- What Andrei Alexandrescu called the need for compile time introspection
-  facilities, criticising the concepts spec for C++
-- Similarly Andrei Alexandrescu demonstrates the ability to develop new
-  features like bit-fields using existing language constructs rather than
-  having to add new language extensions (with metaclasses in particular)
+# References
 
----
-class: large-points
 
-# Similarities to template instantiation
+Alexander A. Stepanov and Paul McJones: Elements of Programming
 
-- Especially when we get to code generation at what time the metadata is
-  captured, at what point evaluated?
-- Entity is not yet complete inside member function of a class
-- Or inside of a function ... what is the return type if auto?
-- Or inside a template function
+Robert Endre Tarjan: Data Structures and Network Algorithms
 
----
-class: large-points
+# Links
 
-# Famous last words
+https://bajamircea.github.io/coding/cpp/2018/08/01/linear-find.html
 
-- It can be misused
-- But it can be used for good as well:  high return feature to eliminate boilerplate and most template programming
-- Tooling improvements required
+https://bajamircea.github.io/coding/cpp/2018/08/05/partition.html
 
----
+https://bajamircea.github.io/coding/cpp/2018/06/28/linked-lists-examples.html
 
-# References - 1
+https://bajamircea.github.io/coding/cpp/2018/06/30/lists-implementing.html
 
-Andrew Sutton<br/>
-CppCon 2017: Reflection<br/>
-https://www.youtube.com/watch?v=N2G-Frv1z5Q
+https://bajamircea.github.io/presentations/2020-02-26-irregularity.html
 
 ---
 
 # Thanks
 
-Thanks go to Nigel Lester for organizing the original ACCU talk and spell
-checking the presentation.
+Thanks go to Nigel Lester for organizing the ACCU meeting
 
 ---
 
 # Questions?
 
-https://bajamircea.github.io/presentations/2020-02-26-irregularity.html
