@@ -369,11 +369,11 @@ class: large-points
 
 # Requirements semantic
 
-- We can reach `l` from `f`
 - Once `f` equals `l`, it stays that way, we can compare again and get the same
   result
 - And that's true even for a copy of `f`
 - Equality: reflexive, symmetric and transitive
+- We can reach `l` from `f`, `l` should not be dereferenced
 - These are harder to express
 
 ---
@@ -403,7 +403,7 @@ It find(It f, It l, const ValueType<It> & x)
 }
 ```
 
-- still toy example
+- Still toy example
 
 ---
 
@@ -453,12 +453,13 @@ I find_by_setting_sentinel(I f, I l, const T & v) {
 ---
 class: large-points
 
-# Safety vs. efficiency note
+# Safety vs. Efficiency note
 
 - A lot of the constructs just shown seem unsafe
 - But they are efficient
-- For options that offer safety, the in-efficiency trade-offs need to be
-  explicit
+- There is long history of safety claims that hide under the carpet the
+  inefficiency trade-offs
+- There are cases where safety can be improved without runtime cost (e.g. RAII)
 
 ---
 
@@ -484,7 +485,8 @@ class: large-points
 
 # Concepts
 
-- General: tool of thinking about requirements on types (not on values)
+- General: tool of thinking about requirements on types (not on values),
+  especially relations between types
 - Specific: a particular way of implementing concepts in C++20 describing
   syntactic requirements
 
@@ -497,8 +499,21 @@ class: large-points
   etc.
 - Not derived mechanically
 - Based on observations on common behaviour
-- They are invented, taste and choice matters: reduced vocabulary is a practical
-  choice sometimes
+- They are invented, taste and choice matters
+- Reduced vocabulary is a practical choice sometimes
+- Another practical choice is over-constraining to start with
+
+---
+class: large-points
+
+# Hyperbolic usage conjecture
+
+- A small number of built-in types used a lot
+- A large number of user defined types used once or twice
+
+![Image](../assets/2020-02-26-irregularity/08-type-usage.png)
+
+- Same applies to concepts
 
 ---
 class: large-points
@@ -558,8 +573,9 @@ class: large-points
 - No copy - move only resource types
 - Equality - of what? e.g. equality of remote content
 - Equality complexity - worst case quadratic for unordered containers
-- Float Nan equality `==` not `!=`
 - Equality for input iterator - does not make sense
+- Float Nan equality `==` not `!=`
+- **But** have not seen a sane case where `==` is different from not `!=`
 
 ---
 class: large-points
