@@ -5,7 +5,7 @@ title: Irregularity
 
 Mircea Baja @ ACCU Oxford - 26 Feb 2020
 
-# Irregularity in generic programming
+# Irregularity in Generic Programming
 
 ???
 
@@ -24,11 +24,13 @@ class: large-points
 # Objective
 
 - What is irregularity?
-- What is regularity?
-- The naming quirks
-- Concepts (C++ 20)
 - The irregularity continuum
 - The irregularity conjecture
+- What is regularity?
+- Elements of Programming
+- Concepts as thinking tool
+- Concepts in C++ 20
+- The naming quirks
 - A list/vector is just a kind of list/vector
 
 ---
@@ -36,15 +38,16 @@ class: large-points
 
 # The vector theorem
 
-- Theorem: `std::vector` is just a kind of vector (approx. quote of Alex Stepanov)
+- Theorem: `std::vector` is just a kind of vector (paraphrasing Alex Stepanov)
 
 --
+
 - Lemma: `std::list` is just a kind of linked list
+
 - However, if you can only remember one thing: you shall use a `std::vector` by
   default (i.e. a memory contiguous data/extent based structure, the linked
   lists are for rare special situations)
 
---
 - Many choices for linked lists, not all independent (orthogonal)
 
 ---
@@ -75,17 +78,17 @@ class: large-points
 
 # Header - minimalistic
 
-- pointer to head
+- Pointer to head
 
 ![Image](../assets/2018-06-23-linked-lists-options/05-header-head.png)
 
-- pointer to tail
+- Pointer to tail
 
 ![Image](../assets/2018-06-23-linked-lists-options/06-header-tail.png)
 
 --
 
-- or not minimalistic
+- or Not minimalistic
 
 ---
 class: large-points
@@ -99,8 +102,8 @@ class: large-points
 --
 # Splicing
 
-- partial
-- total
+- Partial
+- Total
 
 --
 
@@ -112,11 +115,11 @@ class: large-points
 
 # Links to local parts
 
-- no
+- No
 
 ![Image](../assets/2018-06-23-linked-lists-options/07-no-links-to-local.png)
 
-- yes
+- Yes
 
 ![Image](../assets/2018-06-23-linked-lists-options/08-links-to-local.png)
 
@@ -126,10 +129,10 @@ class: large-points
 
 ![Image](../assets/2018-06-23-linked-lists-options/09-dummy-node.png)
 
-- meaning (end iterator, none/simplify empty list case)
-- location (heap, header)
-- if on the heap: always present?
-- can dereference/does it have a value?
+- Meaning (end iterator, none/simplify empty list case)
+- Location (heap, header)
+- If on the heap: always present?
+- Can dereference/does it have a value?
 
 ---
 class: large-points
@@ -142,7 +145,7 @@ class: large-points
 - Iterator from reference to value
 - Node ownership
 - Allocators
-- Meaning of node pointers
+- Meaning of node pointers/fast reverse
 - Thread safety
 
 ---
@@ -151,7 +154,7 @@ class: large-points
 
 ![Image](../assets/2018-06-28-linked-lists-examples/01-single-basic.png)
 
-- no constant time `push_back()`
+- No constant time `push_back()`
 - `std::forward_list`
 
 ---
@@ -160,9 +163,10 @@ class: large-points
 
 ![Image](../assets/2018-06-28-linked-lists-examples/02-single-circular.png)
 
-- two choices on accessing tail from the iterator:
-  - directly: as above
-  - indirectly: through the header
+- Two choices on accessing tail from the iterator:
+  - Directly: as above
+  - Indirectly: through the header
+- Note: comparing for end slightly different from comparing two iterators
 
 ---
 
@@ -175,7 +179,7 @@ class: large-points
 
 # Single linked summary
 
-- the price to pay for constant time `push_back()` either: iterator not
+- The price to pay for constant time `push_back()` either: iterator not
   minimalistic OR header not minimalistic
 
 ---
@@ -223,13 +227,14 @@ static_assert(std::is_nothrow_move_constructible_v<std::list<int>>,
 ![Image](../assets/2018-06-28-linked-lists-examples/08-double-dummy-in-header.png)
 
 - `move` invalidates end
+- `std::list` implementation option
 
 ---
 class: large-points
 
 # Double linked summary
 
-- does this remind you of Bubba from the Forest Gump film talking about shrimp?
+- Does this remind you of Bubba from the Forest Gump film talking about shrimp?
 
 ---
 
@@ -248,21 +253,21 @@ class dl_list {
     //...
 ```
 
-- a double linked list
-- circular
-- with dummy node in the header
-- non-intrusive (nodes are provided by the list class)
-- nodes are allocated on the heap (no custom allocator)
-- list owns the nodes
-- no cached size
+- A double linked list
+- Circular
+- With dummy node in the header
+- Non-intrusive (nodes are provided by the list class)
+- Nodes are allocated on the heap (no custom allocator)
+- List owns the nodes
+- No cached size
 
 ---
 class: large-points
 
-# The naming quirks
+# Type naming quirks
 
-- a lot of info is required to provide a complete description
-- a pragmatic solution: reduced vocabulary
+- A lot of info on implementation details is required to provide a complete type description
+- A pragmatic solution: reduced vocabulary
 - `std::list` and `std::forward_list`
 - `std::shared_ptr` and `std::unique_ptr`
 
@@ -270,7 +275,7 @@ class: large-points
 
 # Incidental linear find
 
-- find and replace the first `5` with `42`
+- Find and replace the first `5` with `42`
 
 ```cpp
 int data[] = {2, 5, 7, 1, 22};
@@ -287,24 +292,24 @@ for(int i = 0; i < 6; ++i);
 ```
 
 --
-- this was a trick question, code above is wrong
+- This was a trick question, code above is wrong
 
 ---
 
 # Iterators: generalized pointers
 
-- points to/hardware view
+- "points to"/hardware view
 
 ![Image](../assets/2020-02-26-irregularity/05-iterator-hardware.png)
 
-- points between/Sean Parent view
+- "points between"/Sean Parent view
 
 ![Image](../assets/2020-02-26-irregularity/06-iterator-sp.png)
 
 
 ---
 
-# Linear find with pointers
+# Linear find with pointers - toy
 
 ```cpp
 int * find(int * f, int * l, int x) {
@@ -317,7 +322,7 @@ int * find(int * f, int * l, int x) {
 int data[] = {2, 5, 7, 1, 22};
 
 int * it = find(std::begin(data), std::end(data), 5);
-if (it != l) {
+if (it != std::end(data)) {
   // found
   *it = 42;
 }
@@ -326,7 +331,7 @@ else {
 }
 ```
 
-- note we compare f with l twice
+- Note we compare f with l twice: inside the `find` and outside
 
 ---
 
@@ -340,32 +345,40 @@ It find(It f, It l, T x) {
 }
 ```
 
-- toy example, `x` is (sometimes) copied
+- Toy example, `x` is (sometimes) copied
+- When does it work?
+- It will work for `T` being `int`, `short`, `long`, `unsigned` etc.
+- Pointer-like `first` and `last` to sequences of integer-like values
+- Integer-like not in the addition/multiplication sense, but in the it holds a
+  value that can be copied, compared for equality etc.
 
 ---
 class: large-points
 
 # Requirements syntactic
 
-- we can compare for equality `f` and `l`
-- we can dereference `f`
-- the iterator type has an associated value type
-- dereferencing `f` is reference to the value type
-- we can advance `f` (with `++`)
+- We can compare for equality `f` and `l`
+- We can dereference `f`
+- The iterator type has an associated value type
+- Dereferencing `f` is reference to the value type
+- We can advance `f` (with `++`)
+- These are easy to express
 
 ---
 class: large-points
 
 # Requirements semantic
 
-- we can reach `l` from `f`
-- once `f` equals `l`, it stays that way, we can compare again and get the same
+- We can reach `l` from `f`
+- Once `f` equals `l`, it stays that way, we can compare again and get the same
   result
-- and that's true even for a copy of `f`
+- And that's true even for a copy of `f`
+- Equality: reflexive, symmetric and transitive
+- These are harder to express
 
 ---
 
-# Linear find using concepts
+# Linear find using concepts - toy
 
 ```cpp
 template<typename It>
@@ -406,23 +419,185 @@ I find(I f, S l, const T& x, Proj proj = Proj{})
 }
 ```
 
+- Sentinel supports iterators stopping on file end, zero terminated strings. In
+  general the case where checking for the end is different from equality of two
+  iterators.
+- Projections support the case where only part of the value type is used
+- Type `T` is not necessarily the value type of the iterator
+- Overloaded to get a `range` e.g. the whole container
+
+```cpp
+std::cout << std::find(people, "Alice", &person::first_name)->last_name;
+```
 ---
 
-- non-intuitive synthetic names e.g. iterator
+# Faster linear find
 
-Irregularity is the property of generic data structures and algorithms of being
-quirky and avoiding universality. 
+```cpp
+template<typename I, typename T>
+// requires I is an ForwardIterator
+//   T is equality comparable,
+//   T is the same as ValueType(I)
+I find_by_setting_sentinel(I f, I l, const T & v) {
+  // precondition: l can be dereferenced to store value as sentinel
+  *l = v;
+  while (*f != v) {
+    ++f;
+  }
+  return f;
+}
+```
 
-- Regularity is a fundamental concept
-- In practice, various degrees of regularity
+- Trick known in 1974/Knuth
 
-Diversity in data structures and algorithms and consequences for generic
-solutions: the irregularity continuum and the irregularity conjecture (that
-generic solutions are quirky and escape universality)
+---
+class: large-points
 
+# Safety vs. efficiency note
+
+- A lot of the constructs just shown seem unsafe
+- But they are efficient
+- For options that offer safety, the in-efficiency trade-offs need to be
+  explicit
+
+---
+
+# Partition - example
+
+![Image](../assets/2020-02-26-irregularity/07-partition.png)
+
+---
+class: large-points
+
+# Partition - options
+
+- Forward iterators - semistable
+- Bidirectional iterators - faster
+- Stable - more resources
+- But can be implemented stable for list - the list iterators have something in
+  common after all
+- The predicate is only applied once
 
 
 ---
+class: large-points
+
+# Concepts
+
+- General: tool of thinking about requirements on types (not on values)
+- Specific: a particular way of implementing concepts in C++20 describing
+  syntactic requirements
+
+---
+class: large-points
+
+# Concept naming quirks
+
+- Non-intuitive synthetic names e.g. iterator, value type, sentinel, projection
+  etc.
+- Not derived mechanically
+- Based on observations on common behaviour
+- They are invented, taste and choice matters: reduced vocabulary is a practical
+  choice sometimes
+
+---
+class: large-points
+
+# Regular concept - for data
+
+- Default constructible
+- Copyable (and movable)
+- Equality
+- Destructible
+
+```cpp
+Some a;
+a = b;
+assert(a == b);
+c = b;
+assert(a == c);
+```
+
+- Fundamental behaviour, relied on for correctness reasoning
+- Integer-like not in the addition/multiplication sense, but in the it holds a
+  value that can be copied, compared for equality etc.
+- e.g. standard containers
+
+---
+class: large-points
+
+# Regular concept - for functions
+
+- Arguments and return types are regular data types
+- Replacing arguments with equal values results into equal return values
+- Pure functions with no side effects, and no internal state like random number
+  generators
+- e.g. predicates for standard algorithms
+- Different sounding definition compared with data regularity
+- Same outcome: fundamental behaviour, relied on for correctness reasoning
+
+---
+class: large-points
+
+# Irregularity continuum
+
+- For almost every characteristic of a regular data concept, there are useful
+  types that violate it
+
+---
+class: large-points
+
+# Data irregularity examples
+
+- Move: a bit weird - move an integer?
+- Constructor throws - standard containers
+- Default constructor throws - `std::list`
+- Move constructor throws - `std::list`
+- Destructor throws - scope exit idiom
+- No default constructor - scope object
+- No copy - move only resource types
+- Equality - of what? e.g. equality of remote content
+- Equality complexity - worst case quadratic for unordered containers
+- Float Nan equality `==` not `!=`
+- Equality for input iterator - does not make sense
+
+---
+class: large-points
+
+# Function irregularity examples
+
+- A lot of code is about side effects, order of operations matter - fully
+  irregular
+- Pseudo-regular - algorithms where the function only gets applied once per
+  value - e.g. partition example
+
+---
+class: large-points
+
+# Irregularity conjecture
+
+- Generic data structures and algorithms are diverse, quirky and are not universal
+
+--
+- Reduced vocabulary is a pragmatic option of handling complexity
+- Gains (efficiency/different behaviour) are available in special cases
+- Either by using a more refined vocabulary
+- Or by using human knowledge not available to the machine
+
+---
+class: large-points
+
+# Things we know - examples
+
+- Side effects are fine: pseudopredicate
+- Sequence is sorted/ordered/partitioned for relation used: binary search can be used
+- Relation is transitive for values provided
+- `push_back()` won't throw: `vector` was previously resized
+
+--
+- Machines cover more ground, but there is always a gap
+
+
 ---
 
 # Books
@@ -430,9 +605,9 @@ generic solutions are quirky and escape universality)
 
 <table>
 <tr>
+<td><img src="../assets/2020-02-26-irregularity/03-eop.jpg" style="width: 100%" /></td>
 <td><img src="../assets/2020-02-26-irregularity/01-euclid.jpg" style="width: 100%" /></td>
 <td><img src="../assets/2020-02-26-irregularity/02-goedel.jpg" style="width: 100%" /></td>
-<td><img src="../assets/2020-02-26-irregularity/03-eop.jpg" style="width: 100%" /></td>
 <td><img src="../assets/2020-02-26-irregularity/04-tarjan.jpg" style="width: 100%" /></td>
 </tr>
 </table>

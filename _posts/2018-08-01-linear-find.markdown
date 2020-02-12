@@ -252,7 +252,7 @@ version below saves an extra comparison (of `first` with `last`) for every
 iteration in the loop.
 
 {% highlight c++ linenos %}
-  template<typename I,  typename T>
+  template<typename I, typename T>
   // requires I is an ForwardIterator
   //   T is equality comparable,
   //   T is the same as ValueType(I)
