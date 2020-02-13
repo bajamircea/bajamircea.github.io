@@ -104,7 +104,8 @@ Is [the same as for][partition_point] `partition_point`: `O(lg(n))` (except for
 - `partition_poing`, `partition_point_n` (finding using predicate)
 - `upper_bound` (finding the end of a value range)
 - `equal_range` (combines `lower_bound` and `upper_bound`)
-- `binary_search` (returns true if value is found)
+- `binary_search` (returns true if value is found: it's lower bound with an
+  extra check for the value)
 - `sort`, `stable_sort` (sort range to allow efficient search)
 
 

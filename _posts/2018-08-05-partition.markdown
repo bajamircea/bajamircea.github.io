@@ -130,6 +130,9 @@ applied only once for each value.
 - `partition_point` (find the partition point, assuming input is partitioned)
 - `partition` (no stability guarantees, predicate applied once)
 - `stable_partition` (partition, but stable, higher algorithmic complexity)
+- `partition_position`, `stable_partition_position` (variants that supply the
+  iterator to the predicate, can be used to look up result of predicate, taking
+  advantage of the fact it only applies once to each value)
 - `sort` (sorts values)
 
 
