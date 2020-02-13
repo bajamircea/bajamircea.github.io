@@ -120,7 +120,7 @@ friendly compared with node based data structures (i.e. linked lists, trees).
 
 # Related algorithms
 
-- `partition`, `partition_forward`, `stable_partition` (partitioning a range)
+- `partition`, `partition_semistable`, `stable_partition` (partitioning a range)
 - `lower_bound`, `upper_bound`, `equal_range` (efficient find in sorted ranges)
 
 

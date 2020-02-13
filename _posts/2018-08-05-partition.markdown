@@ -16,16 +16,16 @@ two ranges based on the result of the predicate.
 That's similar to `std::partition` from the standard C++ library with some
 differences.
 
-See the article on `min` [as to why][min].
+See the article on `min` [as to why][min] and comments below.
 
 {% highlight c++ linenos %}
 namespace algs {
-  // generalized partition forward taking predicate and projection
+  // generalized semistable partition forward taking predicate and projection
   template<typename I, typename S, typename Pred, typename Proj>
   // requires I is an ForwardIterator,
   //   S is a sentinel for I,
   //   Pred is an unary predicate on projection Proj of ValueType(I)
-  I partition_forward(I f, S l, Pred pred, Proj proj) {
+  I partition_semistable(I f, S l, Pred pred, Proj proj) {
     f = algs::find_if(f, l, pred, proj);
     if (f == l) return f;
 
@@ -48,7 +48,7 @@ The rest of the article is about how did we get there.
 
 # Basic usage
 
-Basic usage of `partition` looks like this:
+Basic usage of `partition_semistable` looks like this:
 
 {% highlight c++ linenos %}
   std::vector<char> v{'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'};
@@ -59,7 +59,7 @@ Basic usage of `partition` looks like this:
     }
   };
 
-  auto pr = algs::range::partition_forward(v, is_consonant);
+  auto pr = algs::range::partition_semistable(v, is_consonant);
 
   for (auto c : v) {
     std::cout << c; // Prints aeidbfghc
@@ -87,42 +87,51 @@ thinking about similar functions where the paritioning function returns more
 than two values (say -1, 0 or 1 for a three way partitioning).
 
 
-# Stability
-
-`partition_forward` is partially stable in that it preserves the order of the
-values for which the predicate returns `false`, but does not preserve the order
-of the values for which the predicate retrns `true`.
-
-
 # Algorithmic complexity
 
-The function takes `O(n)` predicate applications (one for each element in the
-range).
+The function takes `O(n)` predicate applications, precisely one for each element in the
+range (unless predicate or projection throws).
 
 
-# Other choices
+# Stability
+
+`partition_semistable` is partially stable in that it preserves the order of the
+values for which the predicate returns `false`, but does not preserve the order
+of the values for which the predicate retrns `true`.
 
 Other related algorithms make different choices.
 
 One choice is to not give any stability guarantees. That's what
 `std::partition` does. For bidirectional iterators there is an algorithm that
-has fewer swaps, but gives up any stability guarantees.
+has fewer swaps, but gives up any stability guarantees. A function like
+`partition` would map to the appropriate one for the iterator type.
+
+If the data is stored in a linked list, an algorithm `partition_linked` that is
+stable is possible by traversing the list, splitting and re-linking the nodes
+into two chains based on the predicate.
 
 Another choice is to provide stability guarantees for all the values in the
 sequence, at the cost of more work or space. That's what `stable_partition` does.
 
-If the data is stored in a linked list, an algorithm that is stable is possible
-by traversing the list, splitting the nodes into two lists based on the
-predicate, then joining the two lists before returning.
+
+# Pseudo predicate
 
 When the predicate is only applied once it does not need to be a regular
-function: a **pseudopredicate**. A regular function consistently returns the
-same results for the same values. For example the sequence can contain HTTP
-URLs and it can be partitioned based on a function that checks if the download
-time is less than 200ms.
+function it can be just a **pseudopredicate: it has the signature of a
+predicate, but it's not regular** (a regular function consistently returns the
+same results for the same values). For example the sequence can contain HTTP
+URLs and it can be partitioned based on a pseudo-predicate that downloads from
+the URLs and checks if the download time is less than 200ms.
 
-Some algorithms could choose to remove the guarantee that the predicate is
-applied only once for each value.
+Another choice is to implement `partition_postion` and
+`stable_partition_position` that pass to the predicate the iterator (position)
+instead of the refrence to the value. Such a predicate could use the iterator
+(position) to calculate an offset in another sequence and use a pre-computed
+result, also taking advantage that the predicate is only applied once, for the
+item in the origial position.
+
+Theoretically some algorithms could choose to remove the guarantee that the
+predicate is applied only once for each value.
 
 
 # Related algorithms
@@ -130,16 +139,18 @@ applied only once for each value.
 - `partition_point` (find the partition point, assuming input is partitioned)
 - `partition` (no stability guarantees, predicate applied once)
 - `stable_partition` (partition, but stable, higher algorithmic complexity)
+- `partition_linked` (stable partition for linked lists/iterators)
 - `partition_position`, `stable_partition_position` (variants that supply the
-  iterator to the predicate, can be used to look up result of predicate, taking
-  advantage of the fact it only applies once to each value)
+  iterator to the predicate)
 - `sort` (sorts values)
 
 
 # References
 
 - Elements of Programming (book by Alexander A. Stepanov and Paul McJones)
+- [Better Code: Human Interface][sphi] by Sean Parent: showing recursive
+  stable_partition and stable_partition_position
 - [Article on implementing min][min], followed by linear find and swap
 
-
 [min]:  {% post_url 2018-07-29-min-max %}
+[sphi]: https://sean-parent.stlab.cc/presentations/2018-09-28-human-interface/2018-09-28-human-interface.pdf
