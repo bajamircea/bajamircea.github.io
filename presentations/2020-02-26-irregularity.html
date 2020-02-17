@@ -157,6 +157,7 @@ class: large-points
 
 - No constant time `push_back()`
 - `std::forward_list`
+- Note: comparing for end slightly different from comparing two iterators
 
 ---
 
@@ -167,7 +168,6 @@ class: large-points
 - Two choices on accessing tail from the iterator:
   - Directly: as above
   - Indirectly: through the header
-- Note: comparing for end slightly different from comparing two iterators
 
 ---
 
@@ -268,7 +268,12 @@ class: large-points
 # Type naming quirks
 
 - A lot of info on implementation details is required to provide a complete type description
-- We're equipped with a large common vocabulary for the physical world
+- That information has to be encoded somewhere
+- Encoding in the name is not scalable
+- Encoding as type parameters is not scalable
+- Encoding using introspection leads to close systems
+- Dealing with all the details leads to cognitive load
+- We're equipped with a large common vocabulary for the physical world (only)
 - A pragmatic solution: reduced vocabulary
 - `std::list` and `std::forward_list`
 - `std::shared_ptr` and `std::unique_ptr`
@@ -488,7 +493,9 @@ class: large-points
 # Concepts
 
 - General: tool of thinking about requirements on types (not on values),
-  especially relations between types
+  especially relations between types.
+- They have a open/extensible character: not all concepts are orthogonal or
+  hierarchical: the case of overlapping requirements identified late
 - Specific: a particular way of implementing concepts in C++20 describing
   syntactic requirements
 
@@ -499,11 +506,13 @@ class: large-points
 
 - Non-intuitive synthetic names e.g. iterator, value type, sentinel, projection
   etc.
-- Not derived mechanically
+- Not derived mechanically: no mechanic nested concept propagation
 - Based on observations on common behaviour
 - They are invented, taste and choice matters
+- Don't try to be too generic
 - Reduced vocabulary is a practical choice sometimes
 - Another practical choice is over-constraining to start with
+- Another choice is customisation points e.g. `std::begin`
 
 ---
 class: large-points
