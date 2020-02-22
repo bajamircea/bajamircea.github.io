@@ -7,6 +7,18 @@ Mircea Baja @ ACCU Oxford - 26 Feb 2020
 
 # Irregularity in Generic Programming
 
+- What is irregularity?
+- The irregularity continuum
+- The irregularity conjecture
+- Hyperbolic usage conjecture
+- The naming quirks: why naming is hard
+- What is regularity?
+- Elements of Programming
+- Concepts as thinking tool
+- Concepts in C++ 20
+- A list/vector is just a kind of list/vector
+
+
 ???
 
 The original idea of this talk is that diversity in data structures and
@@ -21,29 +33,13 @@ on the design and usage of generic code.
 ---
 class: large-points
 
-# Objective
+# The vector kind theorem
 
-- What is irregularity?
-- The irregularity continuum
-- The irregularity conjecture
-- Hyperbolic usage conjecture
-- The naming quirks: why naming is hard
-- What is regularity?
-- Elements of Programming
-- Concepts as thinking tool
-- Concepts in C++ 20
-- A list/vector is just a kind of list/vector
-
----
-class: large-points
-
-# The vector theorem
-
-- Theorem: `std::vector` is just a kind of vector (paraphrasing Alex Stepanov)
+- Theorem: the vector is just a kind of vector (paraphrasing Alex Stepanov)
 
 --
 
-- Lemma: `std::list` is just a kind of linked list
+- Lemma: a linked list is just a kind of linked list
 
 - However, if you can only remember one thing: you shall use a `std::vector` by
   default (i.e. a memory contiguous data/extent based structure, the linked
@@ -271,7 +267,7 @@ class: large-points
 - That information has to be encoded somewhere
 - Encoding in the name is not scalable
 - Encoding as type parameters is not scalable
-- Encoding using introspection leads to close systems
+- Encoding using introspection leads to closed systems
 - Dealing with all the details leads to cognitive load
 - We're equipped with a large common vocabulary for the physical world (only)
 - A pragmatic solution: reduced vocabulary
@@ -497,7 +493,7 @@ class: large-points
 - They have a open/extensible character: not all concepts are orthogonal or
   hierarchical: the case of overlapping requirements identified late
 - Specific: a particular way of implementing concepts in C++20 describing
-  syntactic requirements
+  syntactic requirements (constraints)
 
 ---
 class: large-points
@@ -558,6 +554,7 @@ class: large-points
 - Replacing arguments with equal values results into equal return values
 - Pure functions with no side effects, and no internal state like random number
   generators
+- Can have side effects, but consistent results
 - e.g. predicates for standard algorithms
 - Different sounding definition compared with data regularity
 - Same outcome: fundamental behaviour, relied on for correctness reasoning
@@ -644,10 +641,11 @@ class: large-points
 
 # References
 
-
 Alexander A. Stepanov and Paul McJones: Elements of Programming
 
 Robert Endre Tarjan: Data Structures and Network Algorithms
+
+Andrew Sutton and Bjarne Stroustrup: Design of Concept Libraries for C++ [SLE2011](http://www.stroustrup.com/sle2011-concepts.pdf)
 
 # Links
 
