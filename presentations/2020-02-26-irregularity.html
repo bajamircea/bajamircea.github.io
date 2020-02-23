@@ -41,31 +41,25 @@ class: large-points
 
 - Lemma: a linked list is just a kind of linked list
 
-- However, if you can only remember one thing: you shall use a `std::vector` by
-  default (i.e. a memory contiguous data/extent based structure, the linked
-  lists are for rare special situations)
-
-- Many choices for linked lists, not all independent (orthogonal)
-
 ---
 
 # Single linked
 
 ![Image](../assets/2018-06-23-linked-lists-options/01-single-linked.png)
 
---
-
 # Double linked
 
 ![Image](../assets/2018-06-23-linked-lists-options/02-double-linked.png)
+
+???
+
+Use vectors, i.e. contiguous, extent based data structures
 
 ---
 
 # Linear
 
 ![Image](../assets/2018-06-23-linked-lists-options/03-linear.png)
-
---
 
 # Circular
 
@@ -83,30 +77,26 @@ class: large-points
 
 ![Image](../assets/2018-06-23-linked-lists-options/06-header-tail.png)
 
---
-
 - or Not minimalistic
 
 ---
 class: large-points
 
-# Iterators - minimalistic
 
---
+# More
 
-# List size
-
---
-# Splicing
-
-- Partial
-- Total
-
---
-
-# Operations available
-
-- e.g. constant time `push_back()`
+- Iterators - minimalistic
+- List size
+- Operations available - e.g. constant time `push_back()`
+- Splicing - partial/total
+- Iterator from reference to value
+- Permanent end iterator
+- Forward/Bidirectional iterator
+- Intrusive/non-intrusive
+- Node ownership
+- Allocators
+- Meaning of node pointers/fast reverse
+- Thread safety
 
 ---
 
@@ -130,20 +120,6 @@ class: large-points
 - Location (heap, header)
 - If on the heap: always present?
 - Can dereference/does it have a value?
-
----
-class: large-points
-
-# More
-
-- Permanent end iterator
-- Forward/Bidirectional iterator
-- Intrusive/non-intrusive
-- Iterator from reference to value
-- Node ownership
-- Allocators
-- Meaning of node pointers/fast reverse
-- Thread safety
 
 ---
 
@@ -170,14 +146,6 @@ class: large-points
 # Single linked first-last
 
 ![Image](../assets/2018-06-28-linked-lists-examples/03-single-first-last.png)
-
----
-class: large-points
-
-# Single linked summary
-
-- The price to pay for constant time `push_back()` either: iterator not
-  minimalistic OR header not minimalistic
 
 ---
 
@@ -229,9 +197,14 @@ static_assert(std::is_nothrow_move_constructible_v<std::list<int>>,
 ---
 class: large-points
 
-# Double linked summary
+# Linked list summary
 
 - Does this remind you of Bubba from the Forest Gump film talking about shrimp?
+- Despite ignoring many additional choices: there are many kinds of linked list
+- They all have a use case
+- E.g. single linked lists: the price to pay for constant time `push_back()` either: iterator not
+  minimalistic OR header not minimalistic
+
 
 ---
 
@@ -276,29 +249,6 @@ class: large-points
 
 ---
 
-# Incidental linear find
-
-- Find and replace the first `5` with `42`
-
-```cpp
-int data[] = {2, 5, 7, 1, 22};
-
-for(int i = 0; i < 6; ++i);
-{
-  if (data[i] == 5) {
-    // found
-    data[i] = 42;
-    return;
-  }
-}
-// not found
-```
-
---
-- This was a trick question, code above is wrong
-
----
-
 # Iterators: generalized pointers
 
 - "points to"/hardware view
@@ -315,22 +265,21 @@ for(int i = 0; i < 6; ++i);
 # Linear find with pointers - toy
 
 ```cpp
-int * find(int * f, int * l, int x) {
-  while ((f != l) && (*f != x)) ++f;
-  return f;
-}
-```
-
-```cpp
 int data[] = {2, 5, 7, 1, 22};
 
 int * it = find(std::begin(data), std::end(data), 5);
 if (it != std::end(data)) {
-  // found
-  *it = 42;
+  // found ...
 }
 else {
-  // not found
+  // not found ...
+}
+```
+
+```cpp
+int * find(int * f, int * l, int x) {
+  while ((f != l) && (*f != x)) ++f;
+  return f;
 }
 ```
 
@@ -338,17 +287,16 @@ else {
 
 ---
 
-# Linear find template - toy
+# Linear find canonical - toy
 
 ```cpp
 template<typename It, typename T>
-It find(It f, It l, T x) {
+It find(It f, It l, const T & x) {
   while ((f != l) && (*f != x)) ++f;
   return f;
 }
 ```
 
-- Toy example, `x` is (sometimes) copied
 - When does it work?
 - It will work for `T` being `int`, `short`, `long`, `unsigned` etc.
 - Pointer-like `first` and `last` to sequences of integer-like values
