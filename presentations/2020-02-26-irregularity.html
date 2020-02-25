@@ -515,11 +515,11 @@ class: large-points
 # Data irregularity examples
 
 - Move: a bit weird - move an integer?
-- Constructor throws - standard containers
+- Copy constructor throws - standard containers
 - Default constructor throws - `std::list`
 - Move constructor throws - `std::list`
 - Destructor throws - scope exit idiom
-- No default constructor - scope object
+- No default constructor - scope object type
 - No copy - move only resource types
 - Equality - of what? e.g. equality of remote content
 - Equality complexity - worst case quadratic for unordered containers
