@@ -37,8 +37,6 @@ class: large-points
 
 - Theorem: the vector is just a kind of vector (paraphrasing Alex Stepanov)
 
---
-
 - Lemma: a linked list is just a kind of linked list
 
 ---
@@ -80,25 +78,6 @@ Use vectors, i.e. contiguous, extent based data structures
 - or Not minimalistic
 
 ---
-class: large-points
-
-
-# More
-
-- Iterators - minimalistic
-- List size
-- Operations available - e.g. constant time `push_back()`
-- Splicing - partial/total
-- Iterator from reference to value
-- Permanent end iterator
-- Forward/Bidirectional iterator
-- Intrusive/non-intrusive
-- Node ownership
-- Allocators
-- Meaning of node pointers/fast reverse
-- Thread safety
-
----
 
 # Links to local parts
 
@@ -122,13 +101,33 @@ class: large-points
 - Can dereference/does it have a value?
 
 ---
+class: large-points
+
+
+# More
+
+- Iterators - minimalistic
+- List size
+- Operations available - e.g. constant time `push_back()`
+- Splicing - partial/total
+- Iterator from reference to value
+- Permanent end iterator
+- Forward/Bidirectional iterator
+- Intrusive/non-intrusive
+- Node ownership
+- Allocators
+- Meaning of node pointers/fast reverse
+- Thread safety
+
+---
 
 # Single linked basic
 
 ![Image](../assets/2018-06-28-linked-lists-examples/01-single-basic.png)
 
-- No constant time `push_back()`
 - `std::forward_list`
+- No constant time `push_back()`
+- Can be used to implement a typical stack/FILO, but not a typical queue/FIFO
 - Note: comparing for end slightly different from comparing two iterators
 
 ---
@@ -165,7 +164,7 @@ class: large-points
 
 ![Image](../assets/2018-06-28-linked-lists-examples/06-double-dummy-node.png)
 
-- `std::list` in Visual C++ 2017
+- `std::list` in Visual C++ 2017/2019
 
 ---
 
@@ -182,7 +181,7 @@ static_assert(std::is_nothrow_default_constructible_v<std::list<int>>,
 static_assert(std::is_nothrow_move_constructible_v<std::list<int>>,
   "Move constructor may throw");
 
-// both assert in Visual Studio C++ 2017
+// both assert in Visual C++ 2017/2019
 ```
 
 ---
@@ -192,19 +191,20 @@ static_assert(std::is_nothrow_move_constructible_v<std::list<int>>,
 ![Image](../assets/2018-06-28-linked-lists-examples/08-double-dummy-in-header.png)
 
 - `move` invalidates end
-- `std::list` implementation option
+- another `std::list` implementation option gcc/clang
 
 ---
 class: large-points
 
 # Linked list summary
 
-- Does this remind you of Bubba from the Forest Gump film talking about shrimp?
 - Despite ignoring many additional choices: there are many kinds of linked list
+- There are more differences than things they all have together
 - They all have a use case
 - E.g. single linked lists: the price to pay for constant time `push_back()` either: iterator not
   minimalistic OR header not minimalistic
-
+- It is not a closed system: I doubt we can say confidently that there is no
+  other linked list variation
 
 ---
 
@@ -240,12 +240,22 @@ class: large-points
 - That information has to be encoded somewhere
 - Encoding in the name is not scalable
 - Encoding as type parameters is not scalable
-- Encoding using introspection leads to closed systems
 - Dealing with all the details leads to cognitive load
 - We're equipped with a large common vocabulary for the physical world (only)
 - A pragmatic solution: reduced vocabulary
 - `std::list` and `std::forward_list`
 - `std::shared_ptr` and `std::unique_ptr`
+- Open vs. closed type systems
+
+---
+class: large-points
+
+# Hyperbolic usage conjecture
+
+- A small number of built-in types used a lot
+- A large number of user defined types used once or twice
+
+![Image](../assets/2020-02-26-irregularity/08-type-usage.png)
 
 ---
 
@@ -268,11 +278,12 @@ class: large-points
 int data[] = {2, 5, 7, 1, 22};
 
 int * it = find(std::begin(data), std::end(data), 5);
-if (it != std::end(data)) {
-  // found ...
+if (it == std::end(data)) {
+  // not found ...
 }
 else {
-  // not found ...
+  // found ...
+  *it = 42;
 }
 ```
 
@@ -284,6 +295,8 @@ int * find(int * f, int * l, int x) {
 ```
 
 - Note we compare f with l twice: inside the `find` and outside
+- In this case once with `!=`, the other time with `==`
+- In well written code the safety issues do not propagate forever
 
 ---
 
@@ -299,7 +312,9 @@ It find(It f, It l, const T & x) {
 
 - When does it work?
 - It will work for `T` being `int`, `short`, `long`, `unsigned` etc.
-- Pointer-like `first` and `last` to sequences of integer-like values
+- `It` is pointer-like `first` and `last` to sequences of integer-like values
+  (e.g. `T *`)
+- `It` can also be an iterator in a linked list
 - Integer-like not in the addition/multiplication sense, but in the it holds a
   value that can be copied, compared for equality etc.
 
@@ -402,17 +417,6 @@ I find_by_setting_sentinel(I f, I l, const T & v) {
 - Trick known in 1974/Knuth
 
 ---
-class: large-points
-
-# Safety vs. Efficiency note
-
-- A lot of the constructs just shown seem unsafe
-- But they are efficient
-- There is long history of safety claims that hide under the carpet the
-  inefficiency trade-offs
-- There are cases where safety can be improved without runtime cost (e.g. RAII)
-
----
 
 # Partition - example
 
@@ -436,12 +440,13 @@ class: large-points
 
 # Concepts
 
+- Specific: a particular way of implementing concepts in C++20 describing
+  syntactic requirements (constraints)
 - General: tool of thinking about requirements on types (not on values),
   especially relations between types.
 - They have a open/extensible character: not all concepts are orthogonal or
-  hierarchical: the case of overlapping requirements identified late
-- Specific: a particular way of implementing concepts in C++20 describing
-  syntactic requirements (constraints)
+  hierarchical: the case of overlapping requirements identified after the type
+  definition
 
 ---
 class: large-points
@@ -453,22 +458,11 @@ class: large-points
 - Not derived mechanically: no mechanic nested concept propagation
 - Based on observations on common behaviour
 - They are invented, taste and choice matters
-- Don't try to be too generic
 - Reduced vocabulary is a practical choice sometimes
-- Another practical choice is over-constraining to start with
 - Another choice is customisation points e.g. `std::begin`
-
----
-class: large-points
-
-# Hyperbolic usage conjecture
-
-- A small number of built-in types used a lot
-- A large number of user defined types used once or twice
-
-![Image](../assets/2020-02-26-irregularity/08-type-usage.png)
-
-- Same applies to concepts
+- Another practical choice is over-constraining to start with
+- Hyperbolic usage conjecture applies to concepts
+- Don't try to be too generic on custom/rarely used concepts
 
 ---
 class: large-points
@@ -562,14 +556,12 @@ class: large-points
 # Things we know - examples
 
 - Side effects are fine: pseudopredicate
+- Can open file: running as root/administrator
 - Sequence is sorted/ordered/partitioned for relation used: binary search can be used
 - Relation is transitive for values provided
 - `push_back()` won't throw: `vector` was previously resized
 - Permutations can avoid invalidating the moved from objects
-
---
 - Machines cover more ground, but there is always a gap
-
 
 ---
 
