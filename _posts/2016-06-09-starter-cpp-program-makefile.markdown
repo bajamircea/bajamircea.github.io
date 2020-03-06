@@ -31,26 +31,26 @@ uses the standard library.
 %: SCCS/s.%
 
 # Folders used
-## contains executables we build
-BIN_DIR = bin
 ## source files expected here
 SRC_DIR = src
+## contains executables we build
+BIN_DIR = bin
+## intermediate build folder e.g. for object files and dependency files
+INT_DIR = int
 ## temp folder
 TMP_DIR = tmp
-## build folder e.g. for object files and dependency files
-BUILD_DIR = $(TMP_DIR)/build
 
-# Executable name
+# TODO: Change executable name
 TARGET = prog
 
 # Compiler flags
 CXX = g++
 ## -MMD creates dependency list, but ignores system includes
 ## -MF specifies where to create the dependency file name
-## -MP creates phony targtes for headers (deals with deleted headers after
+## -MP creates phony targets for headers (deals with deleted headers after
 ##  obj file has been compiled)
 ## -MT specifies the dependency target (path qualified obj file name)
-DEP_FLAGS = -MT $@ -MMD -MP -MF $(BUILD_DIR)/$*.d
+DEP_FLAGS = -MT $@ -MMD -MP -MF $(@:.o=.d)
 STD_FLAGS = --std=c++14 -pthread -fno-rtti
 WARN_FLAGS = -Wall -Werror
 CXXFLAGS = $(STD_FLAGS) $(DEP_FLAGS) $(WARN_FLAGS)
@@ -58,22 +58,22 @@ LDFLAGS = $(STD_FLAGS) $(WARN_FLAGS)
 
 # Things to build
 BIN_TARGET = $(BIN_DIR)/$(TARGET)
-CPP_FILES := $(shell find $(SRC_DIR) -name '*.cpp')
-OBJ_FILES := $(CPP_FILES:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o)
-DEP_FILES := $(CPP_FILES:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.d)
+CPP_FILES := $(wildcard $(SRC_DIR)/*.cpp)
+OBJ_FILES := $(CPP_FILES:$(SRC_DIR)/%.cpp=$(INT_DIR)/%.o)
+DEP_FILES := $(CPP_FILES:$(SRC_DIR)/%.cpp=$(INT_DIR)/%.d)
 
 # Rules on how to build
 
 ## To build all 'make'
 .DEFAULT: all
 
-.PHONY: all, clean, run
+.PHONY: all clean run
 
 all: $(BIN_TARGET)
 
 ## Compilation rule (dependency on .d file ensures that if the .d file
 ## is deleted, the obj file is created again in case a header is changed)
-$(OBJ_FILES): $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(BUILD_DIR)/%.d | $(BUILD_DIR)
+$(OBJ_FILES): $(INT_DIR)/%.o: $(SRC_DIR)/%.cpp $(INT_DIR)/%.d | $(INT_DIR)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 
 ## Linkage rule
@@ -81,15 +81,12 @@ $(BIN_TARGET): $(OBJ_FILES) | $(BIN_DIR)
 	$(CXX) $(LDFLAGS) -o $@ $^
 
 ## Folders creation
-$(BUILD_DIR):
-	mkdir -p $@
-
-$(BIN_DIR):
+$(BIN_DIR) $(INT_DIR):
 	mkdir -p $@
 
 ## To clean and build run 'make clean && make'
 clean:
-	rm -rf $(BIN_DIR) $(TMP_DIR)
+	rm -rf $(BIN_DIR) $(INT_DIR) $(TMP_DIR)
 
 ## To build and run the program 'make run'
 run: all
@@ -97,7 +94,7 @@ run: all
 
 ## Do not fail when dependency file is deleted (it is required by the compile
 ## rule)
-$(DEP_FILES): $(BUILD_DIR)/%.d: ;
+$(DEP_FILES): $(INT_DIR)/%.d: ;
 
 # Include dependency files (ignore them if missing)
 -include $(DEP_FILES)

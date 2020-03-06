@@ -221,13 +221,13 @@ public:
   file(const file &) = delete;
   file & operator= (const file &) = delete;
 
-  file(file && other) :
+  file(file && other) noexcept :
     f{ other.f }
   {
     other.f = nullptr;
   }
 
-  file & operator= (file && other)
+  file & operator= (file && other) noexcept
   {
     if (this != &other)
     {
