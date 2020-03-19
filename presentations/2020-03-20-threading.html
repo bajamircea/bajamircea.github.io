@@ -1,0 +1,400 @@
+---
+layout: presentation
+title: Advanced Introduction to Multithreading
+---
+
+Mircea Baja @ 20 March 2020
+
+# Advanced Introduction to Multithreading
+
+- Advanced in that it assumes audience used/heard of threads
+- Introduction in that the subject is deep and complex
+- "we're doing this thing that we shouldn't be do it, is it all right if we keep
+  on doing it?"
+
+---
+# Agenda
+
+- Compiler re-ordering
+  - Demo
+  - DAG
+- CPU Memory model
+  - "The sample"
+  - Speculative execution
+  - CPU data dependency ordering
+  - Weak and strong memory models
+  - TSO model for x86
+  - Why memory fences
+- Threading before C++11
+- C++11 data races
+  - Multiple writes mythical defence
+  - Integer data race
+  - Boolean data race
+- C++11 standardeese - synchronises with
+  - Mutex
+  - Thread creation
+  - Thread completion
+- The volatile myth
+- Mention the thread sandwich pattern
+
+---
+class: large-points
+
+# Demo
+
+- Single threaded Fibonacci
+- Exponential version takes "0 milliseconds"
+
+
+---
+
+# Fibonacci
+
+```cpp
+#include <Windows.h>
+#include <iostream>
+
+int fib(int x)
+{
+    if (x < 2) return 1;
+    return fib(x - 1) + fib(x - 2);
+}
+
+int main()
+{
+    auto start = ::GetTickCount();
+    int result = fib(42);
+    auto stop = ::GetTickCount();
+    std::cout << result << '\n';
+    std::cout << "It took: " << (stop - start) << '\n';
+    return 0;
+}
+```
+
+```cpp
+433494437
+It took: 0
+```
+???
+
+>
+
+---
+# Generated code
+
+```asm
+    12:     auto start = ::GetTickCount();
+ mov         esi,dword ptr [__imp__GetTickCount@0 (09B3000h)]
+ push        edi
+ call        esi
+ mov         edi,eax
+    14:     auto stop = ::GetTickCount();
+ call        esi
+    13:     int result = fib(42);
+ mov         ecx,29h
+    14:     auto stop = ::GetTickCount();
+ mov         esi,eax
+    13:     int result = fib(42);
+ call        fib (09B1000h)
+ mov         ecx,28h
+ mov         edx,eax
+ call        fib (09B1000h)
+```
+
+- reordered (not for "external" functions)
+- interleaved
+
+---
+
+# DAG
+
+![Image](../assets/2019-10-23-compiler-reordering/graph.png)
+
+- undefined (but maybe deterministic, unfeasable though for any but the most trivial cases)
+
+---
+
+# The CPU memory model sample
+
+- memory at `x` and `y` starts at 0
+
+- one thread:
+
+```asm
+ mov [x],1   ; store 1 at the location x in memory
+ mov eax,[y] ; load value from location y in memory to register eax
+```
+
+- another thread:
+
+```asm
+ mov [y],1   ; store 1 at the location y in memory
+ mov ebx,[x] ; load value from location x in memory to register ebx
+```
+
+- what are the possible outcomes for values in `eax` and `ebx`
+
+--
+
+- they can also end up 0
+
+---
+class: large-points
+
+# CPU issues
+
+- Speculative execution
+- Data dependency ordering (DEC Alpha)
+- Weak and strong memory models
+
+
+- writes can be reordered ahead of other reads
+- writes can be reordered ahead of other writes
+- reads can be reordered ahead of other reads
+- reads can be reordered ahead of other writes (x86)
+
+
+- x86 ... ARM/PowerPC ... DEC Alpha
+- "Weak/strong" memory model - it's a simplification
+
+---
+
+# TSO for x86
+
+![Image](../assets/2019-10-25-cpu-memory-model/tso.png)
+
+- Lock free is not synchronization free
+
+---
+
+# Memory barrier
+
+
+![Image](../assets/2019-10-25-cpu-memory-model/mem-fence-motivation.png)
+
+
+- write-release: e.g. ensure that all writes are performed BEFORE the write to the flag.
+- read-acquire: e.g. ensure that all reads are performed AFTER the read of the flag.
+
+
+- sometimes explicit, sometimes implicit
+
+---
+
+# Threading before C++11
+
+```cpp
+DWORD WINAPI ThreadFn(LPVOID)
+{
+    return 0;
+}
+
+int main()
+{
+    int result = fib(39);
+    auto m = ::CreateMutexW(NULL,NULL,NULL);
+    result = fib(40);
+    auto h = ::CreateThread(NULL, 0, ThreadFn, &result, 0, NULL);
+    result = fib(41);
+    ::WaitForSingleObject(m, INFINITE);
+    result = fib(42);
+    ::ReleaseMutex(m);
+    ::WaitForSingleObject(h, INFINITE);
+    std::cout << result << '\n';
+    return 0;
+}
+
+```
+???
+>
+
+---
+
+# DAG
+
+![Image](../assets/2019-10-29-threading-before-cpp11/graph.png)
+
+- can't provide lightweight synchronization primitives without compiler support
+- historic struggles for Linux kernel locks, Java VM garbage collectors
+
+---
+
+# Without appropriate synchronization, access to the same data from multiple threads, with at least of one of them writing (data races), is undefined.
+
+- C++11 data race
+- The language memory model is very weak (think DEC Alpha)
+- Just because it seems to work, it does not mean that it really works and it’s
+  not just a bug waiting to happen
+
+---
+
+# Yes but myth
+
+![Image](../assets/2019-10-31-cpp-data-race/not-atomic.png)
+
+---
+
+# Integer data race
+
+```cpp
+// Given two `int` variables `x` and `y` set initially to `0`:
+
+// Thread 1:
+if (x != 0) {
+  ++y;
+}
+
+// Thread 2:
+if (y != 0) {
+  ++x;
+}
+```
+---
+
+# Integer data race - part 2
+
+```cpp
+// Thread 1:
+++y;
+if (x == 0) {
+  --y;
+}
+
+// Thread 2:
+++x;
+if (y == 0) {
+  --x;
+}
+```
+---
+
+# Boolean data race
+
+```cpp
+// given a `bool` variable set initially to `false`
+
+// Thread 1:
+while (!stop) {
+  // do work
+}
+
+// Thread 2:
+stop = true;
+```
+---
+
+# Boolean data race - part 2
+
+```cpp
+// Thread 1:
+if (!stop) {
+  while (true) {
+    // do work
+  }
+}
+
+// Thread 2:
+stop = true;
+```
+---
+
+# Mutex locking
+
+- `unlock()` synchronizes with any subsequent `lock()` operations that obtain
+  ownership of the same `std::mutex`
+
+![Image](../assets/2019-11-02-cpp11-synchronizes-with/mutex.png)
+
+---
+
+# Thread creation
+
+- the completion of the invocation of the `std::thread` constructor
+  synchronizes with the beginning of the invocation of thread function
+
+![Image](../assets/2019-11-02-cpp11-synchronizes-with/creation.png)
+
+---
+
+# Thread completion
+
+- the completion of the `std::thread` synchronizes with the corresponding
+  successful `join()` return
+
+![Image](../assets/2019-11-02-cpp11-synchronizes-with/join.png)
+
+---
+
+# Volatile
+
+![Image](../assets/2019-11-05-cpp11-volatile/mappedio.png)
+
+- generate reads or writes to memory addresses for assignments to `volatile`
+  qualified variables, instead of optimising them away
+- preserve the order of assignments to `volatile` qualified variables, ensuring
+  they are not reordered
+
+---
+
+# The volatile myth
+
+```cpp
+int a = 0;
+int b = 0;
+bool flag = false;
+
+void producer_thread()
+{
+  // write a and b
+  a = 42;
+  b = 43;
+  // set the flag at the end
+  flag = true;
+}
+
+void consumer_thread()
+{
+  // wait for the flag to be set
+  while (!flag) continue;
+  // the flag was set: use a and b
+  ...
+}
+```
+
+- "Just" qualify the `flag` as `volatile`
+
+---
+
+# Developer hopes
+
+![Image](../assets/2019-11-05-cpp11-volatile/mem-fence-motivation.png)
+
+---
+
+# Reality
+
+![Image](../assets/2019-11-05-cpp11-volatile/without-mem-fence.png)
+
+
+---
+
+# Volatile in practice
+
+- Java and C# - volatile is atomic and adds full memory fences
+
+- In C++11 volatile does not guarantee memory barriers for non-volatile access
+
+- Microsoft Visual C++: `/volatile:ms` OR `/volatile:iso`
+
+- Meaning of volatile changed over time ... and will continue to do so
+
+---
+
+# The thread sandwich
+
+![Image](../assets/2019-11-12-thread-sandwich/sandwich.png)
+
+---
+
+# Questions?
+

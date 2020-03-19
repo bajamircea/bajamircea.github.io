@@ -152,7 +152,7 @@ C# followed the suit. For example it's specification for `volatile` mentions:
 A memory model was added to the C++11 standard to support multi-threading. But
 in C++ the decision was to keep the keyword `volatile` as a mean to solve the
 original memory mapped I/O problems. **In C++11 `volatile` does not guarantee
-memory bariers for non-volatile access**.
+memory barriers for non-volatile access**.
 
 For multi-threaded problems as above, low level available operations are meant
 to be addressed by atomics (which are quite fine grained, at least in theory).
