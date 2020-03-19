@@ -216,13 +216,16 @@ int main()
 
 - can't provide lightweight synchronization primitives without compiler support
 - historic struggles for Linux kernel locks, Java VM garbage collectors
+- when the compiler performs optimisations, threading cannot be implemented as
+  a library: it requires compiler support/guarantees
 
 ---
 
-# Without appropriate synchronization, access to the same data from multiple threads, with at least of one of them writing (data races), is undefined.
+# Without appropriate synchronization, access to the same data from multiple threads, with at least of one of them writing, is undefined.
 
 - C++11 data race
-- The language memory model is very weak (think DEC Alpha)
+- The language memory model is very weak (think DEC Alpha) allowing scope for
+  optimisations
 - Just because it seems to work, it does not mean that it really works and it’s
   not just a bug waiting to happen
 
@@ -392,7 +395,17 @@ void consumer_thread()
 
 # The thread sandwich
 
+- keep it (relatively) simple in order to be able to reason about correctness
+- if you need all the info in this thread to reason about multithreading
+  correctness, you've probably over-extended
+- different applications have very different threading (and error handling)
+  requirements
+- the thread sandwich pattern splits threading code into 3 components
+  (control/queue, function body, underlying thread)
+
 ![Image](../assets/2019-11-12-thread-sandwich/sandwich.png)
+
+https://bajamircea.github.io/coding/cpp/2019/11/12/thread-sandwich.html
 
 ---
 
