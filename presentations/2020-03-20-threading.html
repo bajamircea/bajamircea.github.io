@@ -381,6 +381,22 @@ void consumer_thread()
 
 ---
 
+# Another volatile example
+
+```cpp
+void fn(unsigned int value)
+{
+  value = 65535U / value; // calculation
+  cli(); // disable interrupts (cli = clear interrupt)
+  global_variable = value; // assignment
+  sei(); // enable interrupts (sei = set interrupt)
+}
+```
+
+![Image](../assets/2019-11-05-cpp11-volatile/gccavr.png)
+
+---
+
 # Volatile in practice
 
 - Java and C# - volatile is atomic and adds full memory fences

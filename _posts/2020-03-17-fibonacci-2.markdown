@@ -1,0 +1,25 @@
+---
+layout: post
+title: 'Implementing Fibonacci - part 2'
+categories: coding cpp
+---
+
+Lessons learned while calculating the 1 millionth entry in the Fibonacci
+sequence
+
+
+# Introduction
+
+Obviously naive implementations of [Fibonacci][fib] are slow. Everyone and his
+dog should be able to implement it recursively, but that has exponential
+complexity and quickly takes seconds for mid double digit arguments.
+
+With a bit of care, all programmers should be able to implement linear
+complexity versions.
+
+I [presented this](/presentations/2020-02-26-irregularity.html) at ACCU in
+Oxford.
+
+
+[std-thread]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2008/n2802.html
+[fib]: {% post_url 2016-12-14-eop-fibonacci %}
