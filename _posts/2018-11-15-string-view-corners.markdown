@@ -119,6 +119,52 @@ void bad_foo(std::string_view input) {
 You would need instead something that would ensure that the sequence is zero
 terminated, maybe named`zstring_view` or similar.
 
+You can of course take a copy and ensure it's zero terminated
+
+{% highlight c++ linenos %} 
+void copying_foo(std::string_view input) {
+  std::string file_name(input);
+  FILE * f = fopen(file_name.c_str(), "r");
+  ...
+}
+{% endhighlight %}
+
+But then this is fake economy of allocations, because calling `copying_foo`
+with a `std::string` results in an unnecessary copy into `file_name`.
+
+Also if this is repeated then this repeats the copy into `std::string` for zero
+termination purposes to call into C APIs.
+
+{% highlight c++ linenos %}
+void copying_foo_usage() {
+  std::string input = get_file_name();
+
+  copying_foo(input); // takes a copy to zero terminate
+  // some more code, then use it again:
+  copying_foo(input); // takes another copy to zero terminate
+}
+{% endhighlight %}
+
+Practically (short of using some `zstring_view`), the solution of passing a
+string is not too bad: it only allocates unnecessarily if the original argument
+is a literal string.
+
+{% highlight c++ linenos %} 
+void foo_taking_string(const std::string & input) {
+  FILE * f = fopen(input.c_str(), "r");
+  ...
+}
+{% endhighlight %}
+
+{% highlight c++ linenos %}
+void foo_taking_string_usage() {
+  std::string input = get_file_name();
+
+  foo_taking_string(input); // no allocation
+  // some more code, then use it again:
+  foo_taking_string(input); // no allocation
+}
+{% endhighlight %}
 
 ## Using std::string_view variables is risky
 

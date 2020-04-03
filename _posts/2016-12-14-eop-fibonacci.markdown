@@ -37,7 +37,7 @@ Let's look at an implementation that calculates the value in a Fibonacci series
 for a value $$n >= 0$$, and the complexity with regards to the number of
 arithmetic operations required.
 
-The naive implementation using recursion has exponential complexity $$O(e^n)$$.
+The naive implementation using recursion has exponential complexity $$O(2^n)$$.
 Most programmers will be able to write a $$O(n)$$ solution using a loop
 instead of recursion.
 
