@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Software Engineering Misjudgements'
-categories: coding cpp
+categories: story coding
 ---
 
 This is a take on Charlie Munger's collection of human misjudgements.
@@ -12,7 +12,7 @@ Many years ago I listened to one of [Charlie Munger][Charlie_Munger]'s speeches
 on the psychology of human misjudgements and I found it fascinating. The
 basics of it are simple: observe the irrational things people do, make a list
 of that, avoid behaving like this yourself. There is more theoretical
-background in the works of Kahneman & Tversky and Cialdiny for example.
+background in the works of Kahneman & Tversky and Cialdini for example.
 
 The difficult part is that although the principles are simple, you have to
 work out the details yourself on a situation by situation basis, including what

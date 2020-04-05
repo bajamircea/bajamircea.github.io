@@ -228,7 +228,7 @@ The C++ standard quote ensuring correctness for the last example is:
 Plainly put: the temporary returned by `bar()` gets destroyed after the
 semicolon `;`.
 
-The morale is probably: **avoid `std::string_view` variables, their usage is
+The moral is probably: **avoid `std::string_view` variables, their usage is
 risky** (as opposed to usage as function arguments).
 
 The reason the risky usage is not prevented is that the easy mechanisms of
