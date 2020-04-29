@@ -208,9 +208,10 @@ example.
 # Conclusion
 
 The understanding and meaning of the `volatile` keyword evolved and changed
-over time. This article is a just a brief introduction, for the precise
-meaning, limits and guarantees in a specific programming language and
-dialect/version/vendor check the official documentation of the language.
+over time, which might even end up having it deprecated. This article is a just
+a brief introduction, for the precise meaning, limits and guarantees in a
+specific programming language and dialect/version/vendor check the official
+documentation of the language.
 
 
 # References
@@ -219,8 +220,10 @@ dialect/version/vendor check the official documentation of the language.
 - [C# language specification on volatile][csharpvolatile]
 - MSDN in Visual Studio 2019: [volatile (C++)][msvolatile], 7 May 2019
 - Jan Waclawek: [Problems with reordering code][gccavr]
+- JF Bastien: [Deprecating volatile][deprecate], CppCon 2019, 19 Oct 2019
 
 [javavolatile]: https://www.cs.umd.edu/~pugh/java/memoryModel/jsr-133-faq.html#volatile
 [csharpvolatile]: https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#volatile-fields
 [msvolatile]: https://docs.microsoft.com/en-us/cpp/cpp/volatile-cpp?view=vs-2019
 [gccavr]: https://www.nongnu.org/avr-libc/user-manual/optimization.html
+[deprecate]: https://www.youtube.com/watch?v=KJW_DLaVXIY

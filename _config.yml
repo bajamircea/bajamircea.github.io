@@ -2,7 +2,7 @@ description: >
   Mircea Baja's Posts
 exclude: ['.ruby-version', 'Gemfile', 'Gemfile.lock', 'code']
 github_username:  bajamircea
-paginate: 100
+paginate: 1000
 title: bajamircea.github.io
 url: 'http://bajamircea.github.io'
 plugins: [jekyll-paginate, jekyll-feed]

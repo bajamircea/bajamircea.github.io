@@ -1,0 +1,361 @@
+---
+layout: presentation
+title: Irregularity - Part I - Lists (and vectors)
+---
+
+Mircea Baja - 1 May 2020
+
+# Irregularity in Generic Programming
+
+## Part I (of three): Lists (and vectors)
+
+???
+
+This is part I out of three talks intended (mainly) for (C++)
+developers.
+
+The common original idea of these talks is simply that diversity in
+data structures and algorithms results in generic solutions being
+quirky and not universal (the irregularity conjecture), including an
+exploration of the related philosophical and mathematical ideas.
+
+In this first part I'm trying to give an example of diversity in data
+structures and if nothing else, by the end of it you'll know more than
+you'll ever need to know about linked lists (and why vector is most of
+the time a better choice).
+
+---
+class: large-points
+
+# Agenda: Lists
+- A linked list is just a kind of a linked list.
+- The naming quirks: why naming is hard.
+- Hyperbolic usage conjecture.
+- Detour: why vectors are good, common myths
+
+---
+
+class: large-points
+
+# The vector kind theorem
+
+- Theorem: the vector is just a kind of vector (paraphrasing Alex Stepanov)
+
+- Lemma: a linked list is just a kind of linked list
+
+---
+
+# Single linked
+
+![Image](../assets/2018-06-23-linked-lists-options/01-single-linked.png)
+
+# Double linked
+
+![Image](../assets/2018-06-23-linked-lists-options/02-double-linked.png)
+
+---
+
+# Linear
+
+![Image](../assets/2018-06-23-linked-lists-options/03-linear.png)
+
+# Circular
+
+![Image](../assets/2018-06-23-linked-lists-options/04-circular.png)
+
+---
+
+# Header - minimalistic
+
+- Pointer to head
+
+![Image](../assets/2018-06-23-linked-lists-options/05-header-head.png)
+
+- Pointer to tail
+
+![Image](../assets/2018-06-23-linked-lists-options/06-header-tail.png)
+
+- or Not minimalistic
+
+---
+
+# Links to local parts
+
+- No
+
+![Image](../assets/2018-06-23-linked-lists-options/07-no-links-to-local.png)
+
+- Yes
+
+![Image](../assets/2018-06-23-linked-lists-options/08-links-to-local.png)
+
+---
+
+# Dummy node
+
+![Image](../assets/2018-06-23-linked-lists-options/09-dummy-node.png)
+
+- Meaning (end iterator, none/simplify empty list case)
+- Location (heap, header)
+- If on the heap: always present?
+- Can dereference/does it have a value?
+
+---
+class: large-points
+
+# More
+
+- Iterators - minimalistic
+- List size
+- Operations available - e.g. constant time `push_back()`
+- Splicing - partial/total
+- Iterator from reference to value
+- Permanent end iterator
+- Forward/Bidirectional iterator
+- Intrusive/non-intrusive
+- Node ownership
+- Allocators
+- Thread safety
+
+---
+class: large-points
+
+# Fast reverse
+
+![Image](../assets/2018-06-23-linked-lists-options/10-fast-reversal.png)
+
+- Meaning of node pointers is found during traversal (meaning is fixed only for
+  the dummy node)
+
+---
+
+# Single linked basic
+
+![Image](../assets/2018-06-28-linked-lists-examples/01-single-basic.png)
+
+- `std::forward_list`
+- No constant time `push_back()`
+- Can be used to implement a typical stack/FILO, but not a typical queue/FIFO
+- Note: comparing for end slightly different from comparing two iterators
+
+---
+
+# Single linked circular
+
+![Image](../assets/2018-06-28-linked-lists-examples/02-single-circular.png)
+
+- Two choices on accessing tail from the iterator:
+  - Directly: as above
+  - Indirectly: through the header
+
+---
+
+# Single linked first-last
+
+![Image](../assets/2018-06-28-linked-lists-examples/03-single-first-last.png)
+
+---
+
+# Double linked linear
+
+![Image](../assets/2018-06-28-linked-lists-examples/04-double-linear.png)
+
+---
+
+# Double linked circular
+
+![Image](../assets/2018-06-28-linked-lists-examples/05-double-circular.png)
+
+---
+
+# Double linked with allocated dummy node
+
+![Image](../assets/2018-06-28-linked-lists-examples/06-double-dummy-node.png)
+
+- `std::list` in Visual C++ 2017/2019
+
+---
+
+# Allocated dummy node
+
+![Image](../assets/2018-06-28-linked-lists-examples/07-double-dummy-node.png)
+
+--
+
+```cpp
+static_assert(std::is_nothrow_default_constructible_v<std::list<int>>,
+  "Default constructor may throw");
+
+static_assert(std::is_nothrow_move_constructible_v<std::list<int>>,
+  "Move constructor may throw");
+
+// both assert in Visual C++ 2017/2019
+```
+
+---
+
+# Double linked with dummy node in header
+
+![Image](../assets/2018-06-28-linked-lists-examples/08-double-dummy-in-header.png)
+
+- `move` invalidates end
+- another `std::list` implementation option gcc/clang
+
+---
+
+# Books
+
+
+<table>
+<tr>
+<td><img src="../assets/2020-02-26-irregularity/03-eop.jpg" style="width: 100%" /></td>
+<td><img src="../assets/2020-02-26-irregularity/04-tarjan.jpg" style="width: 100%" /></td>
+</tr>
+</table>
+
+
+---
+class: large-points
+
+# Linked list summary
+
+- Despite ignoring many additional choices: there are many kinds of linked list
+- There are more differences than things they all have together
+- They all have a use case
+- E.g. single linked lists: the price to pay for constant time `push_back()` either: iterator not
+  minimalistic OR header not minimalistic
+- It is not a closed system: I doubt we can say confidently that there is no
+  other linked list variation
+
+---
+
+# Implementing one
+
+```cpp
+template<typename T>
+class dl_list {
+  struct node;
+  struct links {
+    node * next_;
+    node * prev_;
+  };
+  struct node : public links {
+    T value_;
+    //...
+```
+
+- A double linked list
+- Circular
+- With dummy node in the header
+- Non-intrusive (nodes are provided by the list class)
+- Nodes are allocated on the heap (no custom allocator)
+- List owns the nodes
+- No cached size
+
+---
+class: large-points
+
+# Type naming quirks
+
+- A lot of info on implementation details is required to provide a complete type description
+- That information has to be encoded somewhere
+- Encoding in the name is not scalable
+- Encoding as type parameters is not scalable
+- Dealing with all the details leads to cognitive load
+- We're equipped with a large common vocabulary for the physical world (only)
+- A pragmatic solution: reduced vocabulary
+- `std::list` and `std::forward_list`
+- `std::shared_ptr` and `std::unique_ptr`
+- Open vs. closed type systems
+
+---
+class: large-points
+
+# Hyperbolic usage conjecture
+
+- A small number of built-in types used a lot
+- A large number of user defined types used once or twice
+
+![Image](../assets/2020-02-26-irregularity/08-type-usage.png)
+
+---
+
+# Detour: vectors rule
+
+---
+
+# List representation
+
+![Image](../assets/2018-06-23-linked-lists-options/01-single-linked.png)
+
+# List memory layout
+
+![Image](../assets/2018-06-23-linked-lists-options/11-memory.png)
+
+---
+
+# TSO for x86
+
+![Image](../assets/2019-10-25-cpu-memory-model/tso.png)
+
+- Lags for access to shared memory
+
+---
+
+# Arrays
+
+![Image](../assets/2020-04-06-how-vector-works-array/01-array.png)
+
+---
+# Iterators: generalized pointers
+
+- "points to"/hardware view
+
+![Image](../assets/2020-02-26-irregularity/05-iterator-hardware.png)
+
+- "points between"/Sean Parent view
+
+![Image](../assets/2020-02-26-irregularity/06-iterator-sp.png)
+
+---
+
+# Vector: resizable array
+
+![Image](../assets/2020-04-20-how-vector-works-basic/01-vector.png)
+
+---
+
+# Push back
+
+![Image](../assets/2020-04-28-how-vector-works-push-back/01-resize.png)
+
+- strong guarantee
+- https://isocpp.org/files/papers/N4055.html
+- common strategies: 2x (gcc) or 1.5x (Microsoft)
+- excess memory usage: 38.6% or 21.6% respectively
+- resulting in amortized O(1)
+
+---
+
+# List vs. vector
+
+
+---
+
+
+# List vs. vector
+
+
+---
+
+# Hash table vs. array
+
+
+---
+
+# Are lists useful?
+
+---
+
+# Questions?
+
