@@ -35,6 +35,15 @@ class: large-points
 
 ---
 
+# EOP
+
+<table>
+<tr>
+<td><img src="../assets/2020-02-26-irregularity/03-eop.jpg" style="width: 100%" /></td>
+</tr>
+</table>
+
+---
 class: large-points
 
 # The vector kind theorem
@@ -129,6 +138,16 @@ class: large-points
 
 ---
 
+# Fast reverse
+
+<table>
+<tr>
+<td><img src="../assets/2020-02-26-irregularity/04-tarjan.jpg" style="width: 100%" /></td>
+</tr>
+</table>
+
+---
+
 # Single linked basic
 
 ![Image](../assets/2018-06-28-linked-lists-examples/01-single-basic.png)
@@ -200,19 +219,6 @@ static_assert(std::is_nothrow_move_constructible_v<std::list<int>>,
 
 - `move` invalidates end
 - another `std::list` implementation option gcc/clang
-
----
-
-# Books
-
-
-<table>
-<tr>
-<td><img src="../assets/2020-02-26-irregularity/03-eop.jpg" style="width: 100%" /></td>
-<td><img src="../assets/2020-02-26-irregularity/04-tarjan.jpg" style="width: 100%" /></td>
-</tr>
-</table>
-
 
 ---
 class: large-points
@@ -329,27 +335,180 @@ class: large-points
 
 ![Image](../assets/2020-04-28-how-vector-works-push-back/01-resize.png)
 
-- strong guarantee
-- https://isocpp.org/files/papers/N4055.html
 - common strategies: 2x (gcc) or 1.5x (Microsoft)
-- excess memory usage: 38.6% or 21.6% respectively
-- resulting in amortized O(1)
+- resulting in amortized O(1) - i.e. amortised additional cost of 2 moves per
+  push_back for 2x
+- strong guarantee
+- handling dynamically allocated sentinel https://isocpp.org/files/papers/N4055.html
 
 ---
 
-# List vs. vector
+# Excess usage
+
+![Image](../assets/2020-04-28-how-vector-works-push-back/02-integral.png)
+
+- https://isocpp.org/files/papers/N4055.html - "an average of 20% for VC's 1.5x
+  growth, or 33% for 2x growth"
+- but the average I got for 2x up to b*a = 1024 I got: 38.1%
+
+---
+
+<table>
+<tr>
+<td><img
+src="../assets/2020-04-28-how-vector-works-push-back/03-upper-bound.png"
+style="width: 80%" /></td>
+</tr>
+</table>
+
+---
+
+# Excess usage
+
+![Image](../assets/2020-04-28-how-vector-works-push-back/02-integral.png)
+
+- excess memory usage bound: ln(b)*b/(b-1) -1
+- in practice: 38.6% or 21.6% (for 2x or 1.5x) respectively
+
+---
+
+# Detour: Usage anti-patterns
+
+---
+
+# List push_back anti-pattern
+
+```cpp
+// inserts at the end
+void fn(std::list<std::string> & c)
+{
+  for(/*some loop here*/) 
+  {
+    c.push_back(value);
+  }
+}
+```
+
+- allocate node
+- set value
+- set node links
+- (adjust size)
+
+---
+
+# List push_back anti-pattern
+
+```cpp
+// inserts at the end
+void fn(std::vector<std::string> & c)
+{
+  for(/*some loop here*/) 
+  {
+    c.push_back(value);
+  }
+}
+```
+
+- a few moves (e.g. 2 for 2x strategy)
+- set value
+- adjust end
+
+---
+
+# Vector push_back anti-pattern
+
+```cpp
+// inserts at the end
+void fn(std::vector<std::string> & c)
+{
+  for(/*some loop here*/) 
+  {
+    c.resize(c.size() + 1);
+    c.push_back(value);
+  }
+}
+```
+
+- aggressive `resize` is counter-productive
 
 
 ---
 
+# List insert anti-pattern
 
-# List vs. vector
+```cpp
+// insert "foo" before "bar"
+void fn(std::list<std::string> & c)
+{
+  auto it = std::find(c.begin(), c.end(), "bar");
+  c.insert(it, "bar");
+}
+```
 
+- O(N) average and worst case
 
 ---
 
-# Hash table vs. array
+# List insert anti-pattern
 
+```cpp
+// insert "foo" before "bar"
+void fn(std::vector<std::string> & c)
+{
+  auto it = std::find(c.begin(), c.end(), "bar");
+  c.insert(it, "bar");
+}
+```
+
+- O(N) average and worst case
+
+---
+
+# Hash table anti-pattern
+
+```cpp
+const std::unordered_map<std::string, std::function<void()>> rules =
+{
+  {"one", [](){ std::cout << "one\n"; }},
+  {"another", [](){ std::cout << "another\n"; }},
+  {"most", [](){ std::cout << "most\n"; }},
+};
+void do_action(const std::string & verb)
+{
+  auto it = rules.find(verb);
+  if (it != rules.end())
+  {
+    it->second();
+  }
+}
+```
+
+- calculate hash, lookup, compare for equality
+
+---
+
+# Hash table anti-pattern
+
+```cpp
+const std::pair<std::string, std::function<void()>> rules[] =
+{
+  {"most", [](){ std::cout << "most\n"; }},
+  {"one", [](){ std::cout << "one\n"; }},
+  {"another", [](){ std::cout << "another\n"; }},
+};
+void do_action(const std::string & verb)
+{
+  auto it = std::find_if(std::begin(rules), std::end(rules), [&verb](const auto & item) {
+    return verb == item.first;
+  });
+  if (it != std::end(rules))
+  {
+    it->second();
+  }
+}
+```
+
+- for most is just a comparison for equality
 
 ---
 
