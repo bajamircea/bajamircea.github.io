@@ -441,7 +441,7 @@ void fn(std::vector<std::string> & c)
 void fn(std::list<std::string> & c)
 {
   auto it = std::find(c.begin(), c.end(), "bar");
-  c.insert(it, "bar");
+  c.insert(it, "foo");
 }
 ```
 
@@ -456,7 +456,7 @@ void fn(std::list<std::string> & c)
 void fn(std::vector<std::string> & c)
 {
   auto it = std::find(c.begin(), c.end(), "bar");
-  c.insert(it, "bar");
+  c.insert(it, "foo");
 }
 ```
 
