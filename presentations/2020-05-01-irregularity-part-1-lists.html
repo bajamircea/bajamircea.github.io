@@ -424,7 +424,7 @@ void fn(std::vector<std::string> & c)
   for(/*some loop here*/) 
   {
     c.resize(c.size() + 1);
-    c.push_back(value);
+    c.back() = value;
   }
 }
 ```
