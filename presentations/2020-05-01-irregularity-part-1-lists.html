@@ -437,7 +437,7 @@ void fn(std::vector<std::string> & c)
 # List insert anti-pattern
 
 ```cpp
-// insert "foo" before "bar"
+// insert "foo" before first "bar"
 void fn(std::list<std::string> & c)
 {
   auto it = std::find(c.begin(), c.end(), "bar");
@@ -452,7 +452,7 @@ void fn(std::list<std::string> & c)
 # List insert anti-pattern
 
 ```cpp
-// insert "foo" before "bar"
+// insert "foo" before first "bar"
 void fn(std::vector<std::string> & c)
 {
   auto it = std::find(c.begin(), c.end(), "bar");
@@ -461,6 +461,27 @@ void fn(std::vector<std::string> & c)
 ```
 
 - O(N) average and worst case
+
+---
+
+# List insert anti-pattern
+
+```cpp
+// delete first "bar"
+void fn(std::vector<std::string> & c)
+{
+  auto it = std::find(c.begin(), c.end(), "bar");
+  if (it != c.end())
+  {
+    auto end = c.end();
+    --end;
+    std::iter_swap(it, end);
+    c.resize(c.size() - 1);
+  }
+}
+```
+
+- or use `std::remove` to preserve the order
 
 ---
 
