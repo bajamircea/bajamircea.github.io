@@ -1,0 +1,375 @@
+---
+layout: presentation
+title: Irregularity - Part II - Continuum
+---
+
+Mircea Baja - 22 May 2020
+
+# Irregularity in Generic Programming
+
+## Part II (of three): Continuum
+
+---
+class: large-points
+
+# Agenda: Continuum
+
+- Linear search and partition
+- Requirements
+- Concepts as a thinking tool
+- What is regularity?
+- What is irregularity?
+- The irregularity continuum
+- The irregularity conjecture
+- Detour: concepts in C++ 20
+
+---
+
+# Iterators: generalized pointers
+
+![Image](../assets/2020-04-06-how-vector-works-array/01-array.png)
+
+- do not dereference the "end" position in an array (one past the last)
+- generalization: input/output/forward/bidirectional/random access iterators
+  (e.g. position of node in a linked list)
+- dummy nodes in lists (usually) don't have values
+
+---
+
+# Linear find with pointers - toy
+
+```cpp
+int data[] = {2, 5, 7, 1, 22};
+
+int * it = find(std::begin(data), std::end(data), 5);
+if (it == std::end(data)) {
+  // not found ...
+}
+else {
+  // found ...
+  *it = 42;
+}
+```
+
+```cpp
+int * find(int * f, int * l, int x) {
+  while ((f != l) && (*f != x)) ++f;
+  return f;
+}
+```
+
+- Note we compare f with l twice: inside the `find` and outside
+- In this case once with `!=`, the other time with `==`
+- In well written code the safety issues do not propagate forever
+
+---
+
+# Linear find canonical - toy
+
+```cpp
+template<typename It, typename T>
+It find(It f, It l, const T & x) {
+  while ((f != l) && (*f != x)) ++f;
+  return f;
+}
+```
+
+- When does it work?
+- It will work for `T` being `int`, `short`, `long`, `unsigned` etc.
+- `It` is pointer-like `first` and `last` to sequences of integer-like values
+  (e.g. `T *`)
+- `It` can also be an iterator in a linked list
+- Integer-like not in the addition/multiplication sense, but in the it holds a
+  value that can be copied, compared for equality etc.
+
+---
+class: large-points
+
+# Requirements syntactic
+
+- We can compare for equality `f` and `l`
+- We can dereference `f`
+- The iterator type has an associated value type
+- Dereferencing `f` is reference to the value type
+- We can advance `f` (with `++`)
+- These are easy to express
+
+---
+class: large-points
+
+# Requirements semantic
+
+- Once `f` equals `l`, it stays that way, we can compare again and get the same
+  result
+- And that's true even for a copy of `f`
+- Equality: reflexive, symmetric and transitive
+- We can reach `l` from `f`, `l` should not be dereferenced
+- These are harder to express
+
+---
+
+# Linear find using concepts - toy
+
+```cpp
+template<typename It>
+using ValueType = typename It::value_type;
+
+template<typename It>
+concept InputIterator = requires(It a, It b)
+{
+    {a == b} -> std::boolean;
+    {a != b} -> std::boolean;
+    typename ValueType<It>;
+    {*a} -> std::common_reference_with<ValueType<It>>;
+    ++a;
+};
+
+template<typename It>
+  requires InputIterator<It>
+It find(It f, It l, const ValueType<It> & x)
+{
+    while ((f != l) && (*f != x)) ++f;
+    return f;
+}
+```
+
+- Still toy example
+
+---
+
+# Linear find - industrial version
+
+```cpp
+template<InputIterator I, Sentinel<I> S, class T, class Proj = ranges::identity >
+  requires IndirectRelation<ranges::equal_to<>, projected<I, Proj>, const T*>
+I find(I f, S l, const T& x, Proj proj = Proj{})
+{
+  while ((f != l) && (ranges::invoke(proj, *f) != x)) ++f;
+  return f;
+}
+```
+
+- Sentinel supports iterators stopping on file end, zero terminated strings. In
+  general the case where checking for the end is different from equality of two
+  iterators.
+- Projections support the case where only part of the value type is used
+- Type `T` is not necessarily the value type of the iterator
+- Overloaded to get a `range` e.g. the whole container
+
+```cpp
+std::cout << std::find(people, "Alice", &person::first_name)->last_name;
+```
+---
+
+# Faster linear find
+
+```cpp
+template<typename I, typename T>
+// requires I is an ForwardIterator
+//   T is equality comparable,
+//   T is the same as ValueType(I)
+I find_by_setting_sentinel(I f, I l, const T & v) {
+  // precondition: l can be dereferenced to store value as sentinel
+  *l = v;
+  while (*f != v) {
+    ++f;
+  }
+  return f;
+}
+```
+
+- Trick known in 1974/Knuth
+
+---
+
+# Partition - example
+
+![Image](../assets/2020-02-26-irregularity/07-partition.png)
+
+---
+class: large-points
+
+# Partition - options
+
+- Forward iterators - semistable
+- Bidirectional iterators - faster
+- Stable - more resources
+- But can be implemented stable for list - the list iterators have something in
+  common after all
+- The predicate is only applied once
+
+
+---
+class: large-points
+
+# Concepts
+
+- Specific: a particular way of implementing concepts in C++20 describing
+  syntactic requirements (constraints)
+- General: tool of thinking about requirements on types (not on values),
+  especially relations between types.
+- They have a open/extensible character: not all concepts are orthogonal or
+  hierarchical: the case of overlapping requirements identified after the type
+  definition
+
+---
+class: large-points
+
+# Concept naming quirks
+
+- Non-intuitive synthetic names e.g. iterator, value type, sentinel, projection
+  etc.
+- Not derived mechanically: no mechanic nested concept propagation
+- Based on observations on common behaviour
+- They are invented, taste and choice matters
+- Reduced vocabulary is a practical choice sometimes
+- Another choice is customisation points e.g. `std::begin`
+- Another practical choice is over-constraining to start with
+- Hyperbolic usage conjecture applies to concepts
+- Don't try to be too generic on custom/rarely used concepts
+
+---
+class: large-points
+
+# Regular concept - for data
+
+- Default constructible
+- Copyable (and movable)
+- Equality
+- Destructible
+
+```cpp
+Some a;
+a = b;
+assert(a == b);
+c = b;
+assert(a == c);
+```
+
+- Fundamental behaviour, relied on for correctness reasoning
+- Integer-like not in the addition/multiplication sense, but in the it holds a
+  value that can be copied, compared for equality etc.
+- e.g. standard containers
+
+---
+class: large-points
+
+# Regular concept - for functions
+
+- Arguments and return types are regular data types
+- Replacing arguments with equal values results into equal return values
+- Pure functions with no side effects, and no internal state like random number
+  generators
+- Can have side effects, but consistent results
+- e.g. predicates for standard algorithms
+- Different sounding definition compared with data regularity
+- Same outcome: fundamental behaviour, relied on for correctness reasoning
+
+---
+class: large-points
+
+# Irregularity continuum
+
+- For almost every characteristic of a regular data concept, there are useful
+  types that violate it
+
+---
+class: large-points
+
+# Data irregularity examples
+
+- Move: a bit weird - move an integer?
+- Copy constructor throws - standard containers
+- Default constructor throws - `std::list`
+- Move constructor throws - `std::list`
+- Destructor throws - scope exit idiom
+- No default constructor - scope object type
+- No copy - move only resource types
+- Equality - of what? e.g. equality of remote content
+- Equality complexity - worst case quadratic for unordered containers
+- Equality for input iterator - does not make sense
+- Float Nan equality `==` not `!=`
+- **But** have not seen a sane case where `==` is different from not `!=`
+
+---
+class: large-points
+
+# Function irregularity examples
+
+- A lot of code is about side effects, order of operations matter - fully
+  irregular
+- Pseudo-regular - algorithms where the function only gets applied once per
+  value - e.g. partition example
+
+---
+class: large-points
+
+# Irregularity conjecture
+
+- Generic data structures and algorithms are diverse, quirky and are not universal
+
+--
+- Reduced vocabulary is a pragmatic option of handling complexity
+- Gains (efficiency/different behaviour) are available in special cases
+- Either by using a more refined vocabulary
+- Or by using human knowledge not available to the machine
+
+---
+class: large-points
+
+# Things we know - examples
+
+- Side effects are fine: pseudopredicate
+- Can open file: running as root/administrator
+- Sequence is sorted/ordered/partitioned for relation used: binary search can be used
+- Relation is transitive for values provided
+- `push_back()` won't throw: `vector` was previously resized
+- Permutations can avoid invalidating the moved from objects
+- Machines cover more ground, but there is always a gap
+
+---
+
+# Books
+
+
+<table>
+<tr>
+<td><img src="../assets/2020-02-26-irregularity/03-eop.jpg" style="width: 100%" /></td>
+<td><img src="../assets/2020-02-26-irregularity/01-euclid.jpg" style="width: 100%" /></td>
+<td><img src="../assets/2020-02-26-irregularity/02-goedel.jpg" style="width: 100%" /></td>
+<td><img src="../assets/2020-02-26-irregularity/04-tarjan.jpg" style="width: 100%" /></td>
+</tr>
+</table>
+
+---
+
+# References
+
+Alexander A. Stepanov and Paul McJones: Elements of Programming
+
+Robert Endre Tarjan: Data Structures and Network Algorithms
+
+Andrew Sutton and Bjarne Stroustrup: Design of Concept Libraries for C++ [SLE2011](http://www.stroustrup.com/sle2011-concepts.pdf)
+
+# Links
+
+https://bajamircea.github.io/coding/cpp/2018/08/01/linear-find.html
+
+https://bajamircea.github.io/coding/cpp/2018/08/05/partition.html
+
+https://bajamircea.github.io/coding/cpp/2018/06/28/linked-lists-examples.html
+
+https://bajamircea.github.io/coding/cpp/2018/06/30/lists-implementing.html
+
+https://bajamircea.github.io/presentations/2020-02-26-irregularity.html
+
+---
+
+TODO
+
+https://devblogs.microsoft.com/cppblog/c20-concepts-are-here-in-visual-studio-2019-version-16-3/
+
+---
+
+# Questions?
+
