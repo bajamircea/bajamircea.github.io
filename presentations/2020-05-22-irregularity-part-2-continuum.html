@@ -14,8 +14,9 @@ class: large-points
 
 # Agenda: Continuum
 
-- Linear search and partition
+- Linear search
 - Requirements
+- Detour: partition
 - Concepts as a thinking tool
 - What is regularity?
 - What is irregularity?
@@ -182,9 +183,33 @@ I find_by_setting_sentinel(I f, I l, const T & v) {
 
 ---
 
-# Partition - example
+# Detour: partition
 
 ![Image](../assets/2020-02-26-irregularity/07-partition.png)
+
+---
+
+# Partition semistable - toy code
+
+```cpp
+  template<typename It, typename Pred>
+  // requires It is an ForwardIterator,
+  //   Pred is an unary predicate on ValueType(It)
+  It partition_semistable(It f, It l, Pred pred, Proj proj) {
+    f = std::find_if(f, l, pred);
+    if (f == l) return f;
+
+    for (It i = std::next(f); i != l; ++i) {
+      if(!pred(*i)) {
+        std::iter_swap(f, i);
+        ++f;
+      }
+    }
+    return f;
+  }
+```
+
+- NOTE: false range is first (EOP style, not std style)
 
 ---
 class: large-points
@@ -195,8 +220,8 @@ class: large-points
 - Bidirectional iterators - faster
 - Stable - more resources
 - But can be implemented stable for list - the list iterators have something in
-  common after all
-- The predicate is only applied once
+  common after all (partition_linked)
+- The predicate is only applied once (or the algorithm spec should say otherwise)
 
 
 ---
@@ -208,8 +233,8 @@ class: large-points
   syntactic requirements (constraints)
 - General: tool of thinking about requirements on types (not on values),
   especially relations between types.
-- They have a open/extensible character: not all concepts are orthogonal or
-  hierarchical: the case of overlapping requirements identified after the type
+- They (can) have a open/extensible character: not all concepts are orthogonal
+  or hierarchical: the case of overlapping requirements identified after the type
   definition
 
 ---
