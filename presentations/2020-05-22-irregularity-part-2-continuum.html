@@ -368,46 +368,175 @@ class: large-points
 - Machines cover more ground, but there is always a gap
 
 ---
+class: large-points
 
-# Books
+# Detour: Concepts in C++20
 
+---
+class: large-points
 
-<table>
-<tr>
-<td><img src="../assets/2020-02-26-irregularity/03-eop.jpg" style="width: 100%" /></td>
-<td><img src="../assets/2020-02-26-irregularity/01-euclid.jpg" style="width: 100%" /></td>
-<td><img src="../assets/2020-02-26-irregularity/02-goedel.jpg" style="width: 100%" /></td>
-<td><img src="../assets/2020-02-26-irregularity/04-tarjan.jpg" style="width: 100%" /></td>
-</tr>
-</table>
+# Generic rationale
+
+```cpp
+int min_int(int a, int b) { ... }
+
+float min_float(float a, float b) { ... }
+
+const std::vector<int> & min_vector_int(
+  const std::vector<int> & a, const std::vector<int> & b) { ... }
+```
+
+--
+```cpp
+template<typename T>
+const T & min(const T & a, const T & b) {
+  // implementation here
+}
+```
+
+--
+```cpp
+if (a < b) return a; else return b;  // 1
+if (a <= b) return a; else return b; // 2
+if (a > b) return b; else return a;  // 3
+if (b < a) return b; else return a;  // 4
+```
+
+---
+class: large-points
+
+# C++ concept
+
+- named sets of requirements
+
+```cpp
+template<typename T>
+concept EqualityComparable =
+  requires (const T a, const T b) {
+
+    { a == b } -> std::boolean;
+
+    { a != b } -> std::boolean;
+  };
+```
+
+---
+class: large-points
+
+# C++ concept
+
+- compile type predicates (&& and ||)
+- syntax vs. semantics
+
+```cpp
+template<typename T>
+concept StrictlyTotallyOrdered =
+
+    EqualityComparable<T>
+
+    &&
+
+    requires (const T a, const T b) {
+      { a < b } -> std::boolean;
+      { a > b } -> std::boolean;
+      { a <= b } -> std::boolean;
+      { a >= b } -> std::boolean;
+};
+```
+
+---
+class: large-points
+
+# Requires-expression
+
+```cpp
+requires(T a, U b) {
+
+  a + b; // simple: expression can compile
+
+  typename T::sub_type; // type requirement
+
+  { a + 1 } -> std::same_as<int>; // compile AND std::same_as<decltype(a+1), int>
+}
+```
+
+---
+class: large-points
+
+# Usage
+
+```cpp
+// requires clause
+template<typename T>
+  requires StrictlyTotallyOrdered<T>
+const T & min(const T & a, const T & b) {
+  if (b < a) return b; else return a;
+}
+```
+
+```cpp
+template<StrictlyTotallyOrdered T>
+const T & min(const T & a, const T & b) {
+  if (b < a) return b; else return a;
+}
+```
+
+```cpp
+// abbreviated function template
+const StrictlyTotallyOrdered auto & min(
+    const StrictTotallyOrdered auto & a,
+    const StrictTotallyOrdered auto & b) {
+  if (b < a) return b; else return a;
+}
+```
+
+---
+class: large-points
+
+# Placeholder type deduction
+
+```cpp
+requires(T a, U b) {
+  { a + 1 } -> std::same_as<int>;
+  { a == b } -> std::boolean
+}
+```
+
+--
+
+```cpp
+void fn(std::same_as<int> x); // invent
+fn(a + 1); // check if it compiles
+```
+
+--
+
+```cpp
+template<std::same_as<int> T>
+void fn(T x);
+```
+
+--
+
+```cpp
+template<typename T>
+  requires std::same_as<T, int>
+void fn(T x);
+```
 
 ---
 
-# References
+# All together now
 
-Alexander A. Stepanov and Paul McJones: Elements of Programming
-
-Robert Endre Tarjan: Data Structures and Network Algorithms
-
-Andrew Sutton and Bjarne Stroustrup: Design of Concept Libraries for C++ [SLE2011](http://www.stroustrup.com/sle2011-concepts.pdf)
-
-# Links
-
-https://bajamircea.github.io/coding/cpp/2018/08/01/linear-find.html
-
-https://bajamircea.github.io/coding/cpp/2018/08/05/partition.html
-
-https://bajamircea.github.io/coding/cpp/2018/06/28/linked-lists-examples.html
-
-https://bajamircea.github.io/coding/cpp/2018/06/30/lists-implementing.html
-
-https://bajamircea.github.io/presentations/2020-02-26-irregularity.html
-
----
-
-TODO
-
-https://devblogs.microsoft.com/cppblog/c20-concepts-are-here-in-visual-studio-2019-version-16-3/
+```cpp
+template<InputIterator It, Sentinel<It> S, class T, class Proj = ranges::identity >
+  requires IndirectRelation<ranges::equal_to<>, projected<It, Proj>, const T*>
+It find(It f, S l, const T& x, Proj proj = Proj{})
+{
+  while ((f != l) && (ranges::invoke(proj, *f) != x)) ++f;
+  return f;
+}
+```
 
 ---
 
