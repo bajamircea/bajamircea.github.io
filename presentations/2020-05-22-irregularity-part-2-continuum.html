@@ -77,9 +77,10 @@ It find(It f, It l, const T & x) {
 
 - When does it work?
 - It will work for `T` being `int`, `short`, `long`, `unsigned` etc.
-- `It` is pointer-like `first` and `last` to sequences of integer-like values
-  (e.g. `T *`)
-- `It` can also be an iterator in a linked list
+- Type `It` (for `f` and `l`) is pointer-like/position to sequences of
+  integer-like values (e.g. `T *`)
+- e.g. `It` can also be an iterator in a linked list (dereferencing gives
+  value, not node; advance follows `next`)
 - `T` and `It` are integer-like not in the addition/multiplication sense, but
   in the it holds a value that can be copied, compared for equality etc.
 
@@ -159,7 +160,7 @@ It find(It f, S l, const T& x, Proj proj = Proj{})
 - Overloaded to get a `range` e.g. the whole container
 
 ```cpp
-std::cout << std::find(people, "Alice", &person::first_name)->last_name;
+std::cout << find(people, "Alice", &person::first_name)->last_name;
 ```
 ---
 
@@ -170,12 +171,10 @@ template<typename It, typename T>
 // requires It is an ForwardIterator
 //   T is equality comparable with ValueType<It>,
 //   T is assignable to ValueType<It>
-It find_by_setting_sentinel(It f, It l, const T & v) {
+It find_by_setting_sentinel(It f, It l, const T & x) {
   // precondition: l can be dereferenced to store value as sentinel
-  *l = v;
-  while (*f != v) {
-    ++f;
-  }
+  *l = x;
+  while (*f != x) ++f;
   return f;
 }
 ```
@@ -196,7 +195,7 @@ It find_by_setting_sentinel(It f, It l, const T & v) {
   template<typename It, typename Pred>
   // requires It is an ForwardIterator,
   //   Pred is an unary predicate on ValueType(It)
-  It partition_semistable(It f, It l, Pred pred, Proj proj) {
+  It partition_semistable(It f, It l, Pred pred) {
     f = std::find_if(f, l, pred);
     if (f == l) return f;
 
@@ -220,10 +219,10 @@ class: large-points
 - Forward iterators - semistable
 - Bidirectional iterators - faster
 - Stable - more resources
+- Position variations
+- The predicate is only applied once (or the algorithm spec should say otherwise)
 - But can be implemented stable for list - the list iterators have something in
   common after all (partition_linked)
-- The predicate is only applied once (or the algorithm spec should say otherwise)
-- Position variations
 
 ---
 class: large-points
@@ -233,9 +232,10 @@ class: large-points
 - We only looked at a particular idiom (eager algorithms using first/last)
 - There are a lot of algorithms (google "105 STL Algorithms in Less Than an Hour")
 - There are subtle differences (e.g. between `accumulate` and `reduce` with
-  regards to the associativity of the operation
-- Leads to cognitive load
+  regards to the associativity of the operation)
+- Leads to cognitive load (transform_exclusive_scan anyone?)
 - A pragmatic solution: reduced vocabulary to repeatedly used algorithms in an
+  area of code
 - A raw `for/while` loop is sometimes suitable, also more adaptable to changes
   area of code
 
