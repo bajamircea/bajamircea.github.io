@@ -1,0 +1,149 @@
+---
+layout: presentation
+title: Irregularity - Part III - Bibliography
+---
+
+Mircea Baja - 12 June 2020
+
+# Irregularity in Generic Programming
+
+## Part III: Bibliography
+
+```cpp
+template<typename T>
+T fn(T a, T b) {
+  while (true) {
+    if ( b < a ) a -= b;
+    else if (a < b) b -= a;
+    else return a;
+  }
+}
+```
+
+---
+class: large-points
+
+# Agenda
+
+- Brief history of mathematics - a lot of Euclid and a bit of Gödel
+- Stepanov's Elements of Programming
+- Brief history of support for concepts in C++
+
+---
+
+# Books
+
+<table>
+<tr>
+<td><img src="../assets/2020-02-26-irregularity/01-euclid.jpg" style="width: 100%" /></td>
+<td><img src="../assets/2020-02-26-irregularity/02-goedel.jpg" style="width: 100%" /></td>
+<td><img src="../assets/2020-02-26-irregularity/09-turing.jpg" style="width: 100%" /></td>
+<td><img src="../assets/2020-02-26-irregularity/03-eop.jpg" style="width: 100%" /></td>
+</tr>
+</table>
+
+---
+
+<table>
+<tr>
+<td><img src="../assets/2020-02-26-irregularity/P._Oxy._I_29.jpg" style="width: 100%" /></td>
+</tr>
+</table>
+
+---
+
+# Euclid's Elements
+
+<table>
+<tr>
+<td><img src="../assets/2020-02-26-irregularity/01-euclid.jpg" style="width: 100%" /></td>
+</tr>
+</table>
+
+---
+
+# Triplets
+
+<div align="center">
+{% include assets/2018-11-07-maths-history/01-three_four_five.svg %}
+</div>
+
+---
+
+# "Proof"
+
+<div align="center">
+{% include assets/2018-11-07-maths-history/03-pythagoras.svg %}
+</div>
+
+---
+
+# Infinity
+
+<div align="center">
+{% include assets/2018-11-07-maths-history/02-square-2.svg %}
+</div>
+
+---
+
+# Book I, Proposition 47
+
+<div align="center" style="width:90%">
+{% include assets/2018-11-07-maths-history/04-euclid.svg %}
+</div>
+
+---
+
+# Peano
+
+<table>
+<tr>
+<td><img src="../assets/2020-02-26-irregularity/10-peano.png" style="width: 100%" /></td>
+</tr>
+</table>
+
+
+---
+
+# Gödel's Incompleteness
+
+<table>
+<tr>
+<td><img src="../assets/2020-02-26-irregularity/02-goedel.jpg" style="width: 100%" /></td>
+</tr>
+</table>
+
+---
+
+# Turing's machine
+
+<table>
+<tr>
+<td><img src="../assets/2020-02-26-irregularity/09-turing.jpg" style="width: 100%" /></td>
+</tr>
+</table>
+
+
+
+---
+
+# Stepanov's Elements (EOP)
+
+<table>
+<tr>
+<td><img src="../assets/2020-02-26-irregularity/03-eop.jpg" style="width: 100%" /></td>
+</tr>
+</table>
+
+---
+
+# References
+
+Alexander A. Stepanov and Paul McJones: Elements of Programming
+
+Andrew Sutton and Bjarne Stroustrup: Design of Concept Libraries for C++ [SLE2011](http://www.stroustrup.com/sle2011-concepts.pdf)
+
+---
+
+# Questions?
+
