@@ -280,7 +280,7 @@ struct X
   X(const X & other) : s_{ other.s_ } {}
 
   X(X && other) : s_{ std::move(other.s_) } {}
-  // other is an lvalue and so it's other.s_
+  // other is an lvalue, and so is its other.s_
   // use std::move to force using the move constructor for s_
   // don't use other.s_ after std::move (other than to destruct)
 
