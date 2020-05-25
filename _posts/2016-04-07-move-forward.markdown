@@ -314,7 +314,7 @@ constexpr typename remove_reference<T>::type && move(T && arg) noexcept
 }
 {% endhighlight %}
 
-First of all `std::move` is a template taking a `rvalue reference` argument
+First of all `std::move` is a template taking a `forwarding reference` argument
 which means that it can be called with either a `lvalue` or an `rvalue`, and
 the reference collapsing rules apply.
 
