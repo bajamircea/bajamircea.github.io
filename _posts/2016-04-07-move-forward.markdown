@@ -451,9 +451,9 @@ void install_command(std::string name, ftor && handler)
 {% endhighlight %}
 
 The first parameter, `name`, for the function `install_command` is passed [by
-value][pass-by-value]. That is realy a temporary, but has a name, hence it's an
+value][pass-by-value]. That is really a temporary, but has a name, hence it's an
 `lvalue` expression inside `install_command`. The second parameter `handler` is
-a `rvalue reference`. Because it has a name, it's an `lvalue` expression as
+a `forwarding reference`. Because it has a name, it's an `lvalue` expression as
 well inside `install_command`.
 
 The `std::map` has an `insert` overload that accepts an templated `rvalue
