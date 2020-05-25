@@ -200,18 +200,21 @@ overloads requiring:
 
 ## Template argument deduction and reference collapsing rules
 
-If a templated function takes an `rvalue reference` template argument, [special
-template argument deduction rules kick in][thbecker]. Despite the syntactic
-similarities with the `rvalue reference` above, the rules for this case where
-specifically designed to support argument forwarding and are called [forwarding
-references][n4164].
+If a templated function declares an argument as an `rvalue reference` to one of
+its template parameters, [special template argument deduction rules kick
+in][thbecker]. Despite the syntactic similarities with the `rvalue reference`
+rules above, the rules for this case were specifically designed to support
+argument forwarding and are called [forwarding references][n4164].
 
 {% highlight c++ linenos %}
 template<typename T>
 void foo(T &&); // forwarding reference here
+// T is a template parameter for foo
 
 template<typename T>
 void bar(std::vector<T> &&); // but not here
+// std::vector<T> is not a template parameter,
+// only T is a template parameter for bar
 {% endhighlight %}
 
 The rules allow the function `foo` above to be called with either an `lvalue`
@@ -280,7 +283,7 @@ struct X
   X(const X & other) : s_{ other.s_ } {}
 
   X(X && other) : s_{ std::move(other.s_) } {}
-  // other is an lvalue and so it's other.s_
+  // other is an lvalue, and other.s_ is an lvalue too
   // use std::move to force using the move constructor for s_
   // don't use other.s_ after std::move (other than to destruct)
 
@@ -314,7 +317,7 @@ constexpr typename remove_reference<T>::type && move(T && arg) noexcept
 }
 {% endhighlight %}
 
-First of all `std::move` is a template taking a `rvalue reference` argument
+First of all `std::move` is a template with a `forwarding reference` argument
 which means that it can be called with either a `lvalue` or an `rvalue`, and
 the reference collapsing rules apply.
 
@@ -335,9 +338,9 @@ reference`, is selected by the compiler.
 ## std::forward
 
 The idiomatic use of `std::forward` is inside a templated function with an
-`rvalue argument`, where the argument is now `lvalue`, used to retrieve the
-original value category, that it was called with, and pass it on further down
-the call chain (perfect forwarding).
+argument declared as a `forwarding reference`, where the argument is now
+`lvalue`, used to retrieve the original value category, that it was called
+with, and pass it on further down the call chain (perfect forwarding).
 
 Here is an example where `std::forward` is used twice in an idiomatic way:
 
@@ -451,10 +454,10 @@ void install_command(std::string name, ftor && handler)
 {% endhighlight %}
 
 The first parameter, `name`, for the function `install_command` is passed [by
-value][pass-by-value]. That is realy a temporary, but has a name, hence it's an
-`lvalue` expression inside `install_command`. The second parameter `handler` is
-a `rvalue reference`. Because it has a name, it's an `lvalue` expression as
-well inside `install_command`.
+value][pass-by-value]. That is really a temporary, but has a name, hence it's
+an `lvalue` expression inside `install_command`. The second parameter `handler`
+is a `forwarding reference`. Because it has a name, it's an `lvalue` expression
+as well inside `install_command`.
 
 The `std::map` has an `insert` overload that accepts an templated `rvalue
 reference` for the key/value pair to insert. For the key we can provide an
