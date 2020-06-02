@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20200612-02-1" width="100%" viewBox="0 0 900.0 400.0">
+  <style>
+    #svg20200612-02-1 {
+      border: 1px solid #e8e8e8;
+    }
+    .svg20200612-02-l1 {
+      stroke: black;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+    .svg20200612-02-l2 {
+      stroke: lightgrey;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+    .svg20200612-02-t1 {
+      font-family: serif;
+      font-size: 20px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .svg20200612-02-c1 {
+      stroke: black;
+    }
+  </style>
+  <path class="svg20200612-02-l2" d="M 10.0 10.0 L 290.0 10.0 L 290.0
+    190.0 L 10.0 190.0 Z"/>
+  <text class="svg20200612-02-t1" x="30.0" y="30.0">1</text>
+  <text class="svg20200612-02-t1" x="150.0" y="100.0">a = b = c</text>
+  <path class="svg20200612-02-l2" d="M 310.0 10.0 L 590.0 10.0 L 590.0
+    190.0 L 310.0 190.0 Z"/>
+  <text class="svg20200612-02-t1" x="150.0" y="100.0">a = b = c</text>
+  <text class="svg20200612-02-t1" x="450.0" y="100.0">a + b = a + b</text>
+  <path class="svg20200612-02-l2" d="M 610.0 10.0 L 890.0 10.0 L 890.0
+    190.0 L 610.0 190.0 Z"/>
+  <text class="svg20200612-02-t1" x="750.0" y="100.0">a - b = a - b</text>
+  <path class="svg20200612-02-l2" d="M 10.0 210.0 L 290.0 210.0 L 290.0
+    390.0 L 10.0 390.0 Z"/>
+  <text class="svg20200612-02-t1" x="30.0" y="230.0">4</text>
+  <text class="svg20200612-02-t1" x="150.0" y="300.0">a = a</text>
+  <path class="svg20200612-02-l2" d="M 310.0 210.0 L 590.0 210.0 L 590.0
+    390.0 L 310.0 390.0 Z"/>
+  <text class="svg20200612-02-t1" x="330.0" y="230.0">5</text>
+  <circle class="svg20200612-02-l1" cx="450.0" cy="300.0" r="80.0"/>
+  <circle class="svg20200612-02-l1" cx="490.0" cy="300.0" r="26.666666666666668"/>
+</svg>
