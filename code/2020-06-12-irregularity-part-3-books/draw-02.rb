@@ -109,6 +109,11 @@ image = svg({
 
   text(
     class: make_id("t1"),
+    x: x2_top + text_offset, y: y2_top + text_offset,
+    ).add_text("2")
+
+  text(
+    class: make_id("t1"),
     x: x1_top + width / 2, y: y1_top + height / 2,
     ).add_text("a = b = c")
 
@@ -124,6 +129,11 @@ image = svg({
     d: "M #{x3_top} #{y3_top} L #{x3_bottom} #{y3_top} L #{x3_bottom}
     #{y3_bottom} L #{x3_top} #{y3_bottom} Z",
     )
+
+  text(
+    class: make_id("t1"),
+    x: x3_top + text_offset, y: y3_top + text_offset,
+    ).add_text("3")
 
   text(
     class: make_id("t1"),

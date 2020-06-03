@@ -31,10 +31,12 @@
   <text class="svg20200612-02-t1" x="150.0" y="100.0">a = b = c</text>
   <path class="svg20200612-02-l2" d="M 310.0 10.0 L 590.0 10.0 L 590.0
     190.0 L 310.0 190.0 Z"/>
+  <text class="svg20200612-02-t1" x="330.0" y="30.0">2</text>
   <text class="svg20200612-02-t1" x="150.0" y="100.0">a = b = c</text>
   <text class="svg20200612-02-t1" x="450.0" y="100.0">a + b = a + b</text>
   <path class="svg20200612-02-l2" d="M 610.0 10.0 L 890.0 10.0 L 890.0
     190.0 L 610.0 190.0 Z"/>
+  <text class="svg20200612-02-t1" x="630.0" y="30.0">3</text>
   <text class="svg20200612-02-t1" x="750.0" y="100.0">a - b = a - b</text>
   <path class="svg20200612-02-l2" d="M 10.0 210.0 L 290.0 210.0 L 290.0
     390.0 L 10.0 390.0 Z"/>

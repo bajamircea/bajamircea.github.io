@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20200612-03-1" width="100%" viewBox="0 0 900.0 400.0">
+  <style>
+    #svg20200612-03-1 {
+      border: 1px solid #e8e8e8;
+    }
+    .svg20200612-03-l1 {
+      stroke: black;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+    .svg20200612-03-l2 {
+      stroke: lightgrey;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+    .svg20200612-03-t1 {
+      font-family: serif;
+      font-size: 20px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .svg20200612-03-c1 {
+      stroke: black;
+    }
+  </style>
+  <path class="svg20200612-03-l2" d="M 10.0 10.0 L 290.0 10.0 L 290.0
+    190.0 L 10.0 190.0 Z"/>
+  <text class="svg20200612-03-t1" x="30.0" y="30.0">5h</text>
+  <path class="svg20200612-03-l1" d="M 80.0 145.0 L 220.0 145.0"/>
+  <path class="svg20200612-03-l1" stroke-dasharray="5,5" d="M 80.0 55.0 A
+    224.0 224.0 0 0 0
+    220.0 55.0"/>
+  <path class="svg20200612-03-l1" stroke-dasharray="5,5" d="M 80.0 43.75 A
+    117.6 117.6 0 0 0
+    220.0 43.75"/>
+  <circle class="svg20200612-03-c1" cx="150.0" cy="66.25" r="2"/>
+  <path class="svg20200612-03-l2" d="M 310.0 10.0 L 890.0 10.0 L 890.0
+    390.0 L 310.0 390.0 Z"/>
+  <circle class="svg20200612-03-c1" cx="150.0" cy="66.25" r="2"/>
+</svg>
