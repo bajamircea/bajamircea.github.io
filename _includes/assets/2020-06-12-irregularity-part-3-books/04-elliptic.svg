@@ -15,6 +15,19 @@
       stroke-linejoin: miter;
       fill: none;
     }
+    .svg20200612-04-l3 {
+      stroke: grey;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+    .svg20200612-04-l4 {
+      stroke: red;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      stroke-width: 2px;
+      fill: none;
+    }
     .svg20200612-04-t1 {
       font-family: serif;
       font-size: 20px;
@@ -27,43 +40,39 @@
   </style>
   <path class="svg20200612-04-l2" d="M 10.0 10.0 L 290.0 10.0 L 290.0
     190.0 L 10.0 190.0 Z"/>
-  <text class="svg20200612-04-t1" x="30.0" y="30.0">1</text>
-  <path class="svg20200612-04-l1" d="M 66.0 100.0 L 234.0 100.0"/>
-  <path class="svg20200612-04-l2" d="M 310.0 10.0 L 590.0 10.0 L 590.0
-    190.0 L 310.0 190.0 Z"/>
-  <text class="svg20200612-04-t1" x="330.0" y="30.0">2</text>
-  <path class="svg20200612-04-l1" d="M 380.0 100.0 L 520.0 100.0"/>
-  <path class="svg20200612-04-l1" stroke-dasharray="5,5" d="M 345.0 100.0 L 380.0 100.0"/>
-  <path class="svg20200612-04-l1" stroke-dasharray="5,5" d="M 520.0 100.0 L 555.0 100.0"/>
-  <path class="svg20200612-04-l2" d="M 610.0 10.0 L 890.0 10.0 L 890.0
-    190.0 L 610.0 190.0 Z"/>
-  <text class="svg20200612-04-t1" x="630.0" y="30.0">3</text>
-  <circle class="svg20200612-04-l1" cx="750.0" cy="100.0" r="80.0"/>
-  <path class="svg20200612-04-l2" d="M 750.0 100.0 L 830.0 100.0"/>
+  <text class="svg20200612-04-t1" x="30.0" y="30.0">5e</text>
+  <path class="svg20200612-04-l1" d="M 80.0 145.0 L 220.0 145.0"/>
+  <path class="svg20200612-04-l1" stroke-dasharray="5,5" d="M 80.0 77.5 A
+    154.0 154.0 0 0 1
+    220.0 77.5"/>
+  <circle class="svg20200612-04-c1" cx="150.0" cy="60.625" r="2"/>
   <path class="svg20200612-04-l2" d="M 10.0 210.0 L 290.0 210.0 L 290.0
     390.0 L 10.0 390.0 Z"/>
-  <text class="svg20200612-04-t1" x="30.0" y="230.0">4</text>
-  <path class="svg20200612-04-l1" d="M 80.0 255.0 L 80.0
-    300.0 L 125.0 300.0"/>
-  <path class="svg20200612-04-l1" d="M 161.25 255.0 L
-    206.25 266.25
-    L 195.0 311.25"/>
-  <path class="svg20200612-04-l2" d="M 310.0 210.0 L 590.0 210.0 L 590.0
+  <text class="svg20200612-04-t1" x="30.0" y="230.0">2</text>
+  <path class="svg20200612-04-l1" d="M 80.0 300.0 L 220.0 300.0"/>
+  <path class="svg20200612-04-l1" stroke-dasharray="5,5" d="M 45.0 300.0 L 80.0 300.0"/>
+  <path class="svg20200612-04-l1" stroke-dasharray="5,5" d="M 220.0 300.0 L 255.0 300.0"/>
+  <path class="svg20200612-04-l4" d="M 10.0 210.0 L 290.0 390.0"/>
+  <path class="svg20200612-04-l4" d="M 290.0 210.0 L 10.0 390.0"/>
+  <path class="svg20200612-04-l2" d="M 310.0 10.0 L 890.0 10.0 L 890.0
     390.0 L 310.0 390.0 Z"/>
-  <text class="svg20200612-04-t1" x="330.0" y="230.0">5</text>
-  <path class="svg20200612-04-l1" d="M 380.0 345.0 L 520.0 345.0"/>
-  <path class="svg20200612-04-l1" stroke-dasharray="5,5" d="M 520.0 345.0 L 555.0 345.0"/>
-  <path class="svg20200612-04-l1" d="M 380.0 243.75 L
-    520.0 266.25"/>
-  <path class="svg20200612-04-l1" stroke-dasharray="5,5" d="M 520.0 266.25 L
-    555.0 271.875"/>
-  <path class="svg20200612-04-l1" d="M 450.0 243.75 L
-    450.0 356.25"/>
-  <path class="svg20200612-04-l2" d="M 610.0 210.0 L 890.0 210.0 L 890.0
-    390.0 L 610.0 390.0 Z"/>
-  <text class="svg20200612-04-t1" x="630.0" y="230.0">5p</text>
-  <path class="svg20200612-04-l1" d="M 680.0 345.0 L 820.0 345.0"/>
-  <path class="svg20200612-04-l1" stroke-dasharray="5,5" d="M 680.0 255.0 L
-    820.0 255.0"/>
-  <circle class="svg20200612-04-c1" cx="750.0" cy="255.0" r="2"/>
+  <circle class="svg20200612-04-l3" cx="600.0" cy="200.0" r="180.0"/>
+  <path class="svg20200612-04-l2" stroke-dasharray="5,5" d="M 420.0 200.0 A
+    180.0 54.0 0 0 1
+    780.0 200.0"/>
+  <path class="svg20200612-04-l1" d="M 420.0 200.0 A
+    180.0 54.0 0 0 0
+    780.0 200.0"/>
+  <path class="svg20200612-04-l2" stroke-dasharray="5,5" d="M 600.0 20.0 A
+    36.0 180.0 0 0 1
+    600.0 380.0"/>
+  <path class="svg20200612-04-l1" stroke-dasharray="5,5" d="M 600.0 20.0 A
+    36.0 180.0 0 0 0
+    600.0 380.0"/>
+  <path class="svg20200612-04-l1" stroke-dasharray="5,5" d="M 600.0 20.0 A
+    125.99999999999999 180.0 0 0 1
+    600.0 380.0"/>
+  <path class="svg20200612-04-l2" stroke-dasharray="5,5" d="M 600.0 20.0 A
+    125.99999999999999 180.0 0 0 0
+    600.0 380.0"/>
 </svg>

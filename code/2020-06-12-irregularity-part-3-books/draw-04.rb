@@ -17,37 +17,25 @@ y1_top = margin
 x1_bottom = x1_top + width
 y1_bottom = y1_top + height
 
-x2_top = x1_bottom + 2 * margin
-y2_top = y1_top
+x2_top = x1_top
+y2_top = y1_bottom + 2 * margin
 x2_bottom = x2_top + width
 y2_bottom = y2_top + height
 
-x3_top = x2_bottom + 2 * margin
-y3_top = y2_top
-x3_bottom = x3_top + width
-y3_bottom = y3_top + height
+widthm = 2 * width + 2 * margin
+heightm= 2 * height + 2 * margin
+
+xm_top = x1_bottom + 2 * margin
+ym_top = y1_top
+xm_bottom = xm_top + widthm
+ym_bottom = ym_top + heightm
 
 radius = height / 2 - margin
-
-x4_top = x1_top
-y4_top = y1_bottom + 2 * margin
-x4_bottom = x4_top + width
-y4_bottom = y4_top + height
 
 segment = height / 4
 offset = segment / 4
 
-x5_top = x4_bottom + 2 * margin
-y5_top = y4_top
-x5_bottom = x5_top + width
-y5_bottom = y5_top + height
-
-x6_top = x5_bottom + 2 * margin
-y6_top = y5_top
-x6_bottom = x6_top + width
-y6_bottom = y6_top + height
-
-
+radiusm = heightm / 2 - margin
 
 def make_id(offset)
   return "svg20200612-04-" + offset.to_s
@@ -75,6 +63,19 @@ image = svg({
       stroke-linejoin: miter;
       fill: none;
     }
+    .#{make_id("l3")} {
+      stroke: grey;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+    .#{make_id("l4")} {
+      stroke: red;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      stroke-width: 2px;
+      fill: none;
+    }
     .#{make_id("t1")} {
       font-family: serif;
       font-size: 20px;
@@ -86,7 +87,7 @@ image = svg({
     }
   CSS
 
-  # Postulate 1
+  # Postulate 5e
 
   path(
     class: make_id("l2"),
@@ -97,13 +98,26 @@ image = svg({
   text(
     class: make_id("t1"),
     x: x1_top + text_offset, y: y1_top + text_offset,
-    ).add_text("1")
+    ).add_text("5e")
 
   path(
     class: make_id("l1"),
-    d: "M #{x1_top + width / 5} #{y1_top + height / 2} L #{x1_bottom - width / 5} #{y1_top + height / 2}",
+    d: "M #{x1_top + width / 4} #{y1_top + height / 2 + segment} L #{x1_top + 3 * width / 4} #{y1_top + height / 2 + segment}",
     )
 
+  path(
+    class: make_id("l1"),
+    stroke_dasharray: "5,5",
+    d: "M #{x1_top + width / 4} #{y1_top + height / 2 - segment + 2 * offset} A
+    #{width * 0.55} #{width * 0.55} 0 0 1
+    #{x1_top + 3 * width / 4} #{y1_top + height / 2 - segment + 2 * offset}",
+    )
+  circle(
+    class: make_id("c1"),
+    cx: x1_top + width / 2,
+    cy: y1_top + height / 2 - segment + 0.5 * offset,
+    r: 2
+    )
 
   # Postulate 2
 
@@ -132,129 +146,74 @@ image = svg({
     stroke_dasharray: "5,5",
     d: "M #{x2_bottom - width / 4} #{y2_top + height / 2} L #{x2_bottom - width / 8} #{y2_top + height / 2}",
     )
+  path(
+    class: make_id("l4"),
+    d: "M #{x2_top} #{y2_top} L #{x2_bottom} #{y2_bottom}",
+    )
+  path(
+    class: make_id("l4"),
+    d: "M #{x2_bottom} #{y2_top} L #{x2_top} #{y2_bottom}",
+    )
 
-
-  # Postulate 3
+  # Elliptic
 
   path(
     class: make_id("l2"),
-    d: "M #{x3_top} #{y3_top} L #{x3_bottom} #{y3_top} L #{x3_bottom}
-    #{y3_bottom} L #{x3_top} #{y3_bottom} Z",
+    d: "M #{xm_top} #{ym_top} L #{xm_bottom} #{ym_top} L #{xm_bottom}
+    #{ym_bottom} L #{xm_top} #{ym_bottom} Z",
     )
-
-  text(
-    class: make_id("t1"),
-    x: x3_top + text_offset, y: y3_top + text_offset,
-    ).add_text("3")
 
   circle(
-    class: make_id("l1"),
-    cx: x3_top + width / 2,
-    cy: y3_top + height / 2,
-    r: radius
+    class: make_id("l3"),
+    cx: xm_top + widthm / 2,
+    cy: ym_top + heightm / 2,
+    r: radiusm
     )
-  path(
-    class: make_id("l2"),
-    d: "M #{x3_top + width / 2} #{y3_top + height / 2} L #{x3_top + width / 2 + radius} #{y3_top + height / 2}",
-    )
-
-
-  # Postulate 4
 
   path(
     class: make_id("l2"),
-    d: "M #{x4_top} #{y4_top} L #{x4_bottom} #{y4_top} L #{x4_bottom}
-    #{y4_bottom} L #{x4_top} #{y4_bottom} Z",
-    )
-
-  text(
-    class: make_id("t1"),
-    x: x4_top + text_offset, y: y4_top + text_offset,
-    ).add_text("4")
-
-  path(
-    class: make_id("l1"),
-    d: "M #{x4_top + width / 4} #{y4_top + height / 2 - segment} L #{x4_top + width / 4}
-    #{y4_top + height / 2} L #{x4_top + width / 4 + segment} #{y4_top + height / 2}",
+    stroke_dasharray: "5,5",
+    d: "M #{xm_top + widthm / 2 - radiusm} #{ym_top + heightm / 2} A
+    #{radiusm} #{0.3 * radiusm} 0 0 1
+    #{xm_top + widthm / 2 + radiusm} #{ym_top + heightm / 2}",
     )
   path(
     class: make_id("l1"),
-    d: "M #{x4_top + width / 2 + offset} #{y4_top + height / 2 - segment} L
-    #{x4_top + width / 2 + segment + offset} #{y4_top + height / 2 - segment + offset}
-    L #{x4_top + width / 2 + segment} #{y4_top + height / 2 + offset}",
+    d: "M #{xm_top + widthm / 2 - radiusm} #{ym_top + heightm / 2} A
+    #{radiusm} #{0.3 * radiusm} 0 0 0
+    #{xm_top + widthm / 2 + radiusm} #{ym_top + heightm / 2}",
     )
-
-  # Postulate 5
 
   path(
     class: make_id("l2"),
-    d: "M #{x5_top} #{y5_top} L #{x5_bottom} #{y5_top} L #{x5_bottom}
-    #{y5_bottom} L #{x5_top} #{y5_bottom} Z",
-    )
-
-  text(
-    class: make_id("t1"),
-    x: x5_top + text_offset, y: y5_top + text_offset,
-    ).add_text("5")
-
-  path(
-    class: make_id("l1"),
-    d: "M #{x5_top + width / 4} #{y5_top + height / 2 + segment} L #{x5_top + 3 * width / 4} #{y5_top + height / 2 + segment}",
+    stroke_dasharray: "5,5",
+    d: "M #{xm_top + widthm / 2} #{ym_top + heightm / 2 - radiusm} A
+    #{0.2 * radiusm} #{radiusm} 0 0 1
+    #{xm_top + widthm / 2} #{ym_top + heightm / 2 + radiusm}",
     )
   path(
     class: make_id("l1"),
     stroke_dasharray: "5,5",
-    d: "M #{x5_top + 3 * width / 4} #{y5_top + height / 2 + segment} L #{x5_top + 7 * width / 8} #{y5_top + height / 2 + segment}",
-    )
-
-  path(
-    class: make_id("l1"),
-    d: "M #{x5_top + width / 4} #{y5_top + height / 2 - segment - offset} L
-    #{x5_top + 3 * width / 4} #{y5_top + height / 2 - segment + offset}",
-    )
-  path(
-    class: make_id("l1"),
-    stroke_dasharray: "5,5",
-    d: "M #{x5_top + 3 * width / 4} #{y5_top + height / 2 - segment + offset} L
-    #{x5_top + 7 * width / 8} #{y5_top + height / 2 - segment + offset + offset / 2}",
-    )
-
-  path(
-    class: make_id("l1"),
-    d: "M #{x5_top + width / 2} #{y5_top + height / 2 - segment - offset} L
-    #{x5_top + width / 2} #{y5_top + height / 2 + segment + offset}",
-    )
-
-  # Postulate 5p
-
-  path(
-    class: make_id("l2"),
-    d: "M #{x6_top} #{y6_top} L #{x6_bottom} #{y6_top} L #{x6_bottom}
-    #{y6_bottom} L #{x6_top} #{y6_bottom} Z",
-    )
-
-  text(
-    class: make_id("t1"),
-    x: x6_top + text_offset, y: y6_top + text_offset,
-    ).add_text("5p")
-
-  path(
-    class: make_id("l1"),
-    d: "M #{x6_top + width / 4} #{y6_top + height / 2 + segment} L #{x6_top + 3 * width / 4} #{y6_top + height / 2 + segment}",
+    d: "M #{xm_top + widthm / 2} #{ym_top + heightm / 2 - radiusm} A
+    #{0.2 * radiusm} #{radiusm} 0 0 0
+    #{xm_top + widthm / 2} #{ym_top + heightm / 2 + radiusm}",
     )
 
   path(
     class: make_id("l1"),
     stroke_dasharray: "5,5",
-    d: "M #{x6_top + width / 4} #{y6_top + height / 2 - segment} L
-    #{x6_top + 3 * width / 4} #{y6_top + height / 2 - segment}",
+    d: "M #{xm_top + widthm / 2} #{ym_top + heightm / 2 - radiusm} A
+    #{0.7 * radiusm} #{radiusm} 0 0 1
+    #{xm_top + widthm / 2} #{ym_top + heightm / 2 + radiusm}",
     )
-  circle(
-    class: make_id("c1"),
-    cx: x6_top + width / 2,
-    cy: y6_top + height / 2 - segment,
-    r: 2
+  path(
+    class: make_id("l2"),
+    stroke_dasharray: "5,5",
+    d: "M #{xm_top + widthm / 2} #{ym_top + heightm / 2 - radiusm} A
+    #{0.7 * radiusm} #{radiusm} 0 0 0
+    #{xm_top + widthm / 2} #{ym_top + heightm / 2 + radiusm}",
     )
+
 
 end
 

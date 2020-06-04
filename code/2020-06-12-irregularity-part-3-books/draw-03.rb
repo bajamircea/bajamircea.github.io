@@ -17,16 +17,20 @@ y1_top = margin
 x1_bottom = x1_top + width
 y1_bottom = y1_top + height
 
+widthm = 2 * width + 2 * margin
+heightm= 2 * height + 2 * margin
+
 xm_top = x1_bottom + 2 * margin
 ym_top = y1_top
-xm_bottom = xm_top + width * 2 + 2 * margin
-ym_bottom = ym_top + height * 2 + 2 * margin
+xm_bottom = xm_top + widthm
+ym_bottom = ym_top + heightm
 
 radius = height / 2 - margin
 
 segment = height / 4
 offset = segment / 4
 
+radiusm = heightm / 2 - margin
 
 def make_id(offset)
   return "svg20200612-03-" + offset.to_s
@@ -50,6 +54,12 @@ image = svg({
     }
     .#{make_id("l2")} {
       stroke: lightgrey;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+    .#{make_id("l3")} {
+      stroke: grey;
       stroke-linecap: butt;
       stroke-linejoin: miter;
       fill: none;
@@ -87,15 +97,15 @@ image = svg({
     class: make_id("l1"),
     stroke_dasharray: "5,5",
     d: "M #{x1_top + width / 4} #{y1_top + height / 2 - segment} A
-    #{width * 0.80} #{width * 0.80} 0 0 0
-    #{x1_top + 3 * width / 4} #{y1_top + height / 2 - segment}",
+    #{width * 0.55} #{width * 0.55} 0 0 0
+    #{x1_top + 3 * width / 4} #{y1_top + height / 2 - segment - offset}",
     )
   path(
     class: make_id("l1"),
     stroke_dasharray: "5,5",
     d: "M #{x1_top + width / 4} #{y1_top + height / 2 - segment - offset} A
-    #{width * 0.42} #{width * 0.42} 0 0 0
-    #{x1_top + 3 * width / 4} #{y1_top + height / 2 - segment - offset}",
+    #{width * 0.55} #{width * 0.55} 0 0 0
+    #{x1_top + 3 * width / 4} #{y1_top + height / 2 - segment}",
     )
   circle(
     class: make_id("c1"),
@@ -114,10 +124,35 @@ image = svg({
     )
 
   circle(
+    class: make_id("l3"),
+    cx: xm_top + widthm / 2,
+    cy: ym_top + heightm / 2,
+    r: radiusm
+    )
+  path(
+    class: make_id("l1"),
+    d: "M #{xm_top + widthm / 2 - radiusm} #{ym_top + heightm / 2} L #{xm_top + widthm / 2 + radiusm} #{ym_top + heightm / 2}",
+    )
+  circle(
     class: make_id("c1"),
-    cx: x1_top + width / 2,
-    cy: y1_top + height / 2 - segment + offset,
+    cx: xm_top + widthm / 2,
+    cy: ym_top + heightm / 2 - 0.32 * radiusm,
     r: 2
+    )
+
+  path(
+    class: make_id("l1"),
+    stroke_dasharray: "5,5",
+    d: "M #{xm_top + widthm / 2 - 0.915 * radiusm} #{ym_top + heightm / 4 + 2 * offset} A
+    #{1.2 * radiusm} #{1.2 * radiusm} 0 0 0
+    #{xm_top + widthm / 2 + 0.625 * radiusm} #{ym_top + heightm / 4 - 4 * offset}",
+    )
+  path(
+    class: make_id("l1"),
+    stroke_dasharray: "5,5",
+    d: "M #{xm_top + widthm / 2 - 0.625 * radiusm} #{ym_top + heightm / 4 - 4 * offset} A
+    #{1.2 * radiusm} #{1.2 * radiusm} 0 0 0
+    #{xm_top + widthm / 2 + 0.915 * radiusm} #{ym_top + heightm / 4 + 2 * offset}",
     )
 
 end
