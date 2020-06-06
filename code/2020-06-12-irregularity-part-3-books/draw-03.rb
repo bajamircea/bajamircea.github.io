@@ -131,7 +131,9 @@ image = svg({
     )
   path(
     class: make_id("l1"),
-    d: "M #{xm_top + widthm / 2 - radiusm} #{ym_top + heightm / 2} L #{xm_top + widthm / 2 + radiusm} #{ym_top + heightm / 2}",
+    d: "M #{xm_top + widthm / 2 - 0.915 * radiusm} #{ym_top + 3 * heightm / 4 - 2 * offset} A
+    #{2 * radiusm} #{2 * radiusm} 0 0 1
+    #{xm_top + widthm / 2 + 0.915 * radiusm} #{ym_top + 3 * heightm / 4 - 2 * offset} L #{xm_top + widthm / 2 + radiusm}"
     )
   circle(
     class: make_id("c1"),
