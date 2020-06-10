@@ -161,14 +161,23 @@ class: large-points
 - the historical penny story
 - demonstrative proofs rather than empirical methods
 - axiomatic system: avoid circular reasoning
-- definition: what it is and that it is
-- definition in the negative
+- definition: what it is and that it is: B.I P.46
+- definition in the negative: B.I D.I
 - definition in the logical vs intuitive order
-- demonstration of things that cannot be done e.g. prop 7
+- demonstration of things that cannot be done e.g. B.I P.7
 - reduction to absurd
 - the power of reasoning: atoms
-- the dangers of over-reasoning: life on other planets
+- the dangers of pseudo-reasoning: life on other planets
 - the aesthetic choice in mathematics
+
+---
+class: large-points
+
+# Various
+
+- Zeno
+- Diophantus
+- al-Khwarizmi - the Arabs
 
 ---
 
@@ -186,6 +195,17 @@ class: large-points
 {% include assets/2020-06-12-irregularity-part-3-books/04-elliptic.svg %}
 </div>
 
+---
+class: large-points
+
+# Cantor
+
+- 1, 2, 3, 4, 5, ...
+- 1, 4, 9, 16, 25, ... (Galileo's paradox)
+- 0, 1, 2, 3, 4, ... (natural numbers)
+- 0, -1, 1, -2, 2, ... (integers)
+- 1/1, 1/2, 2/1, 1/3, 2/3, 3/1, ... (rationals)
+- ..., sqrt(2), ... (solutions of algebraic equations)
 
 ---
 
@@ -203,6 +223,7 @@ class: large-points
 
 # -isms
 
+- Paradoxes
 - Logicisms
 - Intuitionism / constructivism
 - Formalism
@@ -242,7 +263,60 @@ class: large-points
 ---
 class: large-points
 
-# Regularity
+# About EOP
+
+- Bjarne Stroustrup: "some of the most beautiful code I've ever seen"
+- relatively short book
+- in classic style
+- lacks scolia
+- the structure of STL (algorithms with some data structures)
+- concepts
+- multithemed
+- recurring themes
+- systematic exploration of the fundamentals of (generic) programming for a
+  machine with a CPU and memory
+
+---
+class: large-points
+
+# EOP Contents
+
+- Chapter 1
+- Chapter 2
+- Chapter 3
+- Chapter 4
+- Chapter 5
+- ...
+- Chapter 12
+- Appendix A and B
+
+---
+class: large-points
+
+# EOP Concepts syntax
+
+```cpp
+template<typename I>
+    requires(Readable(I) && Iterator(I))
+I find(I f, I l, const ValueType(I)& x)
+{
+    // Precondition: readable_bounded_range(f, l)
+    while (f != l && source(f) != x) f = successor(f);
+    return f;
+}
+```
+
+---
+class: large-points
+
+# GCD in rotate
+
+![Image](../assets/2020-02-26-irregularity/11-rotate.png)
+
+---
+class: large-points
+
+# Regularity/Irregularity
 
 - the importance of Euclid's common notions
 - equality and (strict total) order
@@ -252,14 +326,16 @@ class: large-points
 - even weaker: same area
 - actually the importance of relations
 
-
 ---
+class: large-points
 
-# References
+# C++ concepts
 
-Alexander A. Stepanov and Paul McJones: Elements of Programming
-
-Andrew Sutton and Bjarne Stroustrup: Design of Concept Libraries for C++ [SLE2011](http://www.stroustrup.com/sle2011-concepts.pdf)
+- long history
+- C++11
+- EOP
+- Redesign for C++20, usage: [Good concepts](https://www.stroustrup.com/good_concepts.pdf)
+- Irregularity [SLE2011](http://www.stroustrup.com/sle2011-concepts.pdf)
 
 ---
 
