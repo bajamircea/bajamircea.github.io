@@ -50,7 +50,7 @@ to. Of particular interest for software, consider the large number of
 parameters involved in machine learning algorithms.
 
 In addition to that, for me part of the moral is that Freeman Dyson himself did
-really well in the encounter. **For him a quick conversion was eough to get an
+really well in the encounter. **For him a quick conversation was enough to get an
 important idea. He got a straight message, he listened to it, figured out what
 it means and acted on it ratioanaly, despite emotional difficulties.**
 
