@@ -6,6 +6,27 @@ categories: read book
 
 List of books I've read in 2020
 
+- 2020-12-13 John Brooks: Business Adventures - Twelve Classic Tales from the World of Wall Street
+: Lovely told business stories from the 60s. E.g. the story of the managers
+that always winked when telling employees to obey regulation. It's so
+interesting how some of them have the knack to repeat in history e.g. "The last
+great corner" was what happened when dealers shorting Volkswagen could not
+purchase the shares back and had to make a deal with Porsche which owned most
+shares. Also the fate of the pound from the last story.
+
+- 2020-10-14 Seth Gilbert & Nancy Lynch: Brewer’s Conjecture and the Feasibility of Consistent, Available, Partition-Tolerant Web Services
+: aka. the CAP theorem proof. Not impressed. Clearly the CAP conjecture is an
+important observation on the limits of distributed systems, but the paper does
+not do justice to the issue. The paper avoids clear explanations. On the
+surface it aims to be precise, but it's not. Sometimes it uses particular
+models, not clear how realistic they are. By he end of the paper there is still
+no clear definition for the core issues of consistency, availability, partition
+tolerance.
+
+- 2020-08-27: Christopher Olah: [Understanding LSTM Networks](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)
+: Also read the paper by Ashish Vaswani et al: Attention Is All You Need. Good
+intro to recurrent neural networks.
+
 - 2020-06-22 M. G. Kains: Five Acres and Independence
 : Advice from 1935, during Great Depression, with advice for town people moving
 to the country to set up a farm. Very easy read.
