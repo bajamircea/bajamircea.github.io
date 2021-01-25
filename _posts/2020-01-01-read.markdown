@@ -6,6 +6,17 @@ categories: read book
 
 List of books I've read in 2020
 
+- 2020-12-28 Hermann Weyl: Mathematics and Logic - A brief survey serving as preface to a review of The Philosophy of Bertrand Russell 1946
+: Good summary of the state of the foundations of maths in 1946
+
+- 2020-12-19 Charles Duhigg: The power of Habit - Why we do what we do and how to change
+: OKish book, journalist style, interesting stories, but not very deep. Also
+the religious references were a bit off-putting and intellectually
+questionable.
+
+- 2020-12-15 J. K. Rowling: Harry Potter and the Philosopher's Stone
+: Oh well, a quick read. Very colourful.
+
 - 2020-12-13 John Brooks: Business Adventures - Twelve Classic Tales from the World of Wall Street
 : Lovely told business stories from the 60s. E.g. the story of the managers
 that always winked when telling employees to obey regulation. It's so

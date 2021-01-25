@@ -1,0 +1,14 @@
+---
+layout: post
+title: 'Books Read in 2021'
+categories: read book
+---
+
+List of books I've read in 2021
+
+- 2021-01-16 J. K. Rowling: Harry Potter and the Prisoner of Azkaban
+: It has a very happy ending.
+
+- 2021-01-01 J. K. Rowling: Harry Potter and the Chamber of Secrets
+: Oh well, a quick read.
+
