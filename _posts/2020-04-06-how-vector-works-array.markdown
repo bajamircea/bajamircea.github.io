@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'How vector works - array'
+title: 'How vector works - array and positions'
 categories: coding cpp
 ---
 
@@ -11,7 +11,8 @@ What we need to know about C arrays so that we get the C++ vector.
 
 In the "How vector works" series of blogs I'm going to cover how I look at the
 `std::vector`, the default container in C++. The first article in the series
-looks at arrays, the data structure that the vector competes with.
+looks at arrays, the data structure that the vector competes with and look at
+positions in an array and how they generalise to iterators and ranges.
 
 
 # Array
@@ -49,10 +50,12 @@ We also need to know how long the sequence is. For that we either need to:
 I'm going to focus on the option of using two pointers for the range of values
 in an array: `begin` and `end`.
 
+`std::begin(some_array)` and `std::end(some_array)` can be used to obtain the
+`begin` and `end` pointers for some C array.
+
 Despite the name, `end` does not point to the last element in the array,
 instead it is advanced one position after the last element in the array,
 hence the position is referred to **one past the last**.
-
 
 Rules of the language going as far as `C` allow us to use a pointer like `end`,
 as long as we don't dereference it. The `end` must not be dereferenced, it does
@@ -65,7 +68,7 @@ This mechanism allows us to represent empty arrays where `begin` is equal to
 The mechanism to traverse the array involves a loop similar to the one below:
 
 {% highlight c++ linenos %}
-for (auto it = begin; it != end ; ++it)
+for (auto it = std::begin(some_array); it != std:end(some_array) ; ++it)
 {
   // process value obtained by dereferencing `*it`
 }
@@ -127,7 +130,7 @@ The mechanism to traverse the array using a pointer and size involves a loop
 similar to the one below:
 
 {% highlight c++ linenos %}
-for (size_t i = 0; i != size ; ++i)
+for (size_t i = 0; i != std::size(some_array) ; ++i)
 {
   // process value obtained by dereferencing `*(begin + i)`
 }
@@ -141,6 +144,9 @@ The pointer and size approach is useful for divide (in half) and conquer (e.g.
 `partition_point`, `lower_bound` etc.), because the half is easily obtained by
 dividing the size.
 
+`std::begin(some_array)` and `std::size(some_array)` can be used to obtain the
+`begin` pointer and the number of elements for some C array.
+
 
 # Pointer and sentinel
 
@@ -150,24 +156,27 @@ zero terminator being the sentinel.
 The mechanism to traverse the array involves a loop similar to the one below:
 
 {% highlight c++ linenos %}
-for (auto it = begin; *it != 0 ; ++it)
+for (auto it = std::begin(some_array); *it != 0 ; ++it)
 {
   // process value obtained by dereferencing `*it`
 }
 {% endhighlight %}
 
+Obviously care needs to be taken to ensure that the sentinel exist and will be
+met before going past the array size.
 
-# Generalize to ranges
+
+# Generalize to iterators and ranges
 
 The three options above (two pointers, pointer and size, pointer and sentinel)
 can be used to define additional ranges, not just the range of the whole array.
 
-The range can be expressed either using postions.
+The range can be expressed using two postions.
 
-If so, for a range in general `first` and `last` are used, as opposed to
-`begin` and `end` which refer to the whole range of a array. All the issues
-about `end` apply to `last` e.g., despite it's name, `last` does not point to
-the last element in the range, but **one past last**.
+If so, by convention, `first` and `last` are used for the positions defining
+the range, as opposed to `begin` and `end` which refer to the whole range of a
+array. All the issues about `end` apply to `last` e.g., despite it's name,
+`last` does not point to the last element in the range, but **one past last**.
 
 Or the range can be wrapped into a range object, with member(s) for the
 position(s) involved.
@@ -193,11 +202,45 @@ algorithms it might be needed to:
   they return a position
 
 
-# Notes
+# Const and reverse iterators
 
-`std::begin(some_array)` and `std::end(some_array)` (and their `const`
-counterparts `std::cbegin` and `std::cend`) can be used to obtain the `begin`
-and `end` pointers for some C array.
+Iterators that allow getting a value, but not changing it are called **const
+iterators**.
+
+For a const array `std::begin(some_array)` and `std::end(some_array)` are
+overloaded to return const iterators. For cases where the array is not const
+use `std::cbegin(some_array)` and `std::cend(some_array)` to explicitly
+retrieve `const` iterators.
+
+To traverse an array in the reverse order you can use reverse iterators.
+
+To obtain the range of an array as reverse iterator you can use
+`std::rbegin(some_array)` and `std::rend(some_array)` (and their `const`
+counterparts `std::crbegin(some_array)` and `std::crend(some_array)`).
+
+Incrementing a reverse operator actually goes a position backwards rather than
+forwards.
+
+{% highlight c++ linenos %}
+for (auto it = std::rbegin(some_array); it != std::rend(some_array) ; ++it)
+{
+  // process value obtained by dereferencing `*it`
+  // the array is traversed in reverse order
+}
+{% endhighlight %}
+
+
+Note that for an array the reverse iterators point one past the element that
+they will access. The hardware view of positions is more useful in this case.
+
+E.g. `std::rbegin(some_array)` has and underlying pointer to one past the last
+element in the array like `std::end(some_array)` just like
+`std::end(some_array)`, but, when `std::rbegin(some_array)` is dereferenced,
+will decrement the pointer and access the last element in the array, unlike
+`std::end(some_array)` which should not be dereferenced.
+
+
+# Notes
 
 Beware of idioms using more elements than required. E.g. functions that require
 an array, an offset AND a length as arguments in order to pass a array range

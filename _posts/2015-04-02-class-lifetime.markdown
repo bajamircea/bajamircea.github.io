@@ -263,3 +263,7 @@ pretty much the same number of code lines (fewer lines of code in fact).
 ## Summary
 
 Understand and take advantage of the initialization sequence for C++ classes.
+
+NOTE: When using **virtual inheritance** like in `struct Derived: virtual
+Base`, things are a bit more complicated, but that's a whole separate topic on
+a C++ language feature that's not often used.

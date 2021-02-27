@@ -6,6 +6,28 @@ categories: read book
 
 List of books I've read in 2021
 
+- 2021-02-21 Matt Parker: Humble Pi
+: Easy math errors read. The interesting part was about non-transitive odds on
+coin sequences.
+
+- 2021-02-14 Apostolos Doxiadis and Christos H. Papadimitriou: Logicomix
+: Cartoon on Bertrand Russel's contribution to mathematical logic. Easy read,
+sometimes inaccurate. The best part was the notebook at the end. The best idea
+is that logic with invalid premises is dangerous.
+
+- 2021-02-13 J. K. Rowling: Harry Potter and the Deathly Hallows
+: It's all explained
+
+- 2021-02-10 J. K. Rowling: Harry Potter and the Half-Blood Prince
+: Snape dispatches Dumbledore
+
+- 2021-02-06 J. K. Rowling: Harry Potter and the Order of the Phoenix
+: DA
+
+- 2021-01-16 J. K. Rowling: Harry Potter and the Goblet of Fire
+: But why did Barty Crouch, impersonating Mad-Eye Moody, teach Harry how to
+handle the Imperius curse?
+
 - 2021-01-16 J. K. Rowling: Harry Potter and the Prisoner of Azkaban
 : It has a very happy ending.
 
