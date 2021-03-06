@@ -26,24 +26,29 @@ constantly.
 
 Alex configures the build system for A to take the last build of B.
 
-This has the **advantage** that it creates a happy path for getting (good) changes
-from B:
+![Latest good](/assets/2021-02-27-fixed-latest/01-latest-good.png)
 
-1. Bob changes B
-1. Bob rebuilds B
-1. Alex rebuilds A
-1. Now component A has all new functionality/fixes in B
-1. Alex and Bob are happy, job done
+This has the **advantage** that it creates a happy path for getting (presumably
+good) changes from B:
+
+- Bob changes B
+- Bob rebuilds B
+- Alex rebuilds A
+
+Now component A has all new functionality/fixes in B. Alex and Bob are happy,
+job done.
 
 However there is the unhappy path:
 
-1. Alex changes A
-1. Alex rebuilds A
-1. The build of A fails
-1. Alex is confused, he did not expect the build to fail
-1. Alex investigates
-1. It turns out that Bob did a change in B at some point before step 2, and
-   that change breaks the build of A
+- Alex changes A
+- Alex rebuilds A
+- The build of A fails
+- Alex is confused, he did not expect the build to fail
+- Alex investigates
+- It turns out that Bob did a change in B, that latest change in B was
+  automatically picked and it breaks the build of A
+
+![Latest bad](/assets/2021-02-27-fixed-latest/02-latest-bad.png)
 
 How much this **disadvantage** is a problem depends on:
 
@@ -65,6 +70,8 @@ without realising (or caring for) the impact of Bob's change.
 Alex configures the build system for A to take a specific/fixed build of B that
 is first tested and known to be good.
 
+![Fixed good](/assets/2021-02-27-fixed-latest/03-fixed-good.png)
+
 The **advantage** is that Alex has control over when new version of B are
 taken. So when Alex takes a new version of B which breaks the build of A, he
 knows that the cause has to do with changes in the new version of B.
@@ -72,7 +79,8 @@ knows that the cause has to do with changes in the new version of B.
 The **disadvantages** of this approach are that:
 
 - Propagating changes from B to A requires the additional step to change A to
-  refer to the newer build of B
+  refer to the newer build of B. The effort required depends on the specifics
+  of the build system used
 - It creates a maintenance activity to periodically take new versions of B
 - When taking a new version of B breaks the build of A there could have done
   many changes to B causing the issue: that will take time investigating
@@ -90,4 +98,5 @@ binaries produced by a third party or part of the operating system.
 
 Third: **sometimes the problem can be avoided** e.g. if the components are
 consolidated in the same source control repository, or for small projects where
-Alex and Bob are really a single person.
+Alex and Bob are really a single person, there also options regarding how often
+a fixed version is taken.
