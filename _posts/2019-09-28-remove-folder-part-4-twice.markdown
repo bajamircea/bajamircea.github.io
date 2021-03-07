@@ -90,5 +90,29 @@ behind the snow plough).
 The same issue can happen with other applications, it's not limited to the
 search indexer.
 
+
+# OS alternatives
+
+The issue with errors on empty folder is caused by the Windows OS behaviour
+which reference counts access to a file and defers deletion until the reference
+count reaches zero, including removing the file from the folder contents.
+
+Alternatively the file could be removed from the folder contents as soon as the
+delete API is called, while still deferring the other deletion activities to
+the time when the count reaches zero. This could still create surprises like
+the fact that removing files does not increase the available space on disk,
+which might be a problem in cases of almost full disk spaces.
+
+My understanding is that this is the approach that Linux takes. Windows might
+take eventually this approach as well, at least to enhance support for Linux
+applications/emulation.
+
+
+# Conclusion
+
+If there is something to learn from this series of articles is that removing
+files is more complicated than expected.
+
+
 [so]: https://stackoverflow.com/questions/22948189/batch-getting-the-directory-is-not-empty-on-rmdir-command
 
