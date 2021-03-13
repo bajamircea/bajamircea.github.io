@@ -55,6 +55,13 @@ Here is a vector `x` of 20 `int`s.
 std::vector<int> x(20);
 {% endhighlight %}
 
+This is one of the cases where you usually don't want to use the braces
+initializer:
+{% highlight c++ linenos %}
+std::vector<int> x(20); // creates a vector of 20 ints, all have value 0
+std::vector<int> y{20}; // creates a vector of 1 int, the value of which is 20
+{% endhighlight %}
+
 The destructor will destroy the array (and the used elements in the array).
 
 Copy makes a copy of the values from the right side into the array owned by the

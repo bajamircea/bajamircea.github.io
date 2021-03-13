@@ -1,0 +1,86 @@
+---
+layout: post
+title: 'Is there any bug?'
+categories: coding cpp
+---
+
+In this code, is there any bug?
+
+# Disclaimer
+
+DO NOT USE THE CODE BELOW BECAUSE HAS ISSUES. IT IS SIMPLY AN EXERCISE FOR
+FINDING BUGS.
+
+
+# The fair-weather sales pitch
+
+The function below creates a matcher, a functor that checks if a character `x`
+matches any of the `match_chars`:
+
+{% highlight c++ linenos %}
+std::function<bool(char)> is_any(const std::string& match_chars) {
+  return [&](char x){ return chars.find(c) != chars.npos; }
+}
+{% endhighlight %}
+
+It is used for example in a tokeniser. The code below will split the input at
+dot characters, returning separate tokens:
+
+{% highlight c++ linenos %}
+std::vector<string> tokens = tokenize(input, is_any("."s));
+{% endhighlight %}
+
+It works!
+
+
+# Unnecessary allocations
+
+The first issue is the unnecessary allocations. To tokenize an input, one could
+expect allocations for the result of the`tokenize` function, but no additional
+allocation. The issue is caused by the interface of `is_any`:
+- the return type `std::function` provides partial type erasure, but at the
+  cost of allocating memory to store the underlying callable object (the
+  closure of the lambda in this case)
+- the argument type `std::string` (even if `const` reference) will require an
+  allocation even for the common case where the `match_chars` are `const`
+  literals. In this example this was done explicitly by `"."s` which allocates
+  a `std::string`
+
+For some rarely used code the allocation will not make much difference. But for
+code that might be used several times, like a tokenizer, you should consider
+removing unnecessary allocations.
+
+
+# Dangling reference
+
+The lambda in `is_any` captures `match_chars` by reference, and returns the
+closure, an object that stores the reference and uses it later when called.
+This can lead to using a reference to an object that was destroyed (a dangling
+reference) and is bad practice.
+
+In the particular example above, it might work, though I'm not a language
+lawyer to give you a guarantee. The C++ standard says that:
+
+> Temporary objects are destroyed as the last step in evaluating the
+> full-expression that (lexically) contains the point where they were created.
+
+Plainly put: the temporary returned by `"."s` gets destroyed after the
+assignment to the `tokens` completes.
+
+This is the trick that is used by idiomatic usages of `string_view`.
+
+But other usages will be incorrect:
+{% highlight c++ linenos %}
+auto matcher = is_any("."s);
+std::vector<string> tokens = tokenize(input, matcher);
+{% endhighlight %}
+
+That's because:
+- a temporary string is allocated by `"."s`
+- a reference to that string is stored in the matcher
+- the temporary string is destroyed
+- the (dangling) reference is then used inside `tokenize` later
+
+So the issue here is that while the original code (probably) did not have a
+bug currently, it's unnecessarily risky, a latent bug waiting to happen.
+
