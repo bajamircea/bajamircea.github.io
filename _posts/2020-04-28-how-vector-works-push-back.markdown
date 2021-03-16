@@ -121,15 +121,18 @@ got for 2x up to size of 1024 was got: 38%.
 
 {% highlight python linenos %}
 import math
-excess = []
-capacity = 1
-for i in range(1, 1024):
+for growth, limit in [(1.5, 1065), (2, 1024)]:
+  excess = []
+  capacity = 1
+  for i in range(1, limit):
     if i > capacity:
-        capacity *= 2
+      capacity = math.ceil(capacity * growth)
     excess.append(float((capacity - i)/i))
-average = math.fsum(excess) / len(excess)
-print(average)
-# prints 0.3816378943614083
+  average = math.fsum(excess) / len(excess)
+  print("For growth", growth, "average excess is", average)
+# prints:
+# For growth 1.5 average excess is 0.213291015131578
+# For growth 2 average excess is 0.3816378943614083
 {% endhighlight %}
 
 We can use calculus to at least establish an upper bound in the range `a` to `b * a`:
@@ -153,11 +156,14 @@ It turns out that the value does not depend on `a`, therefore it's an upper
 bound for the whole range. So we get upper bounds of 38.6% or 21.6% (for 2x or 1.5x)
 respectively.
 
+Therefore different growth strategies are a compromise between resizing less
+often, leading to less operations per `push_back`, and having less
+excess/unused space in average.
+
 
 # References
 
-
 Ville Voutilainen et al. [N4055: Ruminations on (node-based) containers and
-noexcept][N4055] -2014-07-02
+noexcept][N4055] - 2014-07-02
 
 [N4055]: https://isocpp.org/files/papers/N4055.html

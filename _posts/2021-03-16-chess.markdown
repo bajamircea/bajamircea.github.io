@@ -1,0 +1,74 @@
+---
+layout: post
+title: 'Chess notes'
+categories: chess concepts
+---
+
+Things I wish I knew when I was a child about the game of chess.
+
+Recently I took on playing chess a bit. I used to play chess as a kid and
+that’s useful as I know some basics, but as a grown up I find myself
+approaching it differently, noticing things I wish I knew as a child.
+
+**There are not so many squares.** Sure, there's 64 of them, but (with reference to
+the starting position):
+- there is a white king on `e1`
+- and a pawn in front of it on `e2`
+- the pawn can move to `e3` or `e4`
+- and then the same for black king and pawn
+- and then the same for queens
+
+and we've covered a quarter of the board.
+
+
+The same applies to moves: given a position, **there are not that many good
+moves**. Especially at the beginning, most pieces can't event move, apart from
+pawns and knights, and not all the moves are good, hence the study of openings.
+
+
+Moves fall into three categories:
+- preserve balance
+- tiny change of balance
+- decisive blow
+
+the last one usually happens either because the opponent did a mistake, or
+after a **chain of tiny changes of balance**.
+
+
+Some positions have multiple choices that are relatively balanced, but
+sometimes the there is a single next good move.
+
+
+Learning **openings** can be done in two different ways:
+- go through each case encyclopedically (the know it all version)
+- or know little (focus on the core ideas an principles)
+
+or more likely something in between, but without having an idea of openings you
+start on a back foot.
+
+
+That's because **in a given position one player usually has initiative/tempo**,
+further restricting the choices of the other player. E.g. if the white starts
+with `e4`, for black out of the not so many moves possible at the start, also
+`Nf6` is not such a good idea, white can start chasing it with the pawn on
+`e5`, leading to a tiny change of balance favouring white.
+
+
+**Computer plays silly outside the main scenario** of doing the best move:
+- When the computer is restricted to play as a lower rating, it sometimes
+  randomly choose a "not the best" move. To the computer algorithm, all the bad
+  ideas are equally bad, but a human of a certain level will not play certain
+  bad ideas.
+- In particular if I tried to play end-games e.g. my king vs computer's king a
+  pawn, the computer might not put a fight because it looks at the position, it
+  assesses that it's a draw if played well, therefore it happily just looses
+  the pawn to get to the draw, instead of trying to put a fight.
+- When I played bad moves, the computer assumed a lower rating, adjusted for it
+  lowering it's rating, but when I sprung back, it did not adjust up
+  accordingly.
+- I also saw online a case where the human player was doing nonsense,
+  non-aggressive moves, the computer then reciprocated instead of continuing
+  the attack.
+- At endish games, some computer moves are weird, especially when playing
+  computer vs. computer, it plays such that some advantage is only visible many
+  moves later.
