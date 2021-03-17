@@ -31,7 +31,7 @@ incremented. This case has obvious `O(1)` time complexity.
 If there is no space, the capacity has to be increased before the value is
 copied/moved:
 1. a larger array needs to be allocated
-1. the existing values copied across
+1. the existing values copied/moved across
 1. the previous smaller array is deleted
 1. then and the `begin`, `end` and `capacity` pointers adjusted accordingly.
 
@@ -47,8 +47,8 @@ repeatedly (i.e. if you keep on adding values with `push_back`), then cost is
 still a fixed number of operations per `push_back`.
 
 The way it achieves that is by resizing when growing not with a fixed
-increment, but with a proportional one. Typically vectors grow 1.5x or 2x their
-current size.
+increment, but with a proportional one. Typically vectors grow 1.5x (e.g.
+Microsoft) or 2x (e.g. g++) of their current size.
 
 
 # Vector vs. list
@@ -70,8 +70,8 @@ If you choose a list the cost per `push_back` is:
 For the vector choice let's look at the operations costs for a vector growth
 strategy of 2x, for the worst case, when the vector just had to be resized to
 insert the `N`th element:
-- We just copied `N-1` elements. We copied half previously, and a quarter
-  before etc. The total cost of all these copies is `2*N - 3`. That's about 2
+- We just copied/moved `N-1` elements. We did the same previously for half, a
+  quarter etc. The total cost of all these copies is `2*N - 3`. That's about 2
   copy/moves per `push_back`
 - `log(N-1) + 1` array allocations (and pointer adjustments)
 - A copy/move of the value into the array
@@ -121,17 +121,20 @@ got for 2x up to size of 1024 was got: 38%.
 
 {% highlight python linenos %}
 import math
-for growth, limit in [(1.5, 1065), (2, 1024)]:
+for growth, limit in [(1.5, 1066), (2, 1024)]:
   excess = []
   capacity = 1
   for i in range(1, limit):
     if i > capacity:
-      capacity = math.ceil(capacity * growth)
+        if capacity == 1:
+            capacity += 1
+        else:
+            capacity = math.floor(capacity * growth)
     excess.append(float((capacity - i)/i))
   average = math.fsum(excess) / len(excess)
   print("For growth", growth, "average excess is", average)
 # prints:
-# For growth 1.5 average excess is 0.213291015131578
+# For growth 1.5 average excess is 0.21201090170295975
 # For growth 2 average excess is 0.3816378943614083
 {% endhighlight %}
 
