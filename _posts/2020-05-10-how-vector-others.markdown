@@ -54,7 +54,14 @@ time the default allocator needs to store/know the allocated size. Use that
 instead of duplicating the capacity as a member variable for the vector.
 - customize handling of value types that could throw on move
 : As per the previous article
+- how empty is a "moved from" vector
+: The source of move, does it get just the `begin` set to `nullptr` or more of
+the vector member values are set? In particular the `std::vector` guarantees
+that `empty` returns `true` for a "moved from" vector. If that is implemented
+by checking `begin() == end()`, then for a "moved from" vector also the `end`
+pointer has to be set to `nullptr`, not just `begin`.
 - build your own `deque`
 : The default implementation of `std::deque` uses chunks. This leads to
 particular allocation/deallocation behaviours. You could customize the size of
 the chunks, or just use a circular buffer, without chunks.
+

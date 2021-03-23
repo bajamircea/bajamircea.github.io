@@ -32,6 +32,7 @@ private:
 
 ## 1.2 RAII class
 
+
 ### 1.2.1 Classic RAII class
 
 A [classic RAII class][classic-raii]  wraps a private resource handle, it's not movable or
@@ -73,6 +74,7 @@ void classic_raii::some_method() {
 }
 {% endhighlight %}
 
+
 ### 1.2.2 Slim RAII class
 
 [Slim RAII classes][slim-raii] is a thinner wrapper of a resource, allowing a
@@ -95,6 +97,7 @@ struct slim_raii :
 };
 {% endhighlight %}
 
+
 ### 1.2.3 Fat RAII class
 
 As your classic RAII class gets more usage and matures, you might [end up
@@ -103,9 +106,17 @@ objects (e.g.  see `make_shared`), allow some access to the private member
 variable(s).
 
 
+### 1.2.4 Fit RAII class
+
+For an industrial approach to wrapping C API handles, usable in a wide range of
+scenarios, using a template, similar to `std::unique_ptr`, but allowing direct
+access to the underlying handle see [the fit RAII approach][fit-raii].
+
+
 ## 1.3 Data struct
 
 These focus on the data part of the class.
+
 
 ### 1.3.1 Grouping struct
 
@@ -141,6 +152,7 @@ struct some_struct
 
 These focus on what the class does, rather than on the data.
 
+
 ### 1.4.1 Processing class
 
 A processing class is not as much focused on the data it holds, as it is on
@@ -162,6 +174,7 @@ private:
   connection & cnx_;
 };
 {% endhighlight %}
+
 
 ### 1.4.2 Function object
 
@@ -223,6 +236,7 @@ private:
 
 # 2 Interface hiding
 
+
 ## 2.1 Interface
 
 A interface class defines a table of functions (vtable) to implement by a
@@ -268,6 +282,7 @@ public:
   }
 };
 {% endhighlight %}
+
 
 ## 2.2 Base class with virtual methods
 
@@ -355,12 +370,15 @@ void some_class::some_fn()
   ...
 {% endhighlight %}
 
+
 # 3 Modern creatures
+
 
 ## 3.1 Behaviour base class
 
 These are base classes with no data (not even a virtual destructor/table) e.g.
 `boost::noncopyable`.
+
 
 ## 3.2 Compile time value calculator
 
@@ -390,6 +408,7 @@ struct factorial<0> :
 
 
 ## 3.3 Traits
+
 
 ### 3.3.1 Plain trait
 
@@ -428,11 +447,13 @@ Path combine(const Path & base, const Path & last) {
 }
 {% endhighlight %}
 
+
 ### 3.3.2 Type trait
 
 Is a trait reduced to a boolean that says if a type has a certain
 characteristic. See the `is_...` functions in the standard `<type_traits>`
 header.
+
 
 ### 3.3.3 Tag
 
@@ -477,6 +498,7 @@ cleans after some resource. `std::thread` terminates the process if it's
 `joinable` (i.e. if the thead did not finish by the time we hit the
 destructor). It makes sense when you go into the details.
 
+
 ## 3.5 Curiously recurring template classes
 
 This involves a derived class and a template base class, that allows the base
@@ -495,6 +517,7 @@ class derived :
 };
 {% endhighlight %}
 
+
 # 4 Ceci n'est pas une pipe
 
 Well, not everything has to be a class. Think the STL algorithms, think
@@ -504,4 +527,5 @@ fundamental types.
 [classic-raii]:    {% post_url 2015-03-17-classic-raii %}
 [slim-raii]:       {% post_url 2015-03-22-slim-raii %}
 [fat-raii]:        {% post_url 2015-03-23-fat-raii %}
+[fit-raii]:        {% post_url 2018-02-28-fit-raii %}
 [class-lifetime]:  {% post_url 2015-04-02-class-lifetime %}
