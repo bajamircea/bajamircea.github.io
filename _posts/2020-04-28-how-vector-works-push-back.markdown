@@ -28,12 +28,14 @@ values indicates there is space.
 If there is space the value can be copied/moved, and the `end` pointer
 incremented. This case has obvious `O(1)` time complexity.
 
-If there is no space, the capacity has to be increased before the value is
-copied/moved:
+If there is no space in the existing array:
 1. a larger array needs to be allocated
+1. the new value is constructed at the correct position in the larger array
+(this is done at this point in case it references existing values)
 1. the existing values copied/moved across
+1. the old values are destroyed
 1. the previous smaller array is deleted
-1. then and the `begin`, `end` and `capacity` pointers adjusted accordingly.
+1. the `begin`, `end` and `capacity` pointers adjusted accordingly.
 
 ![Vector](/assets/2020-04-28-how-vector-works-push-back/01-resize.png)
 
@@ -55,7 +57,7 @@ Microsoft) or 2x (e.g. g++) of their current size.
 
 What container type should you choose for the code below?
 {% highlight c++ linenos %}
-for (size_t i = 0 ; i < N ; ++i) {
+for (size_t i = 0; i < N; ++i) {
   container.push_back(value);
 }
 {% endhighlight %}

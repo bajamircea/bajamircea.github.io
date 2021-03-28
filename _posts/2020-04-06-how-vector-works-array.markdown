@@ -68,7 +68,7 @@ This mechanism allows us to represent empty arrays where `begin` is equal to
 The mechanism to traverse the array involves a loop similar to the one below:
 
 {% highlight c++ linenos %}
-for (auto it = std::begin(some_array); it != std:end(some_array) ; ++it)
+for (auto it = std::begin(some_array); it != std::end(some_array); ++it)
 {
   // process value obtained by dereferencing `*it`
 }
@@ -130,7 +130,7 @@ The mechanism to traverse the array using a pointer and size involves a loop
 similar to the one below:
 
 {% highlight c++ linenos %}
-for (size_t i = 0; i != std::size(some_array) ; ++i)
+for (size_t i = 0; i != std::size(some_array); ++i)
 {
   // process value obtained by dereferencing `*(begin + i)`
 }
