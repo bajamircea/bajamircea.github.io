@@ -1,10 +1,8 @@
 ---
 layout: post
-title: 'How vector works - exception safety'
+title: 'Exception safety'
 categories: coding cpp
 ---
-
-C++ exception safety recap, especially for vector
 
 Exception safety refers to what are the reasonable expectation regarding how a
 function deals with exceptions.
@@ -15,7 +13,7 @@ function deals with exceptions.
 The basic guarantee is that no resources are leaked if a function throws an
 exception and there there is some recovery action that the program can take to
 continue. Basically this boils down to objects involved ending up at least in
-such a state that the destructor will clean up resources.
+such a state that the destructors will clean up resources.
 
 For example the `std::vector::insert` might need to resize the underlying array
 and copy/move existing values, but should an exception be thrown by a copy/move
@@ -26,12 +24,14 @@ appropriate values and the underlying array and there will be no memory leaks.
 
 # No-throw guarantee
 
-The no-throw guarantee is that a function guarantees that it does not throw.
+The no-throw guarantee is that a function guarantees that it does not throw. It
+is possible to design entire classes that will not throw, e.g. see the also
+[the fit RAII pattern][fit-raii].
 
 This raises the question: why would an exception be thrown in the first place?
 The answer is: to handle errors that are expected to be rare.
 
-Certainly when doing low level operations assigning builtin types like `int`,
+Certainly when doing low level operations assigning built-in types like `int`,
 `char`, pointers, arrays of those, that can be done without exceptions. Also
 it's refreshing to see that for simple microcontroller systems, accessing
 devices like configuring the serial port involves writing some values at a
@@ -82,8 +82,8 @@ the underlying thread still running), so strictly speaking it will not throw
 exceptions (but might terminate for incorrect usage).
 
 For some applications it might be acceptable to terminate on memory
-allocation errors, though that usually comes with the expectation that a level
-of resilience/recovery exists elsewhere, outside the current process.
+allocation errors, though that approach usually comes with the expectation that
+a level of resilience/recovery exists elsewhere, outside the current process.
 
 The vector destructor does not throw, and it expects that the same is true for
 value type.
@@ -93,19 +93,12 @@ will not assume they are `noexcept` implicitly, but a good practice is to
 ensure they are and mark the them `noexcept` explicitly.
 
 The vector move constructor and assignment do not throw, they just take shuffle
-pointer values around.
+pointer values around (except for the move assignment when certain non-default
+allocators are involved, again this is another topic).
 
 However some implementations of standard containers e.g. Microsoft's
-`std::list` can throw on move constructors, for reasons that have to do with a
-combination of:
-- they use a dynamically allocated sentinel: this helps ensure that iterators
-  don't get invalidated in a variety of scenarios
-- do not have a "moved from" state that is different from an empty container:
-  this is a dubious decision, but mandated by the standard
-- the way the move semantics is implemented in C++: the move constructor does
-  not know if/how the "moved from" object will be used
-
-This combination comes with consequences (see `push_back` below)
+`std::list` can throw on move constructors. This comes with consequences as
+we'll see in the next article.
 
 
 # The strong guarantee
@@ -125,63 +118,57 @@ This is the intent behind the vector `push_back`:
   is no-throw moveable or copyable (even if copy can throw), otherwise it
   provides just the basic guarantee (the vector can be destroyed).
 
-Currently a vector of container with dynamically allocated sentinel, e.g.
-Microsoft's`std::vector<std::list<int>>`, copies the values on a `push_back` resize,
-in order to maintain the strong guarantees, in face of the
-Microsoft's`std::list` not having a `noexcept` move constructor.
-
-**TODO: work in progress**
 
 # Variations
 
 Guarantees can vary. A component might give stronger guarantees if additional
-requirements are met. For example `push_back` is not marked `noexcept`, but if
-there is spare capacity, and the new value can be moved/copied without
-throwing, then `push_back` will not throw.
+requirements are met. We've just seen the example above.
 
-- Exception neutrality: in generic code, the expectation that when a generic
-  function is used, exceptions thrown by types provided (e.g. as template
-  parameters) are propagated unchanged to the caller
-- also FIT RAII: does not throw/care about exceptions
+Also, as another example, `push_back` is not marked `noexcept`, but if there is
+spare capacity, and the new value can be moved/copied without throwing, then
+`push_back` will not throw.
+
+In generic code, the expectation that when a generic function is used,
+exceptions thrown by types provided (e.g. as template parameters) are
+propagated unchanged to the caller: exception neutrality.
+
+All this means that the three rules above are general guidance on the options
+available, in the end there are often many options available when going down to
+details.
+
 
 # Historical notes
 
-If you dig into the history of the issue, you might encounter an article by 
+The current view on exception safety [was defined by the likes of David
+Abrahams][exsafe] in the context of incorporating generic components from the
+STL library in the standard C++ library. Then questions were raised about the
+contract when exceptions are thrown given that the user of a generic component
+can customize it with their own types.
 
-[originally defined by the likes of David Abrahams][exsafe]
-in the context of generic components, because the user of a generic component
-can customize it with their own types raising the question of what's the
-contract when exceptions are thrown.
+In particular [a famous article by Tom Cargill][stack] illustrates the
+confusion at the time when templates and exception were novelty. He
+investigates exceptions when `pop`ing values from a generic stack, but he runs
+into problems due to a unfortunate combination of requirements and stack
+interface. That was addressed in the standard stack by having separate methods
+to get a reference to the last element (`top`) and removing it (`pop`), neither
+which needs to throw.
 
-stack
-Exception Handling: A False Sense of Security by Tom Cargill
-https://ptgmedia.pearsoncmg.com/images/020163371x/supplements/Exception_Handling_Article.html
 
-how sorted for stack
+# Observation
 
-some of the complexity comes from error handling complexity
+In the end, the complexity around exception is all the result of the complexity
+comes from handling errors. Much simpler code can be written when not caring
+about errors.
 
 # References
 
 David Abrahams: [Exception-Safety in Generic Components][exsafe]
 
-Ville Voutilainen et al. [N4055: Ruminations on (node-based) containers and
-noexcept][N4055] - 2014-07-02
+Bjarne Stroustrup: [Exception Safety: Concepts and Techniques][except]
 
+Tom Cargill: [Exception Handling: A False Sense of Security][stack]
 
-NOTE: I used Microsoft vs g++ compilers as a oversimplification. More
-precisely, the behaviour depends on the standard library implementation, not on
-the compiler. For a survey of container `noexcept` behaviour see:
-
-Howard E. Hinnant: [Container Survey][containers] - 2015-06-27
-
-
-Exception Handling: A False Sense of Security by Tom Cargill
-https://ptgmedia.pearsoncmg.com/images/020163371x/supplements/Exception_Handling_Article.html
-
-
-https://www.stroustrup.com/except.pdf
-
-[containers]: http://howardhinnant.github.io/container_summary.html
-[N4055]: https://isocpp.org/files/papers/N4055.html
 [exsafe]: https://www.boost.org/community/exception_safety.html
+[except]: https://www.stroustrup.com/except.pdf
+[stack]: https://ptgmedia.pearsoncmg.com/images/020163371x/supplements/Exception_Handling_Article.html
+[fit-raii]:        {% post_url 2018-02-28-fit-raii %}
