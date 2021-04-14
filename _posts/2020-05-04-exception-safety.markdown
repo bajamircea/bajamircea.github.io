@@ -15,11 +15,16 @@ exception and there there is some recovery action that the program can take to
 continue. Basically this boils down to objects involved ending up at least in
 such a state that the destructors will clean up resources.
 
-For example the `std::vector::insert` might need to resize the underlying array
-and copy/move existing values, but should an exception be thrown by a copy/move
-then the state of the vector is not fully determined from the caller's point of
-view. The caller can destroy the vector, and that in turn will destroy the
+For example the `std::vector::insert` needs to copy/move values after the
+insertion point and should an exception be thrown by the value type then the
+state of the vector is not fully determined from the caller's point of view.
+The caller can destroy the vector, and that in turn will destroy the
 appropriate values and the underlying array and there will be no memory leaks.
+
+A similar situation is with the vector assignment operator. If the destination
+size is smaller or equal to the source size, then elements can be copied.
+Should an exception be thrown by the copy of the value type, then only basic
+guarantee is provided.
 
 
 # No-throw guarantee
@@ -75,7 +80,8 @@ and assignment could throw.
 For the large majority of cases, destructors don't throw. Usually functions
 that guarantee to not throw are marked `noexcept`, but destructors are assumed
 to be `noexcept` by default. Destructors that throw are a bad idea, maybe with
-the exception of at-scope-exit classes, which is a separate topic.
+the exception of at-scope-exit classes (which is a separate topic), and would
+not play well with standard containers.
 
 In particular the `std::thread` design terminates in face of errors (such as
 the underlying thread still running), so strictly speaking it will not throw
@@ -130,7 +136,8 @@ spare capacity, and the new value can be moved/copied without throwing, then
 
 In generic code, the expectation that when a generic function is used,
 exceptions thrown by types provided (e.g. as template parameters) are
-propagated unchanged to the caller: exception neutrality.
+propagated unchanged to the caller: exception neutrality/exception
+transparency.
 
 All this means that the three rules above are general guidance on the options
 available, in the end there are often many options available when going down to
