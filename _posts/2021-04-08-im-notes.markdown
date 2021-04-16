@@ -1,0 +1,106 @@
+---
+layout: post
+title: "IM reading notes"
+categories: review book
+---
+
+Reading notes for Stephen Cole Kleene: Introduction to Metamathematics (Ishi
+Press: 2009 reprint)
+
+# Motivation
+
+Why did I choose this book
+- undestand Goedel's incompleteness theorem
+  - because of it's ramnifications on the limits of a formal system
+  - and potential implications on: is there a single best way to program?
+- undestand core mathematical concepts such as consistency, completeness,
+  recursion
+- and implication on decision e.g.
+  - it might be theoretically impossible, but practically it's not an issue: if
+    we can't decide in the available time, we'll change the solution
+
+
+# Suitability of propositional calculus
+
+On the interpretation of the propositional calculus (p138), he shows that it,
+the propositional calculus, is a suitable logical instrument when the
+propositions are (or we make the assumption that they are) definitely either
+true or false.
+
+For the deduction below:
+
+1. It is rainy (first assumption)
+2. If it is rainy then I'll carry an umbrella (second assumption)
+3. I'll carry an umbrella (By applying rule 2 on propositions 1 and 2)
+
+The issue is that with for example the first proposition, there will be cases
+where it definitely is rainy (and also cases when it definitely is not rainy),
+but there are also ambiguous cases. How do we establish if it's raining? How
+long are we going to wait to determine if it's raining? In practice we accept
+that there will be situations where it actually did rain, but was not protected
+by an umbrella. And the fault rests with applying the propositional calculus
+where it was not a perfect match.
+
+
+# The meaning of natural numbers
+
+The book starts with a beautiful observation (p1) about us humans finding
+something in common between four sheep and four trees that is different to a
+pile of three stones or a grove of seven trees. In that context he refers to
+cardinal number (i.e. number representing the size of a set). But it also opens
+the door for an understanding of what natural numbers are.
+
+I hold the view that numbers are human inventions, they don't exist in some
+metaphysical absolute space for us to discover. Human not in the absolute sense
+that other species could not contemplate the idea of number, on the contrary,
+our nervous system is similar to other species, we might have taken the idea of
+number to another level, but I would not be surprised if other species would be
+able to react to one, two, many. It comes from the nervous system making
+correlations, finding similarities in order to make predictions. In practice
+when doing maths it's quite useful to assume and talk about numbers as if they
+exist.
+
+But like in the propositional calculus discussion above, the numbers are likely
+suitable for cases where we can identify clearly distinct entities, and not so
+directly applicable when that's not the case. Some of Zeno's paradoxes really
+expose the unsuitability of representing distance of something that can be
+divided exactly forever, in practice we arrive at atomic levels where due to
+particles and uncertainty that is not the case, the human scale experience of
+continuous space/real numbers/euclidian geometry is incorrect at a certain
+physical low level.
+
+
+# Adding new axioms impacts subsidiary deductions rules
+
+A direct deduction rule remains correct when a system is extended by adding new
+axioms (p94). That's because a direct deduction rule only states that certain
+deduction can be constructed and new axioms only change the situation by
+providing additional means of constructing the same deduction.
+
+But for for a rule that employs a subsidiary deduction, such as the deduction
+theorem, adding new axioms can create cases of subsidiary deductions and raise
+the question if they can be matched in the resulting deduction (p95).
+
+That's why the deduction theorem is proved for propositional logic, but when
+the system is extended to predicate logic the proof needs to be revisited.
+
+
+# Decision
+
+The ideas for decision problems are not so unusual. For example the determinant
+of a matrix is so called because it determines if a set of linear equations has
+a unique solution. Calculating the determinant answers the question without
+providing the solution of the set of equations.
+
+
+# Difficult points
+
+- M ~ N1 in N p10 : M has the same cardinality of N1 which is a subset of N
+- intuitionism, naming: it's not about intuition in general, specific
+  constructive ideas can be identified
+- lack of explaining of resolutions of the paradoxes
+- the induction on the deduction theorem proof (re-using B)
+- a lot to go through the formal system without interpretation and or
+  explanation/motivation for the choice of axioms
+- a lot of fine points "free for", "dependence", "variance" etc. for the
+  predicate logic, difficult to get without interpretation
