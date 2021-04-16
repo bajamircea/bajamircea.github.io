@@ -19,6 +19,12 @@ Why did I choose this book
   - it might be theoretically impossible, but practically it's not an issue: if
     we can't decide in the available time, we'll change the solution
 
+I really like the style of this book: it's a classic style similar to "Elements
+of Programming" where things are told clearly (albeit the subject is difficult,
+clearly does not make it trivially easy) and it seems sound, details are
+analysed precisely (e.g. under which circumstances we can elide parentheses and
+why, with proof).
+
 
 # Suitability of propositional calculus
 
