@@ -27,5 +27,5 @@
   <circle cx="350" cy="160" r="20" stroke-width="4" stroke="#8f4300" fill="#8ea604"/>
   <circle cx="450" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#c2b102"/>
   <text class="svg20210417-01-t1" x="450" y="20" fill="#2f332b">develop</text>
-  <text class="svg20210417-01-t1" x="350" y="120" fill="#2f332b">feature A</text>
+  <text class="svg20210417-01-t1" x="350" y="120" fill="#2f332b">feature a</text>
 </svg>

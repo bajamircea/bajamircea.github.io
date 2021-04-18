@@ -28,5 +28,5 @@
   <circle cx="300" cy="300" r="20" stroke-width="4" stroke="#2f332b" fill="#c2b102"/>
   <circle cx="400" cy="300" r="20" stroke-width="4" stroke="#2f332b" fill="#dcb601"/>
   <text class="svg20210417-01-t1" x="200" y="50" fill="#2f332b">master</text>
-  <text class="svg20210417-01-t1" x="300" y="50" fill="#8f4300">INDEX</text>
+  <text class="svg20210417-01-t1" x="300" y="50" fill="#8f4300">staging</text>
 </svg>

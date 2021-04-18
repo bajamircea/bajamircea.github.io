@@ -149,7 +149,7 @@ lines = [
 ]
 comments = [
   { x: 200, y: 50, text: "master"},
-  { x: 300, y: 50, text: "INDEX", fill: $unstable_line},
+  { x: 300, y: 50, text: "staging", fill: $unstable_line},
 ]
 
 create_image(0, "00-sample.svg", 600, 400, timelines, commits, lines, comments, false)
@@ -175,7 +175,7 @@ lines = [
 comments = [
   { x: 350, y: 20, text: "origin"},
   { x: 450, y: 20, text: "master"},
-  { x: 550, y: 106, text: "INDEX"},
+  { x: 550, y: 106, text: "staging"},
 ]
 create_image(1, "01-linear.svg", 600, 170, timelines, commits, lines, comments, false)
 
@@ -201,7 +201,7 @@ lines = [
 ]
 comments = [
   { x: 450, y: 20, text: "develop"},
-  { x: 350, y: 120, text: "feature A"},
+  { x: 350, y: 120, text: "feature a"},
 ]
 create_image(2, "02-feature.svg", 600, 200, timelines, commits, lines, comments, false)
 
@@ -230,7 +230,7 @@ lines = [
 ]
 comments = [
   { x: 550, y: 20, text: "develop"},
-  { x: 450, y: 120, text: "feature A"},
+  { x: 450, y: 120, text: "feature b"},
 ]
 create_image(4, "04-merge-down.svg", 600, 200, timelines, commits, lines, comments, false)
 
@@ -255,7 +255,7 @@ lines = [
 ]
 comments = [
   { x: 300, y: 20, text: "develop"},
-  { x: 450, y: 120, text: "feature A"},
+  { x: 450, y: 120, text: "feature c"},
 ]
 create_image(5, "05-rebase.svg", 600, 200, timelines, commits, lines, comments, false)
 
@@ -281,6 +281,6 @@ lines = [
 ]
 comments = [
   { x: 450, y: 20, text: "develop"},
-  { x: 350, y: 120, text: "release v7"},
+  { x: 350, y: 120, text: "release x"},
 ]
 create_image(6, "06-release-branch.svg", 600, 200, timelines, commits, lines, comments, false)
