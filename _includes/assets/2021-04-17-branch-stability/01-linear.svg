@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20210417-01-1" width="100%" viewBox="0 0 600 170">
+  <style>
+      #svg20210417-01-1 {
+        border: 1px solid #e8e8e8;
+        background-color: #f5f5f5;
+      }
+      .svg20210417-01-t1 {
+        font-family: sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        text-anchor: middle;
+        dominant-baseline: middle;
+      }
+  </style>
+  <path stroke="none" fill="#ffffff" d="M 0 32 L 522 32 L 550 60 L 522 88 L 0 88 Z"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 70 60 L 130 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 170 60 L 230 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 270 60 L 330 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 370 60 L 430 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 470 60 L 480 60 Q 500 60 500 80 L 500 120 Q 500 140 520 140 L 530 140"/>
+  <circle cx="50" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="150" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="250" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="350" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="450" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="550" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#dcb601"/>
+  <text class="svg20210417-01-t1" x="350" y="20" fill="#2f332b">origin</text>
+  <text class="svg20210417-01-t1" x="450" y="20" fill="#2f332b">master</text>
+  <text class="svg20210417-01-t1" x="550" y="106" fill="#2f332b">INDEX</text>
+</svg>
