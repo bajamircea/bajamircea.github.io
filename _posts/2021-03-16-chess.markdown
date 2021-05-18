@@ -6,6 +6,8 @@ categories: chess concepts
 
 Things I wish I knew when I was a child about the game of chess.
 
+> "Hard work is a talent" Garry Kasparov
+
 Recently I took on playing chess a bit. I used to play chess as a kid and
 that’s useful as I know some basics, but as a grown up I find myself
 approaching it differently, noticing things I wish I knew as a child.
@@ -34,6 +36,7 @@ Moves fall into three categories:
 the last one usually happens either because the opponent did a mistake, or
 after a **chain of tiny changes of balance**.
 
+The chain of tiny changes of balance is achieved by having a plan.
 
 Some positions have multiple choices that are relatively balanced, but
 sometimes the there is a single next good move.
@@ -72,3 +75,8 @@ with `e4`, for black out of the not so many moves possible at the start, also
 - At endish games, some computer moves are weird, especially when playing
   computer vs. computer, it plays such that some advantage is only visible many
   moves later.
+
+
+**There is a lot of history in chess**. It's so humbling to see how top players
+played computer moves two centuries ago.
+

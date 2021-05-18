@@ -65,6 +65,8 @@ Therefore this results in one or more of the following trade-offs:
 - `push` anyway, accept that the `develop` is not stable, handle/accept the
   impact on developer productivity
 - Accept scalability issues, lower rate of commits to the stable line
+- The scalability is also impacted by the "race to push": the attempt to push a
+  merge before someone else pushes theirs
 - Reduce the amount/duration of tests
 - Use a skilled, dedicated merger (e.g. Linus Torvalds for the Linux kernel) or
   automate merging after testing

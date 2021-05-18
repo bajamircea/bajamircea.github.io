@@ -56,7 +56,7 @@ The naming of the main value categories is illustrated using Venn diagrams below
 
 ![Value categories Venn diagrams](/assets/2016-04-07-move-forward/value-categories.png)
 
-- If if has identity, but cannot be moved it's an `lvalue`; otherwise it's an
+- If it has identity, but cannot be moved it's an `lvalue`; otherwise it's an
   `rvalue`. A typical `lvalue` is a variable name `a`.
 - If it can be moved, but has no identity is a `prvalue` (pure right value);
   otherwise it's a `glvalue` (generalized left value). A typical `prvalue` is a
