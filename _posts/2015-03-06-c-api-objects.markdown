@@ -91,7 +91,7 @@ constructor failed.
 
 {% highlight c++ linenos %}
 FILE * f = fopen(...);
-if (0 == f)
+if (0 == f) // or better compare against nullptr
 {
   // handle error
 }
