@@ -122,7 +122,7 @@ axioms.
 The first group, A1, are Hilbert-style postulates for propositional calculus.
 
 It uses a variety of logical operations. In fact:
-- 1a and 1b relate to implication $$\to$$$ rules
+- 1a and 1b relate to implication $$\to$$ rules
 - 3, 4a and 4b relate to conjunction $$\&$$
 - 5a, 5b and 6 relate to disjunction $$\lor$$
 - 7 and $$8^\circ$$ relate to negation $$\lnot$$
@@ -130,6 +130,45 @@ It uses a variety of logical operations. In fact:
 One could use less of the logical operators, e.g. a single NAND symbol, but that
 would make a verbose set of axioms even more low level without gaining much for
 the scope of the book.
+
+Of the logic operators, the truth table for the implication is not intuitive:
+
+<table style="width:50%">
+<tr>
+  <th>$$A$$</th>
+  <th>$$B$$</th>
+  <th>$$A \to B$$</th>
+</tr>
+<tr>
+  <td>False</td>
+  <td>False</td>
+  <td>True</td>
+</tr>
+<tr>
+  <td>False</td>
+  <td>True</td>
+  <td>True</td>
+</tr>
+<tr>
+  <td>True</td>
+  <td>False</td>
+  <td>False</td>
+</tr>
+<tr>
+  <td>True</td>
+  <td>True</td>
+  <td>True</td>
+</tr>
+</table>
+
+In particular for when $$A$$ is False, for statements like "if 1 + 1 = 0 then
+Paris is the capital of France", it's not clear intuitively that they should be
+True.
+
+But when looking at statements like "for all $$x$$ if $$x$$ is a positive odd
+number, then $$x^2$$ is a positive odd number", then:
+- providing a x that is not a positive odd number (a false statement) cannot be used to refute.
+- the only refutation by example is to provide a positive odd number for which the square is not a positive odd.
 
 There is only one rule of inference, 2. This is called modus ponens, the
 history of which goes back to antiquity.
@@ -315,9 +354,9 @@ intuitionism is not about intuition.
 
 When we looked at the deduction theorem it turns out that induction rules in
 particular cause issues with it's proof, but other the other postulates it's
-easy to check that they do not. If the natural deduction rules are taken as a
+easy to check that they do not. **If the natural deduction rules are taken as a
 basis, as some logic course do, this issue of the impact of adding more rules
-is not as clear.
+is not as clear.**
 
 
 # Predicate calculus
