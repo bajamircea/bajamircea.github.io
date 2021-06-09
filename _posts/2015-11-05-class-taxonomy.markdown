@@ -518,6 +518,17 @@ class derived :
 {% endhighlight %}
 
 
+## 3.6 Scope guard
+
+This are classes that [call functionality on scope exit][scope-guard], usually
+with facilities to do so either when exceptions are thrown, or when exceptions
+are not thrown, or all the time. This cleanup is implemented in destructors,
+but unlike RAII, scope guard classes can throw from their destructors (using
+`noexcept(false)` and using `std::uncaught_exceptions()` to ensure they don't
+throw during stack unwinding (i.e. if an exception is already in flight). They
+do not scale past the simplest examples.
+
+
 # 4 Ceci n'est pas une pipe
 
 Well, not everything has to be a class. Think the STL algorithms, think
@@ -529,3 +540,4 @@ fundamental types.
 [fat-raii]:        {% post_url 2015-03-23-fat-raii %}
 [fit-raii]:        {% post_url 2018-02-28-fit-raii %}
 [class-lifetime]:  {% post_url 2015-04-02-class-lifetime %}
+[scope-guard]:     {% post_url 2018-04-12-scope-guard %}
