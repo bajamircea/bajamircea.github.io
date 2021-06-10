@@ -111,6 +111,9 @@ warns:
 > because in the length one more intercolumniation than is necessary seems to
 > occur.
 
+![Vitruvius temple
+diagram](/assets/2020-04-06-how-vector-works-array/02-vitruvius.png)
+
 
 # Pointer and size
 
