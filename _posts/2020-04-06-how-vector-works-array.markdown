@@ -37,7 +37,7 @@ used, e.g. `begin`, which points to the memory location of the first value in
 the array.
 
 
-# Three option for sequence length
+# Three options for sequence length
 
 We also need to know how long the sequence is. For that we either need to:
 - use another pointer (in general two pointers can define a range)

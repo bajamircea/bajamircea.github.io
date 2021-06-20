@@ -6,6 +6,9 @@ categories: read book
 
 List of books I've read in 2021
 
+- 2021-05-30 C. Northcote Parkinson: In-laws and Outlaws
+: It would be funny advice if it would not be so sexist.
+
 - 2021-02-21 Matt Parker: Humble Pi
 : Easy math errors read. The interesting part was about non-transitive odds on
 coin sequences.
