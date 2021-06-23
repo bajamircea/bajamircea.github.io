@@ -34,14 +34,13 @@ The memory used by a vector is:
 
 In the diagram above there is space for 4 values, but only three are used.
 
-In the diagram above
-
 The vector is a template class. It takes as template parameters:
 - the type of the values in the array
 - an allocator (not used often)
 
 The type of the values in the array is exposed back by the vector as
 `value_type`.
+
 
 # Usage
 
