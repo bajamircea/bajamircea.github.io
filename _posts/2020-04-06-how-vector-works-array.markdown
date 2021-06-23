@@ -108,7 +108,7 @@ attention to the number of bits required for positions for a certain maximum
 number of elements.
 
 Ultimately it's problem not limited to arrays. For a fence of 50m, with fence
-panels of 10m, 6 posts are required, not 10. As old of 1st century BC,
+panels of 10m, 6 posts are required, not 5. As old of 1st century BC,
 Vitruvius in his *De Architectura* book III, chapter 4 advices that to build a
 temple of a length twice the front width, one should use twice the space
 between the columns (intercolumniation), not twice the columns. Or else he
