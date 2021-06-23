@@ -12,13 +12,6 @@ In the previous articles I used ambiguous expressions such as "move/copy" when
 referring to the transfer of existing values when resizing a vector. This
 article explains why.
 
-- dynamical sentinel
-  - why
-  - deque as well
-
-- allocators
-
-- in practice
 
 # Pre C++11
 
