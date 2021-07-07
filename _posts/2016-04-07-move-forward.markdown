@@ -278,16 +278,16 @@ Here is an example where `std::move` is used twice in an idiomatic way:
 {% highlight c++ linenos %}
 struct X
 {
+  std::string s_;
+
   X(){}
 
   X(const X & other) : s_{ other.s_ } {}
 
-  X(X && other) : s_{ std::move(other.s_) } {}
+  X(X && other) noexcept : s_{ std::move(other.s_) } {}
   // other is an lvalue, and other.s_ is an lvalue too
   // use std::move to force using the move constructor for s_
   // don't use other.s_ after std::move (other than to destruct)
-
-  std::string s_;
 };
 
 int main()
@@ -349,11 +349,14 @@ struct Y
 {
   Y(){}
   Y(const Y &){ std::cout << "Copy constructor\n"; }
-  Y(Y &&){ std::cout << "Move constructor\n"; }
+  Y(Y &&) noexcept { std::cout << "Move constructor\n"; }
 };
 
 struct X
 {
+  Y a_;
+  Y b_;
+
   template<typename A, typename B>
   X(A && a, B && b) :
     // retrieve the original value category from constructor call
@@ -362,9 +365,6 @@ struct X
     b_{ std::forward<B>(b) }
   {
   }
-
-  Y a_;
-  Y b_;
 };
 
 template<typename A, typename B>
