@@ -141,7 +141,7 @@ matters. In the example below, `fn` can be called with both an `lvalue` and an
 `rvalue` argument. This is pre-C++ 11 behaviour that is unchanged.
 
 {% highlight c++ linenos %}
-// parameter is const rvalue reference
+// parameter is const lvalue reference
 void fn(const X &) { std::cout<< "const X &\n"; }
 
 int main()
