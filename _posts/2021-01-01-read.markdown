@@ -6,6 +6,13 @@ categories: read book
 
 List of books I've read in 2021
 
+- 2021-07-11 Lucian Boia: Balcic - Micul paradis al României Mari
+: Interesting, though overly royalty centred history
+
+- 2021-07-09 Hannah Fry and Thomas Oléron Evans: The Indisputable Existence of Santa Claus
+: Intended to be light funny maths. Too light. Not recommended. It does mention
+Euclid though.
+
 - 2021-05-30 C. Northcote Parkinson: Parkinson's Law (or the pursuit of progress)
 : Finally I traced the story about bike-shedding.
 
