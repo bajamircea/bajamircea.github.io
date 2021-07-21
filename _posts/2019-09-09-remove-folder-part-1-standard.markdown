@@ -37,8 +37,8 @@ function returns `true`. If the file did not exist it returns `false`.
 The underlying OS APIs that delete an entry sometimes provide the information
 that the entry existed without the need for an additional OS API call to check
 existence. E.g. on Windows `DeleteFileW` sets the error to
-`ERROR_FILE_NOT_FOUND` if the file did not exist, which can be translated into
-a success, but returning `false` from `remove`.
+`ERROR_FILE_NOT_FOUND` or `ERROR_PATH_NOT_FOUND` if the file did not exist,
+which can be translated into a success, but returning `false` from `remove`.
 
 The second version receives the path and a reference to an error code. If the
 function fails, instead of throwing it sets the error code. The function is
