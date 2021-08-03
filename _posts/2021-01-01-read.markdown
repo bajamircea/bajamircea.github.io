@@ -6,6 +6,17 @@ categories: read book
 
 List of books I've read in 2021
 
+- 2021-08-03 Richard Dawkins: The Selfish Gene
+: The book that coined the term meme. Most of the book though is an accessible
+argument that evolution relies on selection at gene level (e.g. not at group
+level). Interesting examples of how complex behaviour (deception, altruism)
+could emerge: e.g. hawks and doves, but it's more like modelling rather than
+explaining. Likes argument for the argument's sake. The "selfish" part is at
+odds with the variations in nature. Anthropomorphism a bit over used. Also a
+bit obsessed with refuting religion (that's too easy of a target). I might
+sound critical about it, though actually it's a book that I would recommend
+reading.
+
 - 2021-07-21 Stephen M. R. Covey: The Speed of Trust
 : Full of fluff and overly verbose as if written by a "management consultant"
 paid by the hour, which probably is his career. In the first 100 pages there
