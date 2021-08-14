@@ -6,6 +6,14 @@ categories: read book
 
 List of books I've read in 2021
 
+- 2021-08-14 Marcus Aurelius: Meditations
+: Lovely insight into the stoic thinking. Roughly that word is made out of
+earth, water, air and fire, that somehow it has purpose, that gods exists, that
+we have soul and that our purpose is to do good and justice for the benefit of
+all. Ironically, though not Christian, you can see the roots of some Christian
+ideas. He had 14 children, of which half died early in childhood, a mark of the
+times where even a Roman emperor had to suffer that.
+
 - 2021-08-03 Richard Dawkins: The Selfish Gene
 : The book that coined the term meme. Most of the book though is an accessible
 argument that evolution relies on selection at gene level (e.g. not at group
