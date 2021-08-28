@@ -143,12 +143,14 @@ similar to the one below:
 for (size_t i = 0; i != std::size(some_array); ++i)
 {
   // process value obtained by dereferencing `*(begin + i)`
+  // or equivalently access `some_array[i]`
 }
 {% endhighlight %}
 
 The disadvantage is that two calculations are required for each iteration: one
 to increment `i`, and another to calculate the current pointer position
-`begin + i`.
+`begin + i`, though it's such a common pattern that the processor might help
+with it (e.g. by addressing modes in the instruction set).
 
 The pointer and size approach is useful for divide (in half) and conquer (e.g.
 `partition_point`, `lower_bound` etc.), because the half is easily obtained by

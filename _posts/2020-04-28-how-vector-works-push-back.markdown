@@ -86,7 +86,6 @@ So the difference comes mainly to comparing:
 For most value types, especially for commonly used ones like `int`,
 `std::string`, the vector wins, using a list is an anti-pattern.
 
-
 Another anti-pattern is to try to manage the resizes manually too aggressively,
 negating the advantages of the vector growth strategy:
 
@@ -101,6 +100,15 @@ void fn(std::vector<std::string> & c)
   }
 }
 {% endhighlight %}
+
+An additional reason why the vector is fast comes to the fact that it uses a
+memory contiguous layout. To start with, this results in an efficient usage of
+the memory where values are stored one after the other, compared with e.g. the
+list that requires memory for at least an additional pointer with every value.
+Also like for arrays, processors notice the access patterns so, e.g. for a
+linear traversal of the data, the processor will pre-fetch data from memory to
+the cache, compared with e.g. the list where the processor has to first fetch
+the next node before it has the address of the following value.
 
 
 # Excess space
