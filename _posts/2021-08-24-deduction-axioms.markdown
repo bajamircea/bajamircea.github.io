@@ -17,7 +17,7 @@ proofs.
 
 We start with a finite set of **symbols**.
 
-**Formulas** are specific sequences of symbols. The rules defining which
+**Formulas** are specific finite sequences of symbols. The rules defining which
 sequences of symbols are formulas are such that we can check that a string of
 symbols is a formula in a finite, efficient number of steps.
 
@@ -27,12 +27,13 @@ and what I call formula is called there a "well formed formula".
 A **deduction**, from a set of formulas called **assumptions**, is a sequence
 of formulas, where each formula in the sequence is justified either as being
 one of the assumptions or using a rule, called **postulate**, which can require
-previous formulas in the sequence.
+previous formulas in the sequence. The last formula in the sequence is the
+**deducted formula**.
 
 By "list of assumptions $$\vdash$$ formula", we state that there is a deduction
-from the list of assumptions, having the formula as the last one in the
-deduction sequence, without fully showing the specific deduction sequence. The
-$$\vdash$$ is a symbol outside the formal system set of symbols.
+from the list of assumptions on the left to the formula on the right, without
+fully showing the specific deduction sequence. Note that the $$\vdash$$ and comma are
+symbols outside the formal system set of symbols.
 
 A **proof** is a deduction with an empty set of assumptions. The last formula
 in the sequence of formulas for a proof is called a **theorem**.
@@ -127,7 +128,7 @@ we'll want to be possible to perform the checks mechanically, devoid of meaning.
   <td>$$(\lnot C \to \lnot B) \to ((\lnot C \to B) \to C)$$</td>
 </tr>
 <tr>
-  <td>Inference rule MP (modus ponens)</td>
+  <td>Rule of inference MP (modus ponens)</td>
   <td>$${A, A \to B \over B}$$</td>
 </tr>
 <tr>
@@ -142,7 +143,7 @@ we'll want to be possible to perform the checks mechanically, devoid of meaning.
   <td>$$(\forall x (B \to C)) \to (B \to \forall x C)$$</td>
 </tr>
 <tr>
-  <td>Inference rule Gen (generalisation)</td>
+  <td>Rule of inference Gen (generalisation)</td>
   <td>$$B \over \forall x B$$</td>
 </tr>
 <tr>
@@ -169,20 +170,24 @@ as a justification for a formula in a deduction, you just need to identify the
 axiom. An axiom is in effect a kind of additional assumption.
 
 Others are axiom schemas, e.g. A1. They define an infinite set of axioms. E.g.
-in $$A \to (B \to A)$$ you can replace $$A$$ and $$B$$ with any formula. To use
-it in a deduction, you need to identify the axiom schema and the formulas used
-as replacements.
+in $$A \to (B \to A)$$ you can replace $$A$$ and $$B$$ with any formula, each
+time you do so you instantiate a specific axiom that matches the axiom schema.
+To use it in a deduction, you need to identify the axiom schema and the
+formulas used as replacements.
 
-The third kind we used are inference rules, e.g. MP and Gen. They have the form
-of one or more premises (above the horizontal line) and a conclusion (under the
-horizontal line). To use the conclusion if an inference rule in a deduction,
-you need to identify the inference rule and the previous positions at which the
-premises occur, in the sequence of formulas of the deduction.
+The third kind we used are rules of inference, e.g. MP and Gen. They have the
+form of one or more premises (above the horizontal line) and a conclusion
+(under the horizontal line). To use the conclusion if a rule of inference in a
+deduction, you need to identify the rule of inference and the previous positions
+at which the premises occur, in the sequence of formulas of the deduction.
+
+One can think of axioms and axiom schemas of special cases of rules of
+inference with no premises.
 
 
 # Sample propositional calculus
 
-The first group of postulates (axiom schemas A1 to A3 and the inference rule
+The first group of postulates (axiom schemas A1 to A3 and the rule of inference
 MP) can be used separately to create a **formal system for propositional
 calculus**. This is the kind of formal system where formulas are linked by
 logical operators like $$\lnot$$ (logical not), $$\&$$ (and), $$\lor$$
@@ -194,7 +199,7 @@ one logical operator.
 # Sample predicate calculus
 
 We get a sample **formal system for predicate calculus** if we use the first
-two groups of postulates (axiom schemas A1 to A5 and the two inference rules MP
+two groups of postulates (axiom schemas A1 to A5 and the two rules of inference MP
 and Gem). Often such systems have two quantifiers: $$\exists$$ and $$\forall$$,
 ours has just one, like we've done for logical operators.
 
@@ -206,6 +211,6 @@ variables of values $$x$$ as opposed also predicates/properties.
 
 You need all the postulates above for a **number theory formal system**. In
 fact I've only shown one of the additional postulates required, but for our
-purpose it's sufficient to say that it contains no additional inference rules
-on top of the ones for predicate calculus.
+purpose it's sufficient to say that it contains no additional rules of
+inference on top of the ones for predicate calculus.
 

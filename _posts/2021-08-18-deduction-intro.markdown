@@ -35,11 +35,13 @@ with additional constraints for predicate calculus.
 Will cover:
 - [mathematical logic][deduction-logic]
 - [sample formal systems][deduction-axioms]
-- induction
+- [sample proof that][deduction-a-to-a] $$A \to A$$
+- [induction][deduction-induction]
 - deduction theorem for propositional calculus
 - free and bound variables
 - dependent
 - deduction theorem for predicate calculus
+- what does it mean?
 
 
 # References
@@ -53,5 +55,7 @@ Elliott Mendelson: Introduction to Mathematical Logic - sixth edition (CRC Press
 Euclid: The Thirteen Books of the Elements / Translated and commentary by Sir
 Thomas L. Heath / Vol.1 (Books I and II)
 
-[deduction-logic]:  {% post_url 2021-08-21-deduction-logic %}
-[deduction-axioms]:  {% post_url 2021-08-24-deduction-axioms %}
+[deduction-logic]:     {% post_url 2021-08-21-deduction-logic %}
+[deduction-axioms]:    {% post_url 2021-08-24-deduction-axioms %}
+[deduction-a-to-a]:      {% post_url 2021-08-28-deduction-a-to-a %}
+[deduction-induction]: {% post_url 2021-09-01-deduction-induction %}
