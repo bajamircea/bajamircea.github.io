@@ -188,7 +188,7 @@ $$
 \tag{2'} {A, \lnot A \lor B \over B}
 $$
 
-You could have a formal system without inference rules (rule 2 in this case).
+You could have a formal system without rules of inference (rule 2 in this case).
 However deduced formulas will only get longer.
 
 Instead of rule $$1b$$:
@@ -205,13 +205,34 @@ $$
 but they have the same meaning: if you have $$A \to B$$ and $$A \to (B \to C)$$
 then by rule 2 (modus ponens) you can deduce $$A \to C$$
 
-Rule 8 has a mark $$^\circ$$ to indicate further choices for formal systems. It
-is related to intuitionism. Kleene provides a sympathetic view to intuitionism
-and in IM he explores the consequences, e.g. formal systems without
-$$8^\circ$$. Intuitionism is a bad term because it sounds mystical and
+
+# Choices for postulate 8 on negation
+
+To start with, "$$8^\circ$$: $$\lnot \lnot A \to A$$" is the choice made by
+Kleene for this formal system (_the classical system_), presumably for
+similarities with the natural deduction rule for the discharge of double
+negation ("$$\lnot \lnot A \vdash A$$") as we'll see later.
+
+Another choice could have been "$$A \lor \lnot A$$" (named "the law of excluded
+middle" which is equivalent to $$8^\circ$$ (see p.120): either could have been
+chosen for his classical system.
+
+Postulate 8 has a mark $$^\circ$$ to indicate further choices for formal
+systems. It is related to intuitionism. Kleene provides a sympathetic view to
+intuitionism and in IM he explores the consequences of the inuitionistic
+choices. Intuitionism is a misleading term because it sounds mystical and
 illogical, it not about intuition in general, actually it turns out that
-specific claims can be identified such as the rejection of the discharged of
-the double negation.
+specific claims can be identified such as the rejection of the discharge of the
+double negation.
+
+Intuitionists accept the following rule "$$8^I$$: $$\lnot A \to (A \to B)$$.
+If in the classical system we replace rule $$8^\circ$$ with $$8^I$$ (while
+keeping the other rules) we obtain a different formal system: _the
+(corresponding) intuitionistic system_.
+
+Rule $$8^I$$ can be deduced in the classical system accepting $$8^\circ$$ (and
+it is named "the rule of weak $$\lnot$$-elimination"), but not the
+other way around (see p.101).
 
 
 # Deduction theorem
@@ -222,11 +243,13 @@ There are two symbols for which we used the word "imply":
 - $$\to$$ which is part of the formal system, is a symbol like $$\&$$ and
   $$\lor$$ for which eventually one can write a truth table, with the catch
   that `false` values for the left side result in `true` for the implication
-  formula
+  formula.
 - $$\vdash$$ is used in the meta discussion, means that there is a deduction
-  from the formulas on the left to the formulas on the right, with the very
-  different catch that when talking about a deduction one has to specify the
-  formal system (and therefore the allowable deduction rules)
+  from the formulas on the left to the formulas on the right, with the catch
+  that when talking about a deduction one has to specify the formal system (and
+  therefore the allowable deduction rules). This is sometimes done by using as
+  a subscript for $$\vdash$$ the name of the specific formal system that a
+  deduction refers to (e.g. for a formal system named $$K$$ use $$\vdash_K$$.
 
 The role of 1a, 1b and 2 is to prove the deduction theorem for the
 propositional calculus formal system.
@@ -265,25 +288,18 @@ induction rules do cause problems by adding more cases to proof of the
 deduction theorem.
 
 That explains why in group A1 above for the propositional calculus there is a
-single inference rule (rule 2).
+single rule of inference (rule 2).
 
 A deduction theorem for the predicate calculus (which also includes group A2),
-where there are to more inference rules, is possible, but it comes with some
+where there are to more rules of inference, is possible, but it comes with some
 additional restrictions.
 
 
 # Link to natural deduction
 
 The weird numbering scheme $$1a$$, $$1b$$ etc. was chosen to match the layout
-for the "natural deduction" rules (p98), shown below with numbering.
-
-- $$1$$ in the natural deduction is the deduction theorem, requiring postulates
-  $$1a$$, $$1b$$ and $$2$$ for it's proof
-- $$2$$ in the natural deduction is postulate $$2$$
-- $$3$$ in the natural deduction also requires postulate $$3$$
-- $$4$$ in the natural deduction also requires postulates $$4a$$ and $$4b$$
-- $$5$$ in the natural deduction also requires postulates $$5a$$ and $$5b$$
-- etc.
+for the "natural deduction" rules (p98), shown below with numbering. The
+explanation for this numbering scheme is alluded to in Lemma 11 p.106.
 
 <table>
 <tr>
@@ -349,6 +365,18 @@ for the "natural deduction" rules (p98), shown below with numbering.
 </tr>
 </table>
 
+- $$1$$ in the natural deduction is the deduction theorem, requiring postulates
+  $$1a$$, $$1b$$ and $$2$$ for it's proof
+- $$2$$ in the natural deduction is postulate $$2$$
+- $$3$$ in the natural deduction also requires postulate $$3$$
+- $$4$$ in the natural deduction also requires postulates $$4a$$ and $$4b$$
+- $$5$$ in the natural deduction also requires postulates $$5a$$ and $$5b$$
+- etc.
+
+though in general $$1a$$, $$1b$$ and $$2$$ are additionally used for most of
+the natural deduction rules.
+
+
 There is nothing natural about the natural deduction rules in the same way as
 intuitionism is not about intuition.
 
@@ -370,7 +398,7 @@ operators it would gone for a lower level outside the scope of the book.
 This is a first-order logic, which means that the quantifiers apply to
 variables of values $$x$$ as opposed also predicates/properties.
 
-It introduces two inference rules, $$9$$ and $$12$$, with consequences for the
+It introduces two rules of inference, $$9$$ and $$12$$, with consequences for the
 deduction theorem touched above.
 
 
