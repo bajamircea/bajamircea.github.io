@@ -9,8 +9,8 @@ The choice of postulates in Stephen Cole Kleene's Introduction to Metamathematic
 {% include mathjax.html %}
 
 The book introduces a list of postulates for a family of formal systems without
-a direct explanation on numbering scheme and the reasons behind that particular
-choice. These are my notes on the subject.
+a immediate explanation on numbering scheme and the reasons behind that
+particular choice. These are my notes on the subject.
 
 
 # Postulates
@@ -127,11 +127,14 @@ It uses a variety of logical operations. In fact:
 - 5a, 5b and 6 relate to disjunction $$\lor$$
 - 7 and $$8^\circ$$ relate to negation $$\lnot$$
 
-One could use less of the logical operators, e.g. a single NAND symbol, but that
-would make a verbose set of axioms even more low level without gaining much for
-the scope of the book.
+One could use less of the logical operators, even a single primitive operator
+symbol (p139). There are two such single primitive operator choices:
+alternative denial (NAND) or "joint denial" (NOR). The first observation is
+that using a single primitive operator, would make a verbose set of axioms even
+more low level. For another reason see intuitionism below.
 
-Of the logic operators, the truth table for the implication is not intuitive:
+Of the logic operators, the truth table for the (material) implication is not
+intuitive:
 
 <table style="width:50%">
 <tr>
@@ -181,6 +184,10 @@ It means that in a deduction if you have $$A$$, and you also have $$A \to B$$
 then you also have $$B$$. Later he introduces the notation $$A, A \to B \vdash
 B$$ for that.
 
+In the system described here there is a close linked between the material
+implication logical operator ($$\to$$) and yields ($$\vdash$$): sometimes the
+word _implication_ is used for either of them.
+
 I find it easier to grasp it's logic when the implication is phrased instead in
 terms of negation and logical OR.
 
@@ -205,34 +212,10 @@ $$
 but they have the same meaning: if you have $$A \to B$$ and $$A \to (B \to C)$$
 then by rule 2 (modus ponens) you can deduce $$A \to C$$
 
-
-# Choices for postulate 8 on negation
-
-To start with, "$$8^\circ$$: $$\lnot \lnot A \to A$$" is the choice made by
-Kleene for this formal system (_the classical system_), presumably for
-similarities with the natural deduction rule for the discharge of double
-negation ("$$\lnot \lnot A \vdash A$$") as we'll see later.
-
-Another choice could have been "$$A \lor \lnot A$$" (named "the law of excluded
-middle" which is equivalent to $$8^\circ$$ (see p.120): either could have been
-chosen for his classical system.
-
-Postulate 8 has a mark $$^\circ$$ to indicate further choices for formal
-systems. It is related to intuitionism. Kleene provides a sympathetic view to
-intuitionism and in IM he explores the consequences of the inuitionistic
-choices. Intuitionism is a misleading term because it sounds mystical and
-illogical, it not about intuition in general, actually it turns out that
-specific claims can be identified such as the rejection of the discharge of the
-double negation.
-
-Intuitionists accept the following rule "$$8^I$$: $$\lnot A \to (A \to B)$$.
-If in the classical system we replace rule $$8^\circ$$ with $$8^I$$ (while
-keeping the other rules) we obtain a different formal system: _the
-(corresponding) intuitionistic system_.
-
-Rule $$8^I$$ can be deduced in the classical system accepting $$8^\circ$$ (and
-it is named "the rule of weak $$\lnot$$-elimination"), but not the
-other way around (see p.101).
+Postulates $$5a$$ is the dual-converse of $$4a$$.  This is explained in the 2nd
+part of the Corollary Theorem 8 (p124): "If $$\vdash E \to F$$ then $$\vdash F'
+\to E'$$ (where $$E'$$ and $$F'$$ are obtained from $$E$$ and $$F$$ by
+interchanging $$\&$$ and $$\lor$$ throughout)". Same for $$5b$$ and $$4b$$.
 
 
 # Deduction theorem
@@ -294,12 +277,23 @@ A deduction theorem for the predicate calculus (which also includes group A2),
 where there are to more rules of inference, is possible, but it comes with some
 additional restrictions.
 
+There is choice for a postulate system that uses a substitution rule instead of
+the axiom schemas used in Kleene's system. He claims that a consequence of
+using the substitution rule as a postulate is that even for the propositional
+calculus the deduction theorem comes with restrictions similar to the ones for
+the deduction theorem for the predicate calculus (p140).
+
 
 # Link to natural deduction
 
+The name "natural deduction" is misleading: there is nothing natural about it.
+It's just that decomposing the formal system to low level postulates makes
+proofs quite long, the natural deduction rules are higher level and generally
+allow for shorter proofs.
+
 The weird numbering scheme $$1a$$, $$1b$$ etc. was chosen to match the layout
 for the "natural deduction" rules (p98), shown below with numbering. The
-explanation for this numbering scheme is alluded to in Lemma 11 p.106.
+explanation for this numbering scheme is alluded to in Lemma 11 (p106).
 
 <table>
 <tr>
@@ -376,15 +370,64 @@ explanation for this numbering scheme is alluded to in Lemma 11 p.106.
 though in general $$1a$$, $$1b$$ and $$2$$ are additionally used for most of
 the natural deduction rules.
 
-
-There is nothing natural about the natural deduction rules in the same way as
-intuitionism is not about intuition.
-
 When we looked at the deduction theorem it turns out that induction rules in
 particular cause issues with it's proof, but other the other postulates it's
 easy to check that they do not. **If the natural deduction rules are taken as a
 basis, as some logic course do, this issue of the impact of adding more rules
 is not as clear.**
+
+
+# Choices for postulate 8 on negation and intuitionism
+
+To start with, "$$8^\circ$$: $$\lnot \lnot A \to A$$" is the choice made by
+Kleene for this formal system (_the classical system_), presumably for
+similarities with the natural deduction rule for the discharge of double
+negation ("$$\lnot \lnot A \vdash A$$").
+
+Another choice could have been "$$A \lor \lnot A$$" (named "the law of excluded
+middle" which is equivalent to $$8^\circ$$ (see p120): either could have been
+chosen for his classical system.
+
+Postulate 8 has a mark $$^\circ$$ to indicate further choices for formal
+systems. It is related to intuitionism.
+
+Kleene provides a sympathetic view to intuitionism and in IM he explores the
+consequences of the inuitionistic choices. Intuitionism is a misleading term
+because it sounds mystical and illogical, it not about intuition in general,
+actually it turns out that specific claims can be identified such as the
+rejection of the discharge of the double negation.
+
+Intuitionists reject the rule $$8^\circ$$, but accept the following rule
+"$$8^I$$: $$\lnot A \to (A \to B)$$.  If in the classical system we replace
+rule $$8^\circ$$ with $$8^I$$ (while keeping the other rules) we obtain a
+different formal system: _the (corresponding) intuitionistic system_.
+
+Rule $$8^I$$ can be deduced in the classical system accepting $$8^\circ$$, but
+not the other way around (see p101).
+
+When using rule $$8^I$$ in the intuitionistic system, the equivalent natural
+deduction rule is "$$A, \lnot A \vdash B$$" called "the rule of weak
+$$\lnot$$-elimination", which reads: any formula is deducible from a
+contradiction. The rule of weak $$\lnot$$-elimination can be proven in the
+classical system as well.
+
+The importance of the weak $$\lnot$$-elimination in formal systems is as
+follows.
+
+A formal systems having a negation symbol, e.g. $$\lnot$$, is said to be
+_(simply) consistent)_ if for no formula both $$A$$ and $$\lnot A$$ are
+provable in the system; and to be _(simply) inconsistent_ if for some formula
+both $$\vdash A$$ and $$\vdash \lnot A$$.
+
+For formal systems that have $$\&$$-elimination and weak $$\lnot$$-elimination
+(either as postulates or as derived rules) this is equivalent to _(simply)
+consistent_ if there is some unprovable formula; _(simply) inconsistent_ if
+every formula is provable (see p124-125).
+
+Another choice linked to intuitionism is the number of logical operators in
+propositional calculus (e.g. many or two or a single primitive one as discussed
+above). It turns out that it the intuitionist propositional calculus none of
+the four operators can be expressed in terms of the remaining ones (p141).
 
 
 # Predicate calculus

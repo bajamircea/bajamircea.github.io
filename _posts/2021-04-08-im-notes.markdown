@@ -23,7 +23,10 @@ I really like the style of this book: it's a classic style similar to "Elements
 of Programming" where things are told clearly (albeit the subject is difficult,
 clearly does not make it trivially easy) and it seems sound, details are
 analysed precisely (e.g. under which circumstances we can elide parentheses and
-why, with proof).
+why, with proof). Even for things that I found difficult at a first reading, on
+a third reading I found that actually the text contained the information
+required, though maybe not emphasised enough (maybe due to the constraint of
+keeping the length of the book relatively short).
 
 
 # Suitability of propositional calculus
@@ -101,12 +104,19 @@ providing the solution of the set of equations.
 
 # Difficult points
 
-- M ~ N1 in N p10 : M has the same cardinality of N1 which is a subset of N
+- notation for M ~ N1 in N p10 means "M has the same cardinality of N1 which is
+  a subset of N", but that's not explained
 - intuitionism, naming: it's not about intuition in general, specific
   constructive ideas can be identified
 - lack of explaining of resolutions of the paradoxes
-- the induction on the deduction theorem proof (re-using B)
+- the proof by induction for the deduction theorem made harder by re-using B
+  and by using A and A(x) for the predicate calculus version (where A and A(x)
+  are totally different formulas)
 - a lot to go through the formal system without interpretation and or
-  explanation/motivation for the choice of axioms
+  explanation/motivation for the choice of axioms; some explanations can be
+  found later, but are spread out and not emphasised enough/difficult to find
 - a lot of fine points "free for", "dependence", "variance" etc. for the
-  predicate logic, difficult to get without interpretation
+  predicate logic, difficult to get without interpretation. Important note
+  about dependence is considered "it is easily seen" on p95 without expanding
+  that it means that if the deducted formula does not depend on an assumption,
+  the assumption can be discarded

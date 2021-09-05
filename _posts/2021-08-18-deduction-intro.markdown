@@ -18,7 +18,10 @@ $$A$$ (i.e. the premises include $$A$$), then there is a (different) proof of
 "$$A \to B$$" ($$A$$ implies $$B$$) from the same set of premises $$\Gamma$$
 without $$A$$.
 
-Very informally a deduction theorem states that "implies implies implies".
+Very informally a deduction theorem states that "implies implies implies". This
+is a pun to the fact that the material implication logical operator $$\to$$ is
+closely related to the deduction yields ($$\vdash$$), either of them is called
+implication (usually when it's clear from context which one is meant).
 
 The reason for being a general name is that words like "there is a proof",
 represented by the symbol $$\vdash$$, are relative to a formal system e.g.

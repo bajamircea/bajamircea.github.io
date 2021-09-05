@@ -38,8 +38,8 @@ years).
 First there was the discovery of non-euclidean geometries starting in about the
 17th century. One can have a geometry without the axiom above; in one such
 geometry, elliptic geometry, the sum of angles in a triangle is more than 180
-degrees. So the axioms lost the meaning of absolute truth, they are mere
-assumptions for a certain mathematical theory.
+degrees. So Euclid's axioms lost the meaning of absolute truth, they are mere
+assumptions that single out a certain kind of geometrical space.
 
 Another event was the discovery of paradoxes that questioned the strength of
 informal proofs.
