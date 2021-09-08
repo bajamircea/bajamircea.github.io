@@ -255,7 +255,7 @@ applicability of the `Regular` concept**:
 std::string g = bar();
 std::string_view h = g; // take a copy
 assert(h == g); // copy is same as original
-f[0] = 'z'; // change original
+g[0] = 'z'; // change original
 assert(h == g); // not Regular behaviour, but expected for references
 {% endhighlight %}
 
