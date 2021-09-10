@@ -395,12 +395,14 @@ Kleene provides a sympathetic view to intuitionism and in IM he explores the
 consequences of the inuitionistic choices. Intuitionism is a misleading term
 because it sounds mystical and illogical, it not about intuition in general,
 actually it turns out that specific claims can be identified such as the
-rejection of the discharge of the double negation.
+rejection of the negation rules above (e.g. due to objections to extending
+rules that apply to finite sets to infinite ones).
 
 Intuitionists reject the rule $$8^\circ$$, but accept the following rule
-"$$8^I$$: $$\lnot A \to (A \to B)$$.  If in the classical system we replace
-rule $$8^\circ$$ with $$8^I$$ (while keeping the other rules) we obtain a
-different formal system: _the (corresponding) intuitionistic system_.
+"$$8^I$$: $$\lnot A \to (A \to B)$$ ("from falsehood, anything follows"). If in
+the classical system we replace rule $$8^\circ$$ with $$8^I$$ (while keeping
+the other rules) we obtain a different formal system: _the (corresponding)
+intuitionistic system_.
 
 Rule $$8^I$$ can be deduced in the classical system accepting $$8^\circ$$, but
 not the other way around (see p101).
@@ -423,6 +425,9 @@ For formal systems that have $$\&$$-elimination and weak $$\lnot$$-elimination
 (either as postulates or as derived rules) this is equivalent to _(simply)
 consistent_ if there is some unprovable formula; _(simply) inconsistent_ if
 every formula is provable (see p124-125).
+
+Intuitionists accept however the axiom schema $$7: (A \to B) \to ((A \to \lnot
+B) \to \lnot A)$$" ("the law of contradiction").
 
 Another choice linked to intuitionism is the number of logical operators in
 propositional calculus (e.g. many or two or a single primitive one as discussed
@@ -462,3 +467,6 @@ The postulates in group A3 follow a Peano style. The tick sign is the successor
 Stephen Cole Kleene: Introduction to Metamathematics (Ishi Press: 2009 reprint)
 
 Thanks to Alex Kruckman for [answer on StackExchange](https://math.stackexchange.com/q/3974222)
+
+Stanford Encyclopedia of Philosophy: [Intuitionistic
+Logic](https://plato.stanford.edu/entries/logic-intuitionistic/)
