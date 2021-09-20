@@ -25,6 +25,9 @@ $$B$$ being "$$A \to A$$"
 4. $$A \to (A \to A)$$ : by axiom schema A1 with $$A$$ and $$B$$ being $$A$$
 5. $$A \to A$$ : by MP using 4 and 3 as premises
 
+So we say that we have shown that $$\vdash A \to A$$, that is there is a
+deduction that $$A \to A$$ without using any assumptions, only the postulates.
+
 Note that above we have a proof schema where we can take any formula for A
 (similar to axiom schemas). Taking $$0 = 0$$ as $$A$$ we can use the proof
 schema above to prove $$(0 = 0) \to (0 = 0)$$. Taking $$\lnot(0 = 0)$$ as $$A$$
