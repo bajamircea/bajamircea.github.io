@@ -159,8 +159,8 @@ we'll want to be possible to perform the checks mechanically, devoid of meaning.
 </table>
 
 Notes:
-- A4 requires: $$t$$ must be a term that is free for $$x$$ in $$B$$
-- A5 requires: $$B$$ contains no free occurrences of $$x$$ in $$C$$
+- A4 requires: $$t$$ must be [a term that is free for][deduction-free] $$x$$ in $$B(x)$$
+- A5 requires: $$B$$ does not contain free occurrences of $$x$$
 
 
 # Kinds of postulates
@@ -214,3 +214,5 @@ fact I've only shown one of the additional postulates required, but for our
 purpose it's sufficient to say that it contains no additional rules of
 inference on top of the ones for predicate calculus.
 
+
+[deduction-free]:          {% post_url 2021-09-21-deduction-free %}
