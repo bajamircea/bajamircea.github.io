@@ -21,6 +21,9 @@ predicate calculus).
 
 <table>
 <tr>
+  <th colspan="4">Postulates</th>
+</tr>
+<tr>
   <th colspan="4">Group A1. Postulates for the propositional calculus</th>
 </tr>
 <tr>
@@ -107,6 +110,10 @@ predicate calculus).
 </tr>
 </table>
 
+Restrictions:
+- for $$9$$ and $$12$$: $$C$$ does not contain $$x$$ [free][deduction-free]
+- for $$10$$ and $$11$$: $$t$$ [is a term free][deduction-free] for $$x$$ in $$A(x)$$
+
 The postulates give a list of axioms (a formula, e.g. $$a + 0 = a$$) or
 axiom schemas (formula rules, e.g. $$A \& B \to A$$) that can be used to build
 deductions. Deductions are sequences of formulas where each formula is either
@@ -129,7 +136,7 @@ It uses a variety of logical operations. In fact:
 
 One could use less of the logical operators, even a single primitive operator
 symbol (p139). There are two such single primitive operator choices:
-alternative denial (NAND) or "joint denial" (NOR). The first observation is
+alternative denial (NAND) or joint denial (NOR). The first observation is
 that using a single primitive operator, would make a verbose set of axioms even
 more low level. For another reason see intuitionism below.
 
@@ -164,13 +171,13 @@ intuitive:
 </tr>
 </table>
 
-In particular for when $$A$$ is False, for statements like "if 1 + 1 = 0 then
+In particular when $$A$$ is false, for statements like "if 1 + 1 = 0 then
 Paris is the capital of France", it's not clear intuitively that they should be
-True.
+true.
 
 But when looking at statements like "for all $$x$$ if $$x$$ is a positive odd
 number, then $$x^2$$ is a positive odd number", then:
-- providing a x that is not a positive odd number (a false statement) cannot be used to refute.
+- providing an $$x$$ that is not a positive odd number (a false statement) cannot be used to refute.
 - the only refutation by example is to provide a positive odd number for which the square is not a positive odd.
 
 There is only one rule of inference, 2. This is called modus ponens, the
@@ -277,6 +284,15 @@ A deduction theorem for the predicate calculus (which also includes group A2),
 where there are to more rules of inference, is possible, but it comes with some
 additional restrictions.
 
+> For the predicate calculus, if $$\Gamma, A \vdash B$$, with the free
+> variables not varied (i.e. held constant) for the assumption formula $$A$$,
+> then $$\Gamma \vdash A \to B$$.
+
+See [here for the definition of varied][deduction-dependent].
+
+There are of course weaker variants e.g. requiring $$A$$ to be closed dispenses
+with the more complex "not varied" requirement.
+
 There is choice for a postulate system that uses a substitution rule instead of
 the axiom schemas used in Kleene's system. He claims that a consequence of
 using the substitution rule as a postulate is that even for the propositional
@@ -296,6 +312,9 @@ for the "natural deduction" rules (p98), shown below with numbering. The
 explanation for this numbering scheme is alluded to in Lemma 11 (p106).
 
 <table>
+<tr>
+  <th colspan="5">Natural deduction rules derived from the postulates</th>
+</tr>
 <tr>
   <th colspan="5">Rules for the propositional calculus</th>
 </tr>
@@ -359,6 +378,20 @@ explanation for this numbering scheme is alluded to in Lemma 11 (p106).
 </tr>
 </table>
 
+Restrictions:
+- the superscript as in $$\vdash^x$$ in generality-introduction ($$9$$) and in
+  existence-elimination ($$12$$) that $$x$$ [is (potentially) varied (i.e. not
+  held constant)][deduction-dependent] in constructing the resulting deduction
+- for predicate calculus in subsidiary deductions the free variables must not
+  be varied (i.e. held constant) for the assumption formula to be discharged.
+  Subsidiary deductions are employed for implication-introduction ($$1$$),
+  disjunction-elimination ($$6$$), negation-introduction ($$7$$), and for
+  existence-elimination ($$12$$). These restrictions are related to the
+  restriction for the deduction rule for predicate calculus (that happens to be
+  the implication-introduction $$1$$ above).
+
+The postulate numbering scheme makes sense from the link to the "natural
+deduction"-like rules as follows:
 - $$1$$ in the natural deduction is the deduction theorem, requiring postulates
   $$1a$$, $$1b$$ and $$2$$ for it's proof
 - $$2$$ in the natural deduction is postulate $$2$$
@@ -369,6 +402,9 @@ explanation for this numbering scheme is alluded to in Lemma 11 (p106).
 
 though in general $$1a$$, $$1b$$ and $$2$$ are additionally used for most of
 the natural deduction rules.
+
+In Kleene's system, the "natural deduction"-like rules are deduced from the
+postulates above.
 
 When we looked at the deduction theorem it turns out that induction rules in
 particular cause issues with it's proof, but other the other postulates it's
@@ -441,7 +477,9 @@ This requires postulates in group A1 and A2. It introduces two quantifiers:
 $$\exists$$ and $$\forall$$.
 
 Theoretically one could use only one of them, but similarly to the boolean
-operators it would gone for a lower level outside the scope of the book.
+operators it would choose to go for a lower level outside the scope of the
+book. Also both of them are required for the inuitionist logic, where one does
+not suffice.
 
 This is a first-order logic, which means that the quantifiers apply to
 variables of values $$x$$ as opposed also predicates/properties.
@@ -461,7 +499,6 @@ The postulates in group A3 follow a Peano style. The tick sign is the successor
 - Postulates $$20$$ and $$21$$ relate to multiplication
 
 
-
 # References
 
 Stephen Cole Kleene: Introduction to Metamathematics (Ishi Press: 2009 reprint)
@@ -470,3 +507,6 @@ Thanks to Alex Kruckman for [answer on StackExchange](https://math.stackexchange
 
 Stanford Encyclopedia of Philosophy: [Intuitionistic
 Logic](https://plato.stanford.edu/entries/logic-intuitionistic/)
+
+[deduction-free]:          {% post_url 2021-09-21-deduction-free %}
+[deduction-dependent]:     {% post_url 2021-09-24-deduction-dependent %}
