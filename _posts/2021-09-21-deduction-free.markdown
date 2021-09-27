@@ -57,7 +57,7 @@ occurrence is free and the other two occurrences are bound.
 
 ## Example of restrictions
 
-In our [sample formal system][deduction-axioms], axiom schemata A5 allows
+In our [sample formal system][deduction-axioms], axiom schema A5 allows
 $$(\forall x (B \to C)) \to (B \to \forall x C)$$ only if $$B$$ does not
 contain free occurrences of $$x$$ (while $$C$$ can contain free occurrences of
 $$x$$).
@@ -100,7 +100,7 @@ For example using the formula $$A$$ above:
 
 ## Example of restrictions
 
-In our [sample formal system][deduction-axioms], the axiom schemata A4 allows
+In our [sample formal system][deduction-axioms], the axiom schema A4 allows
 $$\forall x B(x) \to B(t)$$ provided that $$t$$ is a term that is free for
 $$x$$ in $$B(x)$$.
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deduction Theorem - For Propositional Calculus"
+title: "Deduction Theorem - For propositional calculus"
 categories: maths logic
 ---
 
@@ -87,7 +87,7 @@ $$\Gamma$$.
 Then we can build a deduction from $$\Gamma$$ as the following sequence of
 formulas:
 1. $$D_0$$ - a formula in $$\Gamma$$
-2. $$D_0 \to (A \to D_0)$$ - axiom schemata A1
+2. $$D_0 \to (A \to D_0)$$ - axiom schema A1
 3. $$A \to D_0$$ - rule MP (on 1. and 2.)
 
 
@@ -117,14 +117,14 @@ $$P(k)$$: "If $$\Gamma, A \vdash D_k$$ (of length k + 1), then $$\Gamma \vdash
 A \to D_k$$" for all $$0 \le k \le n$$.
 
 
-# For cases (a), (b) and (c)
+## For cases (a), (b) and (c)
 
 This is shown as the cases (a), (b) and (c) of the induction base case, using
 $$D_{n + 1}$$ instead of $$D_0$$ (we don't need to rely on $$P(k)$$ for $$0 \le
 k \le n$$.
 
 
-# For case (d)
+## For case (d)
 
 We are given a deduction from $$\Gamma, A$$ where the last formula in the
 deduction sequence, $$D_{n + 1}$$, was obtained by applying MP on premises
@@ -143,7 +143,7 @@ formulas:
   assumption, for $$k$$ being $$j$$, there is a deduction $$\Gamma \vdash A \to
   D_j$$ (assuming it takes q preceding formulas in the deduction)
 - formula p + q + 1: $$(A \to (D_i \to D_{n + 1})) \to ((A \to D_i) \to (A \to
-  D_{n + 1}))$$ - axiom schemata A2
+  D_{n + 1}))$$ - axiom schema A2
 - formula p + q + 2: $$(A \to D_i) \to (A \to D_{n + 1})$$ - rule MP (on p + q
   and p + q + 1)
 - formula p + q + 3: $$A \to D_{n + 1}$$ - rule MP (on p and p + q + 2)

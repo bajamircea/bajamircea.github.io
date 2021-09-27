@@ -26,7 +26,7 @@ ways to construct the same deduction.
 
 That is not the necessarily true for rules of subsidiary deduction type. For
 example notice that in the proof for for the deduction theorem for the
-propositional calculus we did not use the axiom schemata A3. Removing it, or
+propositional calculus we did not use the axiom schema A3. Removing it, or
 adding similar axiom schemas (or just plain axioms) does not change the proof.
 But adding rules of inference invalidates the proof because it creates
 additional cases that needs to be considered in the proof if the rule.

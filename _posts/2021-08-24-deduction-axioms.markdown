@@ -135,11 +135,11 @@ we'll want to be possible to perform the checks mechanically, devoid of meaning.
   <th colspan="2">Additional postulates for the predicate calculus</th>
 </tr>
 <tr>
-  <td>Axiom schema A4 (See note).</td>
+  <td>Axiom schema A4 (see notes).</td>
   <td>$$\forall x B(x) \to B(t)$$</td>
 </tr>
 <tr>
-  <td>Axiom schema A5 (See note).</td>
+  <td>Axiom schema A5 (see notes).</td>
   <td>$$(\forall x (B \to C)) \to (B \to \forall x C)$$</td>
 </tr>
 <tr>
