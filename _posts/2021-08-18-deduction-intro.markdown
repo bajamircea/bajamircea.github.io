@@ -44,7 +44,7 @@ Will cover:
 - [on subsidiary deductions][deduction-subsidiary]
 - [free and bound variables][deduction-free]
 - [dependent and varied][deduction-dependent]
-- deduction theorem for predicate calculus
+- [deduction theorem for predicate calculus][deduction-predicate]
 - what does it mean?
 
 
@@ -67,3 +67,4 @@ Thomas L. Heath / Vol.1 (Books I and II)
 [deduction-subsidiary]:    {% post_url 2021-09-17-deduction-subsidiary %}
 [deduction-free]:          {% post_url 2021-09-21-deduction-free %}
 [deduction-dependent]:     {% post_url 2021-09-24-deduction-dependent %}
+[deduction-predicate]:     {% post_url 2021-09-27-deduction-predicate %}

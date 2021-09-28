@@ -71,6 +71,9 @@ A _term is free for a variable in a formula_ if when we substitute the term in
 the formula on the free occurrences of that variable in the formula, the other
 variables in the term do not become bound in the scope of a quantifier.
 
+Another terminology is to say that the _term is substitutable for a variable in
+a formula_.
+
 
 ## Example of terminology
 
