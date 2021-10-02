@@ -380,8 +380,9 @@ explanation for this numbering scheme is alluded to in Lemma 11 (p106).
 
 Restrictions:
 - the superscript as in $$\vdash^x$$ in generality-introduction ($$9$$) and in
-  existence-elimination ($$12$$) that $$x$$ [is (potentially) varied (i.e. not
-  held constant)][deduction-dependent] in constructing the resulting deduction
+  existence-elimination ($$12$$) that [variation might happen for $$x$$ (i.e.
+  $$x$$ is not necessarily held constant)][deduction-dependent] in constructing
+  the resulting deduction
 - for predicate calculus in subsidiary deductions the free variables must not
   be varied (i.e. held constant) for the assumption formula to be discharged.
   Subsidiary deductions are employed for implication-introduction ($$1$$),
