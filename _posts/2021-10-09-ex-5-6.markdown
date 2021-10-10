@@ -1,0 +1,141 @@
+---
+layout: post
+title: "Exercise 5 and 6"
+categories: maths logic
+---
+
+Exercise 5 and 6 from Kleene's IM (1952) page 149
+
+{% include mathjax.html %}
+
+
+# Intro
+
+In Kleene's IM page 149 the reader is asked to supply the details for the
+following two examples.
+
+Example 5. Given $$A(x) \vdash B$$ and $$A(x) \vdash \lnot B$$ with x held
+constant, then $$\vdash \lnot A(x)$$ and $$\vdash \forall x \lnot A(x)$$.
+
+Example 6. Given $$A(x) \vdash^x B$$ and $$A(x) \vdash^x \lnot B$$ with x not
+necessarily held constant, then $$\vdash \lnot \forall x A(x)$$.
+
+# Recap of the relevant rules
+
+To recap, here are some rules that we're going to use, listed by Kleene as
+Theorem 2, [which are natural deduction-like rules][im-postulates]:
+
+<table>
+<tr>
+  <th>Implication introduction<br/>Deduction theorem</th>
+  <td>If \(\Gamma, A \vdash B\)<br/>then \(\Gamma \vdash A \to B\)</td>
+</tr>
+<tr>
+  <th>Negation introduction<br/>Reductio ad absurdum</th>
+  <td>If \(\Gamma, A \vdash B\) and \(\Gamma, A \vdash \lnot B\)<br/>then
+  \(\Gamma \vdash \lnot A\)</td>
+</tr>
+<tr>
+  <th>Negation elimination<br/>Discharge of double negation</th>
+  <td>\(\lnot \lnot A \vdash A\)</td>
+</tr>
+<tr>
+  <th>Generality introduction</th>
+  <td>\(A(x) \vdash^x \forall x A(x)\)</td>
+</tr>
+<tr>
+  <th>Generality elimination</th>
+  <td>\(\forall x A(x) \vdash A(t)\)</td>
+</tr>
+</table>
+
+The issue is that the deduction theorem comes with a restriction: that in the
+subsidiary deduction, $$\Gamma, A \vdash B$$, the free variables are [held
+constant][deduction-dependent] for the assumption formula to be discharged,
+$$A$$ in this case.
+
+This comes with two consequences.
+
+First, similar restrictions apply to other rules that involve subsidiary
+deductions, in particular to the negation introduction rule above for the $$A$$
+in the two subsidiary deductions.
+
+Second, he introduces a superscript notation $$\vdash^x$$ to keep track of
+deductions where postulate Rule 9 or 12 were applied with respect to $$x$$. For
+example that is the case for the generality introduction. The notation is
+ambiguous, e.g. it does not specify to which assumption it applies, but it's
+clear from context, e.g. in the generality introduction there is only one
+assumption to which it applies.
+
+The superscript can be discharged if despite the application of Rule 9 or 12
+with respect to $$x$$ in circumstances like:
+- the assumption does not contain $$x$$ free
+- we end up with no assumption
+For reference, Kleene uses the superscript discharge in IM on the same page
+149, in the two circumstances above for Example 2 at step 2 and Example 3 at
+step 3.
+
+Note that the generality elimination has no restrictions: no superscript and it
+has not subsidiary deduction.
+
+
+# For Example 5
+
+1. $$A(x) \vdash B$$ - given
+2. $$A(x) \vdash \lnot B$$ - also given
+3. $$\vdash \lnot A(x)$$ - by negation introduction (on 1 and 2)
+4. $$\lnot A(x) \vdash^x \forall x \lnot A(x)$$ - by generality introduction
+5. $$\vdash \lnot A(x) \vdash^x \forall x \lnot A(x)$$ - from 3 and 4 we have
+this chain
+6. $$\vdash \forall x \lnot A(x)$$ - from 5 (notice the discharge of
+superscript, i.e. $$\vdash$$ instead of $$\vdash^x$$, there are no assumptions
+on the left side)
+
+
+# For Example 6:
+
+1. $$A(x) \vdash^x B$$ - given
+2. $$\forall x A(x) \vdash A(x)$$ - by generality elimination
+3. $$\forall x A(x) \vdash A(x) \vdash^x B$$ - from 1 and 2 we have this chain
+4. $$\forall x A(x) \vdash B$$ - from 3 (notice the discharge of superscript,
+because $$x$$ does not occur free in $$\forall x A(x)$$, all free occurrences
+of $$x$$ in $$A(x)$$ are bound by $$\forall x$$)
+5. $$\forall x A(x) \vdash \lnot B$$ similarly from the other given deduction
+6. $$\lnot \vdash \forall x A(x)$$ - by negation introduction (on 4 and 5)
+
+
+# Meaning
+
+Following the ideas from the Example 3 and 4 on the same page we have: $$b \ne
+0 \vdash^b 0 \ne 0$$, by the substitution rule following Theorem 2 where we
+substituted $$b$$ with a term $$0$$, which is free for the variable $$b$$ in
+the formula $$b \ne 0$$. The superscript indicates that $$b$$ was varied: that
+we applied Rule 9 on the free variable $$b$$ in $$b \ne 0$$ and the resulting
+formula is dependent on the assumption.
+
+Also note that $$\ne$$ is an abbreviation for negating the equality formula.
+
+The formula $$b \ne 0$$ has the conditional interpretation in Kleene: "some
+natural number b is not zero". It is not a theorem.
+
+On the other side we have $$\vdash 0 = 0$$, therefore by adding as a dummy
+assumption we have $$b \ne 0 \vdash 0 = 0$$.
+
+We can apply Example 5 and 6 by taking:
+- $$x$$ to be $$b$$
+- $$A(x)$$ to be $$b \ne 0$$
+- $$B$$ to be $$0 = 0$$
+
+If we apply Example 6 we get $$\vdash \lnot \forall x b \ne 0$$ which we can
+interpret like "it's not true that all natural numbers are not zero".
+
+It would be incorrect to apply Example 5, because we would incorrectly apply
+the negation introduction at step 2 in the proof for Example 5. We would then
+incorrectly derive (also using the discharge of the double negation) that:
+$$\vdash b = 0$$ and $$\vdash \forall b (b = 0)$$. In Kleene's system theorems
+have the generality interpretation and would read: "all natural numbers are
+zero".
+
+
+[im-postulates]:           {% post_url 2021-04-04-im-postulates %}
+[deduction-dependent]:     {% post_url 2021-09-24-deduction-dependent %}
