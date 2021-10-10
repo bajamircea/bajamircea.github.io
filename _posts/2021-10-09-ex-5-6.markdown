@@ -1,10 +1,10 @@
 ---
 layout: post
-title: "Exercise 5 and 6"
+title: "Examples 5 and 6"
 categories: maths logic
 ---
 
-Exercise 5 and 6 from Kleene's IM (1952) page 149
+Examples 5 and 6 from Kleene's IM (1952) page 149
 
 {% include mathjax.html %}
 
