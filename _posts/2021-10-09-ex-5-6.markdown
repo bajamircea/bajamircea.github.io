@@ -67,8 +67,8 @@ ambiguous, e.g. it does not specify to which assumption it applies, but it's
 clear from context, e.g. in the generality introduction there is only one
 assumption to which it applies.
 
-The superscript can be discharged if despite the application of Rule 9 or 12
-with respect to $$x$$ in circumstances like:
+The superscript can be discharged despite the application of Rule 9 or 12 with
+respect to $$x$$ in circumstances like:
 - the assumption does not contain $$x$$ free
 - we end up with no assumption
 For reference, Kleene uses the superscript discharge in IM on the same page
