@@ -71,12 +71,19 @@ The superscript can be discharged despite the application of Rule 9 or 12 with
 respect to $$x$$ in circumstances like:
 - the assumption does not contain $$x$$ free
 - we end up with no assumption
-For reference, Kleene uses the superscript discharge in IM on the same page
-149, in the two circumstances above for Example 2 at step 2 and Example 3 at
-step 3.
+
+Kleene uses the superscript discharge in IM on the same page 149, in the two
+circumstances above for Example 2 at step 2 and Example 3 at step 3.
 
 Note that the generality elimination has no restrictions: no superscript and it
-has not subsidiary deduction.
+has not subsidiary deduction. It does require however that the term $$t$$ is
+free for $$x$$ in $$A(x)$$.
+
+By combining generality introduction and generality elimination we get the
+substitution rule that $$A(x) \vdash^x A(t)$$, requiring that the term $$t$$ is
+free for $$x$$ in $$A(x)$$ (like in the generality elimination) and with the
+superscript indicating that Rule 9 was used to deduce $$A(t)$$ dependent on the
+assumption $$A(x)$$ (like in the generality introduction).
 
 
 # For Example 5
