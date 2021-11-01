@@ -294,7 +294,8 @@ There are of course weaker variants e.g. requiring $$A$$ to be closed dispenses
 with the more complex "not varied" requirement.
 
 There is choice for a postulate system that uses a substitution rule instead of
-the axiom schemas used in Kleene's system. He claims that a consequence of
+the axiom schemas used in Kleene's system (though rules of inference like modus
+ponens would still remain an axiom schema). He claims that a consequence of
 using the substitution rule as a postulate is that even for the propositional
 calculus the deduction theorem comes with restrictions similar to the ones for
 the deduction theorem for the predicate calculus (p140).

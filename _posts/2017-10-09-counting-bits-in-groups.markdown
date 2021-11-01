@@ -80,7 +80,7 @@ x = (x & m1) + ((x >> 1) & m1);
 </pre>
 
 So now we mask alternating two bit groups to create four bit groups (double the
-size) and align them. Again the starting half lenght of the new group is zero.
+size) and align them. Again the starting half length of the new group is zero.
 
 <pre>
 x & m2 // m2 is 00110011...

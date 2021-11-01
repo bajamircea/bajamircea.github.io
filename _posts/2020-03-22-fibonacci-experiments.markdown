@@ -104,7 +104,7 @@ struct unsigned_binary
 };
 {% endhighlight %}
 
-One implementation choise is between making it a concrete type (as above) or a
+One implementation choice is between making it a concrete type (as above) or a
 template. I think short term, we save a lot of effort by making it a concrete
 type. What we loose is the ability to precisely count the operations by
 substituting with instrumented types for the `unit`.
@@ -217,7 +217,7 @@ and those functions don't do padding.
 In this approach I used a lot of info that's not impossible, but not trivial to
 deduce programatically either. E.g. the fact that base `1,000,000,000` is the
 best fit for a power of `10` into a 32 bit unsigned integer. Also used switches
-up to `9` to calculate the lenght of the serialized string.
+up to `9` to calculate the length of the serialized string.
 
 With an improved conversion, for Fibonacci of `1,000,000` it took:
 - about **2 seconds to calculate** Fibonacci in a `unsigned_binary` (code

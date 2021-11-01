@@ -72,8 +72,10 @@ respect to $$x$$ in circumstances like:
 - the assumption does not contain $$x$$ free
 - we end up with no assumption
 
-Kleene uses the superscript discharge in IM on the same page 149, in the two
-circumstances above for Example 2 at step 2 and Example 3 at step 3.
+Kleene uses the superscript discharge in IM several times e.g.:
+- on the same page 149, in the two circumstances above for Example 2 at step 2
+  and Example 3 at step 3.
+- on page 147 for the proofs of $$^*65$$ case 2 and $$^*68$$ case 2.
 
 Note that the generality elimination has no restrictions: no superscript and it
 has not subsidiary deduction. It does require however that the term $$t$$ is
