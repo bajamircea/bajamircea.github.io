@@ -7,6 +7,9 @@ categories: review book
 Reading notes for Stephen Cole Kleene: Introduction to Metamathematics (Ishi
 Press: 2009 reprint)
 
+{% include mathjax.html %}
+
+
 # Motivation
 
 Why did I choose this book
@@ -100,6 +103,28 @@ The ideas for decision problems are not so unusual. For example the determinant
 of a matrix is so called because it determines if a set of linear equations has
 a unique solution. Calculating the determinant answers the question without
 providing the solution of the set of equations.
+
+
+# Predicate calculus: finite vs infinite objects
+
+A predicate calculus formula that captures properties of "less than" relation:
+anti-reflexive, transitivity, and no upper bound, using $$\mathcal{A}(a, b)$$
+instead of $$a < b$$, can be written as:
+
+$$\forall a \lnot \mathcal{A}(a,a) \quad  \& \quad  \forall a \forall b \forall
+c [\mathcal{A}(a, b) \& \mathcal{A}(b, c) \to \mathcal{A}(a, c)] \quad \& \quad
+\forall a \exists b \mathcal{A}(a, b)$$
+
+If the domain of the variables has a finite $$k > 0$$ number of objects, the
+formula is not satisfiable (i.e. cannot be interpreted true for any combination
+of objects), but it is satisfiable in the enumerable (infinite) domain of
+natural numbers. It's negation is valid (i.e. interpreted true) for every
+finite domain of $$k > 0$$ objects, but not valid for the enumerable domain.
+
+This is a fantastic puzzling example that are shows different outcomes between
+finite and enumerable infinite sets, that illustrate the intuitionist argument
+that we can't automatically extend rules of logic that work with finite sets to
+infinite sets.
 
 
 # Difficult points
