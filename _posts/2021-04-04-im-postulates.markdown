@@ -489,6 +489,16 @@ variables of values $$x$$ as opposed also predicates/properties.
 It introduces two rules of inference, $$9$$ and $$12$$, with consequences for the
 deduction theorem touched above.
 
+Under the (heuristic) interpretation that $$\forall$$ is a conjunction over the
+domain and $$\exists$$ is a disjunction over the domain, the postulates 3 - 6
+for $$\&$$ and $$\lor$$ suggest the postulates 9 - 12 for $$\forall$$ and
+$$\exists$$, allowing for certain differences in detail. The analogy is clearer
+in the "natural deduction"-like rules (see p179).
+
+Similar to the propositional calculus there is the option base the predicate
+calculus on a substitution rule (see note on p179 and the relatively complex
+ch34, Theorem 15 in particular).
+
 
 # Number theory
 
