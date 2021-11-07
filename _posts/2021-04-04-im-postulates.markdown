@@ -114,14 +114,25 @@ Restrictions:
 - for $$9$$ and $$12$$: $$C$$ does not contain $$x$$ [free][deduction-free]
 - for $$10$$ and $$11$$: $$t$$ [is a term free][deduction-free] for $$x$$ in $$A(x)$$
 
-The postulates give a list of axioms (a formula, e.g. $$a + 0 = a$$) or
-axiom schemas (formula rules, e.g. $$A \& B \to A$$) that can be used to build
-deductions. Deductions are sequences of formulas where each formula is either
-an axiom or a formula constructed using an axiom schema using previous formulas
-from the sequence.
+The postulates give a list of:
+- (plain) axioms: a formula, e.g. $$a + 0 = a$$
+- axiom schemas: formula rules, e.g. $$A \& B \to A$$, where $$A$$ and $$B$$
+  can be any formula
+- rules of inference: e.g. $${A, A \to B \over B}$$ where the formula below the
+  line is called immediate consequence and from the formulas above the line is
+  called a premise (they still follow the pattern of axiom schemas, i.e. $$A$$
+  and $$B$$ can be any formula)
 
 Axiom schemas is a metamathematical device of specifying an infinite class of
 axioms.
+
+The postulates can be used to build deductions. Given a set of formulas called
+assumptions, deductions are (non-empty) sequences of formulas where each
+formula is either an assumption, an axiom, matches an axiom schema or matches
+immediate consequence for premise formulas preceding it in the sequence. The
+deduction is said to be a deduction for the last formula in the sequence.
+
+Proofs are deductions with no assumptions (i.e. only using the postulates).
 
 
 # Propositional calculus
@@ -246,8 +257,8 @@ propositional calculus formal system.
 
 Concretely one can prove:
 
-> For the propositional calculus, if $$\Gamma, A \vdash B$$ then $$\Gamma \vdash A
-> \to B$$.
+> <small>DEDUCTION THEOREM:</small> For the propositional calculus, if
+> $$\Gamma, A \vdash B$$ > then $$\Gamma \vdash A \to B$$.
 
 In more words: if there is a deduction from a set of propositions and A
 reaching B, then there is a deduction from that set of proposition reaching $$A
@@ -274,19 +285,19 @@ That's why the deduction theorem is proved for propositional logic, but when
 the system is extended it with more postulates the proof needs to be revisited.
 
 In practice there are many cases of postulates that cause no problem, but
-induction rules do cause problems by adding more cases to proof of the
-deduction theorem.
+rules of inference add cases to the proof of the deduction theorem, which has
+to be then revisited.
 
 That explains why in group A1 above for the propositional calculus there is a
 single rule of inference (rule 2).
 
 A deduction theorem for the predicate calculus (which also includes group A2),
-where there are to more rules of inference, is possible, but it comes with some
+where there are more rules of inference, is possible, but it comes with some
 additional restrictions.
 
-> For the predicate calculus, if $$\Gamma, A \vdash B$$, with the free
-> variables not varied (i.e. held constant) for the assumption formula $$A$$,
-> then $$\Gamma \vdash A \to B$$.
+> <small>DEDUCTION THEOREM:</small> For the predicate calculus, if $$\Gamma, A
+> \vdash B$$, with the free variables not varied (i.e. held constant) for the
+> assumption formula $$A$$, then $$\Gamma \vdash A \to B$$.
 
 See [here for the definition of varied][deduction-dependent].
 
@@ -505,10 +516,36 @@ ch34, Theorem 15 in particular).
 The postulates in group A3 follow a Peano style. The tick sign is the successor
 (i.e. "plus one").
 
-- Postulate $$13$$ is the induction rule.
+- Postulate $$13$$ is used for the induction rule (see below)
 - Postulates $$14$$ to $$17$$ relate to equality
 - Postulates $$18$$ and $$19$$ relate to addition
 - Postulates $$20$$ and $$21$$ relate to multiplication
+
+
+# Induction
+
+Induction is used at two levels. It is used informally as for proving
+metamathematical theorems. Then it appears as a metamathematical rule for the
+formal system above as:
+
+> <small>INDUCTION RULE:</small> Let $$x$$ be a variable, $$A(x)$$ be a
+> formula, and $$\Gamma$$ be a list of formulas not containing $$x$$ free. If
+> $$\Gamma \vdash A(0)$$ and $$\Gamma, A(x) \vdash A(x')$$ with the free
+> variables held constant for A(x), then $$\Gamma \vdash A(x)$$.
+
+The induction rule is proven as such:
+1. $$\Gamma, A(x) \vdash A(x')$$: given
+2. $$\Gamma \vdash A(x) \to A(x')$$: from 1 by implication introduction (x held
+constant for A(x) in 1
+3. $$A(x) \to A(x') \vdash^x \forall x (A(x) \to A(x')$$: by generality
+introduction
+4. $$\Gamma \vdash \forall x (A(x) \to A(x'))$$: from 2 and 3 (superscript
+discarded as $$\Gamma$$ does not contain $$x$$ free)
+5. $$\Gamma \vdash A(0)$$: given
+6. $$\Gamma \vdash A(0) \& \forall x (A(x) \to A(x'))$$: from 4 and 5 by
+conjunction introduction
+7. $$A(0) \& \forall x (A(x) \to A(x')) \to A(x)$$: Postulate $$13$$
+8. $$\Gamma \vdash A(x)$$: from 6 and 7 by implication elimination
 
 
 # References
