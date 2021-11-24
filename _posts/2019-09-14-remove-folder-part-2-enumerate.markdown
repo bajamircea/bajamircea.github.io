@@ -27,7 +27,7 @@ entries in a folder:
 - Incrementing advances the iterator. This probably maps to `FindNextFileW` on
   Windows. `FindNextFileW` receives the handle value and it uses it to store
   information on how far the iteration progressed.
-- A default constructed one servers as an end iterator
+- A default constructed one serves as an end iterator
 - The destructor of `std::filesystem::directory_iterator` probably calls
   `FindClose`. This frees the memory used to store how far the iteration
   progressed.
@@ -83,7 +83,7 @@ while (it != std::directory_iterator())
 # Enumerating and deleting
 
 Deleting entries as we enumerate through a collection is a common source of
-error because we need to consider how deleting entries impacts the enumeration.
+errors because we need to consider how deleting entries impacts the enumeration.
 E.g. if we delete an entry does it somehow invalidate the enumeration or are
 there unintuitive behaviours?
 

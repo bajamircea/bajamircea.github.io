@@ -22,7 +22,7 @@ The good news is that there are standard libraries for doing just that in the
 `boost`. And the Microsoft C++ compiler included them in the
 `std::experimental::filesystem` namespace well before 2017.
 
-The functions to remove a entry from the filesystem given a path look like:
+The functions to remove an entry from the filesystem given a path look like:
 {% highlight c++ linenos %}
 bool remove(const std::filesystem::path& p);
 bool remove(const std::filesystem::path& p, std::error_code& ec) noexcept;
@@ -34,7 +34,7 @@ returns, or it fails, in which case it throws an exception. The success case
 also has two possible outcomes. If the entry existed and was deleted the
 function returns `true`. If the file did not exist it returns `false`.
 
-The underlying OS APIs that delete an entry sometimes provide the information
+The underlying OS APIs that delete an entry usually provide the information
 that the entry existed without the need for an additional OS API call to check
 existence. E.g. on Windows `DeleteFileW` sets the error to
 `ERROR_FILE_NOT_FOUND` or `ERROR_PATH_NOT_FOUND` if the file did not exist,
