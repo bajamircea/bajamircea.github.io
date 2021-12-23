@@ -521,6 +521,9 @@ The postulates in group A3 follow a Peano style. The tick sign is the successor
 - Postulates $$18$$ and $$19$$ relate to addition
 - Postulates $$20$$ and $$21$$ relate to multiplication
 
+Addition and multiplication are defined recursive/inductive way that includes a
+base case, for when $$b$$ is $$0$$, and definition of the operation for $$b'$$
+in terms of the same operation for just $$b$$.
 
 # Induction
 
