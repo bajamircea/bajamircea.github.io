@@ -6,6 +6,15 @@ categories: read book
 
 List of books I've read in 2022
 
+- 2022-01-16 R. Dedekind: The Nature and Meaning of Numbers (1888)
+: Paper that explores the set theory around the definition of the natural
+numbers. It also explores the definition by induction of the basic operations
+of addition, multiplication and exponentiation.
+
+- 2022-01-07 R. Dedekind: Continuity and Irrational Numbers (1872)
+: The paper that introduced the Dedekind cut as a definition for real numbers
+that avoid the recurse to geometric interpretations
+
 - 2022-01-04 Scott Jurek: Eat & Run
 : Runner's book in the spirit of Born to Run. This one is more
 auto-biographical, it was an easy pleasant read.
