@@ -1,0 +1,12 @@
+---
+layout: post
+title: 'Books Read in 2022'
+categories: read book
+---
+
+List of books I've read in 2022
+
+- 2022-01-04 Scott Jurek: Eat & Run
+: Runner's book in the spirit of Born to Run. This one is more
+auto-biographical, it was an easy pleasant read.
+
