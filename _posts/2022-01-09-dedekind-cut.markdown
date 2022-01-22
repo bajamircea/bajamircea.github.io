@@ -169,6 +169,11 @@ to identify different things, it then introduced as a base for numbers ideas of
 sets and in particular treating the infinite as an actual thing as is the case
 for the definition of a real number as a pair of infinite sets.
 
+Treating the infinite as an actual (e.g. each real number involves a set of
+infinite rationals) as opposed to a potential (e.g. you can always have another
+natural number) is a distinction and controversy that goes at least as far back
+as Aristotle.
+
 
 # References
 
