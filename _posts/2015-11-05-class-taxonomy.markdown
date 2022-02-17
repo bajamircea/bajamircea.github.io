@@ -327,6 +327,13 @@ virtual tables.
 
 ## 2.4 Pimpl idiom
 
+Pimpl is used to hide implementation details from the user of a class at
+compile time. A class stores a pointer to the class that actually implements
+the functionality. E.g. this is useful if the implementation includes a
+large/complex header: the user of the class avoids also including that
+large/complex header. This comes with some runtime costs, e.g.  additional heap
+allocation.
+
 {% highlight c++ linenos %}
 // in the header
 class some_class
@@ -350,11 +357,11 @@ class some_class::impl
   }
 };
 
-some_clas::some_class() :
+some_class::some_class() :
   pimpl_{ std::make_unique<impl>() }
 {}
 
-some_clas::~some_class()
+some_class::~some_class()
 {}
 
 void some_class::some_fn()
@@ -370,6 +377,13 @@ void some_class::some_fn()
   ...
 {% endhighlight %}
 
+Note that Pimpl is one of the cases where forward declaration (of the
+implementation class in this case) makes sense.
+
+Also empty destructors are not needed in general, but in this case ensures that
+the user does not try to generate the code for the destructor (it cannot
+because it does not have visibility of the layout and destructor of the
+implementation class) and it resolves it at the linking stage instead.
 
 # 3 Modern creatures
 
