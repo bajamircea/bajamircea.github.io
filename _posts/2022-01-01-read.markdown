@@ -6,6 +6,25 @@ categories: read book
 
 List of books I've read in 2022
 
+- 2022-05-14 Frank Partnoy: Fiasco, the inside story of a Wall Street trader
+: Interesting story about usage of derivatives largely to allow asset managers
+to place bets that they should not (using other people money of course).
+
+- 2022-05-07 Jared Diamond: Guns, Germs & Steel
+: Very interesting and stimulating book, full of ideas. The theme is looking at
+underlying advantages that societies gain based on the environment. In
+particular the rise of the agriculture, due to the availability of domesticable
+plants and animals, a east-west axis making easier to spread food production
+compared to north-south axis that slows down adoption due to climate
+differences, a larger land mass available. The Austonesian expansion from
+Taiwan to the islands from Philippines, Indonesia, Pacific Islands, Madagascar.
+The Bantu expansion in Africa. The chapter "From Egalitarianism to Kleptocracy"
+was also interesting. Some things not convincing: the story about oak and
+acorns not being domesticated does not tally: how about walnuts? Also while
+some societies have environment advantages over others, probably even within
+the advantaged society some inhabitants will benefit and others will perish. A
+bit repetitive. 9.5 out of 10.
+
 - 2022-01-16 R. Dedekind: The Nature and Meaning of Numbers (1888)
 : Paper that explores the set theory around the definition of the natural
 numbers. It also explores the definition by induction of the basic operations
