@@ -28,7 +28,7 @@ protest and remove him from power. They've seen recently that people in Belarus
 protested against the fake election, they send their armies there to maintain
 the local dictator, but their concern is that they are next. Underlying it is
 the nostalgia of the former KBG of their good times in East Germany as
-projection of the Soviet 
+power projection of the Soviet Union.
 
 The Russian propaganda is caught in irrational contradictions. E.g. one
 refutation to the Ukrainian sinking of the Russian flagship in the Black Sea
@@ -37,7 +37,7 @@ the Ukrainians, the Russian navy was plain incompetent.
 
 The Russian propaganda is aimed to two audiences.
 
-First to the population of Russia it aims to deal with the problem of lack of
+First, to the population of Russia, it aims to deal with the problem of lack of
 support. It does not call it a war, but a special operation. The downside is
 that it is clear to the Russian soldiers in Ukraine that they are lied to,
 lowering their morale further. Another example if the denazification story, a
@@ -45,7 +45,7 @@ attempt to give it some legitimacy, that again is idiotic, the Ukrainian
 president is Jewish, how can he be a Nazi? This misinterpretation of meaning of
 words is truly Orwellian.
 
-Second to the population of the Western world, the Russian propaganda tries to
+Second, to the population of the Western world, the Russian propaganda tries to
 aim with aims to brake the resolve in helping the Ukrainians by: threatening
 with atomic weapons, picking smaller targets to intimidate (e.g. via threats to
 cut gas supplies) and propagating myths. In particular that inaction would be
