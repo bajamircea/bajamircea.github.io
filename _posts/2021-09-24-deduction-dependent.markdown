@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deduction Theorem - Dependence and variation"
+title: 'Deduction Theorem - Dependence and variation'
 categories: maths logic
 ---
 

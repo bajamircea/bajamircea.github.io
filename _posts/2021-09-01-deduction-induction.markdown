@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deduction Theorem - Induction"
+title: 'Deduction Theorem - Induction'
 categories: maths logic
 ---
 

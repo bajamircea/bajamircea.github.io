@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deduction Theorem - For predicate calculus"
+title: 'Deduction Theorem - For predicate calculus'
 categories: maths logic
 ---
 

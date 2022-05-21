@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deduction Theorem - Sample formal systems"
+title: 'Deduction Theorem - Sample formal systems'
 categories: maths logic
 ---
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Mathematics History"
+title: 'Mathematics History'
 categories: maths history
 ---
 

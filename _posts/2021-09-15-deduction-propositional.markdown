@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deduction Theorem - For propositional calculus"
+title: 'Deduction Theorem - For propositional calculus'
 categories: maths logic
 ---
 

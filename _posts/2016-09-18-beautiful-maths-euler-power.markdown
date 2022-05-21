@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Beautiful maths: Euler's formula"
+title: 'Beautiful maths: Euler''s formula'
 categories: maths euler
 ---
 

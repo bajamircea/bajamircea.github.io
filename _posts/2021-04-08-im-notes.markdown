@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "IM reading notes"
+title: 'IM reading notes'
 categories: review book
 ---
 

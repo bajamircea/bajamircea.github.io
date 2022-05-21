@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deduction Theorem - On subsidiary deductions"
+title: 'Deduction Theorem - On subsidiary deductions'
 categories: maths logic
 ---
 

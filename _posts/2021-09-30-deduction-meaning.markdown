@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deduction Theorem - Meaning"
+title: 'Deduction Theorem - Meaning'
 categories: maths logic
 ---
 

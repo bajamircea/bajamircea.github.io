@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Recursive functions"
+title: 'Recursive functions'
 categories: maths logic
 ---
 

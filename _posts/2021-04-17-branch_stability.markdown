@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Branch stability basics"
+title: 'Branch stability basics'
 categories: source code
 ---
 

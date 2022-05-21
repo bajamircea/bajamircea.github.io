@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Examples 5 and 6"
+title: 'Examples 5 and 6'
 categories: maths logic
 ---
 

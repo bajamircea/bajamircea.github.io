@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deduction Theorem - Mathematical logic"
+title: 'Deduction Theorem - Mathematical logic'
 categories: maths logic
 ---
 

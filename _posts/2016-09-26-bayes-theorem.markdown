@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Bayes' theorem for the layman"
+title: 'Bayes'' theorem for the layman'
 categories: maths statistics
 ---
 

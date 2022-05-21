@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deduction Theorem - A implies A"
+title: 'Deduction Theorem - A implies A'
 categories: maths logic
 ---
 

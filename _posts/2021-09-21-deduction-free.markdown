@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Deduction Theorem - Free and bound"
+title: 'Deduction Theorem - Free and bound'
 categories: maths logic
 ---
 

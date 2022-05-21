@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Choice of postulates in IM"
+title: 'Choice of postulates in IM'
 categories: review book
 ---
 

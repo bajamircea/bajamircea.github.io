@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Dedekind cuts"
+title: 'Dedekind cuts'
 categories: maths logic
 ---
 
