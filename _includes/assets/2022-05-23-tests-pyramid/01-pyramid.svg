@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20220522-01-1" width="100%" viewBox="0 0 900.0 400.0">
+  <style>
+    #svg20220522-01-1 {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20220522-01-l1 {
+      stroke: black;
+      stroke-width: 4;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: #6ac3d9;
+    }
+    .svg20220522-01-l2 {
+      stroke: black;
+      stroke-width: 4;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: #4cabc3;
+    }
+    .svg20220522-01-l3 {
+      stroke: black;
+      stroke-width: 4;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: #2d93ad;
+    }
+    .svg20220522-01-t1 {
+      font-family: sans-serif;
+      font-size: 20px;
+      font-weight: bold;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+  </style>
+  <path class="svg20220522-01-l1" d="M 450.0 10.0 L 506.0 136.66666666666666
+    L  394.0 136.66666666666666 Z"/>
+  <path class="svg20220522-01-l2" d="M 394.0 136.66666666666666 L 506.0 136.66666666666666
+    L 562.0 263.3333333333333 L 338.0 263.3333333333333 Z"/>
+  <path class="svg20220522-01-l3" d="M 338.0 263.3333333333333 L 562.0 263.3333333333333
+    L 618.0 390.0 L 282.0 390.0 Z"/>
+  <text class="svg20220522-01-t1" x="136.0" y="83.33333333333333">system tests</text>
+  <text class="svg20220522-01-t1" x="136.0" y="210.0">component tests</text>
+  <text class="svg20220522-01-t1" x="136.0" y="336.66666666666663">unit tests</text>
+  <text class="svg20220522-01-t1" x="754.0" y="83.33333333333333">few</text>
+  <text class="svg20220522-01-t1" x="754.0" y="210.0">some</text>
+  <text class="svg20220522-01-t1" x="754.0" y="336.66666666666663">lots</text>
+</svg>

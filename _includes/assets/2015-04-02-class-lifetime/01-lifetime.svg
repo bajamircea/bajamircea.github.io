@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20150402-01-1" width="100%" viewBox="0 0 900.0 400.0">
+  <style>
+    #svg20150402-01-1 {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20150402-01-l1 {
+      stroke: black;
+      stroke-width: 0;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: #8ea604;
+    }
+    .svg20150402-01-l2 {
+      stroke: black;
+      stroke-width: 0;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: #ee6055;
+    }
+    .svg20150402-01-l3 {
+      stroke: black;
+      stroke-width: 4;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+    }
+    .svg20150402-01-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+  </style>
+  <path class="svg20150402-01-l1" d="M 735.0 135.0
+    A 65 65 90 1 1
+    735.0 265.0
+    L 725.0 255.0
+    L 735.0 245.0
+    A 45 45 90 1 0
+    735.0 155.0
+    Z"/>
+  <path class="svg20150402-01-l1" d="M 715.0 245.0
+    V 265.0
+    H 20.0
+    L 10.0 255.0
+    L 20.0 245.0
+    Z"/>
+  <path class="svg20150402-01-l2" d="M 58.3 135.0
+      H 78.3
+      V 230.0
+      L 68.3 240.0
+      L 58.3 230.0
+      Z" transform="rotate(30 58.3 200.0)"/>
+  <path class="svg20150402-01-l2" d="M 154.89999999999998 135.0
+      H 174.89999999999998
+      V 230.0
+      L 164.89999999999998 240.0
+      L 154.89999999999998 230.0
+      Z" transform="rotate(30 154.89999999999998 200.0)"/>
+  <path class="svg20150402-01-l2" d="M 251.5 135.0
+      H 271.5
+      V 230.0
+      L 261.5 240.0
+      L 251.5 230.0
+      Z" transform="rotate(30 251.5 200.0)"/>
+  <path class="svg20150402-01-l2" d="M 348.09999999999997 135.0
+      H 368.09999999999997
+      V 230.0
+      L 358.09999999999997 240.0
+      L 348.09999999999997 230.0
+      Z" transform="rotate(30 348.09999999999997 200.0)"/>
+  <path class="svg20150402-01-l2" d="M 444.7 135.0
+      H 464.7
+      V 230.0
+      L 454.7 240.0
+      L 444.7 230.0
+      Z" transform="rotate(30 444.7 200.0)"/>
+  <path class="svg20150402-01-l2" d="M 637.9 135.0
+      H 657.9
+      V 230.0
+      L 647.9 240.0
+      L 637.9 230.0
+      Z" transform="rotate(30 637.9 200.0)"/>
+  <path class="svg20150402-01-l1" d="M 10.0 135.0
+    H 715.0
+    L 725.0 145.0
+    L 715.0 155.0
+    L 10.0 155.0
+    Z"/>
+  <text class="svg20150402-01-t1" x="106.6" y="65.0">allocate</text>
+  <text class="svg20150402-01-t1" x="106.6" y="85.0">memory</text>
+  <text class="svg20150402-01-t1" x="203.2" y="45.0">construct</text>
+  <text class="svg20150402-01-t1" x="203.2" y="65.0">base</text>
+  <text class="svg20150402-01-t1" x="203.2" y="85.0">Base1</text>
+  <text class="svg20150402-01-t1" x="299.79999999999995" y="45.0">construct</text>
+  <text class="svg20150402-01-t1" x="299.79999999999995" y="65.0">base</text>
+  <text class="svg20150402-01-t1" x="299.79999999999995" y="85.0">Base2</text>
+  <text class="svg20150402-01-t1" x="396.4" y="45.0">construct</text>
+  <text class="svg20150402-01-t1" x="396.4" y="65.0">member</text>
+  <text class="svg20150402-01-t1" x="396.4" y="85.0">a</text>
+  <text class="svg20150402-01-t1" x="493.0" y="45.0">construct</text>
+  <text class="svg20150402-01-t1" x="493.0" y="65.0">member</text>
+  <text class="svg20150402-01-t1" x="493.0" y="85.0">b</text>
+  <text class="svg20150402-01-t1" x="589.5999999999999" y="45.0">init</text>
+  <text class="svg20150402-01-t1" x="589.5999999999999" y="65.0">vtable</text>
+  <text class="svg20150402-01-t1" x="589.5999999999999" y="85.0">pointer</text>
+  <text class="svg20150402-01-t1" x="686.1999999999999" y="45.0">SomeClass</text>
+  <text class="svg20150402-01-t1" x="686.1999999999999" y="65.0">constructor</text>
+  <text class="svg20150402-01-t1" x="686.1999999999999" y="85.0">body</text>
+  <line class="svg20150402-01-l3" x1="106.6" y1="95.0" x2="106.6" y2="145.0"/>
+  <line class="svg20150402-01-l3" x1="203.2" y1="95.0" x2="203.2" y2="145.0"/>
+  <line class="svg20150402-01-l3" x1="299.79999999999995" y1="95.0" x2="299.79999999999995" y2="145.0"/>
+  <line class="svg20150402-01-l3" x1="396.4" y1="95.0" x2="396.4" y2="145.0"/>
+  <line class="svg20150402-01-l3" x1="493.0" y1="95.0" x2="493.0" y2="145.0"/>
+  <line class="svg20150402-01-l3" x1="589.5999999999999" y1="95.0" x2="589.5999999999999" y2="145.0"/>
+  <line class="svg20150402-01-l3" x1="686.1999999999999" y1="95.0" x2="686.1999999999999" y2="145.0"/>
+  <text class="svg20150402-01-t1" x="850.0" y="200.0">usage</text>
+  <text class="svg20150402-01-t1" x="106.6" y="315.0">deallocate</text>
+  <text class="svg20150402-01-t1" x="106.6" y="335.0">memory</text>
+  <text class="svg20150402-01-t1" x="203.2" y="315.0">destruct</text>
+  <text class="svg20150402-01-t1" x="203.2" y="335.0">base</text>
+  <text class="svg20150402-01-t1" x="203.2" y="355.0">Base1</text>
+  <text class="svg20150402-01-t1" x="299.79999999999995" y="315.0">destruct</text>
+  <text class="svg20150402-01-t1" x="299.79999999999995" y="335.0">base</text>
+  <text class="svg20150402-01-t1" x="299.79999999999995" y="355.0">Base2</text>
+  <text class="svg20150402-01-t1" x="396.4" y="315.0">destruct</text>
+  <text class="svg20150402-01-t1" x="396.4" y="335.0">member</text>
+  <text class="svg20150402-01-t1" x="396.4" y="355.0">a</text>
+  <text class="svg20150402-01-t1" x="493.0" y="315.0">destruct</text>
+  <text class="svg20150402-01-t1" x="493.0" y="335.0">member</text>
+  <text class="svg20150402-01-t1" x="493.0" y="355.0">b</text>
+  <text class="svg20150402-01-t1" x="589.5999999999999" y="315.0">revert</text>
+  <text class="svg20150402-01-t1" x="589.5999999999999" y="335.0">vtable</text>
+  <text class="svg20150402-01-t1" x="589.5999999999999" y="355.0">pointer</text>
+  <text class="svg20150402-01-t1" x="686.1999999999999" y="315.0">SomeClass</text>
+  <text class="svg20150402-01-t1" x="686.1999999999999" y="335.0">destructor</text>
+  <text class="svg20150402-01-t1" x="686.1999999999999" y="355.0">body</text>
+  <line class="svg20150402-01-l3" x1="106.6" y1="305.0" x2="106.6" y2="255.0"/>
+  <line class="svg20150402-01-l3" x1="203.2" y1="305.0" x2="203.2" y2="255.0"/>
+  <line class="svg20150402-01-l3" x1="299.79999999999995" y1="305.0" x2="299.79999999999995" y2="255.0"/>
+  <line class="svg20150402-01-l3" x1="396.4" y1="305.0" x2="396.4" y2="255.0"/>
+  <line class="svg20150402-01-l3" x1="493.0" y1="305.0" x2="493.0" y2="255.0"/>
+  <line class="svg20150402-01-l3" x1="589.5999999999999" y1="305.0" x2="589.5999999999999" y2="255.0"/>
+  <line class="svg20150402-01-l3" x1="686.1999999999999" y1="305.0" x2="686.1999999999999" y2="255.0"/>
+</svg>

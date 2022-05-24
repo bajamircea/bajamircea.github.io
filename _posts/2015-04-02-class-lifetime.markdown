@@ -8,7 +8,7 @@ Not all the parts of a C++ class have the same lifespan. Distinct steps are
 executed in sequence in the order to build or cleanup a C++ class instance.
 
 
-## Lifetime
+## Scope
 
 An instance of a class lives from when it's constructed, until it's destructed.
 Generally the scope controls the duration of the lifetime and the bodies of the
@@ -32,17 +32,29 @@ void some_fn()
 }
 {% endhighlight %}
 
-Say we have a `SomeClass` derived from a `Base` class, with two member
+The rationale for destructing `y` and then `x`, in the reverse order in which
+they were constructed is that `y` could depend on `x`, but not the other way
+around, so `y` has to be destructed first. Of course if the compiler determines
+that there is no such dependency, and no side effects, it is free to re-order
+assembly instructions (the **as-if rule**).
+
+## Lifetime
+
+Say we have a `SomeClass` derived from `Base1` and `Base2`, with two member
 variables `a` and `b`, and with at least a virtual method that overrides the
-base class method:
+a virtual method in `Base1`:
 
 {% highlight c++ linenos %}
 class SomeClass :
-  public Base
+  // order of base classes matters
+  public Base1,
+  public Base2
 {
+  // order of member variables matters
   SomeType a;
   SomeOtherType b;
 
+  // virtual function overrides method from Base1
   void some_method() override;
 
 public:
@@ -59,51 +71,54 @@ public:
 };
 {% endhighlight %}
 
-The lifetime of the various parts of such a class are illustrated on the diagram
-below. The dotted lines indicate what happens if an exception is thrown when
-something fails to construct, in which case the caller needs to deal with the
-exception and can't use the instance. The full loop indicates the successful path.
+The lifetime of the various parts of such a class is illustrated on the diagram
+below. The full loop indicates the happy path: all the construction steps
+succeed, the instance is used, then the destruction steps take place in reverse
+order. However if something fails during the construction, the code will take
+the shortcut indicated by the slanted arrows, reverting the work done up to
+that point, in which case the caller needs to deal with the exception and can't
+use the instance.
 
-![Lifetime diagram](/assets/2015-04-02-class-lifetime/lifetime.png)
+<div align="center">
+{% include assets/2015-04-02-class-lifetime/01-lifetime.svg %}
+</div>
 
 First the memory must be allocated, either on the stack, or on the heap. The
 memory required for an instance of `SomeClass` is the sum of:
 
-- the size of the `Base` class (which also includes the pointer to the virtual
-  functions table; most of the C++ implementations use this technique for
-  virtual functions)
-- the size of the member variables `a` and `b`
-- and potentially additional bytes due to alignment and padding issues
+- The sum of of the base classes sizes. This also includes the pointer to the
+  virtual functions table (the vtable); most of the C++
+  implementations use this technique for virtual functions
+- The size of the member variables `a` and `b`
+- Potentially additional bytes due to alignment and padding issues and
+  potentially less bytes if any of base classes are empty
 
-Then the constructor for the base class is invoked. If that fails, the memory
-is deallocated. The constructor for `SomeClass` can pass additional arguments to
-the base class in the constructor's initialization list, for example:
+The constructors for the base classes are invoked, one by one, **in the order
+in which they were inherited**. In this case the constructor for the `Base1`
+class is invoked first, followed by the constructor for the `Base2` class. The
+constructor for `SomeClass` can pass additional arguments to a base class in
+the constructor's initialization list, for example:
 
 {% highlight c++ linenos %}
 SomeClass::SomeClass(int i, int j, int k) :
   // initialization list
-  Base{ i, j }
+  Base1{ i, j },
+  Base2{ k }
 {
   // constructor body
 }
 {% endhighlight %}
 
-At some point, after the base class is constructed, the pointer to the virtual
-functions table is set to point to the `SomeClass` vtable. Before that if
-`Base` class has virtual functions, it would have been pointing to the `Base`
-class vtable.
-
 The member variables are then initialized **in the order in which they are
 declared**, not in the order they appear (if they appear) in the constructor's
 initialization list, though it is good practice to put them in the same order
-in the initialization list, if possible. The same is true if there is more than
-one base classes, they are also initialized in the order in which they are
-declared.
+in the initialization list, if possible.
 
 {% highlight c++ linenos %}
 SomeClass::SomeClass(int i, int j, int k) :
   // initialization list
-  Base{ i, j },
+  Base1{ i, j },
+  Base2{ k },
   a{ k },
   b{}
 {
@@ -111,13 +126,30 @@ SomeClass::SomeClass(int i, int j, int k) :
 }
 {% endhighlight %}
 
-The dotted arrows indicate what happens if an exception is thrown when
-something fails to construct. For example if the constructor of a class fails,
-then the destructor is not called. Another example is that if the constructor
-of the second member variable fails, then the first variable is destructed.
+Before the body of the `SomeClass` constructor, the pointer to the virtual
+functions table is set to point to the `SomeClass` vtable. Just before that, if
+virtual functions are called, they would be the base class ones.
 
-For example a **naive implementation** of a class that handles to `FILE` pointers
-would look like:
+Finally the body of the `SomeClass` constructor is invoked.
+
+If something goes wrong at any of steps during construction, the compiler will
+take a shortcut indicated by the slanted arrows, and undo the steps up to that
+point in reverse order, before throwing an exception.
+
+For example if the constructor of a class fails, then the destructor is not
+called (the rationale for that is that the object was not constructed), but
+member variables are destructed, base classes are destructed and memory is
+deallocated.
+
+Another example is that if the constructor of the second member variable fails,
+then the second member variable does not need to (will not) be destructed, but
+the first variable is destructed, same for base classes, memory is deallocated.
+
+
+## Example
+
+For example an **incorrect naive implementation** of a class that handles to
+`FILE` pointers might look like:
 
 {% highlight c++ linenos %}
 class bad_two_files
@@ -193,7 +225,7 @@ closed. The smell in this case is that the `two_files` class tries to directly
 manage two resources.
 
 The better option is to have a class that manage a single resource, and have
-`two_files` have two member variables of that class:
+`two_files` composed using two member variables of that class:
 
 {% highlight c++ linenos %}
 class file
@@ -257,13 +289,14 @@ public:
 {% endhighlight %}
 
 This way, if opening the destination file fails, then creating the instance of
-`two_files` fails, but not before the source file is closed. It also comes to
-pretty much the same number of code lines (fewer lines of code in fact).
+`two_files` fails, but not before the source file is closed as part of it's
+destructor. It also comes to pretty much the same number of code lines (fewer
+lines of code in fact).
 
 ## Summary
 
 Understand and take advantage of the initialization sequence for C++ classes.
 
 NOTE: When using **virtual inheritance** like in `struct Derived: virtual
-Base`, things are a bit more complicated, but that's a whole separate topic on
-a C++ language feature that's not often used.
+Base`, things are more complicated, but that's a whole separate topic on a C++
+language feature that's not often used.

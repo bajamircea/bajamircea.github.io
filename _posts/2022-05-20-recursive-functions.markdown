@@ -38,7 +38,8 @@ with $$a$$ held the same, and the value $$b$$ used for $$b'$$ (i.e. $$b + 1$$).
 
 This style of definition has advantages such that it can be proven that: such a
 function exists, that it is unique, that the calculation for a particular value
-of the arguments terminates in a finite number of steps.
+of the arguments terminates in a finite number of steps, that can be calculated
+with computer code using a bound `for` loop.
 
 Many of the commonly used functions (and predicates) in mathematics can be
 defined using such definitions: addition, multiplication, exponentiation,
@@ -83,11 +84,11 @@ int factorial(int n) {
 }
 {% endhighlight %}
 
-However in this, and many academic examples of recursion in programming like ,
-it's [more efficient to implement it using a loop][fib], so recursion is not
-encountered that much in practice, often due to the fact that many common
-functions are primitive recursive that can be calculated using a bound `for`
-loop.
+However in this, and many academic examples of recursion in programming like
+n-th Fibonacci number, it's [more efficient to implement it using a loop][fib],
+so recursion is not encountered that much in practice, often due to the fact
+that many common functions are primitive recursive that can be calculated using
+a bound `for` loop.
 
 Recursion is also used [as subtle jokes][humor-ref]. For example in some
 editions of "The C Programming Language" book by Brian Kernighan and Dennis
