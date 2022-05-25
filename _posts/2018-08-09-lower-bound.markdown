@@ -99,9 +99,57 @@ Below are example return values for various scenarios.
 Is [the same as for][partition_point] `partition_point`: `O(lg(n))` (except for
 `ForwardIterator` only where it could still be useful sometimes).
 
+
+# Non-homogenous predicate
+
+The comparison predicate used by `lower_bound` does not have to have the same
+type for both arguments, i.e. it does not have to be homogenous. The first
+argument is related to the `value_type` of the iterators, while the second
+argument is related to the type `T`, and sometimes these types are different.
+
+For example one can look and find a contact by name like this:
+
+{% highlight c++ linenos %}
+  struct contact {
+    std::string name;
+    std::string email;
+  };
+
+  std::vector<contact>::const_iterator
+  find_person_by_name(const std::vector<contact> & contacts, const std::string & name) {
+
+    // Comparison lambda has different argument types.
+    // It compares a contact with a string.
+    // This avoids having to construct a temporary contact
+    // just so that we can compare two contact objects
+    auto comp = [](const contact & c, const std::string & name) {
+      return c.name < name;
+    };
+
+    auto it = algs::range::lower_bound(contacts, name, comp);
+    if (it == contacts.end()) {
+      return it;
+    }
+    if (it->name != name) {
+      return contacts.end();
+    }
+    return it;
+  }
+
+  void some_fn() {
+    // ...
+    auto it = find_person_by_name(my_contacts, some_name);
+    if (it != my_contacts.end()) {
+      std::cout << "Found email: " << it->email << '\n';
+    }
+    // ...
+  }
+{% endhighlight %}
+
+
 # Related algorithms
 
-- `partition_poing`, `partition_point_n` (finding using predicate)
+- `partition_point`, `partition_point_n` (finding using predicate)
 - `upper_bound` (finding the end of a value range)
 - `equal_range` (combines `lower_bound` and `upper_bound`)
 - `binary_search` (returns true if value is found: it's lower bound with an
