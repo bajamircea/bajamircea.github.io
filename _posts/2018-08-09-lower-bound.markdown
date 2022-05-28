@@ -116,7 +116,7 @@ For example one can look and find a contact by name like this:
   };
 
   std::vector<contact>::const_iterator
-  find_person_by_name(const std::vector<contact> & contacts, const std::string & name) {
+  find_contact_by_name(const std::vector<contact> & contacts, const std::string & name) {
 
     // Comparison lambda has different argument types.
     // It compares a contact with a string.
@@ -138,7 +138,7 @@ For example one can look and find a contact by name like this:
 
   void some_fn() {
     // ...
-    auto it = find_person_by_name(my_contacts, some_name);
+    auto it = find_contact_by_name(my_contacts, some_name);
     if (it != my_contacts.end()) {
       std::cout << "Found email: " << it->email << '\n';
     }
