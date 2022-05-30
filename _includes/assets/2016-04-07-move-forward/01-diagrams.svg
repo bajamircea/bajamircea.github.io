@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20160407-01-1" width="100%" viewBox="0 0 900.0 630.0">
+  <style>
+    #svg20160407-01-1 {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20160407-01-l1 {
+      stroke: #8f0063;
+      stroke-width: 2;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+    .svg20160407-01-l2 {
+      stroke: #f1e0ec;
+      stroke-width: 2;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+    .svg20160407-01-l3 {
+      stroke: black;
+      stroke-width: 2;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+    }
+    .svg20160407-01-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+  </style>
+  <defs>
+    <marker id="svg20160407-01-arrow" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z"/>
+    </marker>
+  </defs>
+  <path class="svg20160407-01-l1" d="M 227.5 80.5
+        A 75.0 75.0 90 0 0
+        227.5 209.5"/>
+  <path class="svg20160407-01-l1" d="M 227.5 80.5
+        A 75.0 75.0 90 1 1
+        227.5 209.5"/>
+  <path class="svg20160407-01-l1" d="M 227.5 80.5
+        A 75.0 75.0 90 0 1
+        227.5 209.5"/>
+  <path class="svg20160407-01-l1" d="M 227.5 80.5
+        A 75.0 75.0 90 1 0
+        227.5 209.5"/>
+  <path class="svg20160407-01-l2" d="M 672.5 80.5
+        A 75.0 75.0 90 0 1
+        672.5 209.5"/>
+  <path class="svg20160407-01-l1" d="M 672.5 80.5
+        A 75.0 75.0 90 0 0
+        672.5 209.5"/>
+  <path class="svg20160407-01-l1" d="M 672.5 80.5
+        A 75.0 75.0 90 1 1
+        672.5 209.5"/>
+  <path class="svg20160407-01-l1" d="M 672.5 80.5
+        A 75.0 75.0 90 1 0
+        672.5 209.5"/>
+  <path class="svg20160407-01-l2" d="M 227.5 400.5
+        A 75.0 75.0 90 0 0
+        227.5 529.5"/>
+  <path class="svg20160407-01-l1" d="M 227.5 400.5
+        A 75.0 75.0 90 1 1
+        227.5 529.5"/>
+  <path class="svg20160407-01-l1" d="M 227.5 400.5
+        A 75.0 75.0 90 0 1
+        227.5 529.5"/>
+  <path class="svg20160407-01-l1" d="M 227.5 400.5
+        A 75.0 75.0 90 1 0
+        227.5 529.5"/>
+  <path class="svg20160407-01-l2" d="M 672.5 400.5
+        A 75.0 75.0 90 1 1
+        672.5 529.5"/>
+  <path class="svg20160407-01-l2" d="M 672.5 400.5
+        A 75.0 75.0 90 1 0
+        672.5 529.5"/>
+  <path class="svg20160407-01-l1" d="M 672.5 400.5
+        A 75.0 75.0 90 0 0
+        672.5 529.5"/>
+  <path class="svg20160407-01-l1" d="M 672.5 400.5
+        A 75.0 75.0 90 0 1
+        672.5 529.5"/>
+  <text class="svg20160407-01-t1" x="170.0" y="40.0">Has identity</text>
+  <text class="svg20160407-01-t1" x="285.0" y="30.0">Can be</text>
+  <text class="svg20160407-01-t1" x="285.0" y="50.0">moved from</text>
+  <text class="svg20160407-01-t1" x="615.0" y="40.0">Has identity</text>
+  <text class="svg20160407-01-t1" x="730.0" y="30.0">Can be</text>
+  <text class="svg20160407-01-t1" x="730.0" y="50.0">moved from</text>
+  <text class="svg20160407-01-t1" x="170.0" y="360.0">Has identity</text>
+  <text class="svg20160407-01-t1" x="285.0" y="350.0">Can be</text>
+  <text class="svg20160407-01-t1" x="285.0" y="370.0">moved from</text>
+  <text class="svg20160407-01-t1" x="615.0" y="360.0">Has identity</text>
+  <text class="svg20160407-01-t1" x="730.0" y="350.0">Can be</text>
+  <text class="svg20160407-01-t1" x="730.0" y="370.0">moved from</text>
+  <text class="svg20160407-01-t1" x="520.0" y="280.0">lvalue</text>
+  <text class="svg20160407-01-t1" x="805.0" y="280.0">rvalue</text>
+  <text class="svg20160407-01-t1" x="95.0" y="600.0">glvalue</text>
+  <text class="svg20160407-01-t1" x="380.0" y="600.0">prvalue</text>
+  <text class="svg20160407-01-t1" x="672.5" y="600.0">xvalue</text>
+  <path class="svg20160407-01-l3" d="M 95.0 580.0
+        L 170.0 485.0" marker-end="url(#svg20160407-01-arrow)"/>
+  <path class="svg20160407-01-l3" d="M 380.0 580.0
+        L 305.0 485.0" marker-end="url(#svg20160407-01-arrow)"/>
+  <path class="svg20160407-01-l3" d="M 520.0 260.0
+        L 595.0 165.0" marker-end="url(#svg20160407-01-arrow)"/>
+  <path class="svg20160407-01-l3" d="M 805.0 260.0
+        L 730.0 165.0" marker-end="url(#svg20160407-01-arrow)"/>
+  <path class="svg20160407-01-l3" d="M 672.5 580.0
+        V 485.0" marker-end="url(#svg20160407-01-arrow)"/>
+</svg>

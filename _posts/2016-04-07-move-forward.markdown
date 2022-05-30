@@ -13,7 +13,7 @@ using std::move and std::forward.
 ## Motivation
 
 [N4543][n4543] suggests a solution for when the content of a `std::function` is
-not copyable. But if first starts with the code below (and I'm going to ignore
+not copyable. But it first starts with the code below (and I'm going to ignore
 the rest of N4543 here). It has a `commands` variable that maps strings to
 functions, and an utility function to insert a new command.
 
@@ -44,8 +44,8 @@ artefacts.
 
 A C++ expression has, in addition to a type, a value category. Traditionally
 the main value categories were `lvalue` and `rvalue` with a rough meaning that
-it if could stand on the left side of an assignment it's an `lvalue`, otherwise
-it's an `rvalue`.
+if the expression could stand on the left side of an assignment it's an
+`lvalue`, otherwise it's an `rvalue`.
 
 With the advent of C++ 11, additional value categories have been identified and
 [organized in a systematic way][value-category-hist] based on the observation
@@ -54,7 +54,9 @@ that **there are two important properties of an expresion: has identity (i.e.
 
 The naming of the main value categories is illustrated using Venn diagrams below.
 
-![Value categories Venn diagrams](/assets/2016-04-07-move-forward/value-categories.png)
+<div align="center">
+{% include assets/2016-04-07-move-forward/01-diagrams.svg %}
+</div>
 
 - If it has identity, but cannot be moved it's an `lvalue`; otherwise it's an
   `rvalue`. A typical `lvalue` is a variable name `a`.
