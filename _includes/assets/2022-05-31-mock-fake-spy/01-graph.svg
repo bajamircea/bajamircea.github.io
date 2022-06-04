@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20220531-01-1" width="100%" viewBox="0 0 870.0 800.0">
+  <style>
+    #svg20220531-01-1 {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20220531-01-l1 {
+      stroke: #2f332b;
+      stroke-width: 4;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: #f5bb00;
+    }
+    .svg20220531-01-l2 {
+      stroke: black;
+      stroke-width: 2;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+    }
+    .svg20220531-01-l3 {
+      stroke: black;
+      stroke-width: 2;
+      stroke-dasharray: 5,5;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+    }
+    .svg20220531-01-l4 {
+      stroke: none;
+      fill: #ffeeaa;
+    }
+    .svg20220531-01-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: left;
+      dominant-baseline: middle;
+    }
+    .svg20220531-01-t2 {
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: 16px;
+      text-anchor: end;
+      dominant-baseline: hanging;
+    }
+  </style>
+  <defs>
+    <marker id="svg20220531-01-arrow" viewBox="0, 0, 10, 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z"/>
+    </marker>
+  </defs>
+  <path class="svg20220531-01-l4" d="M 200 100 H 850 V 780 H 400 V 380 H 440 V 240 H 200 Z"/>
+  <circle class="svg20220531-01-l1" cx="400" cy="50" r="20"/>
+  <text class="svg20220531-01-t1" x="440" y="50"/>
+  <circle class="svg20220531-01-l1" cx="500" cy="50" r="20"/>
+  <text class="svg20220531-01-t1" x="540" y="50">users of transaction</text>
+  <circle class="svg20220531-01-l1" cx="450" cy="150" r="20"/>
+  <text class="svg20220531-01-t1" x="490" y="150">transaction</text>
+  <circle class="svg20220531-01-l1" cx="50" cy="350" r="20"/>
+  <text class="svg20220531-01-t1" x="90" y="350">src contacts_db</text>
+  <circle class="svg20220531-01-l1" cx="250" cy="350" r="20"/>
+  <text class="svg20220531-01-t1" x="290" y="350">dst contacts_db</text>
+  <circle class="svg20220531-01-l1" cx="50" cy="450" r="20"/>
+  <text class="svg20220531-01-t1" x="90" y="450">db access</text>
+  <circle class="svg20220531-01-l1" cx="450" cy="450" r="20"/>
+  <text class="svg20220531-01-t1" x="490" y="450">contact</text>
+  <circle class="svg20220531-01-l1" cx="450" cy="550" r="20"/>
+  <text class="svg20220531-01-t1" x="490" y="550">std::string</text>
+  <circle class="svg20220531-01-l1" cx="650" cy="550" r="20"/>
+  <text class="svg20220531-01-t1" x="690" y="550">std::vector</text>
+  <circle class="svg20220531-01-l1" cx="550" cy="750" r="20"/>
+  <text class="svg20220531-01-t1" x="590" y="750">heap</text>
+  <line class="svg20220531-01-l2" x1="409.83869910099907" y1="69.67739820199814" x2="440.16130089900093" y2="130.32260179800184" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l2" x1="490.16130089900093" y1="69.67739820199814" x2="459.83869910099907" y2="130.32260179800184" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l2" x1="430.32260179800187" y1="159.83869910099907" x2="69.67739820199814" y2="340.16130089900093" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l2" x1="434.44365081389594" y1="165.55634918610406" x2="265.55634918610406" y2="334.44365081389594" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l2" x1="50.0" y1="372.0" x2="50.0" y2="428.0" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l2" x1="230.32260179800184" y1="359.83869910099907" x2="69.67739820199814" y2="440.16130089900093" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l2" x1="71.3431350031973" y1="355.33578375079935" x2="428.6568649968027" y2="444.66421624920065" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l2" x1="269.67739820199813" y1="359.83869910099907" x2="430.32260179800187" y2="440.16130089900093" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l2" x1="450.0" y1="472.0" x2="450.0" y2="528.0" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l2" x1="450.0" y1="172.0" x2="450.0" y2="428.0" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l2" x1="459.83869910099907" y1="169.67739820199816" x2="640.1613008990009" y2="530.3226017980019" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l2" x1="459.83869910099907" y1="569.6773982019981" x2="540.1613008990009" y2="730.3226017980019" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l2" x1="640.1613008990009" y1="569.6773982019981" x2="559.8386991009991" y2="730.3226017980019" marker-end="url(#svg20220531-01-arrow)"/>
+  <line class="svg20220531-01-l3" x1="200" y1="250" x2="300" y2="250"/>
+  <text class="svg20220531-01-t1" x="250" y="270">mock</text>
+  <line class="svg20220531-01-l3" x1="310" y1="250" x2="410" y2="250"/>
+  <text class="svg20220531-01-t1" x="360" y="270">fake</text>
+  <line class="svg20220531-01-l3" x1="450" y1="650" x2="650" y2="650"/>
+  <text class="svg20220531-01-t1" x="620" y="670">spy</text>
+  <text class="svg20220531-01-t2" x="830" y="120">area unit tested</text>
+</svg>
