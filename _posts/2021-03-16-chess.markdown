@@ -49,13 +49,20 @@ Learning **openings** can be done in two different ways:
 or more likely something in between, but without having an idea of openings you
 start on a back foot.
 
-
 That's because **in a given position one player usually has initiative/tempo**,
 further restricting the choices of the other player. E.g. if the white starts
 with `e4`, for black out of the not so many moves possible at the start, also
 `Nf6` is not such a good idea, white can start chasing it with the pawn on
 `e5`, leading to a tiny change of balance favouring white.
 
+If you're not aiming for world champion, instead of trying to learn "good"
+openings very deeply, it's a productive to learn some "not so good" openings,
+that theoretically loose advantage, but know them deeper than your opponent and
+then profit on the opponent's mistakes due to unfamiliarity with the obscure
+opening.
+
+**Playing puzzles** is an effective way to improve results at
+beginner/intermediate level.
 
 **Computer plays silly outside the main scenario** of doing the best move:
 - When the computer is restricted to play as a lower rating, it sometimes
