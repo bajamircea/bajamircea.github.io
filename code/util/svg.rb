@@ -96,8 +96,9 @@ def svg(attrs={}, &block)
 end
 
 def save_to_file(folder, file, contents)
-  FileUtils.mkdir_p folder
-  path = File.join folder, file
-  File.write path, contents
+  FileUtils.mkdir_p(folder)
+  path = File.join(folder, file)
+  puts(path)
+  File.write(path, contents)
 end
 

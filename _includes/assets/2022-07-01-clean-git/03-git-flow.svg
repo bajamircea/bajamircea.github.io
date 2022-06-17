@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20220701-3-1" width="100%" viewBox="0 0 1800 600">
+  <style>
+      #svg20220701-3-1 {
+        border: 1px solid #e8e8e8;
+        background-color: #f5f5f5;
+      }
+      .svg20220701-3-t1 {
+        font-family: sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        dominant-baseline: middle;
+      }
+  </style>
+  <path stroke="none" fill="#ffffff" d="M 0 32 L 1672 32 L 1700 60 L 1672 88 L 0 88 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 350 112 L 550 112 L 550 168 L 350 168 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 750 192 L 1250 192 L 1250 248 L 750 248 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 1450 192 L 1650 192 L 1650 248 L 1450 248 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 950 272 L 1150 272 L 1150 328 L 950 328 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 0 352 L 1672 352 L 1700 380 L 1672 408 L 0 408 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 250 432 L 1350 432 L 1350 488 L 250 488 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 350 512 L 750 512 L 750 568 L 350 568 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 1050 512 L 1450 512 L 1450 568 L 1050 568 Z"/>
+  <path stroke-width="4" fill="none" stroke="#8f4300" d="M 470 140 L 480 140 Q 500 140 500 120 L 500 80 Q 500 60 520 60 L 530 60"/>
+  <path stroke-width="4" fill="none" stroke="#8f4300" d="M 470 140 L 480 140 Q 500 140 500 160 L 500 360 Q 500 380 520 380 L 530 380"/>
+  <path stroke-width="4" fill="none" stroke="#8f4300" d="M 970 220 L 980 220 Q 1000 220 1000 240 L 1000 360 Q 1000 380 1020 380 L 1030 380"/>
+  <path stroke-width="4" fill="none" stroke="#8f4300" d="M 1170 220 L 1180 220 Q 1200 220 1200 200 L 1200 80 Q 1200 60 1220 60 L 1230 60"/>
+  <path stroke-width="4" fill="none" stroke="#8f4300" d="M 1170 220 L 1180 220 Q 1200 220 1200 240 L 1200 360 Q 1200 380 1220 380 L 1230 380"/>
+  <path stroke-width="4" fill="none" stroke="#8f4300" d="M 1570 220 L 1580 220 Q 1600 220 1600 200 L 1600 80 Q 1600 60 1620 60 L 1630 60"/>
+  <path stroke-width="4" fill="none" stroke="#8f4300" d="M 1570 220 L 1580 220 Q 1600 220 1600 240 L 1600 360 Q 1600 380 1620 380 L 1630 380"/>
+  <path stroke-width="4" fill="none" stroke="#8f4300" d="M 1070 300 L 1080 300 Q 1100 300 1100 280 L 1100 240 Q 1100 220 1120 220 L 1130 220"/>
+  <path stroke-width="4" fill="none" stroke="#8f4300" d="M 1270 460 L 1280 460 Q 1300 460 1300 440 L 1300 400 Q 1300 380 1320 380 L 1330 380"/>
+  <path stroke-width="4" fill="none" stroke="#8f4300" d="M 670 540 L 680 540 Q 700 540 700 520 L 700 400 Q 700 380 720 380 L 730 380"/>
+  <path stroke-width="4" fill="none" stroke="#8f4300" d="M 1370 540 L 1380 540 Q 1400 540 1400 520 L 1400 400 Q 1400 380 1420 380 L 1430 380"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 70 60 L 530 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 70 60 L 380 60 Q 400 60 400 80 L 400 120 Q 400 140 420 140 L 430 140"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 70 60 L 80 60 Q 100 60 100 80 L 100 360 Q 100 380 120 380 L 130 380"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 570 60 L 1230 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1270 60 L 1630 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 870 220 L 930 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 970 220 L 1030 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1070 220 L 1130 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 970 220 L 980 220 Q 1000 220 1000 240 L 1000 280 Q 1000 300 1020 300 L 1030 300"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 170 380 L 230 380"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 270 380 L 330 380"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 270 380 L 280 380 Q 300 380 300 400 L 300 440 Q 300 460 320 460 L 330 460"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 370 380 L 530 380"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 370 380 L 380 380 Q 400 380 400 400 L 400 520 Q 400 540 420 540 L 430 540"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 570 380 L 730 380"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 770 380 L 780 380 Q 800 380 800 360 L 800 240 Q 800 220 820 220 L 830 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 770 380 L 1030 380"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1070 380 L 1230 380"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1070 380 L 1080 380 Q 1100 380 1100 400 L 1100 520 Q 1100 540 1120 540 L 1130 540"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1270 380 L 1330 380"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1370 380 L 1430 380"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1470 380 L 1480 380 Q 1500 380 1500 360 L 1500 240 Q 1500 220 1520 220 L 1530 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1470 380 L 1630 380"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 370 460 L 430 460"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 470 460 L 930 460"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 970 460 L 1230 460"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 470 540 L 530 540"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 570 540 L 630 540"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1170 540 L 1230 540"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1270 540 L 1330 540"/>
+  <circle cx="50" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
+  <circle cx="550" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
+  <circle cx="1250" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
+  <circle cx="1650" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
+  <circle cx="450" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#ee6055"/>
+  <circle cx="850" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="950" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="1050" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="1150" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="1550" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="1050" cy="300" r="20" stroke-width="4" stroke="#2f332b" fill="#9665ac"/>
+  <circle cx="150" cy="380" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="250" cy="380" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="350" cy="380" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="550" cy="380" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="750" cy="380" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="1050" cy="380" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="1250" cy="380" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="1350" cy="380" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="1450" cy="380" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="1650" cy="380" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="350" cy="460" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="450" cy="460" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="950" cy="460" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="1250" cy="460" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="450" cy="540" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="550" cy="540" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="650" cy="540" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="1150" cy="540" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="1250" cy="540" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="1350" cy="540" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <text class="svg20220701-3-t1" x="1700" y="60" fill="#2f332b" text-anchor="start">master</text>
+  <text class="svg20220701-3-t1" x="1700" y="140" fill="#2f332b" text-anchor="start">hotfix</text>
+  <text class="svg20220701-3-t1" x="1700" y="220" fill="#2f332b" text-anchor="start">release</text>
+  <text class="svg20220701-3-t1" x="1700" y="300" fill="#2f332b" text-anchor="start">bugfix</text>
+  <text class="svg20220701-3-t1" x="1700" y="380" fill="#2f332b" text-anchor="start">develop</text>
+  <text class="svg20220701-3-t1" x="1700" y="500" fill="#2f332b" text-anchor="start">feature</text>
+  <text class="svg20220701-3-t1" x="50" y="20" fill="#2f332b" text-anchor="middle">tag 0.1</text>
+  <text class="svg20220701-3-t1" x="550" y="20" fill="#2f332b" text-anchor="middle">tag 0.2</text>
+  <text class="svg20220701-3-t1" x="1250" y="20" fill="#2f332b" text-anchor="middle">tag 1.0</text>
+  <text class="svg20220701-3-t1" x="1650" y="20" fill="#2f332b" text-anchor="middle">tag 1.1</text>
+</svg>

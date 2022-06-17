@@ -258,7 +258,7 @@ image = svg({
 
 end
 
-puts image.render
+puts(image.render)
 
-save_to_file "../../_includes/assets/2020-06-12-irregularity-part-3-books", "01-postulates.svg", image.render
+save_to_file("_includes/assets/2020-06-12-irregularity-part-3-books", "01-postulates.svg", image.render)
 

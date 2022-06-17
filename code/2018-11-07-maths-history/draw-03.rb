@@ -262,7 +262,7 @@ image = svg({
     ).add_text("2")
 end
 
-puts image.render
+puts(image.render)
 
-save_to_file "../../_includes/assets/2018-11-07-maths-history", "03-pythagoras.svg", image.render
+save_to_file("_includes/assets/2018-11-07-maths-history", "03-pythagoras.svg", image.render)
 

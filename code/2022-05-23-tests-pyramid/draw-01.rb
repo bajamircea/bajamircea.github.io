@@ -128,7 +128,7 @@ image = svg({
 
 end
 
-puts image.render
+puts(image.render)
 
-save_to_file "../../_includes/assets/2022-05-23-tests-pyramid", "01-pyramid.svg", image.render
+save_to_file("_includes/assets/2022-05-23-tests-pyramid", "01-pyramid.svg", image.render)
 

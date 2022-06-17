@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20220701-6-1" width="100%" viewBox="0 0 1000 280">
+  <style>
+      #svg20220701-6-1 {
+        border: 1px solid #e8e8e8;
+        background-color: #f5f5f5;
+      }
+      .svg20220701-6-t1 {
+        font-family: sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        dominant-baseline: middle;
+      }
+  </style>
+  <path stroke="none" fill="#ffffff" d="M 0 32 L 772 32 L 800 60 L 772 88 L 0 88 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 0 112 L 772 112 L 800 140 L 772 168 L 0 168 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 0 192 L 772 192 L 800 220 L 772 248 L 0 248 Z"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 70 60 L 280 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 320 60 L 430 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 70 60 L 80 60 Q 100 60 100 80 L 100 120 Q 100 140 120 140 L 130 140"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 170 140 L 230 140"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 270 140 L 330 140"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 370 140 L 380 140 Q 400 140 400 120 L 400 80 Q 400 60 420 60 L 430 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 370 140 L 430 140"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 70 60 L 80 60 Q 100 60 100 80 L 100 200 Q 100 220 120 220 L 130 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 170 220 L 230 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 270 220 L 330 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 370 220 L 430 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 470 220 L 530 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 470 60 L 480 60 Q 500 60 500 80 L 500 200 Q 500 220 520 220 L 530 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 470 60 L 530 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 570 60 L 630 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 570 220 L 580 220 Q 600 220 600 200 L 600 80 Q 600 60 620 60 L 630 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 570 220 L 630 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 670 60 L 680 60 Q 700 60 700 80 L 700 200 Q 700 220 720 220 L 730 220"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 670 220 L 730 220"/>
+  <circle cx="50" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#9665ac"/>
+  <circle cx="300" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#9665ac"/>
+  <circle cx="450" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#9665ac"/>
+  <circle cx="150" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
+  <circle cx="250" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
+  <circle cx="350" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
+  <circle cx="450" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
+  <circle cx="150" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="250" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="350" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="450" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="550" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="550" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#9665ac"/>
+  <circle cx="650" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#9665ac"/>
+  <circle cx="650" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="750" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <text class="svg20220701-6-t1" x="810" y="60" fill="#2f332b" text-anchor="start">master</text>
+  <text class="svg20220701-6-t1" x="810" y="140" fill="#2f332b" text-anchor="start">blue_branch</text>
+  <text class="svg20220701-6-t1" x="810" y="220" fill="#2f332b" text-anchor="start">pink_branch</text>
+</svg>

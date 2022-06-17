@@ -73,7 +73,7 @@ image = svg({
 
 end
 
-puts image.render
+puts(image.render)
 
-save_to_file "../../_includes/assets/2018-11-07-maths-history", "01-three_four_five.svg", image.render
+save_to_file("_includes/assets/2018-11-07-maths-history", "01-three_four_five.svg", image.render)
 

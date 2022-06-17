@@ -191,7 +191,7 @@ image = svg({
 
 end
 
-puts image.render
+puts(image.render)
 
-save_to_file "../../_includes/assets/2022-05-31-mock-fake-spy", "01-graph.svg", image.render
+save_to_file("_includes/assets/2022-05-31-mock-fake-spy", "01-graph.svg", image.render)
 

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20220701-14-1" width="100%" viewBox="0 0 1200 200">
+  <style>
+      #svg20220701-14-1 {
+        border: 1px solid #e8e8e8;
+        background-color: #f5f5f5;
+      }
+      .svg20220701-14-t1 {
+        font-family: sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        dominant-baseline: middle;
+      }
+  </style>
+  <path stroke="none" fill="#ffffff" d="M 0 32 L 172 32 L 200 60 L 172 88 L 0 88 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 600 32 L 772 32 L 800 60 L 772 88 L 600 88 Z"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 70 60 L 130 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 170 60 L 230 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 670 60 L 730 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 670 60 L 680 60 Q 700 60 700 80 L 700 140 Q 700 160 720 160 L 730 160"/>
+  <circle cx="50" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="150" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#ffcdea"/>
+  <circle cx="250" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#ff69c0"/>
+  <circle cx="650" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="750" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="750" cy="160" r="20" stroke-width="4" stroke="#2f332b" fill="#ffcdea"/>
+  <text class="svg20220701-14-t1" x="150" y="20" fill="#2f332b" text-anchor="middle">feature</text>
+  <text class="svg20220701-14-t1" x="250" y="20" fill="#2f332b" text-anchor="middle">workspace</text>
+  <text class="svg20220701-14-t1" x="750" y="20" fill="#2f332b" text-anchor="middle">feature</text>
+</svg>

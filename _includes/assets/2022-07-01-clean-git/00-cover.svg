@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20220701-0-1" width="100%" viewBox="0 0 250 100">
+  <style>
+      #svg20220701-0-1 {
+        border: 1px solid #e8e8e8;
+        background-color: #f5f5f5;
+      }
+      .svg20220701-0-t1 {
+        font-family: sans-serif;
+        font-size: 16px;
+        font-weight: bold;
+        dominant-baseline: middle;
+      }
+  </style>
+  <path stroke="none" fill="#ffffff" d="M 0 -18 L 232 -18 L 260 10 L 232 38 L 0 38 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 10 62 L 132 62 L 160 90 L 132 118 L 10 118 Z"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 30 10 L 90 10"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 130 10 L 190 10"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 30 10 L 40 10 Q 60 10 60 30 L 60 70 Q 60 90 80 90 L 90 90"/>
+  <circle cx="10" cy="10" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
+  <circle cx="110" cy="10" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
+  <circle cx="210" cy="10" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
+  <circle cx="110" cy="90" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+</svg>

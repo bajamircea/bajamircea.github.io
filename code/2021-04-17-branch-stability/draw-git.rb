@@ -120,10 +120,10 @@ def create_image(id, name, size_x, size_y, timelines, commits, lines, comments, 
   add_comments(image, comments)
 
   if print
-    puts image.render
+    puts(image.render)
   end
 
-  save_to_file "../../_includes/assets/2021-04-17-branch-stability", name, image.render
+  save_to_file("_includes/assets/2021-04-17-branch-stability", name, image.render)
 end
 
 timelines = [

@@ -305,7 +305,7 @@ image = svg({
   end
 end
 
-puts image.render
+puts(image.render)
 
-save_to_file "../../_includes/assets/2015-04-02-class-lifetime", "01-lifetime.svg", image.render
+save_to_file("_includes/assets/2015-04-02-class-lifetime", "01-lifetime.svg", image.render)
 

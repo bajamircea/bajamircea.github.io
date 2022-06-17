@@ -205,7 +205,7 @@ image = svg({
 
 end
 
-puts image.render
+puts(image.render)
 
-save_to_file "../../_includes/assets/2018-11-07-maths-history", "04-euclid.svg", image.render
+save_to_file("_includes/assets/2018-11-07-maths-history", "04-euclid.svg", image.render)
 

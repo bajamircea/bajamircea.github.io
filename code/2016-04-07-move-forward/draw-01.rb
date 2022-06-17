@@ -303,7 +303,7 @@ image = svg({
   )
 end
 
-puts image.render
+puts(image.render)
 
-save_to_file "../../_includes/assets/2016-04-07-move-forward", "01-diagrams.svg", image.render
+save_to_file("_includes/assets/2016-04-07-move-forward", "01-diagrams.svg", image.render)
 

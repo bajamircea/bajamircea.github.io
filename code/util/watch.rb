@@ -23,10 +23,15 @@ class Runner
   end
 end
 
-listener = Listen.to('.') do |m,c,r|
-  puts 'changed'
+folder = ARGV.pop
+raise "Need to provide a folder to watch" unless folder
+raise "Folder does not exist" unless Dir.exist?(folder)
+
+listener = Listen.to(folder) do |m,c,r|
+  puts('changed')
+  pattern = File.join(folder, 'draw-*.rb')
   r = Runner.new()
-  Dir.glob('./draw-*.rb').each do |script|
+  Dir.glob(pattern).each do |script|
     r.run(script)
   end
   r.print_result()

@@ -77,7 +77,7 @@ image = svg({
 
 end
 
-puts image.render
+puts(image.render)
 
-save_to_file "../../_includes/assets/2018-11-07-maths-history", "02-square-2.svg", image.render
+save_to_file("_includes/assets/2018-11-07-maths-history", "02-square-2.svg", image.render)
 
