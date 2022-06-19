@@ -23,5 +23,5 @@
   <circle cx="450" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#6ac3d9"/>
   <text class="svg20220701-1-t1" x="250" y="20" fill="#2f332b" text-anchor="middle">origin</text>
   <text class="svg20220701-1-t1" x="350" y="20" fill="#2f332b" text-anchor="middle">master</text>
-  <text class="svg20220701-1-t1" x="450" y="106" fill="#2f332b" text-anchor="middle">staging</text>
+  <text class="svg20220701-1-t1" x="450" y="106" fill="#2f332b" text-anchor="start">staging/workspace</text>
 </svg>

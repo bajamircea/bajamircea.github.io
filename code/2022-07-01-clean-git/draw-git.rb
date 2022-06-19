@@ -52,10 +52,29 @@ end
 def add_commits(image, commits)
   for commit in commits
     image.build do
-      circle(cx: commit[:x], cy: commit[:y],
-        r:20, stroke_width:4,
-        stroke: commit[:stroke] || $neutral_line,
-        fill: commit[:fill] || $neutral_commit)
+      if commit[:split]
+        path_d = "M #{commit[:x]} #{commit[:y] - 20}"
+        path_d += " A 20 20 0 0 0 #{commit[:x]} #{commit[:y] + 20} Z"
+        path(stroke: commit[:stroke] || $neutral_line,
+          stroke_width: 1,
+          fill: commit[:fill1] || $neutral_commit,
+          d: path_d)
+        path_d = "M #{commit[:x]} #{commit[:y] - 20}"
+        path_d += " A 20 20 0 0 1 #{commit[:x]} #{commit[:y] + 20} Z"
+        path(stroke: commit[:stroke] || $neutral_line,
+          stroke_width: 1,
+          fill: commit[:fill2] || $neutral_commit,
+          d: path_d)
+        circle(cx: commit[:x], cy: commit[:y],
+          r: 20, stroke_width: 4,
+          stroke: commit[:stroke] || $neutral_line,
+          fill: "none")
+      else
+        circle(cx: commit[:x], cy: commit[:y],
+          r: 20, stroke_width: 4,
+          stroke: commit[:stroke] || $neutral_line,
+          fill: commit[:fill] || $neutral_commit)
+      end
     end
   end
 end
@@ -177,7 +196,7 @@ lines = [
 comments = [
   { x: 250, y: 20, text: "origin"},
   { x: 350, y: 20, text: "master"},
-  { x: 450, y: 106, text: "staging"},
+  { x: 450, y: 106, text: "staging/workspace", anchor: "start" },
 ]
 create_image(1, "01-linear.svg", 1000, 170, timelines, commits, lines, comments, false)
 
@@ -312,37 +331,37 @@ timelines = [
   {from: 1600, to: 1700, y: 220},
 ]
 commits = [
-  { x: 50, y: 60, fill: $blue_commit}, # 0
-  { x: 550, y: 380, fill: $blue_commit},
-  { x: 1250, y: 380, fill: $blue_commit},
-  { x: 1650, y: 220, fill: $blue_commit},
-  { x: 450, y: 300, fill: $red_commit}, # 4
-  { x: 850, y: 220, fill: $green_commit}, # 5
-  { x: 950, y: 220, fill: $green_commit},
-  { x: 1050, y: 300, fill: $green_commit},
-  { x: 1150, y: 300, fill: $green_commit},
-  { x: 1550, y: 140, fill: $green_commit},
-  { x: 1050, y: 220, fill: $purple_commit}, #10
-  { x: 150, y: 60, fill: $orange_commit}, # 11
-  { x: 250, y: 60, fill: $orange_commit},
-  { x: 350, y: 140, fill: $orange_commit},
-  { x: 550, y: 220, fill: $orange_commit},
-  { x: 750, y: 140, fill: $orange_commit},
-  { x: 1050, y: 140, fill: $orange_commit},
-  { x: 1250, y: 220, fill: $orange_commit},
-  { x: 1350, y: 60, fill: $orange_commit},
-  { x: 1450, y: 60, fill: $orange_commit},
-  { x: 1650, y: 60, fill: $orange_commit},
-  { x: 350, y: 60, fill: $pink_commit}, # 21
-  { x: 450, y: 60, fill: $pink_commit},
-  { x: 950, y: 60, fill: $pink_commit},
-  { x: 1250, y: 60, fill: $pink_commit},
-  { x: 450, y: 140, fill: $pink_commit}, # 25
-  { x: 550, y: 140, fill: $pink_commit},
-  { x: 650, y: 140, fill: $pink_commit},
-  { x: 1150, y: 140, fill: $pink_commit},
-  { x: 1250, y: 140, fill: $pink_commit},
-  { x: 1350, y: 140, fill: $pink_commit},
+  { x: 50, y: 60, }, # 0
+  { x: 550, y: 380, },
+  { x: 1250, y: 380, },
+  { x: 1650, y: 220, },
+  { x: 450, y: 300, }, # 4
+  { x: 850, y: 220, }, # 5
+  { x: 950, y: 220, },
+  { x: 1050, y: 300, },
+  { x: 1150, y: 300, },
+  { x: 1550, y: 140, },
+  { x: 1050, y: 220, }, #10
+  { x: 150, y: 60, }, # 11
+  { x: 250, y: 60, },
+  { x: 350, y: 140, },
+  { x: 550, y: 220, },
+  { x: 750, y: 140, },
+  { x: 1050, y: 140, },
+  { x: 1250, y: 220, },
+  { x: 1350, y: 60, },
+  { x: 1450, y: 60, },
+  { x: 1650, y: 60, fill: $white_commit },
+  { x: 350, y: 60, }, # 21
+  { x: 450, y: 60, },
+  { x: 950, y: 60, },
+  { x: 1250, y: 60, },
+  { x: 450, y: 140, }, # 25
+  { x: 550, y: 140, },
+  { x: 650, y: 140, },
+  { x: 1150, y: 140, },
+  { x: 1250, y: 140, },
+  { x: 1350, y: 140, },
 ]
 lines = [
   { from: 4, to: 1, stroke: $unstable_line },
@@ -402,37 +421,37 @@ timelines = [
   {from: 1600, to: 1700, y: 220},
 ]
 commits = [
-  { x: 50, y: 60, }, # 0
-  { x: 550, y: 380, },
-  { x: 1250, y: 380, },
-  { x: 1650, y: 220, },
-  { x: 450, y: 300, }, # 4
-  { x: 850, y: 220, }, # 5
-  { x: 950, y: 220, },
-  { x: 1050, y: 300, },
-  { x: 1150, y: 300, },
-  { x: 1550, y: 140, },
-  { x: 1050, y: 220, }, #10
-  { x: 150, y: 60, }, # 11
-  { x: 250, y: 60, },
-  { x: 350, y: 140, },
-  { x: 550, y: 220, },
-  { x: 750, y: 140, },
-  { x: 1050, y: 140, },
-  { x: 1250, y: 220, },
-  { x: 1350, y: 60, },
-  { x: 1450, y: 60, },
-  { x: 1650, y: 60, fill: $white_commit },
-  { x: 350, y: 60, }, # 21
-  { x: 450, y: 60, },
-  { x: 950, y: 60, },
-  { x: 1250, y: 60, },
-  { x: 450, y: 140, }, # 25
-  { x: 550, y: 140, },
-  { x: 650, y: 140, },
-  { x: 1150, y: 140, },
-  { x: 1250, y: 140, },
-  { x: 1350, y: 140, },
+  { x: 50, y: 60, fill: $blue_commit}, # 0
+  { x: 550, y: 380, fill: $blue_commit},
+  { x: 1250, y: 380, fill: $blue_commit},
+  { x: 1650, y: 220, fill: $blue_commit},
+  { x: 450, y: 300, fill: $red_commit}, # 4
+  { x: 850, y: 220, fill: $green_commit}, # 5
+  { x: 950, y: 220, fill: $green_commit},
+  { x: 1050, y: 300, fill: $green_commit},
+  { x: 1150, y: 300, fill: $green_commit},
+  { x: 1550, y: 140, fill: $green_commit},
+  { x: 1050, y: 220, fill: $purple_commit}, #10
+  { x: 150, y: 60, fill: $orange_commit}, # 11
+  { x: 250, y: 60, fill: $orange_commit},
+  { x: 350, y: 140, fill: $orange_commit},
+  { x: 550, y: 220, fill: $orange_commit},
+  { x: 750, y: 140, fill: $orange_commit},
+  { x: 1050, y: 140, fill: $orange_commit},
+  { x: 1250, y: 220, fill: $orange_commit},
+  { x: 1350, y: 60, fill: $orange_commit},
+  { x: 1450, y: 60, fill: $orange_commit},
+  { x: 1650, y: 60, fill: $orange_commit},
+  { x: 350, y: 60, fill: $pink_commit}, # 21
+  { x: 450, y: 60, fill: $pink_commit},
+  { x: 950, y: 60, fill: $pink_commit},
+  { x: 1250, y: 60, fill: $pink_commit},
+  { x: 450, y: 140, fill: $pink_commit}, # 25
+  { x: 550, y: 140, fill: $pink_commit},
+  { x: 650, y: 140, fill: $pink_commit},
+  { x: 1150, y: 140, fill: $pink_commit},
+  { x: 1250, y: 140, fill: $pink_commit},
+  { x: 1350, y: 140, fill: $pink_commit},
 ]
 lines = [
   { from: 4, to: 1, stroke: $unstable_line },
@@ -541,8 +560,7 @@ create_image(6, "06-interlaced.svg", 1000, 280, timelines, commits, lines, comme
 timelines = [
   {from: 350, to: 550, y: 60, noarrow: true},
   {from: 750, to: 1250, y: 60, noarrow: true},
-  {from: 1450, to: 1650, y: 60, noarrow: true},
-  {from: 0, to: 1700, y: 140},
+  {from: 0, to: 1650, y: 140},
   {from: 250, to: 1350, y: 220, noarrow: true},
   {from: 350, to: 750, y: 300, noarrow: true},
   {from: 1050, to: 1450, y: 300, noarrow: true},
@@ -566,12 +584,11 @@ commits = [
   { x: 1350, y: 140, fill: $orange_commit}, # 15
   { x: 1450, y: 140, fill: $orange_commit},
   { x: 1550, y: 140, fill: $purple_commit},
-  { x: 1550, y: 60, fill: $green_commit},
-  { x: 350, y: 220, fill: $pink_commit}, # 19
+  { x: 350, y: 220, fill: $pink_commit}, # 18
   { x: 450, y: 220, fill: $pink_commit},
   { x: 950, y: 220, fill: $pink_commit},
   { x: 1250, y: 220, fill: $pink_commit},
-  { x: 450, y: 300, fill: $pink_commit}, # 23
+  { x: 450, y: 300, fill: $pink_commit}, # 22
   { x: 550, y: 300, fill: $pink_commit},
   { x: 650, y: 300, fill: $pink_commit},
   { x: 1150, y: 300, fill: $pink_commit},
@@ -600,21 +617,19 @@ lines = [
   { from: 13, to: 15, },
   { from: 15, to: 16, },
   { from: 16, to: 17, },
-  { from: 16, to: 18, },
-  { from: 17, to: 18, dash: true },
-  { from: 2, to: 19, },
+  { from: 2, to: 18, },
+  { from: 18, to: 19, },
   { from: 19, to: 20, },
   { from: 20, to: 21, },
-  { from: 21, to: 22, },
-  { from: 22, to: 15, stroke: $unstable_line },
-  { from: 3, to: 23, },
+  { from: 21, to: 15, stroke: $unstable_line },
+  { from: 3, to: 22, },
+  { from: 22, to: 23, },
   { from: 23, to: 24, },
-  { from: 24, to: 25, },
-  { from: 25, to: 7, stroke: $unstable_line },
-  { from: 11, to: 26, },
+  { from: 24, to: 7, stroke: $unstable_line },
+  { from: 11, to: 25, },
+  { from: 25, to: 26, },
   { from: 26, to: 27, },
-  { from: 27, to: 28, },
-  { from: 28, to: 16, stroke: $unstable_line },
+  { from: 27, to: 16, stroke: $unstable_line },
 ]
 comments = [
   { x: 1700, y: 60, text: "release", anchor: "start"},
@@ -623,7 +638,7 @@ comments = [
   { x: 50, y: 100, text: "tag 0.1"},
   { x: 450, y: 20, text: "tag 0.2"},
   { x: 1150, y: 20, text: "tag 1.0"},
-  { x: 1550, y: 20, text: "tag 1.1"},
+  { x: 1550, y: 100, text: "tag 1.1"},
 ]
 create_image(7, "07-trunk-based.svg", 1800, 350, timelines, commits, lines, comments, false)
 
@@ -668,32 +683,23 @@ create_image(8, "08-merge-commit.svg", 1200, 200, timelines, commits, lines, com
 
 timelines = [
   {from: 0, to: 150, y: 60},
-  {from: 50, to: 400, y: 160},
-  {from: 600, to: 1000, y: 60},
+  {from: 50, to: 200, y: 160},
+  {from: 600, to: 800, y: 60},
 ]
 commits = [
   { x: 50, y: 60, fill: $orange_commit },
   { x: 150, y: 160, fill: $pink_commit },
-  { x: 250, y: 160, fill: $pink_commit },
-  { x: 350, y: 160, fill: $pink_commit },
   { x: 650, y: 60, fill: $orange_commit },
   { x: 750, y: 60, fill: $pink_commit },
-  { x: 850, y: 60, fill: $pink_commit },
-  { x: 950, y: 60, fill: $pink_commit },
 ]
 lines = [
   { from: 0, to: 1, },
-  { from: 1, to: 2, },
   { from: 2, to: 3, },
-
-  { from: 4, to: 5, },
-  { from: 5, to: 6, },
-  { from: 6, to: 7, },
 ]
 comments = [
   { x: 50, y: 20, text: "develop"},
-  { x: 350, y: 120, text: "feature"},
-  { x: 950, y: 20, text: "develop"},
+  { x: 150, y: 120, text: "feature"},
+  { x: 750, y: 20, text: "develop"},
 ]
 create_image(9, "09-fast-forward.svg", 1200, 200, timelines, commits, lines, comments, false)
 
@@ -889,4 +895,27 @@ comments = [
 ]
 create_image(15, "15-force-push.svg", 1200, 200, timelines, commits, lines, comments, false)
 
+timelines = [
+  {from: 0, to: 100, y: 60},
+  {from: 600, to: 800, y: 60},
+]
+commits = [
+  { x: 50, y: 60, fill: $pink_commit },
+  { x: 150, y: 160, split: true, fill1: $pink_commit, fill2: $pink1_commit },
+  { x: 650, y: 60, fill: $pink_commit },
+  { x: 750, y: 60, fill: $pink_commit },
+  { x: 850, y: 160, fill: $pink1_commit },
+]
+lines = [
+  { from: 0, to: 1, },
+  { from: 2, to: 3, },
+  { from: 3, to: 4, },
+]
+comments = [
+  { x: 50, y: 20, text: "feature"},
+  { x: 150, y: 120, text: "workspace", anchor: "start" },
+  { x: 750, y: 20, text: "feature"},
+  { x: 850, y: 120, text: "workspace", anchor: "start" },
+]
+create_image(16, "16-add-p.svg", 1200, 200, timelines, commits, lines, comments, false)
 

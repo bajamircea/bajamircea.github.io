@@ -13,8 +13,7 @@
   </style>
   <path stroke="none" fill="#ffffff" d="M 350 32 L 550 32 L 550 88 L 350 88 Z"/>
   <path stroke="none" fill="#ffffff" d="M 750 32 L 1250 32 L 1250 88 L 750 88 Z"/>
-  <path stroke="none" fill="#ffffff" d="M 1450 32 L 1650 32 L 1650 88 L 1450 88 Z"/>
-  <path stroke="none" fill="#ffffff" d="M 0 112 L 1672 112 L 1700 140 L 1672 168 L 0 168 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 0 112 L 1622 112 L 1650 140 L 1622 168 L 0 168 Z"/>
   <path stroke="none" fill="#ffffff" d="M 250 192 L 1350 192 L 1350 248 L 250 248 Z"/>
   <path stroke="none" fill="#ffffff" d="M 350 272 L 750 272 L 750 328 L 350 328 Z"/>
   <path stroke="none" fill="#ffffff" d="M 1050 272 L 1450 272 L 1450 328 L 1050 328 Z"/>
@@ -39,8 +38,6 @@
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1170 140 L 1330 140"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1370 140 L 1430 140"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1470 140 L 1530 140"/>
-  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1470 140 L 1480 140 Q 1500 140 1500 120 L 1500 80 Q 1500 60 1520 60 L 1530 60"/>
-  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 1570 140 L 1530 140 Q 1550 140 1550 120 L 1550 80 Q 1550 60 1570 60 L 1530 60" stroke-dasharray="5, 5"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 270 140 L 280 140 Q 300 140 300 160 L 300 200 Q 300 220 320 220 L 330 220"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 370 220 L 430 220"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 470 220 L 930 220"/>
@@ -72,7 +69,6 @@
   <circle cx="1350" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
   <circle cx="1450" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
   <circle cx="1550" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#9665ac"/>
-  <circle cx="1550" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
   <circle cx="350" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
   <circle cx="450" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
   <circle cx="950" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
@@ -89,5 +85,5 @@
   <text class="svg20220701-7-t1" x="50" y="100" fill="#2f332b" text-anchor="middle">tag 0.1</text>
   <text class="svg20220701-7-t1" x="450" y="20" fill="#2f332b" text-anchor="middle">tag 0.2</text>
   <text class="svg20220701-7-t1" x="1150" y="20" fill="#2f332b" text-anchor="middle">tag 1.0</text>
-  <text class="svg20220701-7-t1" x="1550" y="20" fill="#2f332b" text-anchor="middle">tag 1.1</text>
+  <text class="svg20220701-7-t1" x="1550" y="100" fill="#2f332b" text-anchor="middle">tag 1.1</text>
 </svg>

@@ -58,33 +58,33 @@
   <circle cx="550" cy="380" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
   <circle cx="1250" cy="380" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
   <circle cx="1650" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="450" cy="300" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="850" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="950" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1050" cy="300" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1150" cy="300" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1550" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1050" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="150" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="250" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="350" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="550" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="750" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1050" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1250" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1350" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1450" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1650" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#ffffff"/>
-  <circle cx="350" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="450" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="950" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1250" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="450" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="550" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="650" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1150" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1250" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
-  <circle cx="1350" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#2d93ad"/>
+  <circle cx="450" cy="300" r="20" stroke-width="4" stroke="#2f332b" fill="#ee6055"/>
+  <circle cx="850" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="950" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="1050" cy="300" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="1150" cy="300" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="1550" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#8ea604"/>
+  <circle cx="1050" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#9665ac"/>
+  <circle cx="150" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="250" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="350" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="550" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="750" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="1050" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="1250" cy="220" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="1350" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="1450" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="1650" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
+  <circle cx="350" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="450" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="950" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="1250" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="450" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="550" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="650" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="1150" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="1250" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="1350" cy="140" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
   <text class="svg20220701-5-t1" x="1700" y="220" fill="#2f332b" text-anchor="start">master</text>
   <text class="svg20220701-5-t1" x="1700" y="60" fill="#2f332b" text-anchor="start">develop</text>
   <text class="svg20220701-5-t1" x="50" y="20" fill="#2f332b" text-anchor="middle">tag 0.1</text>

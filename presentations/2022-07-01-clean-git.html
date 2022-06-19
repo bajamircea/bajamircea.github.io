@@ -13,50 +13,71 @@ Mircea Baja - 1 July 2022
 
 ---
 
-# Prerequisites
+# Basics/Prerequisites
 
 ---
 
-# Prerequisites
+# Linear local
 
-<pre><font color="#3465A4"><b>repo</b></font>$ git init
+<pre><font color="#3465A4"><b>repo</b></font>$ git <b>init</b>
 Initialised empty Git repository in repo/.git/
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master #%)</b></font>$ git add a.txt
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master +)</b></font>$ git status
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master #%)</b></font>$ git <b>add</b> a.txt
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master +)</b></font>$ git <b>status</b>
 ...
     <font color="#4E9A06">new file:   a.txt</font>
 ...
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master +)</b></font>$ git diff --staged
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master +)</b></font>$ git <b>diff</b> --staged
 ...
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master +)</b></font>$ git commit -m &apos;Initial&apos;
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master +)</b></font>$ git <b>commit -m</b> &apos;Initial&apos;
 [master (root-commit) 902c9e2] Initial
  1 file changed, 5 insertions(+)
  create mode 100644 a.txt
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master)</b></font>$ git log --graph --oneline
-* <font color="#C4A000">902c9e2 (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>master</b></font><font color="#C4A000">)</font> Initial
 <font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master)</b></font>$ 
 </pre>
 
 ---
 
-# Prerequisites
+# Tip #1
 
-<pre><font color="#3465A4"><b>temp</b></font>$ git clone repo.git
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch)</b></font>$    <font color="#666666">- branch name</font>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch %)</b></font>$  <font color="#666666">- untracked files</font>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch *)</b></font>$  <font color="#666666">- modified files</font>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch +)</b></font>$  <font color="#666666">- uncommitted files</font>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch=)</b></font>$   <font color="#666666">- local in same as remote</font>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch *=)</b></font>$ <font color="#666666">- in sync with remote, but modified files</font>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch&gt;)</b></font>$   <font color="#666666">- ahead of remote</font>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch&lt;)</b></font>$   <font color="#666666">- behind remote
+</pre>
+
+```bash
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
+GIT_PS1_SHOWSTASHSTATE=1
+GIT_PS1_SHOWUPSTREAM="auto"
+
+PS1='...\[\033[01;33m\]$(__git_ps1 " (%s)")\[\033[00m\]\$ '
+```
+
+---
+
+# Linear remote
+
+<pre><font color="#3465A4"><b>temp</b></font>$ git <b>clone</b> repo.git
 Cloning into &apos;repo&apos;...
 done.
 <font color="#3465A4"><b>temp</b></font>$ cd repo
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master=)</b></font>$ git pull
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master=)</b></font>$ git <b>pull</b>
 Already up-to-date.
 ...
 <font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master *=)</b></font>$ git commit -am &apos;Change 3&apos;
 [master 2180e3e] Change 3
  1 file changed, 1 insertion(+), 1 deletion(-)
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master&gt;)</b></font>$ git log --graph --oneline
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master&gt;)</b></font>$ git log --oneline
 * <font color="#C4A000">2180e3e (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>master</b></font><font color="#C4A000">)</font> Change 3
 * <font color="#C4A000">6c3a5fd (</font><font color="#CC0000"><b>origin/master</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/HEAD</b></font><font color="#C4A000">)</font> Change 2
 * <font color="#C4A000">34d83e5</font> Change 1
 * <font color="#C4A000">5cbc335</font> Initial
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master&gt;)</b></font>$ git push
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master&gt;)</b></font>$ git <b>push</b>
 ...
    6c3a5fd..2180e3e  master -&gt; master
 <font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master=)</b></font>$ 
@@ -72,9 +93,9 @@ Already up-to-date.
 
 ---
 
-# Prerequisites
+# Branch
 
-<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master=)</b></font>$ git checkout -b some_branch
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master=)</b></font>$ git <b>checkout -b</b> some_branch
 ...
 <font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch *)</b></font>$ git commit -am &apos;Change 4&apos;
 [some_branch c8bb82d] Change 4
@@ -85,14 +106,30 @@ fatal: The current branch some_branch has no upstream branch.
     git push --set-upstream origin some_branch
 <font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch)</b></font>$ git push --set-upstream origin some_branch
 ...
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch=)</b></font>$ git log --graph --oneline some_branch master
-* <font color="#C4A000">49d5900 (</font><font color="#CC0000"><b>origin/master</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/HEAD</b></font><font color="#C4A000">, </font><font color="#4E9A06"><b>master</b></font><font color="#C4A000">)</font> Other change
-<font color="#CC0000">|</font> * <font color="#C4A000">c8bb82d (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>some_branch</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/some_branch</b></font><font color="#C4A000">)</font> Change 4
-<font color="#CC0000">|/</font>  
-* <font color="#C4A000">2180e3e</font> Change 3
-* <font color="#C4A000">6c3a5fd</font> Change 2
-* <font color="#C4A000">34d83e5</font> Change 1
-* <font color="#C4A000">5cbc335</font> Initial
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch=)</b></font>$ git <b>checkout -</b>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master=)</b></font>$ 
+</pre>
+
+---
+
+# Tip #2
+
+<pre>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch)</b></font>$ git push
+<b>fatal: The current branch some_branch has no upstream branch.</b>
+...
+    git push --set-upstream origin some_branch
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch)</b></font>$ git push --set-upstream origin some_branch
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch=)</b></font>$
+</pre>
+<br/>
+<pre>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch)</b></font>$ git config --global push.default current
+</pre>
+<br/>
+<pre>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch)</b></font>$ git <b>push -u</b>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch=)</b></font>$
 </pre>
 
 ---
@@ -105,63 +142,24 @@ fatal: The current branch some_branch has no upstream branch.
 
 ---
 
-# Tip #1
-
-<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch)</b></font>$  branch name
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch %)</b></font>$  untracked files
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch *)</b></font>$  modified files
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch +)</b></font>$  uncommitted files
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch=)</b></font>$  local in same as remote
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch *=)</b></font>$  in sync with remote, but modified files
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch&gt;)</b></font>$  ahead of remote
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch&lt;)</b></font>$  behind remote
-</pre>
-
-```bash
-GIT_PS1_SHOWDIRTYSTATE=1
-GIT_PS1_SHOWUNTRACKEDFILES=1
-GIT_PS1_SHOWSTASHSTATE=1
-GIT_PS1_SHOWUPSTREAM="auto"
-
-PS1='...\[\033[01;33m\]$(__git_ps1 " (%s)")\[\033[00m\]\$ '
-```
-
----
-
-# Tip #2
+# Tip #3
 
 <pre>
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch)</b></font>$ git push
-fatal: The current branch some_branch has no upstream branch.
-...
-    git push --set-upstream origin some_branch
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch)</b></font>$ git push --set-upstream origin some_branch
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch=)</b></font>$
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch=)</b></font>$ git <b>log --graph --oneline some_branch master</b>
+* <font color="#C4A000">49d5900 (</font><font color="#CC0000"><b>origin/master</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/HEAD</b></font><font color="#C4A000">, </font><font color="#4E9A06"><b>master</b></font><font color="#C4A000">)</font> Other change
+<font color="#CC0000">|</font> * <font color="#C4A000">c8bb82d (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>some_branch</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/some_branch</b></font><font color="#C4A000">)</font> Change 4
+<font color="#CC0000">|/</font>  
+* <font color="#C4A000">2180e3e</font> Change 3
+* <font color="#C4A000">6c3a5fd</font> Change 2
+* <font color="#C4A000">34d83e5</font> Change 1
+* <font color="#C4A000">5cbc335</font> Initial
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch=)</b></font>$ 
 </pre>
-
-<pre>
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch)</b></font>$ git config --global push.default current
-</pre>
-
-<pre>
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch)</b></font>$ git push -u
-<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch=)</b></font>$
 </pre>
 
 ---
 
 # Branch models
-
----
-
-# Tip #3
-
-<div align="center">
-{% include assets/2022-07-01-clean-git/06-interlaced.svg %}
-</div>
-
-- long lived interwoven branches are a lot of merging trouble
-
 
 ---
 
@@ -172,24 +170,6 @@ fatal: The current branch some_branch has no upstream branch.
 </div>
 
 Vincent Driessen 2010 https://nvie.com/posts/a-successful-git-branching-model/
-
----
-
-# Uh-oh
-
-<div align="center">
-{% include assets/2022-07-01-clean-git/04-uh-oh.svg %}
-</div>
-
----
-
-# More uh-oh
-
-<div align="center">
-{% include assets/2022-07-01-clean-git/05-uh-oh.svg %}
-</div>
-
-`git log --first-parent`
 
 ---
 
@@ -206,13 +186,127 @@ class: large-points
 
 # Tip #4
 
-- use tags for released versions: tags don't move with new commits
 - branch name prefixes indicate the lifetime of the branch
 
+<br/>
 
 - "bugfix" means "it goes into release", not "it fixes a bug"
 - "feature" means "it goes into develop", not "it's a feature, not a bug"
+- "release" means "from develop to get release ready"
 
+---
+class: large-points
+
+# Tip #5
+
+- use tags for released versions: tags don't move with new commits
+
+---
+
+# Tip #6
+
+<div align="center">
+{% include assets/2022-07-01-clean-git/06-interlaced.svg %}
+</div>
+
+- long lived interwoven branches are a lot of merging trouble when it comes to
+  merge conflict resolution
+
+---
+class: large-points
+
+# Tip #7
+
+- feature and release branches are practically private, short lived branches
+
+---
+
+# Tip #8: first parent
+
+---
+
+# Uh-oh
+
+<div align="center">
+{% include assets/2022-07-01-clean-git/04-uh-oh.svg %}
+</div>
+
+---
+
+# Uh-oh
+
+<div align="center">
+{% include assets/2022-07-01-clean-git/05-uh-oh.svg %}
+</div>
+
+---
+
+# Log
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log</b> --oneline develop
+<font color="#C4A000">0c7898b (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>develop</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/develop</b></font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
+<font color="#C4A000">1b740ed</font> Merge branch &apos;feature6&apos; into develop
+<font color="#C4A000">74a3f6f</font> Merge branch &apos;bugfix6&apos; into release2
+<font color="#C4A000">a2ba6fd</font> Merge branch &apos;feature3&apos; into develop
+<font color="#C4A000">95ad0f1</font> <b>Change 18</b>
+<font color="#C4A000">6a11225</font> <b>Change 19</b>
+<font color="#C4A000">71610a6</font> Merge branch &apos;release1&apos; into develop
+<font color="#C4A000">3af84e9</font> Change 17
+<font color="#C4A000">aa94aae</font> Change 16
+<font color="#C4A000">919cb58</font> Merge branch &apos;release1&apos; into develop
+</pre>
+
+---
+
+# Log graph
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log --graph</b> --oneline develop
+*   <font color="#C4A000">0c7898b (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>develop</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/develop</b></font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
+<font color="#CC0000">|</font><font color="#4E9A06">\</font>  
+<font color="#CC0000">|</font> * <font color="#C4A000">74a3f6f</font> Merge branch &apos;bugfix6&apos; into release2
+<font color="#CC0000">|/</font><font color="#3465A4">|</font> 
+<font color="#CC0000">|</font> * <font color="#C4A000">6a11225</font> <b>Change 19</b>
+<font color="#CC0000">|/</font>  
+*   <font color="#C4A000">1b740ed</font> Merge branch &apos;feature6&apos; into develop
+<font color="#75507B">|</font><font color="#06989A">\</font>  
+<font color="#75507B">|</font> * <font color="#C4A000">95ad0f1</font> <b>Change 18</b>
+<font color="#75507B">|</font> * <font color="#C4A000">aa94aae</font> Change 16
+* <font color="#06989A">|</font>   <font color="#C4A000">a2ba6fd</font> Merge branch &apos;feature3&apos; into develop
+<font color="#CC0000"><b>|</b></font><font color="#4E9A06"><b>\</b></font> <font color="#06989A">\</font>  
+<font color="#CC0000"><b>|</b></font> * <font color="#06989A">|</font> <font color="#C4A000">3af84e9</font> Change 17
+<font color="#CC0000"><b>|</b></font> * <font color="#06989A">|</font> <font color="#C4A000">d78738e</font> Change 13
+<font color="#CC0000"><b>|</b></font> * <font color="#06989A">|</font> <font color="#C4A000">1903449</font> Change 4
+* <font color="#4E9A06"><b>|</b></font> <font color="#06989A">|</font>   <font color="#C4A000">71610a6</font> Merge branch &apos;release1&apos; into develop
+<font color="#06989A">|</font><font color="#3465A4"><b>\</b></font> <font color="#4E9A06"><b>\</b></font> <font color="#06989A">\</font>  
+</pre>
+
+---
+
+# Commit parents
+
+<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>show</b> 0c7898b
+<font color="#C4A000">commit 0c7898b6180686394287d60bdb7207710e3dc471 (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>develop</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/develop</b></font><font color="#C4A000">)</font>
+Merge: <b>1b740ed 74a3f6f</b>
+Author: Alice &lt;alice@example.com&gt;
+Date:   Sun Jun 19 22:59:25 2022 +0100
+
+    Merge branch &apos;release2&apos; into develop
+
+</pre>
+
+---
+
+# Log first parent
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log --first-parent</b> --graph --oneline develop
+* <font color="#C4A000">0c7898b (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>develop</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/develop</b></font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
+* <font color="#C4A000">1b740ed</font> Merge branch &apos;feature6&apos; into develop
+* <font color="#C4A000">a2ba6fd</font> Merge branch &apos;feature3&apos; into develop
+* <font color="#C4A000">71610a6</font> Merge branch &apos;release1&apos; into develop
+* <font color="#C4A000">919cb58</font> Merge branch &apos;release1&apos; into develop
+...
+* <font color="#C4A000">5a563fc (</font><font color="#C4A000"><b>tag: 0.1</b></font><font color="#C4A000">)</font> Change 1
+</pre>
 
 ---
 
@@ -281,6 +375,19 @@ class: large-points
 <div align="center">
 {% include assets/2022-07-01-clean-git/15-force-push.svg %}
 </div>
+
+---
+
+# Add -p
+
+<div align="center">
+{% include assets/2022-07-01-clean-git/16-add-p.svg %}
+</div>
+
+
+---
+
+# Delete unused branches
 
 ---
 class: large-points
