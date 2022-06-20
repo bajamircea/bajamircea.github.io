@@ -12,6 +12,18 @@ Mircea Baja - 1 July 2022
 </div>
 
 ---
+class: large-points
+
+# Agenda
+
+- Strategies
+- Tactics
+- Tips
+
+
+- for a cleaner git history in an imperfect world
+
+---
 
 # Basics/Prerequisites
 
@@ -73,8 +85,8 @@ Already up-to-date.
 [master 2180e3e] Change 3
  1 file changed, 1 insertion(+), 1 deletion(-)
 <font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master&gt;)</b></font>$ git log --oneline
-* <font color="#C4A000">2180e3e (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>master</b></font><font color="#C4A000">)</font> Change 3
-* <font color="#C4A000">6c3a5fd (</font><font color="#CC0000"><b>origin/master</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/HEAD</b></font><font color="#C4A000">)</font> Change 2
+* <font color="#C4A000">2180e3e (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">master</font><font color="#C4A000">)</font> Change 3
+* <font color="#C4A000">6c3a5fd (</font><font color="#CC0000">origin/master</font><font color="#C4A000">, </font><font color="#CC0000">origin/HEAD</font><font color="#C4A000">)</font> Change 2
 * <font color="#C4A000">34d83e5</font> Change 1
 * <font color="#C4A000">5cbc335</font> Initial
 <font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (master&gt;)</b></font>$ git <b>push</b>
@@ -146,8 +158,8 @@ fatal: The current branch some_branch has no upstream branch.
 
 <pre>
 <font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (some_branch=)</b></font>$ git <b>log --graph --oneline some_branch master</b>
-* <font color="#C4A000">49d5900 (</font><font color="#CC0000"><b>origin/master</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/HEAD</b></font><font color="#C4A000">, </font><font color="#4E9A06"><b>master</b></font><font color="#C4A000">)</font> Other change
-<font color="#CC0000">|</font> * <font color="#C4A000">c8bb82d (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>some_branch</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/some_branch</b></font><font color="#C4A000">)</font> Change 4
+* <font color="#C4A000">49d5900 (</font><font color="#CC0000">origin/master</font><font color="#C4A000">, </font><font color="#CC0000">origin/HEAD</font><font color="#C4A000">, </font><font color="#4E9A06">master</font><font color="#C4A000">)</font> Other change
+<font color="#CC0000">|</font> * <font color="#C4A000">c8bb82d (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">some_branch</font><font color="#C4A000">, </font><font color="#CC0000">origin/some_branch</font><font color="#C4A000">)</font> Change 4
 <font color="#CC0000">|/</font>  
 * <font color="#C4A000">2180e3e</font> Change 3
 * <font color="#C4A000">6c3a5fd</font> Change 2
@@ -187,12 +199,9 @@ class: large-points
 # Tip #4
 
 - branch name prefixes indicate the lifetime of the branch
-
-<br/>
-
-- "bugfix" means "it goes into release", not "it fixes a bug"
-- "feature" means "it goes into develop", not "it's a feature, not a bug"
-- "release" means "from develop to get release ready"
+  - "bugfix" means "it goes into release", not "it fixes a bug"
+  - "feature" means "it goes into develop", not "it's a feature, not a bug"
+  - "release" means "from develop to get release ready"
 
 ---
 class: large-points
@@ -200,6 +209,10 @@ class: large-points
 # Tip #5
 
 - use tags for released versions: tags don't move with new commits
+
+
+- sometimes tags end up on commits on develop (when release needs no other changes)
+- fix bugs in develop, cherry pick in release (rather than merge): when fixing a bug, not known beforehand if it will be needed in a certain release
 
 ---
 
@@ -217,7 +230,7 @@ class: large-points
 
 # Tip #7
 
-- feature and release branches are practically private, short lived branches
+- treat feature and release branches are practically private, short lived branches
 
 ---
 
@@ -244,7 +257,7 @@ class: large-points
 # Log
 
 <pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log</b> --oneline develop
-<font color="#C4A000">0c7898b (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>develop</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/develop</b></font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
+<font color="#C4A000">0c7898b (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
 <font color="#C4A000">1b740ed</font> Merge branch &apos;feature6&apos; into develop
 <font color="#C4A000">74a3f6f</font> Merge branch &apos;bugfix6&apos; into release2
 <font color="#C4A000">a2ba6fd</font> Merge branch &apos;feature3&apos; into develop
@@ -261,7 +274,7 @@ class: large-points
 # Log graph
 
 <pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log --graph</b> --oneline develop
-*   <font color="#C4A000">0c7898b (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>develop</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/develop</b></font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
+*   <font color="#C4A000">0c7898b (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
 <font color="#CC0000">|</font><font color="#4E9A06">\</font>  
 <font color="#CC0000">|</font> * <font color="#C4A000">74a3f6f</font> Merge branch &apos;bugfix6&apos; into release2
 <font color="#CC0000">|/</font><font color="#3465A4">|</font> 
@@ -280,12 +293,14 @@ class: large-points
 <font color="#06989A">|</font><font color="#3465A4"><b>\</b></font> <font color="#4E9A06"><b>\</b></font> <font color="#06989A">\</font>  
 </pre>
 
+- NOTE: maybe first parent always on the left
+
 ---
 
 # Commit parents
 
 <pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>show</b> 0c7898b
-<font color="#C4A000">commit 0c7898b6180686394287d60bdb7207710e3dc471 (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>develop</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/develop</b></font><font color="#C4A000">)</font>
+<font color="#C4A000">commit 0c7898b6180686394287d60bdb7207710e3dc471 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font>
 Merge: <b>1b740ed 74a3f6f</b>
 Author: Alice &lt;alice@example.com&gt;
 Date:   Sun Jun 19 22:59:25 2022 +0100
@@ -299,7 +314,7 @@ Date:   Sun Jun 19 22:59:25 2022 +0100
 # Log first parent
 
 <pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log --first-parent</b> --graph --oneline develop
-* <font color="#C4A000">0c7898b (</font><font color="#06989A"><b>HEAD -&gt; </b></font><font color="#4E9A06"><b>develop</b></font><font color="#C4A000">, </font><font color="#CC0000"><b>origin/develop</b></font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
+* <font color="#C4A000">0c7898b (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
 * <font color="#C4A000">1b740ed</font> Merge branch &apos;feature6&apos; into develop
 * <font color="#C4A000">a2ba6fd</font> Merge branch &apos;feature3&apos; into develop
 * <font color="#C4A000">71610a6</font> Merge branch &apos;release1&apos; into develop
@@ -310,7 +325,7 @@ Date:   Sun Jun 19 22:59:25 2022 +0100
 
 ---
 
-# Doing stuff
+# Tactics
 
 ---
 
@@ -322,11 +337,95 @@ Date:   Sun Jun 19 22:59:25 2022 +0100
 
 ---
 
+# Merge commit
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>log --oneline --graph develop feature</b>
+* <font color="#C4A000">d682b2a (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">)</font> Some other change
+<font color="#CC0000">|</font> * <font color="#C4A000">d0c3ef9 (</font><font color="#4E9A06">feature</font><font color="#C4A000">)</font> Change 3
+<font color="#CC0000">|</font> * <font color="#C4A000">68cdd49</font> Change 2
+<font color="#CC0000">|</font> * <font color="#C4A000">a6da8b9</font> Change 1
+<font color="#CC0000">|/</font>  
+* <font color="#C4A000">34d4b9f</font> Base
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ 
+</pre>
+
+---
+
+# Merge commit
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>merge --no-ff</b> feature
+</pre>
+
+<pre style="background-color:#eee"><font color="#C4A000">Merge branch &apos;feature&apos; into develop</font>
+<font color="#3465A4"># Please enter a commit message to explain why this merge is necessary,</font>
+...
+<font color="#729FCF">~                                                                               </font>
+<b>:x</b>
+</pre>
+
+<pre> Merge made by the &apos;recursive&apos; strategy.
+ a.txt | 2 <font color="#4E9A06">+</font><font color="#CC0000">-</font>
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ 
+</pre>
+
+---
+
+# Merge commit
+
+<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>log --oneline --graph develop feature</b>
+*   <font color="#C4A000">3c37e6d (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">)</font> Merge branch &apos;feature&apos; into develop
+<font color="#CC0000">|</font><font color="#4E9A06">\</font>  
+<font color="#CC0000">|</font> * <font color="#C4A000">d0c3ef9 (</font><font color="#4E9A06">feature</font><font color="#C4A000">)</font> Change 3
+<font color="#CC0000">|</font> * <font color="#C4A000">68cdd49</font> Change 2
+<font color="#CC0000">|</font> * <font color="#C4A000">a6da8b9</font> Change 1
+* <font color="#4E9A06">|</font> <font color="#C4A000"><b>d682b2a</b></font> Some other change
+<font color="#4E9A06">|/</font>  
+* <font color="#C4A000">34d4b9f</font> Base
+<font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>show</b>
+<font color="#C4A000">commit 3c37e6d716f76bb4f4ad2632feb0534be6102481 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">)</font>
+Merge: <b>d682b2a</b> d0c3ef9
+Author: Alice &lt;alice@example.com&gt;
+Date:   Mon Jun 20 21:03:32 2022 +0100
+
+    Merge branch &apos;feature&apos; into develop
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ 
+</pre>
+
+---
+
 # Fast forward
 
 <div align="center">
 {% include assets/2022-07-01-clean-git/09-fast-forward.svg %}
 </div>
+
+---
+
+# Fast forward
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>log --oneline --graph develop feature</b>
+* <font color="#C4A000">d594416 (</font><font color="#4E9A06">feature</font><font color="#C4A000">)</font> Change 1
+* <font color="#C4A000">364ef22 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">)</font> Base
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>merge --ff-only</b> feature
+Updating 364ef22..d594416
+Fast-forward
+ a.txt | 2 <font color="#4E9A06">+</font><font color="#CC0000">-</font>
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>log --oneline --graph develop feature</b>
+* <font color="#C4A000">d594416 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#4E9A06">feature</font><font color="#C4A000">)</font> Change 1
+* <font color="#C4A000">364ef22</font> Base
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ </pre>
+
+---
+
+# Just merge
+
+<pre>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>merge</b> feature
+</pre>
+
+- fast forward if possible, else create merge commit
 
 ---
 
@@ -338,11 +437,50 @@ Date:   Sun Jun 19 22:59:25 2022 +0100
 
 ---
 
+# Squash merge
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>merge --squash feature</b>
+Squash commit -- not updating HEAD
+Automatic merge went well; stopped before committing as requested
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop +)</b></font>$ git <b>commit</b> -m &apos;Change 1 to 3&apos;
+[develop 3c58559] Change 1 to 3
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>log --oneline --graph develop feature</b>
+* <font color="#C4A000">3c58559 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">)</font> Change 1 to 3
+* <font color="#C4A000">1678d67</font> Some other change
+<font color="#CC0000">|</font> * <font color="#C4A000">4450028 (</font><font color="#4E9A06">feature</font><font color="#C4A000">)</font> Change 3
+<font color="#CC0000">|</font> * <font color="#C4A000">2df5e28</font> Change 2
+<font color="#CC0000">|</font> * <font color="#C4A000">e27fb78</font> Change 1
+<font color="#CC0000">|/</font>  
+* <font color="#C4A000">70045eb</font> Base
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ 
+</pre>
+
+---
+
 # Rebase
 
 <div align="center">
 {% include assets/2022-07-01-clean-git/11-rebase.svg %}
 </div>
+
+---
+
+# Rebase
+
+<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (feature)</b></font>$ git <b>rebase develop</b>
+First, rewinding head to replay your work on top of it...
+Applying: Change 1
+Applying: Change 2
+Applying: Change 3
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature)</b></font>$ git <b>log --oneline --graph develop feature</b>
+* <font color="#C4A000">c659a53 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">feature</font><font color="#C4A000">)</font> Change 3
+* <font color="#C4A000">012859d</font> Change 2
+* <font color="#C4A000">8dd3340</font> Change 1
+* <font color="#C4A000">4b96ca3 (</font><font color="#4E9A06">develop</font><font color="#C4A000">)</font> Some other change
+* <font color="#C4A000">ce88a4f</font> Base
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature)</b></font>$ 
+</pre>
 
 ---
 
@@ -354,11 +492,76 @@ Date:   Sun Jun 19 22:59:25 2022 +0100
 
 ---
 
+# Interactive rebase
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature)</b></font>$ git <b>rebase -i HEAD~4</b>
+</pre>
+
+<pre style="background-color:#eee"><font color="#3465A4">pick</font> <font color="#3465A4">18dedc5</font><font color="#AD7FA8"> Change 1</font>
+<font color="#3465A4">fixup</font> <font color="#3465A4">f619bd2</font><font color="#AD7FA8"> Change 4</font>
+<font color="#3465A4">pick</font> <font color="#3465A4">ec47071</font><font color="#AD7FA8"> Change 2</font>
+<font color="#3465A4">fixup</font> <font color="#3465A4">56ce00b</font><font color="#AD7FA8"> Change 3</font>
+
+<font color="#3465A4"># Rebase 3d89342..f619bd2 onto f619bd2 (4 commands)</font>
+<font color="#3465A4">#</font>
+<font color="#3465A4"># Commands:</font>
+<font color="#3465A4"># p, pick &lt;commit&gt; = use commit</font>
+...
+<font color="#3465A4"># f, fixup &lt;commit&gt; = like &quot;squash&quot;, but discard this commit&apos;s log message</font>
+...
+jjjddkkP
+cwfixup<ESC>
+jj0.
+:x
+</pre>
+
+---
+
+# Interactive rebase
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature)</b></font>$ git <b>rebase -i HEAD~4</b>
+Successfully rebased and updated refs/heads/feature.
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature)</b></font>$ git <b>log --oneline --graph develop feature</b>
+* <font color="#C4A000">5ca72ab (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">feature</font><font color="#C4A000">)</font> Change 2
+* <font color="#C4A000">a9cecf4</font> Change 1
+<font color="#CC0000">|</font> * <font color="#C4A000">85b3097 (</font><font color="#4E9A06">develop</font><font color="#C4A000">)</font> Some other change
+<font color="#CC0000">|/</font>  
+* <font color="#C4A000">3d89342</font> Base
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature)</b></font>$ 
+</pre>
+
+---
+
 # Cherry pick
 
 <div align="center">
 {% include assets/2022-07-01-clean-git/13-cherry-pick.svg %}
 </div>
+
+---
+
+# Cherry pick
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (release)</b></font>$ git <b>log --oneline --graph develop release</b>
+* <font color="#C4A000">d641e3b (</font><font color="#4E9A06">develop</font><font color="#C4A000">)</font> Change 3
+* <font color="#C4A000">a543eee</font> Bugfix
+* <font color="#C4A000">af606c4</font> Change 1
+<font color="#CC0000">|</font> * <font color="#C4A000">595643f (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">release</font><font color="#C4A000">)</font> Release change
+<font color="#CC0000">|/</font>  
+* <font color="#C4A000">ec4d982</font> Base
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (release)</b></font>$ git <b>cherry-pick a543eee</b>
+[release 567fcc3] Bugfix
+...
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (release)</b></font>$ git <b>log --oneline --graph develop release</b>
+* <font color="#C4A000">567fcc3 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">release</font><font color="#C4A000">)</font> Bugfix
+* <font color="#C4A000">595643f</font> Release change
+<font color="#CC0000">|</font> * <font color="#C4A000">d641e3b (</font><font color="#4E9A06">develop</font><font color="#C4A000">)</font> Change 3
+<font color="#CC0000">|</font> * <font color="#C4A000">a543eee</font> Bugfix
+<font color="#CC0000">|</font> * <font color="#C4A000">af606c4</font> Change 1
+<font color="#CC0000">|/</font>  
+* <font color="#C4A000">ec4d982</font> Base
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (release)</b></font>$ 
+</pre>
 
 ---
 
@@ -394,6 +597,15 @@ class: large-points
 # Last tip
 
 - "If you regularly need to use these techniques something is wrong somewhere"
+- But we're not in a perfect world with perfect foresight:
+  - A commit on a feature branch fails a test
+  - We mix multiple issues in the same feature branch
+  - Developing/testing a feature takes longer
+  - Code review/pull requests take longer
+- Sometimes it's a matter of taste, not always a fixed recipe
+  - Force push on a feature branch before pull request: fine
+  - Force push after pull request: maybe
+  - Force push on develop: nop
 
 ---
 

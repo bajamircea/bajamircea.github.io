@@ -14,12 +14,16 @@
   <path stroke="none" fill="#ffffff" d="M 0 32 L 322 32 L 350 60 L 322 88 L 0 88 Z"/>
   <path stroke="none" fill="#ffffff" d="M 50 132 L 372 132 L 400 160 L 372 188 L 50 188 Z"/>
   <path stroke="none" fill="#ffffff" d="M 600 32 L 1022 32 L 1050 60 L 1022 88 L 600 88 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 650 132 L 1000 132 L 1000 188 L 650 188 Z"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 70 60 L 280 60"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 70 60 L 80 60 Q 100 60 100 80 L 100 140 Q 100 160 120 160 L 130 160"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 170 160 L 230 160"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 270 160 L 330 160"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 670 60 L 880 60"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 920 60 L 980 60"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 670 60 L 680 60 Q 700 60 700 80 L 700 140 Q 700 160 720 160 L 730 160"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 770 160 L 830 160"/>
+  <path stroke-width="4" fill="none" stroke="#2f332b" d="M 870 160 L 930 160"/>
   <circle cx="50" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
   <circle cx="300" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
   <circle cx="150" cy="160" r="20" stroke-width="4" stroke="#2f332b" fill="#ffcdea"/>
@@ -28,7 +32,11 @@
   <circle cx="650" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
   <circle cx="900" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#f5bb00"/>
   <circle cx="1000" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
+  <circle cx="750" cy="160" r="20" stroke-width="4" stroke="#2f332b" fill="#ffcdea"/>
+  <circle cx="850" cy="160" r="20" stroke-width="4" stroke="#2f332b" fill="#ff9bd5"/>
+  <circle cx="950" cy="160" r="20" stroke-width="4" stroke="#2f332b" fill="#ff69c0"/>
   <text class="svg20220701-10-t1" x="300" y="20" fill="#2f332b" text-anchor="middle">develop</text>
   <text class="svg20220701-10-t1" x="350" y="120" fill="#2f332b" text-anchor="middle">feature</text>
   <text class="svg20220701-10-t1" x="1000" y="20" fill="#2f332b" text-anchor="middle">develop</text>
+  <text class="svg20220701-10-t1" x="950" y="120" fill="#2f332b" text-anchor="middle">feature</text>
 </svg>

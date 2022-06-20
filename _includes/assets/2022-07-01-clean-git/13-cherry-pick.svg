@@ -13,7 +13,7 @@
   </style>
   <path stroke="none" fill="#ffffff" d="M 50 32 L 172 32 L 200 60 L 172 88 L 50 88 Z"/>
   <path stroke="none" fill="#ffffff" d="M 0 132 L 372 132 L 400 160 L 372 188 L 0 188 Z"/>
-  <path stroke="none" fill="#ffffff" d="M 750 32 L 872 32 L 900 60 L 872 88 L 750 88 Z"/>
+  <path stroke="none" fill="#ffffff" d="M 650 32 L 872 32 L 900 60 L 872 88 L 650 88 Z"/>
   <path stroke="none" fill="#ffffff" d="M 600 132 L 972 132 L 1000 160 L 972 188 L 600 188 Z"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 70 160 L 130 160"/>
   <path stroke-width="4" fill="none" stroke="#2f332b" d="M 70 160 L 80 160 Q 100 160 100 140 L 100 80 Q 100 60 120 60 L 130 60"/>

@@ -678,6 +678,7 @@ comments = [
   { x: 300, y: 20, text: "develop"},
   { x: 350, y: 120, text: "feature"},
   { x: 1050, y: 20, text: "develop"},
+  { x: 950, y: 120, text: "feature"},
 ]
 create_image(8, "08-merge-commit.svg", 1200, 200, timelines, commits, lines, comments, false)
 
@@ -699,7 +700,7 @@ lines = [
 comments = [
   { x: 50, y: 20, text: "develop"},
   { x: 150, y: 120, text: "feature"},
-  { x: 750, y: 20, text: "develop"},
+  { x: 750, y: 20, text: "develop, feature", anchor: "start"},
 ]
 create_image(9, "09-fast-forward.svg", 1200, 200, timelines, commits, lines, comments, false)
 
@@ -707,6 +708,7 @@ timelines = [
   {from: 0, to: 350, y: 60},
   {from: 50, to: 400, y: 160},
   {from: 600, to: 1050, y: 60},
+  {from: 650, to: 1000, y: 160, noarrow: true},
 ]
 commits = [
   { x: 50, y: 60, fill: $orange_commit },
@@ -717,20 +719,26 @@ commits = [
   { x: 650, y: 60, fill: $orange_commit },
   { x: 900, y: 60, fill: $orange_commit },
   { x: 1000, y: 60, fill: $pink_commit },
+  { x: 750, y: 160, fill: $pink1_commit },
+  { x: 850, y: 160, fill: $pink2_commit },
+  { x: 950, y: 160, fill: $pink3_commit },
 ]
 lines = [
   { from: 0, to: 1, },
   { from: 0, to: 2, },
   { from: 2, to: 3, },
   { from: 3, to: 4, },
-
   { from: 5, to: 6, },
   { from: 6, to: 7, },
+  { from: 5, to: 8, },
+  { from: 8, to: 9, },
+  { from: 9, to: 10, },
 ]
 comments = [
   { x: 300, y: 20, text: "develop"},
   { x: 350, y: 120, text: "feature"},
   { x: 1000, y: 20, text: "develop"},
+  { x: 950, y: 120, text: "feature"},
 ]
 create_image(10, "10-squash.svg", 1200, 200, timelines, commits, lines, comments, false)
 
@@ -774,7 +782,7 @@ timelines = [
   {from: 0, to: 200, y: 60},
   {from: 50, to: 500, y: 160},
   {from: 600, to: 800, y: 60},
-  {from: 750, to: 900, y: 160},
+  {from: 650, to: 900, y: 160},
 ]
 commits = [
   { x: 50, y: 60, fill: $orange_commit },
@@ -809,7 +817,7 @@ create_image(12, "12-rebase-i.svg", 1200, 200, timelines, commits, lines, commen
 timelines = [
   {from: 50, to: 200, y: 60},
   {from: 0, to: 400, y: 160},
-  {from: 750, to: 900, y: 60},
+  {from: 650, to: 900, y: 60},
   {from: 600, to: 1000, y: 160},
 ]
 commits = [

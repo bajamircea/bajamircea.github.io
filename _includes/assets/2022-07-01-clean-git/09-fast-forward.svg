@@ -22,5 +22,5 @@
   <circle cx="750" cy="60" r="20" stroke-width="4" stroke="#2f332b" fill="#ff36ab"/>
   <text class="svg20220701-9-t1" x="50" y="20" fill="#2f332b" text-anchor="middle">develop</text>
   <text class="svg20220701-9-t1" x="150" y="120" fill="#2f332b" text-anchor="middle">feature</text>
-  <text class="svg20220701-9-t1" x="750" y="20" fill="#2f332b" text-anchor="middle">develop</text>
+  <text class="svg20220701-9-t1" x="750" y="20" fill="#2f332b" text-anchor="start">develop, feature</text>
 </svg>
