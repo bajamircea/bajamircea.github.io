@@ -510,7 +510,7 @@ Applying: Change 3
 <font color="#3465A4"># f, fixup &lt;commit&gt; = like &quot;squash&quot;, but discard this commit&apos;s log message</font>
 ...
 jjjddkkP
-cwfixup<ESC>
+cwfixup ESC
 jj0.
 :x
 </pre>
@@ -553,10 +553,10 @@ Successfully rebased and updated refs/heads/feature.
 [release 567fcc3] Bugfix
 ...
 <font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (release)</b></font>$ git <b>log --oneline --graph develop release</b>
-* <font color="#C4A000">567fcc3 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">release</font><font color="#C4A000">)</font> Bugfix
+* <font color="#C4A000"><b>567fcc3</b> (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">release</font><font color="#C4A000">)</font> Bugfix
 * <font color="#C4A000">595643f</font> Release change
 <font color="#CC0000">|</font> * <font color="#C4A000">d641e3b (</font><font color="#4E9A06">develop</font><font color="#C4A000">)</font> Change 3
-<font color="#CC0000">|</font> * <font color="#C4A000">a543eee</font> Bugfix
+<font color="#CC0000">|</font> * <font color="#C4A000"><b>a543eee</b></font> Bugfix
 <font color="#CC0000">|</font> * <font color="#C4A000">af606c4</font> Change 1
 <font color="#CC0000">|/</font>  
 * <font color="#C4A000">ec4d982</font> Base
@@ -573,11 +573,50 @@ Successfully rebased and updated refs/heads/feature.
 
 ---
 
+# Amend
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature *)</b></font>$ git <b>log --oneline feature</b>
+<font color="#C4A000"><b>3c68932</b> (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">feature</font><font color="#C4A000">)</font> Some change
+<font color="#C4A000">f887d61</font> Base
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature *)</b></font>$ git <b>add .</b>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature +)</b></font>$ git <b>commit --amend --no-edit</b>
+[feature ad3d11e] Some change
+ Date: Tue Jun 21 20:20:05 2022 +0100
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature)</b></font>$ git <b>log --oneline feature</b>
+<font color="#C4A000"><b>ad3d11e</b> (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">feature</font><font color="#C4A000">)</font> Some change
+<font color="#C4A000">f887d61</font> Base
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature)</b></font>$ 
+</pre>
+
+---
+
 # Force push
 
 <div align="center">
 {% include assets/2022-07-01-clean-git/15-force-push.svg %}
 </div>
+
+---
+
+# Force push
+
+<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (feature&lt;&gt;)</b></font>$ git <b>log --oneline --graph feature origin/feature</b>
+* <font color="#C4A000">ba4d6e8 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">feature</font><font color="#C4A000">)</font> Better change
+<font color="#CC0000">|</font> * <font color="#C4A000">5b38ed3 (</font><font color="#CC0000">origin/feature</font><font color="#C4A000">)</font> Some change
+<font color="#CC0000">|/</font>  
+* <font color="#C4A000">b766375</font> Base
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature&lt;&gt;)</b></font>$ git <b>push</b>
+ <font color="#CC0000">! [rejected]       </font> feature -&gt; feature (non-fast-forward)
+...
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature&lt;&gt;)</b></font>$ git <b>push --force</b>
+...
+ + 5b38ed3...ba4d6e8 feature -&gt; feature (forced update)
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature=)</b></font>$ git <b>log --oneline --graph feature origin/feature</b>
+* <font color="#C4A000">ba4d6e8 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">feature</font><font color="#C4A000">, </font><font color="#CC0000">origin/feature</font><font color="#C4A000">)</font> Better change
+* <font color="#C4A000">b766375</font> Base
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature=)</b></font>$ 
+</pre>
 
 ---
 
@@ -587,10 +626,81 @@ Successfully rebased and updated refs/heads/feature.
 {% include assets/2022-07-01-clean-git/16-add-p.svg %}
 </div>
 
+---
+
+# Add -p
+
+<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (feature *)</b></font>$ git <b>diff a.txt</b>
+...
+<font color="#CC0000">-qui</font>
+<font color="#CC0000">-dolorem</font>
+<font color="#4E9A06">+lorem</font>
+ ipsum,
+...
+ numquam
+<font color="#CC0000">-[do]</font>
+<font color="#4E9A06">+do</font>
+ eius
+...
+</pre>
+
+---
+
+# Add -p
+
+<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (feature *)</b></font>$ git <b>add -p a.txt</b>
+...
+<font color="#CC0000">-qui</font>
+<font color="#CC0000">-dolorem</font>
+<font color="#4E9A06">+lorem</font>
+ ipsum,
+...
+<font color="#3465A4">(1/2) Stage this hunk [y,n,q,a,d,j,J,g,/,e,?]? </font><b>y</b>
+...
+ numquam
+<font color="#CC0000">-[do]</font>
+<font color="#4E9A06">+do</font>
+ eius
+...
+<font color="#3465A4">(2/2) Stage this hunk [y,n,q,a,d,K,g,/,e,?]? </font><b>n</b>
+
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature *+)</b></font>$ 
+</pre>
+
+---
+
+# Add -p
+
+<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (feature *+)</b></font>$ git <b>commit -m &apos;Some commit&apos;</b>
+[feature 4660ca5] Some commit
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature *)</b></font>$ git <b>diff a.txt</b>
+...
+ numquam
+<font color="#CC0000">-[do]</font>
+<font color="#4E9A06">+do</font>
+ eius
+ modi
+...
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature *)</b></font>$ 
+</pre>
 
 ---
 
 # Delete unused branches
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>branch</b>
+* <font color="#4E9A06">develop</font>
+  feature
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>branch -d feature </b>
+Deleted branch feature (was 4660ca5).
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>push origin --delete feature</b>
+ - [deleted]         feature
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>pull --prune</b>
+ - [deleted]         (none)     -&gt; origin/another_feature
+Already up-to-date.
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ 
+</pre>
 
 ---
 class: large-points
@@ -604,7 +714,7 @@ class: large-points
   - Code review/pull requests take longer
 - Sometimes it's a matter of taste, not always a fixed recipe
   - Force push on a feature branch before pull request: fine
-  - Force push after pull request: maybe
+  - Force push after pull request created: maybe
   - Force push on develop: nop
 
 ---
