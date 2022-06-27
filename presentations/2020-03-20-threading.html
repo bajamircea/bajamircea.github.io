@@ -9,7 +9,7 @@ Mircea Baja @ 20 March 2020
 
 - Advanced in that it assumes audience used/heard of threads
 - Introduction in that the subject is deep and complex
-- "we're doing this thing that we shouldn't be do it, is it all right if we keep
+- "we're doing this thing that we shouldn't be doing, is it all right if we keep
   on doing it?"
 
 ---
@@ -299,6 +299,28 @@ if (!stop) {
 // Thread 2:
 stop = true;
 ```
+---
+
+# Boolean data race - part 3
+
+- "Yes but we're not checking the bool in a loop and a bool is just true or
+  false"
+- The compiler does all sort of optimisations, including storing the value of a
+  variable in multiple locations: it might have different values at different
+  locations
+
+---
+
+# Boolean data race - part 4
+
+- "Then why is our code working as expected anyway?"
+- Undefined behaviour might just happen to do what you wanted
+- If your code is complex and makes a lot of opaque calls (like the OS calls
+  we've seen above) the compiler might fetch the boolean whenever is needed and
+  not cache it.
+- You might get away with bugs, but it's still a bug waiting to happen when
+  code is refactored, the compiler gets improved etc.
+
 ---
 
 # Mutex locking
