@@ -1,23 +1,20 @@
 ---
 layout: post
-title: 'Fit RAII'
+title: 'Fit RAII - revisited'
 categories: coding cpp
 ---
 
-This article looks at an idiom of wrapping C APIs that increases code reuse
-compared with the classic, slim and fat RAII variants described in previous
-articles.
+Wrapping C API calls, improving the "fit RAII".
 
-**NOTE: for an updated version of this article see [fit RAII -
-revisited][revisited].**
 
 # Introduction
 
 In previous articles I've described several idioms of wrapping C APIs such as
 [classic RAII][classic-raii], [slim RAII][slim-raii] and [fat RAII][fat-raii].
+Then I've looked at an [industry quality wrapper][fit-raii-old]. In this
+article I'm revisiting and improving this "fit RAII" version, that is suitable
+for larger projects.
 
-While they work, there are alternatives that scale better in larger projects.
-This article tries to sketch one such alternative. I'll call it 'fit RAII'.
 
 # Code
 
@@ -25,9 +22,14 @@ This article tries to sketch one such alternative. I'll call it 'fit RAII'.
 
 First let's create a class template to deal with resources that have a invalid
 value. For this simple example is not strictly necessary, because we'll only
-use it once with `FILE *`. Other similar templates can be imagined for
-situations like where there is no invalid value and we need an extra `bool`, or
-for the case where additional data is required to free the resource.
+use it once with `FILE *`.
+
+It's a RAII class with the main purpose of closing the handle to clean up the
+resource on destructor, if it does not have the invalid value.
+
+Other similar templates can be imagined for situations like where there is no
+invalid value and we need an extra `bool`, or for the case where additional
+data is required to clean up the resource.
 
 {% highlight c++ linenos %}
 #pragma once
@@ -35,17 +37,19 @@ namespace cpp_util
 {
   template<typename Traits>
   // requires Traits defines
-  // - a Handle type - the type of the handle
-  // - a function static void free_handle(Handle) noexcept - the function to
+  // - a handle type - the type of the handle
+  // - a function static void close_handle(handle) noexcept - the function to
   //   close the handle
   // - and a invalid_value constant - the special value indicating no handle is
   //   hold
   class raii_with_invalid_value
   {
-    using Handle = typename Traits::Handle;
+  public:
+    using handle = typename Traits::handle;
     static constexpr auto invalid_value = Traits::invalid_value;
 
-    Handle h_;
+  private:
+    handle h_;
 
   public:
     raii_with_invalid_value() noexcept :
@@ -53,7 +57,7 @@ namespace cpp_util
     {
     }
 
-    explicit raii_with_invalid_value(Handle h) noexcept :
+    explicit raii_with_invalid_value(handle h) noexcept :
       h_{ h }
     {
     }
@@ -62,7 +66,7 @@ namespace cpp_util
     {
       if (is_valid())
       {
-        Traits::free_handle(h_);
+        Traits::close_handle(h_);
       }
     }
 
@@ -77,48 +81,53 @@ namespace cpp_util
 
     raii_with_invalid_value & operator=(raii_with_invalid_value && other) noexcept
     {
-      Handle tmp = other.h_;
+      handle tmp = other.h_;
       other.h_ = invalid_value;
       if (is_valid())
       {
-        Traits::free_handle(h_);
+        Traits::close_handle(h_);
       }
       h_ = tmp;
       return *this;
     }
 
-    bool is_valid() noexcept
+    bool is_valid() const noexcept
     {
       return h_ != invalid_value;
     }
 
-    Handle get() noexcept
+    explicit operator bool() const noexcept
+    {
+      return is_valid();
+    }
+
+    handle get() const noexcept
     {
       return h_;
     }
 
-    Handle & handle_reference() noexcept
+    handle & handle_reference() noexcept
     {
       return h_;
     }
 
-    Handle * handle_pointer() noexcept
+    handle * handle_pointer() noexcept
     {
       return &h_;
     }
 
-    void reset(Handle h = invalid_value) noexcept
+    void reset(handle h = invalid_value) noexcept
     {
       if (is_valid())
       {
-        Traits::free_handle(h_);
+        Traits::close_handle(h_);
       }
       h_ = h;
     }
 
-    Handle release() noexcept
+    handle release() noexcept
     {
-      Handle tmp = h_;
+      handle tmp = h_;
       h_ = invalid_value;
       return tmp;
     }
@@ -126,34 +135,116 @@ namespace cpp_util
 }
 {% endhighlight %}
 
-The single purpose of the class is to free the resource on destructor, if it
-does not have the invalid value.
+The constructor taking a handle is `explicit` so that we don't accidentally
+take the ownership of the handle.
 
-The class is not copyable because the destructor would be called
-twice for both the original and the copy. This does not make sense for most
-resources e.g. it makes sense to copy the file contents, but not the file
-handle. Copying a file handle is either not possible or possible but
+The class is moveable and has a default constructor which allows for scenarios
+where it's default created without a handle value and the handle is provided
+later. The destructor then has to check for a valid handle before cleaning the
+resource.
+
+The class is not copyable because the destructor would be called twice for both
+the original and the copy. This does not make sense for most resources e.g. it
+makes sense to copy the file contents, but not the file handle for independent
+usage. Such a copy for a file handle is either not possible or possible but
 undesirable most of the time.
-
-The class is moveable and has a default constructor which makes it useful in a
-variety of scenarios not illustrated in the code below. E.g. when it needs to be
-default created and the handle is provided later even indirectly via the
-`handle_pointer` method.
 
 The `get`, `reset` and `release` methods create some similarities in usage to
 smart pointers.
 
+Unlike `std::unique_ptr` it handles the case where the invalid is not
+`nullptr`. It provides the `is_valid()` to check for validity. `operator*` and
+`operator->` don't usually make sense for handles. `handle_reference` and
+`handle_pointer` are provided for direct (dangerous, but useful sometimes)
+direct access to the handle.
+
+The operator `bool` checks for `is_valid()`, it is `explicit`, limiting it's
+use e.g. to `if` tests.
+
+Equality is not implemented, because it does not make sense. The handles are
+often opaque and each valid handle points has a different value, so the only
+equal values will be those of invalid handles.
+
+All the methods are `noexcept` either explicitly or implicitly, which is useful
+when doing low level interactions with C code.
+
+
+## cpp_util_lib/handle_arg.h
+
+Second let's create a class template that we can use as a function argument,
+for when the function accepts either a raw handle or the RAII class owning the
+handle.
+
+{% highlight c++ linenos %}
+#pragma once
+namespace cpp_util
+{
+  template<typename RaiiClass>
+  class handle_arg
+  {
+    using handle = typename RaiiClass::handle;
+
+    handle h_;
+
+  public:
+    handle_arg(handle h) noexcept :
+      h_{ h }
+    {
+    }
+
+    handle_arg(const RaiiClass & raii) noexcept :
+      h_{ raii.get() }
+    {
+    }
+
+    handle_arg(RaiiClass &&) noexcept = delete;
+
+    operator handle() const noexcept
+    {
+      return h_;
+    }
+  };
+}
+{% endhighlight %}
+
+This class is a bit like `std::string_view` that can be used as an argument for
+a function that accepts either a string literal or a `std::string`, but unlike
+`std::string_view` that can construct from temporary `std::string`, I made the
+choice that it's consructor does not accept a temporary RAII class, because
+that's the safest option as it's harder to have dangling reference to a
+temporary that's out of scope, with the minor inconvenience that one can't do
+`open(read(...)...);` on a single line using the file functions below, instead
+two lines will be required.
+
+This `handle_arg` helps because the options for functions that need a handle
+are:
+- provide two overloads, one that takes a raw handle and another one that takes
+  a RAII class reference
+- call `.get()` each time on the RAII class to pass it to a C++ function that
+  only takes the raw handle
+
+Note that the RAII class `raii_with_invalid_value` does not provide an implicit
+conversion to the raw handle because that creates the risk that it's used to
+call the function that closes the handle. Similarly `std::unique_ptr` does not
+convert to the raw pointer, to avoid accidental `delete some_unique_ptr;`, one
+has to call `.get()` instead. Similarly `std::string` does not convert to `char
+*`, [in that case to avoid occasional ambiguity][n1592] with `operator[]`, one
+has to call `.c_str();` instead.
+
 
 ## cstdio_lib/file_raii.h
 
-Given `raii_with_invalid_value`, we can now easily create a wrapper for `FILE
-*`. It's single responsibility is to ensure that a valid `FILE *` is closed
-using `fclose` precisely once.
+Given `raii_with_invalid_value`, we can now easily create `file_raii`, a
+wrapper for `FILE *`. It's single responsibility is to ensure that a valid
+`FILE *` is closed using `fclose` precisely once. Similarly `file_arg` uses
+`handle_arg`.
 
 {% highlight c++ linenos %}
 #pragma once
 
 #include "../cpp_util_lib/raii_with_invalid_value.h"
+#include "../cpp_util_lib/handle_arg.h"
+
 #include <cstdio>
 
 namespace cstdio
@@ -162,11 +253,11 @@ namespace cstdio
   {
     struct file_raii_traits
     {
-      using Handle = FILE *;
+      using handle = FILE *;
 
       static constexpr auto invalid_value = nullptr;
 
-      static void free_handle(Handle h) noexcept
+      static void close_handle(handle h) noexcept
       {
         static_cast<void>(fclose(h));
       }
@@ -174,6 +265,7 @@ namespace cstdio
   }
 
   using file_raii = cpp_util::raii_with_invalid_value<detail::file_raii_traits>;
+  using file_arg = cpp_util::handle_arg<file_raii>;
 }
 {% endhighlight %}
 
@@ -181,7 +273,8 @@ namespace cstdio
 ## cstdio_lib/error.h
 
 These are just some functions to handle errors by raising exceptions. It turns
-out that there are recurring patterns of error handling.
+out that there are recurring patterns of error handling. A better
+implementation would use `std::system_error` instead of `std::runtime_error`.
 
 {% highlight c++ linenos %}
 #pragma once
@@ -238,34 +331,33 @@ Here is the basic API wrapping level. It consists of functions grouped in a
 namespace. Their single responsibility it to be thin wrappers that deal with
 error handling.
 
-For input parameters they still require a `FILE *` which means they can be used
-with `stdout` as well.
-
 It is not the traditional OOP approach, which surprises some, but it has it's
 advantages.
+
+For input parameters most require a `file_arg` which means they can be used
+with a `file_raii` instance, but also with a non-owning `FILE *` like `stdout`.
 
 {% highlight c++ linenos %}
 #pragma once
 
 #include "file_raii.h"
 
-#include <cstdio>
 #include <cstddef>
 
 namespace cstdio::file
 {
   file_raii open(const char * file_name, const char * mode);
-  size_t read(FILE * h, char * buffer, size_t size);
-  void write(FILE * h, const char * buffer, size_t size);
-  bool is_eof(FILE * h);
+  size_t read(file_arg h, char * buffer, size_t size);
+  void write(file_arg h, const char * buffer, size_t size);
+  bool is_eof(file_arg h);
   void close(file_raii & x);
 }
 {% endhighlight %}
 
 
 ## cstdio_lib/file.cpp
-{% highlight c++ linenos %}
 
+{% highlight c++ linenos %}
 #include "file.h"
 
 #include "error.h"
@@ -282,7 +374,7 @@ namespace cstdio::file
     return result;
   }
 
-  size_t read(FILE * h, char * buffer, size_t size)
+  size_t read(file_arg h, char * buffer, size_t size)
   {
     size_t read_count{ std::fread(buffer, 1, size, h) };
     if ((read_count != size) && ferror(h))
@@ -292,7 +384,7 @@ namespace cstdio::file
     return read_count;
   }
 
-  void write(FILE * h, const char * buffer, size_t size)
+  void write(file_arg h, const char * buffer, size_t size)
   {
     size_t write_count{ std::fwrite(buffer , 1, size, h) };
     if (write_count != size)
@@ -301,7 +393,7 @@ namespace cstdio::file
     }
   }
 
-  bool is_eof(FILE * h)
+  bool is_eof(file_arg h)
   {
     return (0 != std::feof(h));
   }
@@ -444,7 +536,8 @@ The strategy here is:
 - We explicitly call `close` at the end of `copy_file`. If `fclose` fails,
   `close` throws and `copy_file` trows as well, indicating failure.
 - Also `close` sets the `FILE *` to `nullptr` to ensure `fclose` will not be
-  called again in the destructor.
+  called again in the destructor. To do that, it takes the argument as a
+  `file_raii` reference instead of a `file_arg`.
 - The return value of `fclose` in `file_raii_traits` is ignored. It is called
   from destructors and move assignment, that is not the place to throw. Another
   option would have been to call `std::terminate`, like in `std::thread`, but
@@ -467,15 +560,16 @@ errors at runtime cost.
 
 At a superficial look this approach looks more verbose than the 
 [classic RAII][classic-raii], [slim RAII][slim-raii], [fat RAII][fat-raii] and
-even [pure C approaches][if-error-goto]. __It totals 287 lines of code__.
+even [pure C approaches][if-error-goto]. __It totals 325 lines of code__.
 
 However it will pay off on various scenarios that are likely in a large
 project where you will write more code that reuses existing code in new
 combinations.
 
 
-[revisited]:     {% post_url 2022-06-29-fit-raii %}
+[fit-raii-old]:  {% post_url 2018-02-28-fit-raii %}
 [classic-raii]:  {% post_url 2015-03-17-classic-raii %}
 [slim-raii]:     {% post_url 2015-03-22-slim-raii %}
 [fat-raii]:      {% post_url 2015-03-23-fat-raii %}
 [if-error-goto]: {% post_url 2015-03-15-if-error-goto %}
+[n1592]:         https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1592.pdf
