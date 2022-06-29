@@ -257,56 +257,58 @@ class: large-points
 # Log
 
 <pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log</b> --oneline develop
-<font color="#C4A000">0c7898b (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
-<font color="#C4A000">1b740ed</font> Merge branch &apos;feature6&apos; into develop
-<font color="#C4A000">74a3f6f</font> Merge branch &apos;bugfix6&apos; into release2
-<font color="#C4A000">a2ba6fd</font> Merge branch &apos;feature3&apos; into develop
-<font color="#C4A000">95ad0f1</font> <b>Change 18</b>
-<font color="#C4A000">6a11225</font> <b>Change 19</b>
-<font color="#C4A000">71610a6</font> Merge branch &apos;release1&apos; into develop
-<font color="#C4A000">3af84e9</font> Change 17
-<font color="#C4A000">aa94aae</font> Change 16
-<font color="#C4A000">919cb58</font> Merge branch &apos;release1&apos; into develop
+<font color="#C4A000">a5d20f6 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
+<font color="#C4A000">1f97e98</font> Merge branch &apos;feature6&apos; into develop
+<font color="#C4A000">c185f20</font> Merge branch &apos;bugfix6&apos; into release2
+<font color="#C4A000">8602ef3</font> Merge branch &apos;feature3&apos; into develop
+<font color="#C4A000">1c42702</font> <b>Change 18</b>
+<font color="#C4A000">4bf0480</font> <b>Change 19</b>
+<font color="#C4A000">c911945</font> Merge branch &apos;release1&apos; into develop
+<font color="#C4A000">3a506a2</font> Change 17
+<font color="#C4A000">c340264</font> Change 16
+<font color="#C4A000">640661e</font> Merge branch &apos;release1&apos; into develop
 </pre>
+
+- ordered by commit date which is useless in a complex repository
 
 ---
 
 # Log graph
 
 <pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log --graph</b> --oneline develop
-*   <font color="#C4A000">0c7898b (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
+*   <font color="#C4A000">a5d20f6 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
 <font color="#CC0000">|</font><font color="#4E9A06">\</font>  
-<font color="#CC0000">|</font> * <font color="#C4A000">74a3f6f</font> Merge branch &apos;bugfix6&apos; into release2
+<font color="#CC0000">|</font> * <font color="#C4A000">c185f20</font> Merge branch &apos;bugfix6&apos; into release2
 <font color="#CC0000">|/</font><font color="#3465A4">|</font> 
-<font color="#CC0000">|</font> * <font color="#C4A000">6a11225</font> <b>Change 19</b>
+<font color="#CC0000">|</font> * <font color="#C4A000">4bf0480</font> <b>Change 19</b>
 <font color="#CC0000">|/</font>  
-*   <font color="#C4A000">1b740ed</font> Merge branch &apos;feature6&apos; into develop
+*   <font color="#C4A000">1f97e98</font> Merge branch &apos;feature6&apos; into develop
 <font color="#75507B">|</font><font color="#06989A">\</font>  
-<font color="#75507B">|</font> * <font color="#C4A000">95ad0f1</font> <b>Change 18</b>
-<font color="#75507B">|</font> * <font color="#C4A000">aa94aae</font> Change 16
-* <font color="#06989A">|</font>   <font color="#C4A000">a2ba6fd</font> Merge branch &apos;feature3&apos; into develop
+<font color="#75507B">|</font> * <font color="#C4A000">1c42702</font> <b>Change 18</b>
+<font color="#75507B">|</font> * <font color="#C4A000">c340264</font> Change 16
+* <font color="#06989A">|</font>   <font color="#C4A000">8602ef3</font> Merge branch &apos;feature3&apos; into develop
 <font color="#CC0000"><b>|</b></font><font color="#4E9A06"><b>\</b></font> <font color="#06989A">\</font>  
-<font color="#CC0000"><b>|</b></font> * <font color="#06989A">|</font> <font color="#C4A000">3af84e9</font> Change 17
-<font color="#CC0000"><b>|</b></font> * <font color="#06989A">|</font> <font color="#C4A000">d78738e</font> Change 13
-<font color="#CC0000"><b>|</b></font> * <font color="#06989A">|</font> <font color="#C4A000">1903449</font> Change 4
-* <font color="#4E9A06"><b>|</b></font> <font color="#06989A">|</font>   <font color="#C4A000">71610a6</font> Merge branch &apos;release1&apos; into develop
+<font color="#CC0000"><b>|</b></font> * <font color="#06989A">|</font> <font color="#C4A000">3a506a2</font> Change 17
+<font color="#CC0000"><b>|</b></font> * <font color="#06989A">|</font> <font color="#C4A000">efa40dc</font> Change 13
+<font color="#CC0000"><b>|</b></font> * <font color="#06989A">|</font> <font color="#C4A000">c8d7baa</font> Change 4
+* <font color="#4E9A06"><b>|</b></font> <font color="#06989A">|</font>   <font color="#C4A000">c911945</font> Merge branch &apos;release1&apos; into develop
 <font color="#06989A">|</font><font color="#3465A4"><b>\</b></font> <font color="#4E9A06"><b>\</b></font> <font color="#06989A">\</font>  
 </pre>
 
-- NOTE: maybe first parent always on the left
+- first parent always on the left
 
 ---
 
 # Commit parents
 
-<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>show</b> 0c7898b
-<font color="#C4A000">commit 0c7898b6180686394287d60bdb7207710e3dc471 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font>
-Merge: <b>1b740ed 74a3f6f</b>
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>show</b> a5d20f6
+<font color="#C4A000">commit a5d20f6726de26a42b58223f2feb45ec04c1afd8 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font>
+Merge: <b>1f97e98 c185f20</b>
 Author: Alice &lt;alice@example.com&gt;
-Date:   Sun Jun 19 22:59:25 2022 +0100
+Date:   Tue Jun 28 21:16:53 2022 +0100
 
     Merge branch &apos;release2&apos; into develop
-
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ 
 </pre>
 
 ---
@@ -314,13 +316,65 @@ Date:   Sun Jun 19 22:59:25 2022 +0100
 # Log first parent
 
 <pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log --first-parent</b> --graph --oneline develop
-* <font color="#C4A000">0c7898b (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
-* <font color="#C4A000">1b740ed</font> Merge branch &apos;feature6&apos; into develop
-* <font color="#C4A000">a2ba6fd</font> Merge branch &apos;feature3&apos; into develop
-* <font color="#C4A000">71610a6</font> Merge branch &apos;release1&apos; into develop
-* <font color="#C4A000">919cb58</font> Merge branch &apos;release1&apos; into develop
+* <font color="#C4A000">a5d20f6 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
+* <font color="#C4A000">1f97e98</font> Merge branch &apos;feature6&apos; into develop
+* <font color="#C4A000">8602ef3</font> Merge branch &apos;feature3&apos; into develop
+* <font color="#C4A000">c911945</font> Merge branch &apos;release1&apos; into develop
+* <font color="#C4A000">640661e</font> Merge branch &apos;release1&apos; into develop
 ...
-* <font color="#C4A000">5a563fc (</font><font color="#C4A000"><b>tag: 0.1</b></font><font color="#C4A000">)</font> Change 1
+* <font color="#C4A000">d8784d8 (</font><font color="#C4A000"><b>tag: 0.1</b></font><font color="#C4A000">)</font> Change 1
+</pre>
+
+- this logs develop
+- if first parent is correct
+- though eventually it follows master
+
+---
+
+# Log commits from branch
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log --oneline --graph --parents develop</b>
+*   <font color="#C4A000">a5d20f6 1f97e98 c185f20 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
+<font color="#CC0000">|</font><font color="#4E9A06">\</font>  
+<font color="#CC0000">|</font> * <font color="#C4A000">c185f20 1f97e98 4bf0480</font> Merge branch &apos;bugfix6&apos; into release2
+<font color="#CC0000">|/</font><font color="#3465A4">|</font> 
+<font color="#CC0000">|</font> * <font color="#C4A000">4bf0480 1f97e98</font> Change 19
+<font color="#CC0000">|/</font>  
+*   <font color="#C4A000">1f97e98 8602ef3 1c42702</font> Merge branch &apos;feature6&apos; into develop
+<font color="#75507B">|</font><font color="#06989A">\</font>  
+...
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log --oneline --graph --parents ^1f97e98 c185f20</b>
+* <font color="#C4A000">c185f20 1f97e98 4bf0480</font> Merge branch &apos;bugfix6&apos; into release2
+* <font color="#C4A000">4bf0480 1f97e98</font> Change 19
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ 
+</pre>
+
+- caret prefix means "not in this commit"
+
+---
+
+# Caret and tilde suffixes
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log --oneline --graph --parents develop</b>
+*   <font color="#C4A000">a5d20f6 1f97e98 c185f20 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font> Merge branch &apos;release2&apos; into develop
+<font color="#CC0000">|</font><font color="#4E9A06">\</font>  
+<font color="#CC0000">|</font> * <font color="#C4A000">c185f20 1f97e98 4bf0480</font> Merge branch &apos;bugfix6&apos; into release2
+<font color="#CC0000">|/</font><font color="#3465A4">|</font> 
+<font color="#CC0000">|</font> * <font color="#C4A000">4bf0480 1f97e98</font> Change 19
+<font color="#CC0000">|/</font>  
+*   <font color="#C4A000">1f97e98 8602ef3 1c42702</font> Merge branch &apos;feature6&apos; into develop
+<font color="#75507B">|</font><font color="#06989A">\</font>  
+...
+</pre>
+
+- caret suffix follows breath, tilde follows depth
+
+<pre><font color="#06989A">a5d20f6<b>^</b>   is 1f97e98
+a5d20f6<b>^2</b>  is c185f20
+a5d20f6<b>^^</b>  is 1f97e98^ which is 8602ef3
+a5d20f6<b>^2^</b> is c185f20^ which is 1f97e98
+a5d20f6<b>~</b>   is 1f97e98
+a5d20f6<b>~2</b>  is 1f97e98~ which is 8602ef3</font>
 </pre>
 
 ---
@@ -391,6 +445,16 @@ Date:   Mon Jun 20 21:03:32 2022 +0100
     Merge branch &apos;feature&apos; into develop
 <font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ 
 </pre>
+
+---
+class: large-points
+
+# Tip #9
+
+- the merge commit can still be semantically wrong
+- i.e. parents compile, but the merge does not
+- e.g. if one parent removes the definition and usages of a function, but the
+  other parent adds one more usage
 
 ---
 
@@ -529,6 +593,8 @@ Successfully rebased and updated refs/heads/feature.
 * <font color="#C4A000">3d89342</font> Base
 <font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature)</b></font>$ 
 </pre>
+
+- common to interactive rebase with branch name, e.g. <b>develop</b>, or tilde, e.g. <b>HEAD~4</b>
 
 ---
 
@@ -785,14 +851,19 @@ Merge made by the &apos;recursive&apos; strategy.
 </pre>
 
 - wrong first parent
+- this can happen when pulling feature branch where two users collaborate
+- this can happen when merging from develop into feature before fast forwarding develop to feature
 - you can do worse than this
 
 ---
 class: large-points
-# Tip #9
+# Tip #10
 
 - don't follow recipes blindly
 - understand what you do
+- don't draw simplistic, but wrong conclusions e.g. "never fast-forward or squash, always merge commit"
+
+
 - be a responsible grown up, don't blame me :)
 
 ---
