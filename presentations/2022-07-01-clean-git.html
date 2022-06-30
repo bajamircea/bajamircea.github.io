@@ -211,8 +211,10 @@ class: large-points
 - use tags for released versions: tags don't move with new commits
 
 
-- sometimes tags end up on commits on develop (when release needs no other changes)
-- fix bugs in develop, cherry pick in release (rather than merge): when fixing a bug, not known beforehand if it will be needed in a certain release
+- sometimes tags end up on commits on develop (when release needs no other
+  changes)
+- fix bugs in develop, cherry pick in release (rather than merge): when fixing
+  a bug, not known beforehand if it will be needed in a certain release
 
 ---
 class: large-points
@@ -230,7 +232,8 @@ class: large-points
 
 # Tip #7
 
-- treat feature and release branches are practically private, short lived branches
+- treat feature and release branches as practically private, short lived
+  branches with a single owner
 
 ---
 
@@ -243,6 +246,8 @@ class: large-points
 <div align="center">
 {% include assets/2022-07-01-clean-git/04-uh-oh.svg %}
 </div>
+
+- a branch is not a sequence of commits, it just points to a commit
 
 ---
 
@@ -596,6 +601,14 @@ Successfully rebased and updated refs/heads/feature.
 
 - common to interactive rebase with branch name, e.g. <b>develop</b>, or tilde, e.g. <b>HEAD~4</b>
 
+- when using the <b>`edit`</b> action <b>`git reset HEAD^`</b> is useful
+
+---
+class: large-points
+# Tip #10
+
+- you don't re-write history: you write a new one
+
 ---
 
 # Cherry pick
@@ -840,7 +853,7 @@ Merge made by the &apos;recursive&apos; strategy.
 
 # How to mess up
 
-<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log --graph --oneline feature develop</b>
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ git <b>log --graph --oneline feature develop</b>
 *   <font color="#C4A000">0e030a7 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">, </font><font color="#CC0000">origin/develop</font><font color="#C4A000">)</font> Merge branch &apos;develop&apos;
 <font color="#CC0000">|</font><font color="#4E9A06">\</font>  
 <font color="#CC0000">|</font> * <font color="#C4A000">615b3b4</font> Other change
@@ -855,13 +868,24 @@ Merge made by the &apos;recursive&apos; strategy.
 - this can happen when merging from develop into feature before fast forwarding develop to feature
 - you can do worse than this
 
+
+- in this particular case resetting the local `develop` to the remote one after
+  `pull`, but before `push` allows you to start again
+
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop&gt;)</b></font>$ git reset --hard origin/develop
+HEAD is now at 615b3b4 Other change
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop=)</b></font>$ 
+</pre>
+
 ---
 class: large-points
-# Tip #10
+# Tip #11
 
 - don't follow recipes blindly
 - understand what you do
-- don't draw simplistic, but wrong conclusions e.g. "never fast-forward or squash, always merge commit"
+- don't draw simplistic, but wrong and dogmatic conclusions e.g. "never
+  fast-forward or squash, always merge commit" which then do not allow a
+  cleaner history either
 
 
 - be a responsible grown up, don't blame me :)
