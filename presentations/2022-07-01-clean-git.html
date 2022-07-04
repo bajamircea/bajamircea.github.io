@@ -3,7 +3,7 @@ layout: presentation
 title: Clean git
 ---
 
-Mircea Baja - 1 July 2022
+Mircea Baja - 7 July 2022
 
 # Clean git
 
@@ -21,7 +21,11 @@ class: large-points
 - Tips
 
 
-- for a cleaner git history in an imperfect world
+- for a cleaner git history **in an imperfect world**
+
+
+- will use git command line
+- your tooling (stash/github/IDE) lies on top of it, principles stay the same
 
 ---
 
@@ -102,6 +106,8 @@ Already up-to-date.
 <div align="center">
 {% include assets/2022-07-01-clean-git/01-linear.svg %}
 </div>
+
+- the closer to a linear history, the easier to understand
 
 ---
 
@@ -537,7 +543,7 @@ Automatic merge went well; stopped before committing as requested
 
 # Rebase
 
-<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (feature)</b></font>$ git <b>rebase develop</b>
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature)</b></font>$ git <b>rebase develop</b>
 First, rewinding head to replay your work on top of it...
 Applying: Change 1
 Applying: Change 2
@@ -886,9 +892,11 @@ class: large-points
 - don't draw simplistic, but wrong and dogmatic conclusions e.g. "never
   fast-forward or squash, always merge commit" which then do not allow a
   cleaner history either
+- tried to give you solutions that depend on the situation
 
 
 - be a responsible grown up, don't blame me :)
+- circle of competence/different for different people
 
 ---
 class: large-points
