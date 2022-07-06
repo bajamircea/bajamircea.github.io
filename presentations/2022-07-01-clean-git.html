@@ -158,6 +158,8 @@ fatal: The current branch some_branch has no upstream branch.
 {% include assets/2022-07-01-clean-git/02-branch.svg %}
 </div>
 
+- design language used in these diagrams has time flowing left to right
+
 ---
 
 # Tip #3
@@ -175,9 +177,11 @@ fatal: The current branch some_branch has no upstream branch.
 </pre>
 </pre>
 
+- in git log time flows bottom to top
+
 ---
 
-# Branch models
+# Branching strategies
 
 ---
 
@@ -331,7 +335,6 @@ Date:   Tue Jun 28 21:16:53 2022 +0100
 * <font color="#C4A000">1f97e98</font> Merge branch &apos;feature6&apos; into develop
 * <font color="#C4A000">8602ef3</font> Merge branch &apos;feature3&apos; into develop
 * <font color="#C4A000">c911945</font> Merge branch &apos;release1&apos; into develop
-* <font color="#C4A000">640661e</font> Merge branch &apos;release1&apos; into develop
 ...
 * <font color="#C4A000">d8784d8 (</font><font color="#C4A000"><b>tag: 0.1</b></font><font color="#C4A000">)</font> Change 1
 </pre>
@@ -381,11 +384,11 @@ Date:   Tue Jun 28 21:16:53 2022 +0100
 - caret suffix follows breath, tilde follows depth
 
 <pre><font color="#06989A">a5d20f6<b>^</b>   is 1f97e98
-a5d20f6<b>^2</b>  is c185f20
-a5d20f6<b>^^</b>  is 1f97e98^ which is 8602ef3
-a5d20f6<b>^2^</b> is c185f20^ which is 1f97e98
 a5d20f6<b>~</b>   is 1f97e98
-a5d20f6<b>~2</b>  is 1f97e98~ which is 8602ef3</font>
+a5d20f6<b>^2</b>  is c185f20
+a5d20f6<b>~2</b>  is 1f97e98~ which is 8602ef3
+a5d20f6<b>^^</b>  is 1f97e98^ which is 8602ef3
+a5d20f6<b>^2^</b> is c185f20^ which is 1f97e98</font></font>
 </pre>
 
 ---
@@ -438,7 +441,7 @@ a5d20f6<b>~2</b>  is 1f97e98~ which is 8602ef3</font>
 
 # Merge commit
 
-<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>log --oneline --graph develop feature</b>
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>log --oneline --graph develop feature</b>
 *   <font color="#C4A000">3c37e6d (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">)</font> Merge branch &apos;feature&apos; into develop
 <font color="#CC0000">|</font><font color="#4E9A06">\</font>  
 <font color="#CC0000">|</font> * <font color="#C4A000">d0c3ef9 (</font><font color="#4E9A06">feature</font><font color="#C4A000">)</font> Change 3
@@ -447,7 +450,7 @@ a5d20f6<b>~2</b>  is 1f97e98~ which is 8602ef3</font>
 * <font color="#4E9A06">|</font> <font color="#C4A000"><b>d682b2a</b></font> Some other change
 <font color="#4E9A06">|/</font>  
 * <font color="#C4A000">34d4b9f</font> Base
-<font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>show</b>
+<font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop)</b></font>$ git <b>show</b>
 <font color="#C4A000">commit 3c37e6d716f76bb4f4ad2632feb0534be6102481 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">develop</font><font color="#C4A000">)</font>
 Merge: <b>d682b2a</b> d0c3ef9
 Author: Alice &lt;alice@example.com&gt;
@@ -686,7 +689,7 @@ class: large-points
 
 # Force push
 
-<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (feature&lt;&gt;)</b></font>$ git <b>log --oneline --graph feature origin/feature</b>
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature&lt;&gt;)</b></font>$ git <b>log --oneline --graph feature origin/feature</b>
 * <font color="#C4A000">ba4d6e8 (</font><font color="#06989A">HEAD -&gt; </font><font color="#4E9A06">feature</font><font color="#C4A000">)</font> Better change
 <font color="#CC0000">|</font> * <font color="#C4A000">5b38ed3 (</font><font color="#CC0000">origin/feature</font><font color="#C4A000">)</font> Some change
 <font color="#CC0000">|/</font>  
@@ -715,7 +718,7 @@ class: large-points
 
 # Add -p
 
-<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (feature *)</b></font>$ git <b>diff a.txt</b>
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature *)</b></font>$ git <b>diff a.txt</b>
 ...
 <font color="#CC0000">-qui</font>
 <font color="#CC0000">-dolorem</font>
@@ -733,7 +736,7 @@ class: large-points
 
 # Add -p
 
-<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (feature *)</b></font>$ git <b>add -p a.txt</b>
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature *)</b></font>$ git <b>add -p a.txt</b>
 ...
 <font color="#CC0000">-qui</font>
 <font color="#CC0000">-dolorem</font>
@@ -756,7 +759,7 @@ class: large-points
 
 # Add -p
 
-<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (feature *+)</b></font>$ git <b>commit -m &apos;Some commit&apos;</b>
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature *+)</b></font>$ git <b>commit -m &apos;Some commit&apos;</b>
 [feature 4660ca5] Some commit
  1 file changed, 1 insertion(+), 2 deletions(-)
 <font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (feature *)</b></font>$ git <b>diff a.txt</b>
@@ -825,7 +828,7 @@ Fast-forward
 
 # How to mess up
 
-<pre><font color="#3465A4"><b>epo</b></font><font color="#C4A000"><b> (develop&gt;)</b></font>$ git <b>push</b>
+<pre><font color="#3465A4"><b>repo</b></font><font color="#C4A000"><b> (develop&gt;)</b></font>$ git <b>push</b>
  <font color="#CC0000">! [rejected]       </font> develop -&gt; develop (fetch first)
 <font color="#CC0000">error: failed to push some refs to &apos;/home/mircea/Desktop/temp/repo.git&apos;</font>
 <font color="#C4A000">hint: Updates were rejected because the remote contains work that you do</font>
@@ -870,8 +873,8 @@ Merge made by the &apos;recursive&apos; strategy.
 </pre>
 
 - wrong first parent
-- this can happen when pulling feature branch where two users collaborate
 - this can happen when merging from develop into feature before fast forwarding develop to feature
+- this can happen when pulling feature branch where two users collaborate
 - you can do worse than this
 
 
@@ -887,31 +890,27 @@ HEAD is now at 615b3b4 Other change
 class: large-points
 # Tip #11
 
-- don't follow recipes blindly
-- understand what you do
-- don't draw simplistic, but wrong and dogmatic conclusions e.g. "never
-  fast-forward or squash, always merge commit" which then do not allow a
-  cleaner history either
-- tried to give you solutions that depend on the situation
-
-
-- be a responsible grown up, don't blame me :)
-- circle of competence/different for different people
+- the point of the tactics is to create a clean history that matches the
+  branching strategy, by addressing mistakes/issues on private branches (in
+  a real, imperfect world)
+- examples real world scenarios:
+  - last commit on a feature branch fails a test, it needs a fix
+  - we mix multiple issues in the same feature branch, we could regroup changes
+  - developing/testing or code review/pull requests for a feature takes longer,
+    will the merge to develop be green?
 
 ---
 class: large-points
 # Last tip
 
-- "If you regularly need to use these techniques something is wrong somewhere"
-- But we're not in a perfect world with perfect foresight:
-  - A commit on a feature branch fails a test
-  - We mix multiple issues in the same feature branch
-  - Developing/testing a feature takes longer
-  - Code review/pull requests take longer
-- Sometimes it's a matter of taste, not always a fixed recipe
-  - Force push feature branch before pull request: probably fine
-  - Force push feature branch after pull request created: maybe
-  - Force push on develop: nop
+- don't follow recipes blindly
+- understand what you do
+- this was not a complete tutorial, some additional steps left out
+- the particular steps depend on the situation
+- be a responsible grown up, don't blame me :)
+- don't draw simplistic, but wrong and dogmatic conclusions e.g. "never squash,
+  we did it once, it went wrong, squash is bad"
+- circle of competence/different for different people
 
 ---
 
