@@ -1,0 +1,24 @@
+---
+layout: post
+title: 'Clean git'
+categories: engineering git
+---
+
+Effective use of git in the real world
+
+
+I [presented this](/presentations/2022-07-01-clean-git.html) at Sophos.
+
+
+<div align="center"><a href="/presentations/2022-07-01-clean-git.html">
+{% include assets/2022-07-01-clean-git/00-cover.svg %}
+</a></div>
+
+# Agenda
+
+Strategies, tactics and tips for a cleaner git history in an imperfect world.
+
+Examples use git command line with memorable diagrams.
+
+Your tooling (stash/github/IDE) lies on top of it, principles stay the same.
+

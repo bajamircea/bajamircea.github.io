@@ -213,7 +213,7 @@ a function that accepts either a string literal or a `std::string`, but unlike
 choice that it's consructor does not accept a temporary RAII class, because
 that's the safest option as it's harder to have dangling reference to a
 temporary that's out of scope, with the minor inconvenience that one can't do
-`open(read(...)...);` on a single line using the file functions below, instead
+`read(open(...), ...);` on a single line using the file functions below, instead
 two lines will be required.
 
 This `handle_arg` helps because the options for functions that need a handle
