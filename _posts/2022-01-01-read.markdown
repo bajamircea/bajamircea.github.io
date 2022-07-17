@@ -6,6 +6,18 @@ categories: read book
 
 List of books I've read in 2022
 
+- 2022-07-17 Luigi Luca Cavalli-Sforza and son: The Great Human Disaporas - The History of Diversity and Evolution
+: Followed from the bibliography of "Guns, Germs & Steel". Presents a lot of
+the ideas from there (but not all) in a much more clearer style. He does repeat
+himself though, and rightly so, on the issue of IQ and race. He covers why IQ
+tests are a bad measurement and that the skin colour consistency is simply due
+to selection based on environment, sun exposure in particular.
+
+- 2022-07-11 Ken Thompson: Reflections on Trusting Trust
+: Classic article. Short. Shows how symbols like `\n` had to be bootstrapped. I
+re-read the article because I recently encountered the question: what does
+`L"<<insert Unicode character here"` gets compiled into.
+
 - 2022-05-14 Frank Partnoy: Fiasco, the inside story of a Wall Street trader
 : Interesting story about usage of derivatives largely to allow asset managers
 to place bets that they should not (using other people money of course).
