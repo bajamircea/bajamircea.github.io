@@ -178,8 +178,10 @@ private:
 
 ### 1.4.2 Function object
 
-As you refine the classes that do stuff, you reach to have generic algoritms
-that traditionally use the function operator.
+As you refine the classes that do stuff, there are some that do only one very
+specific thing. You use the function operator for that thing rather than a
+named function. The syntax is a bit weirder compared with a plain doer class
+function, but you might use such classes as arguments in generic algoritms.
 
 {% highlight c++ linenos %}
 class between_inclusive

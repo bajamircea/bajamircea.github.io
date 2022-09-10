@@ -6,6 +6,18 @@ categories: read book
 
 List of books I've read in 2022
 
+- 2022-09-10 Benjamin Graham and Charles McGorlic: The Interpretation of Financial Statements
+: Once you have an idea of accounting, this is a good intro on how to look at
+the financial statements in a critical (i.e. careful) way.
+
+- 2022-08-13 Lucian Boia: Cum s-a românizat România
+: Lovely re-read of a history book that demystifies the nature of the "national
+state" for Romania in particular. Funny comment about the current country
+president: "In a country that talks a lot, he does not talk just a bit, he
+talks less then just a bit, he barely talks at all". As usual, there are two
+levels of reading the book: the factual info on the subject and the deeper
+approach to history.
+
 - 2022-07-17 Luigi Luca Cavalli-Sforza and son: The Great Human Disaporas - The History of Diversity and Evolution
 : Followed from the bibliography of "Guns, Germs & Steel". Presents a lot of
 the ideas from there (but not all) in a much more clearer style. He does repeat
