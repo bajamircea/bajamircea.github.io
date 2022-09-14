@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 'The Interpreation of Financial Statements - reading notes'
+title: 'The Interpretation of Financial Statements - reading notes'
 categories: review book
 ---
 
