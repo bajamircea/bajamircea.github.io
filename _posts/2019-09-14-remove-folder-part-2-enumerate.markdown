@@ -27,7 +27,8 @@ entries in a folder:
 - Incrementing advances the iterator. This probably maps to `FindNextFileW` on
   Windows. `FindNextFileW` receives the handle value and it uses it to store
   information on how far the iteration progressed.
-- A default constructed one serves as an end iterator
+- A default constructed `std::filesystem::directory_iterator` serves as an end
+  iterator
 - The destructor of `std::filesystem::directory_iterator` probably calls
   `FindClose`. This frees the memory used to store how far the iteration
   progressed.
@@ -80,6 +81,7 @@ while (it != std::directory_iterator())
 }
 {% endhighlight %}
 
+
 # Enumerating and deleting
 
 Deleting entries as we enumerate through a collection is a common source of
@@ -89,7 +91,7 @@ there unintuitive behaviours?
 
 In this article we'll look at the enumeration problem in a more general manner.
 
-There are several approaches when enumerating:
+There are several approaches when enumerating. We'll discuss the following:
 
 1. Sometimes there are guarantees that deleting does not impact enumeration.
 2. Enumerate to capture the entries, then iterate through the captured entries
@@ -147,13 +149,16 @@ of memory used depends on the number of files in a folder. Not detailed here is
 the issue of recursion which uses stack memory proportional with the depth of
 sub-folders.
 {% highlight c++ linenos %}
+std::vector<std::path> paths;
+
 for (auto it = std::directory_iterator(folder);
      it != std::directory_iterator();
      ++it)
 {
-  paths_vector.push_back(it->path());
+  paths.push_back(it->path());
 }
-for (const auto & path : paths_vector)
+
+for (const auto & path : paths)
 {
   // delete file (or folder) at path
 }
@@ -161,7 +166,10 @@ for (const auto & path : paths_vector)
 
 
 For some enumeration APIs this 'capture then delete' approach might be required
-in some cases.
+because of lack of guarantees from the API.
+
+
+## Registry enumeration digression
 
 For example, the function to enumerate the values of a registry key on Windows
 looks like:
@@ -176,24 +184,29 @@ LSTATUS RegEnumValueW(..., DWORD   dwIndex, ...);
 By just thinking about the `RegEnumValueW` function interface one can infer
 several things.  Because it does not store a handle, it must be that the
 implementation stores the registry values ordered so that it can use the index
-value to access them.  Deleting an entry will be risky because it can change
-the order. E.g. if we delete the entry at index `0`, then another entry will be
-moved at index `0`, we can't increment the index to `1` and assume that the old
-(deleted) entry is still at index `0`.
+value to access them and the order does not change for trivial operations such
+as reading or writing the data for a registry value.
+
+Deleting an entry will be risky because it can change the order. E.g. if we
+delete the entry at index `0`, then another entry will be moved at index `0`,
+we can't increment the index to `1` and assume that the old (deleted) entry is
+still at index `0`.
 
 However notice that using 'capture' with `RegEnumValueW` is not entirely
 without issues (on top of using additional memory). If another process/thread
 creates or deletes registry values as the enumeration progresses, then entries
-will be missed or duplicates will occur.
+will be skipped, duplicates can occur, enumerated values can disappear before
+being handled.
 
-For example if there are 10 values, an enumeration will retrieve them from
-index 0 to 9. Let's assume the enumeration reaches the value at index 5. If
-another process removes the value that used to be at index 3, the entries will
-be reordered, probably so that for entries greater than 3 the index becomes one
-smaller. When the enumeration reaches the value at index 6, it will get what
-used to be at index 7, and the enumeration will stop at index 8. In this case
-we missed the value that originally was at index 6 (which had nothing to do
-with the value deleted).
+For example if there are 10 values, an enumeration should retrieve them from
+index 0 to 9. Let's assume that the enumeration reaches the value at index 5
+and is about to move to the one at index 6. If another process removes the
+value that used to be at index 3, the entries will be reordered. Let's assume
+the less problem causing reordering strategy: for entries greater than 3 the
+index becomes one smaller. When the enumeration reaches for value at index 6,
+it will get what used to be at index 7, and the enumeration will stop at index 8.
+In this case we **missed the value** that originally was at index 6, **which had
+nothing to do with the value deleted**.
 
 Do the `Find...` API suffer of the same problem? Probably not.
 
@@ -207,7 +220,7 @@ then repeat.
 while (true)
 {
   auto it = std::directory_iterator(folder);
-  if (it != std::directory_iterator())
+  if (it == std::directory_iterator())
   {
     break;
   }
@@ -221,7 +234,7 @@ and memory usage. For reference the current Microsoft implementation of
 
 The disadvantage is that it has to stop at the first error.
 
-Therefore it's clear we can't use in our case where we would like to delete as
-much as possible so that files left behind are only the ones with errors,
+Therefore it's clear we can't use it in our case where we would like to delete
+as much as possible so that files left behind are only the ones with errors,
 making troubleshooting easier (note that in this case the troubleshooting is
-usually not performed by the code writer).
+usually not performed by the code writer, but by the user of the program).

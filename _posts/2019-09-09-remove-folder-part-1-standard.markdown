@@ -61,18 +61,24 @@ std::uintmax_t remove_all(const std::filesystem::path& p);
 std::uintmax_t remove_all(const std::filesystem::path& p, std::error_code& ec);
 {% endhighlight %}
 
-The return value is a number the number of entries deleted, zero if the path
+The return value is the number the number of entries deleted, zero if the path
 did not exist to start with.
 
 The error handling for `remove_all` looks similar to the `remove` functions.
 However, notice that the version that receives an error code is not marked as
-`noexcept`. It turns out that the failure case has two cases. For most of the
-errors it will set the error code. However it can throw `std::bad_alloc` if it
-fails to allocate the memory it needs.
+`noexcept`. Unlike `remove` that just passes the path as a zero-terminated
+string to the underlying OS provided C function, `remove_all` has to enumerate
+and concatenate children paths, hence it needs to allocate memory.
 
-**But** if we use `std::filesystem::remove_all` to delete a folder with many
-files, if it encounters an error with one file, it stops there without
-attempting to delete the remaining ones.
+It turns out that the version of `remove_all` that receives an `error_code` has
+two kinds of failures. For most of the errors it will set the error code.
+However it can throw `std::bad_alloc` if it fails to allocate the memory it
+needs. The rationale is that translating memory exceptions to error codes is
+very tedious.
+
+**Unfortunately** if we use `std::filesystem::remove_all` to delete a folder
+with many files, if it encounters an error with one file, it stops there
+without attempting to delete the remaining ones.
 
 In the case of our application we would like to delete as many files as
 possible from the folder because it's easier to diagnose failures if the files
