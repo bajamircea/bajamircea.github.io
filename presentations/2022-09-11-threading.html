@@ -3,51 +3,49 @@ layout: presentation
 title: Advanced Introduction to Multithreading
 ---
 
-Mircea Baja @ 20 March 2020
+Mircea Baja @ 11 October 2022
 
 # Advanced Introduction to Multithreading
-
-- Advanced in that it assumes audience used/heard of threads
-- Introduction in that the subject is deep and complex
-- "we're doing this thing that we shouldn't be doing, is it all right if we keep
-  on doing it?"
-
----
-# Agenda
-
-- Compiler re-ordering
-  - Demo
-  - DAG
-- CPU Memory model
-  - "The sample"
-  - Speculative execution
-  - CPU data dependency ordering
-  - Weak and strong memory models
-  - TSO model for x86
-  - Why memory fences
-- Threading before C++11
-- C++11 data races
-  - Multiple writes mythical defence
-  - Integer data race
-  - Boolean data race
-- C++11 standardeese - synchronises with
-  - Mutex
-  - Thread creation
-  - Thread completion
-- The volatile myth
-- Mention the thread sandwich pattern
 
 ---
 class: large-points
 
-# Demo
+# Scope
 
-- Single threaded Fibonacci
-- Exponential version takes "0 milliseconds"
+- Advanced in that it assumes audience used/heard of threads
+- Introduction in that the subject is deep and complex
+- Many threading bugs are due to incorrect assumptions about how source code is
+  actually executed
+- "What not to do" is as important as "What to do"
+- "We're doing this thing that we shouldn't be doing, is it all right if we keep
+  on doing it?"
+
+---
+class: large-points
+
+# Agenda
+
+- Compiler issues
+- CPU issues
+- Threading before C++11
+- C++11 data races
+- C++11 standardeese
+- The volatile myth
+- C++11 solutions
+
+---
+class: large-points
+
+# Compiler issues
+
+
+--
+
+- **Single threaded** Fibonacci
+- Exponential version claims to take "0 milliseconds". What?
 
 
 ---
-
 # Fibonacci
 
 ```cpp
@@ -76,7 +74,6 @@ int main()
 It took: 0
 ```
 ???
-
 >
 
 ---
@@ -101,42 +98,67 @@ It took: 0
  call        fib (09B1000h)
 ```
 
-- reordered (not for "external" functions)
-- interleaved
+- Reordered (not for "external" functions)
+- Interleaved
+- This is not a compile bug
 
 ---
-
 # DAG
 
 ![Image](../assets/2019-10-23-compiler-reordering/graph.png)
 
-- undefined (but maybe deterministic, unfeasable though for any but the most trivial cases)
+- Undefined (but maybe deterministic, unfeasible though for any but the most trivial cases)
+
 
 ---
+# CPU Issues
 
-# The CPU memory model sample
+---
+class: large-points
 
-- memory at `x` and `y` starts at 0
+# Dekker and Peterson's algorithms
 
-- one thread:
+- Are well known academical algorithms for thread synchronization
+- They have a common pattern of two flags
+- One thread sets one flag to indicate intention to access critical section,
+  then check the other flag
+- Another thread does the same with the flags switched around
+
+---
+# Assembly code sample
+
+- Memory at `x` and `y` starts at 0
+
+- One thread:
 
 ```asm
  mov [x],1   ; store 1 at the location x in memory
  mov eax,[y] ; load value from location y in memory to register eax
 ```
 
-- another thread:
+- Another thread:
 
 ```asm
  mov [y],1   ; store 1 at the location y in memory
  mov ebx,[x] ; load value from location x in memory to register ebx
 ```
 
-- what are the possible outcomes for values in `eax` and `ebx`
+- What are the possible outcomes for values in `eax` and `ebx`?
 
 --
 
-- they can also end up 0
+
+- They can also end up 0
+- If the loads are started before the store to memory completes
+- A CPU write buffer is all is needed to create this kind of issues
+
+---
+# TSO for x86
+
+![Image](../assets/2019-10-25-cpu-memory-model/tso.png)
+
+- TSO = Total Store Ordering
+- Lock free is not synchronization free
 
 ---
 class: large-points
@@ -155,33 +177,29 @@ class: large-points
 
 
 - x86 ... ARM/PowerPC ... DEC Alpha
+- The exact issues depend on processor
 - "Weak/strong" memory model - it's a simplification
 
 ---
+# Dependencies
 
-# TSO for x86
+- Some are easy e.g. read pointer, write data to the value of the pointer
+- But others need to be made explicit by the developer
 
-![Image](../assets/2019-10-25-cpu-memory-model/tso.png)
 
-- Lock free is not synchronization free
-
----
-
-# Memory barrier
-
+- E.g. the developer has in mind the following DAG:
 
 ![Image](../assets/2019-10-25-cpu-memory-model/mem-fence-motivation.png)
 
 
-- write-release: e.g. ensure that all writes are performed BEFORE the write to the flag.
-- read-acquire: e.g. ensure that all reads are performed AFTER the read of the flag.
+- How is the CPU supposed to figure out the dependencies between accesses to
+  different memory locations (a, b and the flag)?
 
-
-- sometimes explicit, sometimes implicit
 
 ---
-
 # Threading before C++11
+
+--
 
 ```cpp
 DWORD WINAPI ThreadFn(LPVOID)
@@ -196,9 +214,9 @@ int main()
     result = fib(40);
     auto h = ::CreateThread(NULL, 0, ThreadFn, &result, 0, NULL);
     result = fib(41);
-    ::WaitForSingleObject(m, INFINITE);
-    result = fib(42);
-    ::ReleaseMutex(m);
+    ::WaitForSingleObject(m, INFINITE); // \ /
+    result = fib(42);                   //  |
+    ::ReleaseMutex(m);                  // / \
     ::WaitForSingleObject(h, INFINITE);
     std::cout << result << '\n';
     return 0;
@@ -209,34 +227,37 @@ int main()
 >
 
 ---
-
 # DAG
 
 ![Image](../assets/2019-10-29-threading-before-cpp11/graph.png)
 
-- can't provide lightweight synchronization primitives without compiler support
-- historic struggles for Linux kernel locks, Java VM garbage collectors
-- when the compiler performs optimisations, threading cannot be implemented as
-  a library: it requires compiler support/guarantees
+- Can't provide lightweight synchronization primitives without compiler support
+- Historic struggles for Linux kernel locks, Java VM garbage collectors
+- When the compiler performs optimisations, threading cannot be implemented as
+  a language library (e.g. like a JSON parser library): it requires compiler
+  support/guarantees
+
 
 ---
+# C++ data race
 
+---
 # Without appropriate synchronization, access to the same data from multiple threads, with at least of one of them writing, is undefined.
 
-- C++11 data race
+- C++ data race, introduced in C++11
 - The language memory model is very weak (think DEC Alpha) allowing scope for
   optimisations
+- Also just because you could take advantage of the weak memory model, most of
+  the use cases should not (it's time consuming to ensure correctness)
 - Just because it seems to work, it does not mean that it really works and it’s
   not just a bug waiting to happen
 
 ---
-
 # Yes but myth
 
 ![Image](../assets/2019-10-31-cpp-data-race/not-atomic.png)
 
 ---
-
 # Integer data race
 
 ```cpp
@@ -253,7 +274,6 @@ if (y != 0) {
 }
 ```
 ---
-
 # Integer data race - part 2
 
 ```cpp
@@ -270,7 +290,6 @@ if (y == 0) {
 }
 ```
 ---
-
 # Boolean data race
 
 ```cpp
@@ -285,7 +304,6 @@ while (!stop) {
 stop = true;
 ```
 ---
-
 # Boolean data race - part 2
 
 ```cpp
@@ -300,7 +318,52 @@ if (!stop) {
 stop = true;
 ```
 ---
+class: large-points
 
+# Boolean data race - part 3
+
+- "Yes but we're not checking the bool in a loop and a bool is just true or
+  false"
+- The compiler does all sort of optimisations, including storing the value of a
+  variable in multiple locations: it might have different values at different
+  locations
+- Getting the right value is only part of the problem, the order of operations
+  also matters
+
+---
+class: large-points
+
+# Boolean data race - part 4
+
+- "Then why is our code working as expected anyway?"
+- Undefined behaviour might just happen to do what you wanted
+- If your code is complex and makes a lot of opaque calls (like the OS calls
+  we've seen above) the compiler might fetch the boolean whenever is needed and
+  not cache it.
+- You might get away with bugs, but it's still a bug waiting to happen when
+  code is refactored, the compiler gets improved etc.
+
+---
+class: large-points
+
+# Memory barriers
+
+- A general term for a mechanism that provides guarantees with regards to
+  optimisations that could impact threading
+- They need to go all the way: compiler + hardware
+- Sometimes explicit, sometimes implicit
+- Some are two way, some are one way e.g.
+  - write-release: e.g. ensure that all writes are performed BEFORE this write
+  - read-acquire: e.g. ensure that all reads are performed AFTER this read
+- It becomes complicated quickly: ordering of barriers themselves is required
+  to achieve e.g. sequential consistency (i.e. as if interleaved)
+- See [Herb Sutter: atomic
+  Weapons](https://www.youtube.com/watch?v=A8eCGOqgvH4) 2012
+
+---
+# What do to then?
+
+---
 # Mutex locking
 
 - `unlock()` synchronizes with any subsequent `lock()` operations that obtain
@@ -308,8 +371,9 @@ stop = true;
 
 ![Image](../assets/2019-11-02-cpp11-synchronizes-with/mutex.png)
 
----
+- Use in conjunction with a `std::condition_variable` to notify
 
+---
 # Thread creation
 
 - the completion of the invocation of the `std::thread` constructor
@@ -318,7 +382,6 @@ stop = true;
 ![Image](../assets/2019-11-02-cpp11-synchronizes-with/creation.png)
 
 ---
-
 # Thread completion
 
 - the completion of the `std::thread` synchronizes with the corresponding
@@ -327,7 +390,9 @@ stop = true;
 ![Image](../assets/2019-11-02-cpp11-synchronizes-with/join.png)
 
 ---
+# The volatile myth
 
+---
 # Volatile
 
 ![Image](../assets/2019-11-05-cpp11-volatile/mappedio.png)
@@ -338,7 +403,6 @@ stop = true;
   they are not reordered
 
 ---
-
 # The volatile myth
 
 ```cpp
@@ -367,20 +431,16 @@ void consumer_thread()
 - "Just" qualify the `flag` as `volatile`
 
 ---
-
 # Developer hopes
 
 ![Image](../assets/2019-11-05-cpp11-volatile/mem-fence-motivation.png)
 
 ---
-
 # Reality
 
 ![Image](../assets/2019-11-05-cpp11-volatile/without-mem-fence.png)
 
-
 ---
-
 # Another volatile example
 
 ```cpp
@@ -396,34 +456,53 @@ void fn(unsigned int value)
 ![Image](../assets/2019-11-05-cpp11-volatile/gccavr.png)
 
 ---
+class: large-points
 
 # Volatile in practice
 
 - Java and C# - volatile is atomic and adds full memory fences
-
 - In C++11 volatile does not guarantee memory barriers for non-volatile access
-
 - Microsoft Visual C++: `/volatile:ms` OR `/volatile:iso`
-
 - Meaning of volatile changed over time ... and will continue to do so
 
 ---
+class: large-points
 
-# The thread sandwich
+# Next steps
 
-- keep it (relatively) simple in order to be able to reason about correctness
-- if you need all the info in this thread to reason about multithreading
-  correctness, you've probably over-extended
-- different applications have very different threading (and error handling)
+- Avoid data races
+- Keep it (relatively) simple in order to be able to reason about correctness
+- If you need absolutely all the info in this thread to reason about
+  multithreading correctness, you've probably over-extended
+- Different applications have very different threading (and error handling)
   requirements
-- the thread sandwich pattern splits threading code into 3 components
-  (control/queue, function body, underlying thread)
 
-![Image](../assets/2019-11-12-thread-sandwich/sandwich.png)
+---
+# Questions?
+
+---
+# Coding links
+
+
+---
+# Class lifetime
+
+https://bajamircea.github.io/coding/cpp/2015/04/02/class-lifetime.html
+
+<div align="center">
+{% include assets/2015-04-02-class-lifetime/01-lifetime.svg %}
+</div>
+
+
+---
+# Spot the bug
+
+https://bajamircea.github.io/coding/cpp/2015/04/08/threading-bug.html
+
+---
+# The thread sandwich
 
 https://bajamircea.github.io/coding/cpp/2019/11/12/thread-sandwich.html
 
----
-
-# Questions?
+![Image](../assets/2019-11-12-thread-sandwich/sandwich.png)
 
