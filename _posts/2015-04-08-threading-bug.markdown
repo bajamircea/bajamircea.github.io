@@ -62,6 +62,12 @@ namespace
 {
   class periodic_thread
   {
+    std::chrono::seconds sleep_duration_;
+    bool must_stop_;
+    std::mutex mutex_;
+    std::condition_variable condition_variable_;
+    std::thread thread_;
+
   public:
     explicit periodic_thread(
       const std::chrono::seconds & sleep_duration
@@ -72,7 +78,7 @@ namespace
     {
     }
 
-    ~periodic_thread()
+    virtual ~periodic_thread()
     {
       {
         std::scoped_lock lock(mutex_);
@@ -100,12 +106,6 @@ namespace
         on_fire();
       }
     }
-
-    std::chrono::seconds sleep_duration_;
-    bool must_stop_;
-    std::mutex mutex_;
-    std::condition_variable condition_variable_;
-    std::thread thread_;
   };
 
   class some_periodic_thread :
