@@ -138,7 +138,7 @@ class cuppa_mock :
   public cuppa_interface
 {
 public:
-  MOCK_METHOD0(finish, void());
+  MOCK_METHOD(void, finish, (), (override));
 };
 
 // ... `door_mock` and `tv_mock` ...

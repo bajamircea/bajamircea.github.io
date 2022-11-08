@@ -104,7 +104,7 @@ Testing is now trivial:
 class cuppa_mock
 {
 public:
-  MOCK_METHOD0(finish, void());
+  MOCK_METHOD(void, finish, (), (override));
 };
 
 // ... `door_mock` and `tv_mock` ...

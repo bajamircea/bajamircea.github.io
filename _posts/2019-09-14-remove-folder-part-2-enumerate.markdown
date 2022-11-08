@@ -178,7 +178,7 @@ looks like:
 // incremented for the following calls
 // (assuming the previous call returned ERROR_SUCCESS).
 // ERROR_NO_MORE_ITEMS is returned when the enumeration completed.
-LSTATUS RegEnumValueW(..., DWORD   dwIndex, ...);
+LSTATUS RegEnumValueW(..., DWORD dwIndex, ...);
 {% endhighlight %}
 
 By just thinking about the `RegEnumValueW` function interface one can infer

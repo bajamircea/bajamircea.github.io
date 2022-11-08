@@ -79,7 +79,7 @@ struct contacts_db_interface {
   virtual std::optional<contact> find_by_id(int id) = 0;
   virtual void insert(const contact & item) = 0;
 
-  virtual ~contacts_db_interface(){};
+  virtual ~contacts_db_interface() = default;
 };
 {% endhighlight %}
 
@@ -116,7 +116,7 @@ view of using mocks and fakes to reduce the area of the graph that is tested.
 ## transaction_test.h
 
 We first create a mock type to replace the source `contacts_db`. For each
-method that the mock implements we use in this case the macro `MOCK_METHOD1`.
+method that the mock implements we use in this case the macro `MOCK_METHOD`.
 The macro declares the target function, and a member variable that is used to
 store a state machine which drives the implementation of that function.
 
@@ -124,8 +124,8 @@ store a state machine which drives the implementation of that function.
 struct contacts_db_mock :
   public contacts_db_interface
 {
-  MOCK_METHOD1(find_by_id, std::optional<contact>(int));
-  MOCK_METHOD1(insert, void(const contact &));
+  MOCK_METHOD(std::optional<contact>, find_by_id, (int), (override));
+  MOCK_METHOD(void, insert, (const contact &), (override));
 };
 {% endhighlight %}
 
@@ -216,7 +216,7 @@ simulation.
 **Mocks** are doubles that do not even try to simulate the real implementation.
 Instead they have support from the unit test framework to generate state
 machines that provide canned responses. That's what the combination of
-`MOCK_METHOD1` and `EXPECT_CALL` does in our case.
+`MOCK_METHOD` and `EXPECT_CALL` does in our case.
 
 The difference between fakes and mocks usually reflects in different styles of
 verification. Mocks encourage **behaviour verification** where we check how the

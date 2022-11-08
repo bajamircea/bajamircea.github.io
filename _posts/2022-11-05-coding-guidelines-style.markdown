@@ -1,0 +1,105 @@
+---
+layout: post
+title: 'The C.12 rule on const'
+categories: coding cpp
+---
+
+Coding guidelines are the Strunk & White for programming languages: famous,
+influential, in demand, but mediocre. A look at the C.12 rule on const usage
+from the C++ Core Guidelines.
+
+
+This article is part of a series of [articles on programming
+idioms][idioms-intro].
+
+# The C.12 rule
+
+Consider the [C.12 rule in the C++ Core Guidelines][c12]. Its contents says:
+
+**_C.12: Don’t make data members const or references_**
+
+**_Reason_**
+
+_They are not useful, and make types difficult to use by making them either
+uncopyable or partially uncopyable for subtle reasons._
+
+**Example; bad**
+{% highlight c++ %}
+class bad {
+    const int i;    // bad
+    string& s;      // bad
+    // ...
+};
+{% endhighlight %}
+
+_The `const` and `&` data members make this class "only-sort-of-copyable" –
+copy-constructible but not copy-assignable._
+
+**_Note_**
+
+_If you need a member to point to something, use a pointer (raw or smart, and
+`gsl::not_null` if it should not be `null`) instead of a reference._
+
+**_Enforcement_**
+
+_Flag a data member that is `const`, `&`, or `&&`._
+
+
+# Critique of the rule
+
+One issue with coding guidelines is that they are not necessarily explicit
+about the idioms they refer to.
+
+In this particular case a combination of the fact that it refers to member
+variables as data members and the fact that it is in a section that mentions
+concrete/regular classes suggests that the rule is supposed to apply to regular
+data classes from the regular idiom.
+
+We've seen in glorious details that in the mockable interfaces have a good
+reason to use references for the member interfaces or `const` for the member
+string. We've also seen the `lower_bound_predicate` using both const and
+reference.
+
+
+# Notable public C++ coding standards
+
+Bjarne Stoustrup produced a [C++ coding standard for the Joint Strike
+Fighter](https://www.stroustrup.com/JSF-AV-rules.pdf), basically for embedded
+systems on an airplane. C++ exceptions were not allowed due to the lack of
+guarantees required for such a system. Many users thought "but my system is
+different" so the standard was ignored by large parts of the C++ community.
+
+[Google then published their C++ Style
+Guide](https://google.github.io/styleguide/cppguide.html). They did not use
+exceptions either. In this case due to being cautious of introducing them in a
+large, legacy code that did not use C++ exceptions.
+
+Bjarne Stroustrup and Herb Sutter merge code guidelines from the organisations
+where they worked, Morgan Stanley and Microsoft, and others into the [C++ Core
+Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuideline) from
+where the rule above is taken.
+
+
+# Conclusion
+
+Having C++ coding standards is better than not having any. They are often not
+explicit about the idioms they support or the fact that multiple idioms might
+coexist in a large code base. They are often phrased as "always do this, except
+..." or "never do this, except ...".
+
+Thy are not state of the art, it's not where ideas and sound judgement come
+from.
+
+
+
+# References
+
+- Strunk & White: [The Elements of Style][sw]
+- [C++ Core Guidelines][c12]
+- [Series of articles on programming idioms][idioms-intro]
+- [There are all kinds of types][taxonomy]
+
+[idioms-intro]:    {% post_url 2022-10-17-idioms %}
+[c12]: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-constref
+[sw]: https://en.wikipedia.org/wiki/The_Elements_of_Style
+[taxonomy]: {% post_url 2015-11-05-class-taxonomy %}

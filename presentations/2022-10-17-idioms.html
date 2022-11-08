@@ -1,0 +1,525 @@
+---
+layout: presentation
+title: Idioms in C++
+---
+
+Mircea Baja @ 17 October 2022
+
+# Idioms
+
+---
+class: large-points
+
+# Idioms
+
+- A programming idiom is a group of rules and choices that uses language
+  features in a coherent, well understood way, in order to solve a specific
+  kind of problems.
+- A mature programming language would support multiple idioms.
+- Will cover important common idioms:
+  - Regular data and functions
+  - C API wrapper
+  - Mockable interfaces
+
+---
+class: large-points
+
+# Regular data and functions
+
+- Idiom #1
+
+---
+# Regular data
+
+```cpp
+struct person
+{
+  std::string first_name;
+  std::string last_name;
+  int age{};
+
+  constexpr std::strong_ordering
+    operator<=>(const person &) const noexcept = default;
+};
+```
+
+---
+# Regular function
+
+```cpp
+person person_from_json_string(const std::string & input) {
+  person return_value;
+  // parse the input and assign to members
+  return_value.first_name = ...;
+  return_value.last_name = ...;
+  return_value.age = ...;
+  return return_value;
+}
+```
+
+---
+class: large-points
+
+# Regular ecosystem
+
+- STL part of the regular idiom
+  - containers like `vector`
+  - algorithms like `sort`, `lower_bound`
+  - other concepts: iterators, ranges, sentinel etc.
+- Composing
+  - `person` can be a member of another regular data structure
+  - different explicit syntax for something like `std::string`
+
+---
+class: large-points
+
+# Terminology
+
+- Elements of Programming (EOP)
+- Standard library (std)
+
+
+- Fully regular e.g `person`
+  - Regular (as used here)
+- Without order:
+  - Semiregular (EOP probably)
+  - `std::regular`
+- Without equality
+  - `std::semiregular`
+
+
+---
+# Not regular
+
+```cpp
+addressof
+```
+
+```cpp
+std::vector<T>::capacity()
+```
+
+```cpp
+std::string download_url(const std::string & url);
+```
+
+---
+class: large-points
+
+# C API wrapper
+
+- Idiom #2
+
+---
+# Wrapping handles
+
+```cpp
+struct registry_handle_traits {
+  using handle = HKEY;
+  static constexpr auto invalid_value = nullptr;
+  static void close_handle(handle h) noexcept {
+    static_cast<void>(::RegCloseKey(h));
+  }
+};
+
+using registry_handle = raii_with_invalid_value<registry_handle_traits>;
+```
+--
+
+```cpp
+registry_handle create_registry_key(...);
+
+registry_handle open_registry_key(...);
+```
+
+---
+# Wrapping usage functions
+
+```cpp
+std::wstring read_registry_string(
+  registry_handle_arg key,
+  const std::wstring & sub_key_path);
+
+std::vector<std::wstring> read_registry_multistring(
+  registry_handle_arg key,
+  const std::wstring & sub_key_path);
+```
+
+--
+
+```cpp
+using registry_handle_arg = handle_arg<registry_handle>;
+```
+
+---
+# Close for cached writes
+
+```cpp
+void close(file_raii & x) {
+  int result = std::fclose(x.release());
+  if (result != 0) {
+    error::throw_failed("fclose");
+  }
+}
+```
+---
+# Not error: bool
+
+```cpp
+bool delete_registry_key(...);
+
+void foo() {
+  if (delete_registry_key(...)) {
+    LOG << "Deleted key.";
+  }
+}
+```
+???
+>
+
+---
+# Not error: invalid handle
+
+```cpp
+registry_handle open_registry_key_if_exists(...);
+
+void foo() {
+  auto key = open_registry_key_if_exists(...);
+  if (!key) {
+    LOG << "Key is missing.";
+  }
+  else {
+    // use key
+  }
+}
+```
+???
+>
+
+---
+# Not error: optional
+
+```cpp
+std::optional<std::wstring> read_registry_string_if_exists(...);
+
+void foo() {
+  auto value = read_registry_string_if_exists(...);
+  if (!value) {
+    LOG << "Value is missing.";
+  }
+  else {
+    // use *value string
+  }
+}
+```
+???
+>
+
+---
+# Error code
+
+```cpp
+std::wstring read_registry_string(
+  registry_handle_arg key,
+  const std::wstring & sub_key_path,
+  std::error_code & ec);
+std::wstring read_registry_string(
+  registry_handle_arg key,
+  const std::wstring & sub_key_path);
+```
+
+- `std::bad_alloc` vs `noexcept`
+- last that's not defaulted
+- customize error category
+- error category object long lived
+
+---
+# Implement one
+
+```cpp
+foo bar(..., std::error_code & ec) {
+  ec = std::error_code{};
+  // implement functionality here
+  // on error set
+  // ec = std::error(code, my_error_category())
+}
+
+foo bar(...) {
+  std::error_code ec;
+  auto return_value = bar(..., ec);
+  if (ec) {
+    throw std::system_error(ec, "bar failed");
+  }
+  return return_value;
+}
+```
+
+---
+class: large-points
+
+# Mockable interfaces
+
+- Idiom #3
+
+
+---
+# Instantiation
+
+```cpp
+int main() {
+  buzz z;
+  bar y;
+  foo x{ y, z, "flintstone" };
+  waldo w{ x, y };
+
+  w.do_something();
+}
+```
+
+---
+# Interface option 1
+
+```cpp
+struct foo_inteface {
+  virtual void some_fn() = 0;
+  virtual int some_fn2() = 0;
+
+  virtual ~foo_interface() {};
+};
+```
+
+---
+# Interface option 2
+
+```cpp
+struct foo_interface {
+  virtual void some_fn() = 0;
+  virtual int some_fn2() = 0;
+
+protected:
+  ~foo_interface() {};
+};
+```
+
+--
+
+```cpp
+class foo final: public foo_interface {
+  void some_fn() override;
+  int some_fn2() override;
+```
+
+---
+# Handling dependencies
+
+```cpp
+class foo : public foo_interface {
+  bar_interface & bar_;
+  buzz_interface & buzz_;
+  const std::string fred_;
+
+public:
+  foo(bar_interface & bar,
+      buzz_interface & buzz,
+      const std::string & fred):
+    bar_{ bar }, buzz_{ buzz }, fred_{ fred }
+  {}
+
+  foo(const foo &) = delete;
+  foo & operator=(const foo &) = delete;
+
+  // implement in terms of bar_, buzz_ and fred_
+  void some_fn() override;
+  int some_fn2() override;
+};
+```
+
+---
+# Mocking
+
+```cpp
+class bar_mock :
+  public bar_interface
+{
+public:
+  MOCK_METHOD(void, bar_fn, (), (override));
+};
+```
+
+---
+# Testing
+
+```cpp
+TEST(foo_test, trivial)
+{
+  StrictMock<bar_mock> y;
+  EXPECT_CALL(y, bar_fn())
+    .Times(1);
+  StrictMock<buzz_mock> z;
+
+  foo x{ y, z, "bedrock" };
+  x.some_fn();
+}
+```
+
+---
+# Builder class
+
+```cpp
+class waldo_builder {
+  buzz z_;
+  bar y_;
+  foo x_;
+  waldo w_;
+public:
+  waldo_builder() :
+    z_{},
+    y_{},
+    x_{ y_, z_, "flintstone" },
+    w_{ x_, y_ }
+  {}
+
+  void do_something() {
+    w_.do_something();
+  }
+};
+```
+
+---
+class: large-points
+
+# C.12
+
+- A note on traditional coding guidelines
+
+---
+# Bad const
+
+**example bad**
+```cpp
+class foo : public foo_interface {
+  const bar_interface & bar_;
+  const buzz_interface & buzz_;
+  const std::string fred_;
+
+public:
+  foo(const bar_interface & bar,
+      const buzz_interface & buzz,
+      const std::string & fred):
+    bar_{ bar }, buzz_{ buzz }, fred_{ fred }
+  {}
+
+  foo(const foo &) = delete;
+  foo & operator=(const foo &) = delete;
+
+  // implement in terms of bar_, buzz_ and fred_
+  void some_fn() const override;
+  int some_fn2() const override;
+};
+```
+---
+# Bad const
+
+**example, bad**
+```cpp
+struct bar_interface {
+  virtual void bar_fn() const = 0;
+
+  virtual ~bar_interface() = default;
+};
+```
+
+---
+class: large-points
+
+# Bad const rationale
+
+**example, bad**
+```cpp
+int main() {
+  foo x(make_bar(), make_buzz(), "flintstone");
+  // ups, x has dangling references now
+  // to temporaries that have been destructed
+}
+```
+
+- Risk of dangling references from temporaries
+- Compiler accepts syntax, but incorrect meaning
+- Mutable mocks anyway: incorrect 50% of cases
+
+
+- Conflict between interface and const
+
+---
+# Good const ref
+
+
+```cpp
+template<typename T>
+class lower_bound_predicate {
+  const T& a; // const reference is good here
+public:
+  lower_bound_predicate(const T & a) : a(a)
+  {}
+
+  bool operator()(const T & x) {
+    return !(x <  a);
+  }
+};
+
+template<typename I, typename T>
+I lower_bound(I f, I l, const T & a) {
+  lower_bound_predicate<T> p(a);
+  return partition_point(f, l, p);
+}
+```
+???
+>
+
+---
+# Good const ref
+
+
+```cpp
+template<typename I, typename T>
+I lower_bound(I f, I l, const T & a) {
+  auto p = [&a](const T& x) {
+      return !(x < a);
+  };
+  return partition_point(f, l, p);
+}
+```
+???
+>
+
+---
+class: large-points
+
+# Regular data concept (syntax)
+
+- default constructible (noexcept)
+- destructible (implicitly noexcept)
+- copy constructor and assignment (can throw)
+- move constructor and assignment (noexcept)
+- equality (== and !=, noexcept, const)
+- order (<, >, <=, >=, <=>, noexcept, const)
+
+---
+class: large-points
+
+# Concept also has semantics
+
+- "it's a data class"
+- copy copies, move moves, etc.
+- no resource/memory leaks
+- copies are equal, substitutable
+- "moved from" at least can be destroyed and assigned
+- equality reflexive, symmetric, transitive
+- != is literally "not equal"
+- less than is strict total order
+- trichotomy
+- reasonable complexity of operations
+
+---
+# Questions?
+

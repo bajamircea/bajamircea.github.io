@@ -40,8 +40,7 @@ namespace cpp_util
   // - a handle type - the type of the handle
   // - a function static void close_handle(handle) noexcept - the function to
   //   close the handle
-  // - and a invalid_value constant - the special value indicating no handle is
-  //   hold
+  // - and an invalid_value constant - the special value indicating "no handle"
   class raii_with_invalid_value
   {
   public:
@@ -154,19 +153,37 @@ smart pointers.
 
 Unlike `std::unique_ptr` it handles the case where the invalid is not
 `nullptr`. It provides the `is_valid()` to check for validity. `operator*` and
-`operator->` don't usually make sense for handles. `handle_reference` and
-`handle_pointer` are provided for direct (dangerous, but useful sometimes)
-direct access to the handle.
+`operator->` don't usually make sense for handles.
+
+`handle_reference` and `handle_pointer` are provided for direct access to the
+handle. Such access is a bit dangerous, but sometimes useful (hence the longer
+names), less dangerous than using naked handles for C APIs which e.g. use the
+return value for errors and provide created handles via a pointer to handle
+argument.
 
 The operator `bool` checks for `is_valid()`, it is `explicit`, limiting it's
 use e.g. to `if` tests.
 
 Equality is not implemented, because it does not make sense. The handles are
 often opaque and each valid handle points has a different value, so the only
-equal values will be those of invalid handles.
+equal values will be those of invalid handles. Equality is linked to copying.
+The standard implemented equality for `std::unique_ptr`. That does not make
+sense for the same reason, only `nullptr` pointers will compare equal. Note
+that equality makes sense for `std::shared_ptr`, which has copy, it answers the
+question "do these two pointers point to the same thing?", which is possible
+for `std::shared_ptr`.
 
 All the methods are `noexcept` either explicitly or implicitly, which is useful
 when doing low level interactions with C code.
+
+Another reason for using `raii_with_invalid_value` instead of `std::unique_ptr`
+is that it provides a unifying common vocabulary for wrapping may C APIs.
+
+And another is that because of the traits mechanism it gives an option to have
+different handle wrapper types even when all the characteristics are the same:
+same handle type, same invalid value, same closing function. E.g. `HANDLE`
+(also `SC_HANDLE`) is used for many APIs in Windows, not always meaning the
+same thing (files, threads, events, semaphores etc.)
 
 
 ## cpp_util_lib/handle_arg.h

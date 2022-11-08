@@ -186,6 +186,9 @@ function, but you might use such classes as arguments in generic algoritms.
 {% highlight c++ linenos %}
 class between_inclusive
 {
+  int lower_;
+  int upper_;
+
 public:
   between_inclusive(int lower, int upper) :
     lower_{ lower }, upper_{ upper }
@@ -195,10 +198,6 @@ public:
   bool operator()(int value) {
     return (lower_ <= value) && (value <= upper_);
   }
-
-private:
-  int lower_;
-  int upper_;
 };
 {% endhighlight %}
 
@@ -251,8 +250,9 @@ struct itf
 {
   virtual void some_fn() = 0;
   virtual int some_fn2() = 0;
+
 protected:
-  ~itf() {};
+  ~itf() = default;
 };
 {% endhighlight %}
 
@@ -263,7 +263,8 @@ struct itf
 {
   virtual void some_fn() = 0;
   virtual int some_fn2() = 0;
-  virtual ~itf() {};
+
+  virtual ~itf() = default;
 };
 {% endhighlight %}
 

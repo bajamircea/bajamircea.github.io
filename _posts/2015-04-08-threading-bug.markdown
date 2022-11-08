@@ -113,7 +113,7 @@ namespace
   {
   public:
     some_periodic_thread() :
-      periodic_thread_base(std::chrono::seconds(2))
+      periodic_thread(std::chrono::seconds(2))
     {
     }
 
