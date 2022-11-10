@@ -159,6 +159,7 @@ std::wstring read_registry_string(
   registry_handle_arg key,
   const std::wstring & sub_key_path,
   std::error_code & ec);
+
 std::wstring read_registry_string(
   registry_handle_arg key,
   const std::wstring & sub_key_path);

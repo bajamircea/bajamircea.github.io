@@ -48,11 +48,14 @@ struct person
 
 ```cpp
 person person_from_json_string(const std::string & input) {
+
   person return_value;
+
   // parse the input and assign to members
   return_value.first_name = ...;
   return_value.last_name = ...;
   return_value.age = ...;
+
   return return_value;
 }
 ```
@@ -80,7 +83,7 @@ class: large-points
 
 
 - Fully regular e.g `person`
-  - Regular (as used here)
+  - Regular (EOP, basically as used here)
 - Without order:
   - Semiregular (EOP probably)
   - `std::regular`
@@ -109,9 +112,13 @@ class: large-points
 # C API wrapper
 
 - Idiom #2
+- FIT RAII
+  https://bajamircea.github.io/coding/cpp/2022/06/29/fit-raii.html +
+  `std::filesystem`
+
 
 ---
-# Wrapping handles
+# Wrapping creation
 
 ```cpp
 struct registry_handle_traits {
@@ -136,11 +143,13 @@ registry_handle open_registry_key(...);
 # Wrapping usage functions
 
 ```cpp
-std::wstring read_registry_string(
-  registry_handle_arg key,
-  const std::wstring & sub_key_path);
+using registry_handle_arg = handle_arg<registry_handle>;
+```
 
-std::vector<std::wstring> read_registry_multistring(
+--
+
+```cpp
+std::wstring read_registry_string(
   registry_handle_arg key,
   const std::wstring & sub_key_path);
 ```
@@ -148,7 +157,9 @@ std::vector<std::wstring> read_registry_multistring(
 --
 
 ```cpp
-using registry_handle_arg = handle_arg<registry_handle>;
+std::vector<std::wstring> read_registry_multistring(
+  registry_handle_arg key,
+  const std::wstring & sub_key_path);
 ```
 
 ---
@@ -223,6 +234,7 @@ std::wstring read_registry_string(
   registry_handle_arg key,
   const std::wstring & sub_key_path,
   std::error_code & ec);
+
 std::wstring read_registry_string(
   registry_handle_arg key,
   const std::wstring & sub_key_path);
@@ -284,7 +296,7 @@ struct foo_inteface {
   virtual void some_fn() = 0;
   virtual int some_fn2() = 0;
 
-  virtual ~foo_interface() {};
+  virtual ~foo_interface() = default;
 };
 ```
 
@@ -297,7 +309,7 @@ struct foo_interface {
   virtual int some_fn2() = 0;
 
 protected:
-  ~foo_interface() {};
+  ~foo_interface() = default;
 };
 ```
 
@@ -393,9 +405,9 @@ class: large-points
 - A note on traditional coding guidelines
 
 ---
-# Bad const
+# Const ref member: No
 
-**example bad**
+**example, bad**
 ```cpp
 class foo : public foo_interface {
   const bar_interface & bar_;
@@ -418,7 +430,7 @@ public:
 };
 ```
 ---
-# Bad const
+# Const ref member: No
 
 **example, bad**
 ```cpp
@@ -432,7 +444,7 @@ struct bar_interface {
 ---
 class: large-points
 
-# Bad const rationale
+# Rationale
 
 **example, bad**
 ```cpp
@@ -445,13 +457,14 @@ int main() {
 
 - Risk of dangling references from temporaries
 - Compiler accepts syntax, but incorrect meaning
-- Mutable mocks anyway: incorrect 50% of cases
+- read(), write(), read()
+- Mutable mocks anyway: semantically incorrect 50% of cases
 
 
-- Conflict between interface and const
+- Conflict between interface and `const`
 
 ---
-# Good const ref
+# Const ref member: Yes
 
 
 ```cpp
@@ -477,7 +490,7 @@ I lower_bound(I f, I l, const T & a) {
 >
 
 ---
-# Good const ref
+# Const ref member: Yes
 
 
 ```cpp
@@ -491,6 +504,104 @@ I lower_bound(I f, I l, const T & a) {
 ```
 ???
 >
+
+---
+class: large-points
+
+# C.12
+
+- "C.12: Don’t make data members const or references"
+- "They are not useful, and make types difficult to use by making them either
+uncopyable or partially uncopyable for subtle reasons."
+
+**example; bad**
+```cpp
+class bad {
+    const int i;    // bad
+    string& s;      // bad
+    // ...
+};
+```
+
+- Regular data idiom: rule applies
+- Mockable interfaces idiom: rule does not apply
+
+---
+class: large-points
+
+# Recap
+
+- regular data and functions
+  - sound
+  - default gobbledigook
+- C API wrap
+  - error_code question
+  - `std::filesystem` adoption success
+- mockable interfaces
+  - use with care
+- not the only ones
+
+---
+class: large-points
+
+# Regular data and functions
+
+- example of minor deviation
+
+```
+struct person
+{
+  std::string first_name{};
+  std::string last_name{};
+  int age{};
+};
+```
+
+---
+# Smart pointers for interface members
+
+**example, bad**
+```cpp
+class foo : public foo_interface {
+  std::unique_ptr<bar_interface> bar_;
+  std::unique_ptr<buzz_interface> buzz_;
+  const std::string fred_;
+
+public:
+  foo(std::unique_ptr<bar_interface> bar,
+      std::unique_Ptr<buzz_interface> buzz,
+      const std::string & fred):
+    bar_{ std::move(bar) }, buzz_{ std::move(buzz) }, fred_{ fred }
+  {}
+
+  // ...
+};
+```
+
+---
+# Consequences
+
+**example, bad**
+```cpp
+int main() {
+  auto z = std::make_unique<buzz>();
+  auto y = std::make_unique<bar>();
+  foo x{ std::move(y), std::move(z), "flintstone" };
+  /*
+  but if we add waldo below
+  waldo w{ x, y };
+  then we also have to change:
+  - y to instantiate via std::make_shared
+  - x instantiated via std::make_unique
+  - pass y into x without moving
+  - store buzz_ inside foo as a std::shared_ptr
+  - change constructor of foo to take buzz_interface as std::shared_ptr
+  */
+}
+```
+
+---
+# Questions?
 
 ---
 class: large-points
@@ -521,5 +632,3 @@ class: large-points
 - reasonable complexity of operations
 
 ---
-# Questions?
-

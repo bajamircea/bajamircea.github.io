@@ -53,6 +53,7 @@ handled differently.
 - [Const ref member: No][constrefno]
 - [Const ref member: Yes][constrefyes]
 - [The C.12 rule on const][c12]
+- [Programming idiom remarks][remarks]
 
 Also see the above in [presentation form][presentation]
 
@@ -70,3 +71,4 @@ programmers should read carefully (and almost nobody does).
 [constrefno]:      {% post_url 2022-10-29-const-ref-member-no %}
 [constrefyes]:     {% post_url 2022-11-02-const-ref-member-yes %}
 [c12]:             {% post_url 2022-11-05-coding-guidelines-style %}
+[remarks]:         {% post_url 2022-11-09-idioms-remarks %}

@@ -50,15 +50,21 @@ _Flag a data member that is `const`, `&`, or `&&`._
 One issue with coding guidelines is that they are not necessarily explicit
 about the idioms they refer to.
 
+To the regular data idiom this rule applies.
+
+But we've seen in glorious details that in the mockable interfaces idiom we
+have a good reason to use references for the member interfaces or `const` for
+the member string. We've also seen the `lower_bound_predicate` using both const
+and reference.
+
 In this particular case a combination of the fact that it refers to member
 variables as data members and the fact that it is in a section that mentions
 concrete/regular classes suggests that the rule is supposed to apply to regular
 data classes from the regular idiom.
 
-We've seen in glorious details that in the mockable interfaces have a good
-reason to use references for the member interfaces or `const` for the member
-string. We've also seen the `lower_bound_predicate` using both const and
-reference.
+**Literal interpretation of coding guidelines without applying thorough
+reasoning is a dangerous thing. Regard with suspicion the developer that quotes
+the coding rule number instead of providing a compelling justification.**
 
 
 # Notable public C++ coding standards
@@ -80,21 +86,45 @@ Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuideline) from
 where the rule above is taken.
 
 
+# Parallels to Strunk & White
+
+Strunk & White is a language style guide that is often familiar to US
+college/university students and it's supposed to contain adive on good writing
+style for such students. Surprisingly it's almost unknown in Britain.
+
+Like many programming coding guidelies it's popular and written in a similar
+simplistic style of rules like "always to this" or "never do this", for example
+use the active voice not the passive voice.
+
+The advice does not address the questions "then why passive voice exists, where
+is it useful?" and they hilariosly contradict themselves by using the passive
+voice to provide the advice:
+
+> Many a tame sentence ... can be made lively and emphatic by substituting a
+> transitive in the active voice
+
+And that creates a wrong frame of mind. There are better books on language
+style out there that for have more complex, but more effective rules e.g.
+identify what is known, old information, vs. what is newly introduced to the
+reader and the passive voice can be used to make that transition smoothly
+rather than jumping back between new and old.
+
+
 # Conclusion
 
 Having C++ coding standards is better than not having any. They are often not
 explicit about the idioms they support or the fact that multiple idioms might
-coexist in a large code base. They are often phrased as "always do this, except
-..." or "never do this, except ...".
+coexist in a large code base. They are often phrased as over simplified rules
+and often lack context.
 
 Thy are not state of the art, it's not where ideas and sound judgement come
 from.
 
 
-
 # References
 
 - Strunk & White: [The Elements of Style][sw]
+- [Pullum on Passives](https://www.youtube.com/watch?v=ZrRKJrTPwYg)
 - [C++ Core Guidelines][c12]
 - [Series of articles on programming idioms][idioms-intro]
 - [There are all kinds of types][taxonomy]

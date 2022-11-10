@@ -61,11 +61,14 @@ check that the `age` member is in a reasonable range.
 
 {% highlight c++ linenos %}
 person person_from_json_string(const std::string & input) {
+
   person return_value;
+
   // parse the input and assign to members
   return_value.first_name = ...;
   return_value.last_name = ...;
   return_value.age = ...;
+
   return return_value;
 }
 
@@ -146,7 +149,7 @@ shown in this table:
 </tr>
 <tr>
   <th>Fully regular e.g person</th>
-  <td>Regular (as used here)</td>
+  <td>Regular (basically as used here)</td>
   <td>-</td>
 </tr>
 <tr>
