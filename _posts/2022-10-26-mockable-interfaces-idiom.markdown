@@ -52,7 +52,7 @@ Ensure that the derived class destructor is called when the base class
 destructor is called. This is achieved by adding a virtual destructor (not
 pure) to the base class.
 {% highlight c++ linenos %}
-struct foo_inteface {
+struct foo_interface {
   virtual void some_fn() = 0;
   virtual int some_fn2() = 0;
 
@@ -186,6 +186,7 @@ TEST(foo_test, trivial)
 You would usually use something like the Google test `StrictMock` to ensure
 that unexpected calls fail the test.
 
+
 # Builder class
 
 Occasionally you can't use the stack directly for instantiation, so then you
@@ -220,7 +221,7 @@ functionality might be covered by component or system tests.
 # Why this idiom works?
 
 Mock interfaces are well supported by unit test frameworks like Google test,
-both their creation using MOCK_METHOD macro and test primitives like
+both their creation using `MOCK_METHOD` macro and test primitives like
 `EXPECT_CALL`.
 
 The compiler might remove the usage of the virtual table, something called
