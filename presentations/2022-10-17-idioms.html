@@ -383,7 +383,7 @@ public:
 ```
 
 ---
-# Testing
+# Testing foo
 
 ```cpp
 TEST(foo_test, trivial)
@@ -397,6 +397,23 @@ TEST(foo_test, trivial)
   x.some_fn();
 }
 ```
+
+---
+# Testing graph
+
+<div align="center" style="max-width: 600px">
+{% include assets/2022-10-26-mockable-interfaces-idiom/01-graph.svg %}
+</div>
+
+---
+class: large-points
+
+# Testing bar and buzz
+
+- often one of the two:
+  - just do data manipulation: in which case they can be tested as in the
+    regular data and functions idiom
+  - just call C APIs: in which case they can be tested like the C API wrappers
 
 ---
 # Builder class
@@ -431,7 +448,7 @@ class: large-points
 ---
 # Const ref member: No
 
-**example, bad**
+**example; bad**
 ```cpp
 class foo : public foo_interface {
   const bar_interface & bar_;
@@ -456,7 +473,7 @@ public:
 ---
 # Const ref member: No
 
-**example, bad**
+**example; bad**
 ```cpp
 struct bar_interface {
   virtual void bar_fn() const = 0;
@@ -470,7 +487,7 @@ class: large-points
 
 # Rationale
 
-**example, bad**
+**example; bad**
 ```cpp
 int main() {
   foo x(make_bar(), make_buzz(), "flintstone");
@@ -584,7 +601,7 @@ struct person
 ---
 # Smart pointers for interface members
 
-**example, bad**
+**example; bad**
 ```cpp
 class foo : public foo_interface {
   std::unique_ptr<bar_interface> bar_;
@@ -605,7 +622,7 @@ public:
 ---
 # Consequences
 
-**example, bad**
+**example; bad**
 ```cpp
 int main() {
   auto z = std::make_unique<buzz>();

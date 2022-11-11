@@ -17,7 +17,7 @@ idioms][idioms-intro].
 With good intentions developer try to use `const` as much as possible.
 
 Consider this `foo` class from the [mockable interfaces
-article][interfacesidiom], but with as much `const` as possible (**example,
+article][interfacesidiom], but with as much `const` as possible (**example;
 bad**):
 {% highlight c++ linenos %}
 class foo : public foo_interface {
@@ -42,7 +42,7 @@ public:
 {% endhighlight %}
 
 Once we made the member references `const`, in order to be able to call methods
-on the interface, they have to be `const` (**example, bad**):
+on the interface, they have to be `const` (**example; bad**):
 {% highlight c++ linenos %}
 struct bar_interface {
   virtual void bar_fn() const = 0;

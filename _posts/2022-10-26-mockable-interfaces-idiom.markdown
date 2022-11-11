@@ -121,6 +121,11 @@ alternative is to set them later via an `init` method (or equivalent), but that
 would have lifetime issues (e.g. they are not correct/or available between
 construction and `init`.
 
+Notice that we stored the interfaces in an almost mechanical/recipe fashion, we
+did not use them to create another object. That adds complexity, e.g.  we'll
+see later that a unit test would also cover that object, so it should be done
+where really there is some gain to be had.
+
 The string `fred` is another customization that is captured at construction
 time. It might be something like a database connection string. We could create
 an interface for that for more complex cases or simply store a copy of the
@@ -184,9 +189,14 @@ TEST(foo_test, trivial)
 {% endhighlight %}
 
 You would usually use something like the Google test `StrictMock` to ensure
-that unexpected calls fail the test.
+that unexpected calls fail the test, that's the point of [behaviour
+verification][mocks].
 
-<div align="center">
+We used the mocks to isolate a smaller number of componets that are involved in
+the test, but note that the "unit test" still involves other components
+(`std::string` at least in this case):
+
+<div align="center" style="max-width: 500px">
 {% include assets/2022-10-26-mockable-interfaces-idiom/01-graph.svg %}
 </div>
 

@@ -96,7 +96,7 @@ components:
 - `contact` uses `std::string`
 - `std::string` and `std::vector` both allocate memory on the heap
 
-<div align="center">
+<div align="center" style="max-width: 500px">
 {% include assets/2022-05-31-mock-fake-spy/01-graph.svg %}
 </div>
 

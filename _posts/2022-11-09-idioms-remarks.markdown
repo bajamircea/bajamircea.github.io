@@ -64,7 +64,7 @@ potentially) a fully, proper regular data class.
 What if we follow on the C.12 recommendation to use smart pointers? Well, `foo`
 might start looking like this:
 
-**example, bad**
+**example; bad**
 {% highlight c++ %}
 class foo : public foo_interface {
   std::unique_ptr<bar_interface> bar_;
@@ -89,7 +89,7 @@ on the heap. Also if one object like `waldo` also wants to use the same
 instance of `bar` as `foo`, then all of them might have to change from using
 `unique_ptr` to using `shared_ptr`.
 
-**example, bad**
+**example; bad**
 {% highlight c++ %}
 int main() {
   auto z = std::make_unique<buzz>();
