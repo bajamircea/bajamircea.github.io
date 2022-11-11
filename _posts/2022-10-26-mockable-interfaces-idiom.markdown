@@ -155,7 +155,7 @@ returned by accident from a function and have dangling references to objects
 from within the function scope.
 
 
-# Testing
+# Testing foo
 
 It's easy to [create mocks for behaviour verification][mocks] using a test
 framework like google test and test the classes that take their dependencies as
@@ -186,6 +186,18 @@ TEST(foo_test, trivial)
 You would usually use something like the Google test `StrictMock` to ensure
 that unexpected calls fail the test.
 
+<div align="center">
+{% include assets/2022-10-26-mockable-interfaces-idiom/01-graph.svg %}
+</div>
+
+
+# Testing bar and buzz
+
+`bar` and `buzz` do not have interfaces injected at construction time. They
+often either:
+- just do data manipulation: in which case they can be tested as in the regular
+  data and functions idiom
+- just call C APIs: in which case they can be tested like the C API wrappers
 
 # Builder class
 

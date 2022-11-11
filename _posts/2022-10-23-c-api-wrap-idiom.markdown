@@ -244,16 +244,21 @@ For some cases you might need a RAII class different from
 ensure such a class is default constructible to allow the error code overload
 to return the same type.
 
-Also pure unit testing is not possible in the current form.
+
+# Testing
+
+Pure unit testing in the style we've seen for the regular idiom is not possible
+for the C API wrappers in the current form.
+
+Just changing the form is not justified if it results in much more complex code
+and all is achieved is doing calls against mock C APIs that don't actually test
+real functionality, just call expectations. Often the programmer's expectations
+are made clear by checking the code.
 
 **Experience shows that most of the testing gains are from testing against the
-actual C APIs**.  That exposes unexpected behaviour of the C API such as
+actual C APIs**. That exposes unexpected behaviour of the C API such as
 `::RegQueryValueEx` not returning the written data size for incorrectly sized
 data, which is important when using the small value optimisation.
-
-Just changing the form is not justified if all is achieved is doing calls
-against mock C APIs that don't actually test real functionality, just call
-expectations that can easily checked by checking the code.
 
 Testing against the actual C APIs might require tests to run as admin on a
 separate machine/platform from the build machine and also requires that a

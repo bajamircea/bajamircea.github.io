@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20221026-01-1" width="100%" viewBox="0 0 670.0 480.0">
+  <style>
+    #svg20221026-01-1 {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20221026-01-l1 {
+      stroke: #2f332b;
+      stroke-width: 4;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: #f5bb00;
+    }
+    .svg20221026-01-l2 {
+      stroke: black;
+      stroke-width: 2;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+    }
+    .svg20221026-01-l3 {
+      stroke: black;
+      stroke-width: 2;
+      stroke-dasharray: 5,5;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+    }
+    .svg20221026-01-l4 {
+      stroke: none;
+      fill: #ffeeaa;
+    }
+    .svg20221026-01-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: left;
+      dominant-baseline: middle;
+    }
+    .svg20221026-01-t2 {
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: 16px;
+      text-anchor: end;
+      dominant-baseline: hanging;
+    }
+  </style>
+  <defs>
+    <marker id="svg20221026-01-arrow" viewBox="0, 0, 10, 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z"/>
+    </marker>
+  </defs>
+  <path class="svg20221026-01-l4" d="M 100 100 H 650 V 450 H 380 V 240 H 100 Z"/>
+  <circle class="svg20221026-01-l1" cx="350" cy="50" r="20"/>
+  <text class="svg20221026-01-t1" x="390" y="50">waldo</text>
+  <circle class="svg20221026-01-l1" cx="350" cy="150" r="20"/>
+  <text class="svg20221026-01-t1" x="390" y="150">foo</text>
+  <circle class="svg20221026-01-l1" cx="50" cy="350" r="20"/>
+  <text class="svg20221026-01-t1" x="90" y="350">buzz</text>
+  <circle class="svg20221026-01-l1" cx="200" cy="350" r="20"/>
+  <text class="svg20221026-01-t1" x="240" y="350">bar</text>
+  <circle class="svg20221026-01-l1" cx="500" cy="250" r="20"/>
+  <text class="svg20221026-01-t1" x="540" y="250">std::string</text>
+  <circle class="svg20221026-01-l1" cx="500" cy="400" r="20"/>
+  <text class="svg20221026-01-t1" x="540" y="400">heap</text>
+  <line class="svg20221026-01-l2" x1="350.0" y1="72.0" x2="350.0" y2="128.0" marker-end="url(#svg20221026-01-arrow)"/>
+  <line class="svg20221026-01-l2" x1="331.6948935245674" y1="162.20340431695504" x2="68.30510647543257" y2="337.796595683045" marker-end="url(#svg20221026-01-arrow)"/>
+  <line class="svg20221026-01-l2" x1="336.8" y1="167.6" x2="213.2" y2="332.4" marker-end="url(#svg20221026-01-arrow)"/>
+  <line class="svg20221026-01-l2" x1="368.3051064754326" y1="162.20340431695504" x2="481.6948935245674" y2="237.79659568304496" marker-end="url(#svg20221026-01-arrow)"/>
+  <line class="svg20221026-01-l2" x1="500.0" y1="272.0" x2="500.0" y2="378.0" marker-end="url(#svg20221026-01-arrow)"/>
+  <line class="svg20221026-01-l3" x1="100" y1="250" x2="350" y2="250"/>
+  <text class="svg20221026-01-t1" x="300" y="270">mocks</text>
+  <line class="svg20221026-01-l3" x1="450" y1="320" x2="600" y2="320"/>
+  <text class="svg20221026-01-t1" x="580" y="340">spy</text>
+  <text class="svg20221026-01-t2" x="630" y="120">area tested</text>
+</svg>

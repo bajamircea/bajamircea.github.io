@@ -61,6 +61,22 @@ person person_from_json_string(const std::string & input) {
 ```
 
 ---
+# Testing
+
+```cpp
+TEST(person_from_json, trivial)
+{
+  person actual  = person_from_json_string("...");
+  person expected{
+    first_name: "Father",
+    last_name: "Christmas",
+    age: 100
+  };
+  ASSERT_EQ(expected, actual);
+}
+```
+
+---
 class: large-points
 
 # Regular ecosystem
@@ -265,6 +281,14 @@ foo bar(...) {
   return return_value;
 }
 ```
+
+---
+class: large-points
+
+# Testing
+
+- should be done against the actual APIs
+- not pure unit tests
 
 ---
 class: large-points

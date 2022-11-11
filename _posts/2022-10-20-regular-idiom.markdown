@@ -80,9 +80,6 @@ bool is_valid_age(const person & x) {
 These are functions that just do calculations on regular data and called again
 on equal inputs they return equal results: they are regular functions.
 
-That makes them easy to test, you can write pure unit tests in the style "for
-these input values, expect output equals this value".
-
 They take regular types as arguments, by `const &` usually, unless very small
 like `int` when they go by value. Errors are usually rare, mostly out of memory
 and exceptions are the way to indicate errors.
@@ -90,6 +87,29 @@ and exceptions are the way to indicate errors.
 Notice how characteristics of the regular data already come useful even in this
 simple example: default constructor: to "just" declare the `return_value`
 variable, equality for the tests.
+
+
+# Testing
+
+Regular entities are easy to test, you can write pure unit tests in the style
+"for these input values, expect output equals this value": value testing.
+
+{% highlight c++ linenos %}
+TEST(person_from_json, trivial)
+{
+  person actual  = person_from_json_string("...");
+  person expected{
+    first_name: "Father",
+    last_name: "Christmas",
+    age: 100
+  };
+  ASSERT_EQ(expected, actual);
+}
+{% endhighlight %}
+
+We often think this as a unit test for the `person_from_json_string` function.
+It indirectly tests `person` as well, though often we would not write an
+explicit test for `person`.
 
 
 # STL style containers and algorithms
