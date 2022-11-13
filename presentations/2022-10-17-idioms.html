@@ -118,6 +118,8 @@ addressof
 std::vector<T>::capacity()
 ```
 
+--
+
 ```cpp
 std::string download_url(const std::string & url);
 ```
@@ -201,6 +203,11 @@ void foo() {
   }
 }
 ```
+
+--
+
+- NOTE: usually no logging from within the C API wrappers
+
 ???
 >
 
@@ -582,14 +589,22 @@ class: large-points
   - use with care
 - not the only ones
 
+
 ---
-class: large-points
 
-# Regular data and functions
+# Deviations from idioms
 
-- example of minor deviation
+---
+# Good deviation
 
+```cpp
+... std::getline(..., std::string & str);
 ```
+
+---
+# Minor deviation
+
+```cpp
 struct person
 {
   std::string first_name{};
@@ -635,11 +650,12 @@ int main() {
   - y to instantiate via std::make_shared
   - x instantiated via std::make_unique
   - pass y into x without moving
-  - store buzz_ inside foo as a std::shared_ptr
+  - store bar_ inside foo as a std::shared_ptr
   - change constructor of foo to take buzz_interface as std::shared_ptr
   */
 }
 ```
+- Notice the potential lifetime issue?
 
 ---
 # Questions?

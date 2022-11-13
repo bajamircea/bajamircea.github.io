@@ -29,8 +29,8 @@ When a choice diverges from the idiomatic way, there could be several reasons
 that range from:
 - There could be a good reason to do so. That might require some comment to
   explain the reason.
-- It's absolutely a insane choice. Despite that it might be difficult to
-  change.
+- It's an incorrect choice. Despite that, it might be difficult to change due
+  to a number of factors including existing legacy code.
 
 However most of the divergence lives in the space in between, where suboptimal
 choices are made, the divergence is only partial, there is more to gain from

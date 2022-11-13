@@ -87,6 +87,10 @@ implementation to be used in the delivered program and the other by a mock to
 be used in unit tests and for 50% of the cases the `const` methods are not
 really `const`.
 
+Forth: multi-threading. In general `const` is useful to address some threading
+concerns, but on it's own it's not sufficient. Just marking interface functions
+`const` will not make your object thread safe.
+
 
 # Conclusion
 

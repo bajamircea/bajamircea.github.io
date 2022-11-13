@@ -147,24 +147,25 @@ idea because it introduces more problems that it fixes.
 interface. Putting it there would have rhymed with the "Rule of 3": if you have
 a destructor also deal with copy constructor and assignment. That is a sound
 starting point for types that explicitly release a resource in the destructor.
-However in the interface the reason we have a destructor has to do with a
-different reason (calling the right destructor). We thought that deleting the
-copy constructor and assignment in the class (rather than in the interface
-which only deals with the destructor) makes it easier to do local
-reasoning. E.g. To get info on what's done to avoid the issue of dangling
-references (which classes use), look at the class using the references and the
-class that implements the interface stored as reference, without also having to
-check their interface definition. Also some like `waldo` might not be derived
-from an interface anyway, but still would benefit from knowing it won't be e.g.
-returned by accident from a function and have dangling references to objects
-from within the function scope.
+However for the interfaces the reason we have a destructor has to do with
+calling the right destructor, not with handling resources, it's a different
+reason, we're defaulting it anyway. We thought that deleting the copy
+constructor and assignment in the class (rather than in the interface which
+only deals with the destructor) makes it easier to do local reasoning. To check
+what's done to avoid the potential issue of dangling references (which classes
+use), look at the class using the references and the class that implements the
+interface stored as reference and the instantiation site, without also having
+to check their base class interface definition. Also some like `waldo` might
+not be derived from an interface anyway, but still would benefit from knowing
+it can't be returned by accident from a function and have dangling references
+to objects from within the function scope.
 
 
 # Testing foo
 
 It's easy to [create mocks for behaviour verification][mocks] using a test
-framework like google test and test the classes that take their dependencies as
-interfaces.
+framework, like Google test, and test the classes that take their dependencies
+as interfaces.
 
 {% highlight c++ linenos %}
 class bar_mock :
@@ -265,7 +266,7 @@ hand.
 
 # What are it's limits?
 
-**Of the three idioms presented here this one is the least intellectually sound
+**Of the three idioms presented here, this one is the least intellectually sound
 one**.
 
 In it's defence we can say that it is useful in the context of lack of
@@ -302,12 +303,12 @@ making it hard for the code to evolve gradually. It's also hard when debugging
 you see that some interface method is called, it's not easy to see which class
 it belongs especially where there might be more than one candidate.
 
-Not all the classes are testable with pure unit tests. The ones in the middle
-of the dependency graph are, like `foo` and `waldo`. Others, like
+Not all the classes above are testable with pure unit tests. The ones in the
+middle of the dependency graph are, like `foo` and `waldo`. Others, like
 `waldo_builder`, are simple and would be covered by component/system tests,
 it's hard and little value from trying to unit tests. Yet others like `buzz`
-and `bar` might use C wrapper APIs and should follow a similar strategy like
-those, where testing is not pure unit tests, but rather against real artefacts.
+and `bar` might use regular data or C wrapper APIs and should follow a similar
+strategy like those.
 
 And lastly there are misunderstanding around the alternatives like usages of
 smart pointers and `const` for holding to the interfaces. In the next article

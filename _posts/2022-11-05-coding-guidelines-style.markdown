@@ -64,7 +64,8 @@ data classes from the regular idiom.
 
 **Literal interpretation of coding guidelines without applying thorough
 reasoning is a dangerous thing. Regard with suspicion the developer that quotes
-the coding rule number instead of providing a compelling justification.**
+the coding rule as the single justification instead of providing a compelling
+rational explanation.**
 
 
 # Notable public C++ coding standards
@@ -80,19 +81,20 @@ Guide](https://google.github.io/styleguide/cppguide.html). They did not use
 exceptions either. In this case due to being cautious of introducing them in a
 large, legacy code that did not use C++ exceptions.
 
-Bjarne Stroustrup and Herb Sutter merge code guidelines from the organisations
+Bjarne Stroustrup and Herb Sutter merged code guidelines from the organisations
 where they worked, Morgan Stanley and Microsoft, and others into the [C++ Core
-Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuideline) from
-where the rule above is taken.
+Guidelines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuideline), which
+then continued as a publicly available guideline, from where the rule above is
+taken.
 
 
 # Parallels to Strunk & White
 
 Strunk & White is a language style guide that is often familiar to US
-college/university students and it's supposed to contain adive on good writing
+college/university students and it's supposed to contain advice on good writing
 style for such students. Surprisingly it's almost unknown in Britain.
 
-Like many programming coding guidelies it's popular and written in a similar
+Like many programming coding guidelies, it's popular and written in a similar
 simplistic style of rules like "always to this" or "never do this", for example
 use the active voice not the passive voice.
 
@@ -126,8 +128,8 @@ from.
 - Strunk & White: [The Elements of Style][sw]
 - [Pullum on Passives](https://www.youtube.com/watch?v=ZrRKJrTPwYg)
 - [C++ Core Guidelines][c12]
+- There are all kinds of types: [C++ class taxonomy][taxonomy]
 - [Series of articles on programming idioms][idioms-intro]
-- [There are all kinds of types][taxonomy]
 
 [idioms-intro]:    {% post_url 2022-10-17-idioms %}
 [c12]: https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-constref

@@ -121,12 +121,13 @@ If you need to store several `person` instances you use a
 `std::vector<person>`.
 
 Containers like `std::vector` or `std::string` have to explicitly define all
-the operations that are required for a regular class. They need to implement
-the copy assignment `container operator=(const container & other)` the details
-of which are quite low level especially for a generic, library quality type.
-Their implementation lacks the simplicity of the `person` type above. But in
-spirit they net result is that such a container accepts regular types and
-itself it's a regular type when instantiated with regular types.
+the operations that are required for a regular class. For example they need to
+explicitly implement the copy assignment `container operator=(const container &
+other)` the details of which are quite low level especially for a generic,
+library quality type (e.g. the destination buffer, if large enough, can be
+reused).  Their implementation lacks the simplicity of the `person` type above.
+But the net result is that such a container accepts regular types and itself
+it's a regular type when instantiated with regular types.
 
 You can use `std::sort` to sort the vector. And it can be sorted by a different
 criteria, e.g. by the value of the `age` member variable. Assuming such a
@@ -141,7 +142,8 @@ order (they only have equality).
 # Why this idiom works?
 
 The reason it works is that it maps to the way computers work: data is memory,
-functions are instructions.
+functions are instructions, it does not need additional virtual machine
+processing to adapt the code world to the real hardware world.
 
 The data types define how to interpret memory. On a typical 64 bit machine our
 `person` class has for each string 3 pointers of 8 bytes each (pointing to heal allocated
@@ -153,10 +155,15 @@ like destructors, move, default constructor. But others like copy, equality and
 order are the very things that allow for mathematical reasoning involved in
 algorithm design, optimisations, costs and performance.
 
+Concretely, if you think about it, `std::sort` needs to be able to move things
+around (a sorted sequence is a permutation of the original) and it needs that
+the data type can be ordered.
+
 **Historical note**: The design of STL, that was incorporated and extended into
 the C++ standard libraries, was intended to provide generic solutions to handle
 these regular data types and functions. The terminology **regular** comes
-ultimately from the design of STL.
+ultimately from the design of STL (i.e. from asking the question of what kind
+of types should the containers be able to hold).
 
 Note: The `std::regular` concept in C++20 is a downgrade on the requirements as
 shown in this table:
@@ -184,9 +191,8 @@ shown in this table:
 </tr>
 </table>
 
-Concretely, if you think about it, `std::sort` needs to be able to move things
-around (a sorted sequence is a permutation of the original) and it needs that
-the data type can be ordered.
+The downgrade is probably the result of the effort to accommodate more weird
+scenarios in the standard library.
 
 
 # Compared with OOP
@@ -195,9 +201,10 @@ This approach diverges from the traditional object oriented programming
 (approach).
 
 `person_from_json_string` is not a member function, it's just a standalone
-function. The OOP choice of making a it member of `person` is more a reflection
-of the fact that usually `std::string` is not user defined, but `person` is and
-can be extended, rather than some sound principle.
+function. The common OOP choice of making such a function a member of the
+`person` type is more a reflection of the fact that usually `std::string` is
+not user defined, but `person` is and can be extended, rather than some sound
+principle.
 
 Members of `person` are not private, they don't have getters and setters.
 `const person` allows read-only access to the members. Direct access to member

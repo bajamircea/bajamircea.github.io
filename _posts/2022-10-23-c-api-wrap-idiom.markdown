@@ -108,6 +108,9 @@ void foo() {
 }
 {% endhighlight %}
 
+While we are here, it's worth mentioning that the C API wrapper themselves
+usually don't log, letting the user do the logging as seen above.
+
 Another case is trying to open a registry key that might or might not exist.
 That would be similar to `open_registry_key`, but the caller then has to check
 if the handle is valid. An invalid handle indicates that the key was missing
@@ -168,11 +171,12 @@ std::wstring read_registry_string(
 When functions have defaulted parameters, the error code should be the last
 function parameter that is not defaulted.
 
-The error code contains a error number and an error category that is eventually
-an object used to interpret the error number. To keep the error code small, the
-error category is ultimately an object with a long scope (`static` inside
-non-member function) and the error code keeps a reference to such a long lived
-object.  You might need to invest into understanding this mechanism to:
+The error code contains an error number and an error category that is
+eventually an object used to interpret the error number. To keep the error code
+small, the error category is ultimately an object with a long scope (`static`
+inside non-member function) and the error code keeps just a reference to such a
+long lived object, rather than the object itself. You might need to invest into
+understanding this mechanism to:
 - provide custom error categories (e.g. for registry string blob size is not
   multiple of `wchar_t`
 - improve upon `std::system_category` error string formatting (e.g. to ensure
@@ -202,7 +206,8 @@ foo bar(...) {
 
 When an error code is set, the returned value is usually the default
 constructed one. This is not a contract for the caller. The caller should
-always check the error code.
+always check the error code first, before even checking the returned value.
+
 
 # Why this idiom works?
 
@@ -224,19 +229,25 @@ made a quick transition to it instead of calling the OS APIs directly.
 
 # What are it's limits?
 
-For most C APIs such implementation would be largely mechanical where the
-C++ wrapping function calls the C API and check for the error. But for some
-it's better to go for a slightly higher level e.g. create
-`read_registry_string` rather than just wrap `::RegQueryValueEx`. The advantage
-is that `read_registry_string` can do more than just call `::RegQueryValueEx`
-twice (one to get the size followed by one to get the content), but also handle
-a small value optimisation (a lot of values are short, meaning that a C API
-call can be elided) and handle the case where the value size changes between
-the C API calls.
+For most C APIs such implementation would be largely mechanical where the C++
+wrapping function calls the C API and check for the error.
 
-Choosing the right level can be tricky, requiring human judgement and
-experience. Behind a single C API function, many higher level scenarios might
-be hidden.
+But for some it's better to go for a slightly higher level.  Behind a single C
+API function, many higher level scenarios might be hidden: e.g. we've seen
+`read_registry_string` and `read_registry_multistring` that are both build on
+top of the single C API function `::RegQueryValueEx`. The advantage is that
+`read_registry_string` can do more than just call `::RegQueryValueEx` twice
+(one to get the size followed by one to get the content), but also handle a
+small value optimisation (a lot of values are short, meaning that a C API call
+can be elided) and handle the case where the value size changes between the C
+API calls.
+
+Equally it's easy to fall into the trap of creating a wrapper that's too
+specific to the current usage in an application, too high level, and lacks
+generality and ability to reuse.
+
+Choosing the right level can be tricky, requiring human judgement
+and experience.
 
 For some cases you might need a RAII class different from
 `raii_with_invalid_value` to return from a function wrapping

@@ -13,7 +13,7 @@ idioms][idioms-intro].
 We've just seen that we wanted to store the used interfaces as references and
 not mark them `const`, and [we criticised const usage in that
 context][constrefno]. Before hurrying to create a simplistic, but wrong, rule
-that member references are should not be `const`, let's look at an example
+that member references should never be `const`, let's look at an example
 where a `const` reference member is good.
 
 
@@ -70,7 +70,7 @@ that we want: for the values smaller than `a` it returns `false`, for equal or
 grater it returns `true`. `partition_point` finds the point where the predicate
 transitions from `false` to `true`.
 
-To achieve that `lower_bound_predicate` captures `a` by `const` reference. In
+To achieve that, `lower_bound_predicate` captures `a` by `const` reference. In
 general that would raise dangling reference concerns, but it's clear from this
 particular context that the scope of `a` as a function parameter for
 `lower_bound` extends the scope of the instance of `lower_bound_predicate`.
@@ -78,6 +78,15 @@ particular context that the scope of `a` as a function parameter for
 So we do something potentially dangerous for a tangible gain: the algorithm
 does not need to copy the type `T` which sometimes might need to allocate on
 the heap (e.g. if `T` is a `std::string`).
+
+
+# Similarities
+
+Notice the similarities between a function object and classes in the mockable
+interfaces idiom: they are does, things that do stuff, though in the case of
+the function object they are refined to only do one thing which is what the
+`operator()` captures. Them using references in member variables might come
+from the similarities they share in their intent.
 
 
 [eop]: http://elementsofprogramming.com/
