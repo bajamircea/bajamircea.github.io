@@ -6,6 +6,12 @@ categories: coding cpp
 
 What are programming idioms?
 
+A native English speaker faced with "Counting and looking enjoyed are by little
+humans" might react "I get that children like playing hide-and-seek, but you
+made it way too complicated". In natural language idiomatic usage is a
+particular, well understood way to communicate certain things, on top of basic
+language features like words, phrases, nouns, verbs etc.
+
 A mature programming language has many features. I'm going to use C++ as an
 example, but the ideas apply elsewhere as well. For example there will features
 to customize data copying, destructors, make members public or private,
