@@ -31,6 +31,9 @@ Idiomatic code follows the rules of one such idiom. Hopefully programmers than
 recognise the pattern and they can focus on the problem at hand without having
 to repeatedly justify the choices.
 
+Compared with a paradigm such as object-oriented, functional, data-driven etc.,
+an idiom goes into very specific details on how to use language features.
+
 When a choice diverges from the idiomatic way, there could be several reasons
 that range from:
 - There could be a good reason to do so. That might require some comment to

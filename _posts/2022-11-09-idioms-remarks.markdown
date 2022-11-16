@@ -100,7 +100,7 @@ class foo : public foo_interface {
 
 public:
   foo(std::unique_ptr<bar_interface> bar,
-      std::unique_Ptr<buzz_interface> buzz,
+      std::unique_ptr<buzz_interface> buzz,
       const std::string & fred):
     bar_{ std::move(bar) }, buzz_{ std::move(buzz) }, fred_{ fred }
   {}
@@ -134,7 +134,7 @@ int main() {
 }
 {% endhighlight %}
 
-When we add `waldo in the code above, then we also have to change:
+When we add `waldo` in the code above, then we also have to change:
 - y to instantiate via std::make_shared
 - x instantiated via std::make_unique
 - pass y into x without moving

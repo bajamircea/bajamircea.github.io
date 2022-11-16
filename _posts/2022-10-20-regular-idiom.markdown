@@ -99,13 +99,16 @@ TEST(person_from_json, trivial)
 {
   person actual  = person_from_json_string("...");
   person expected{
-    first_name: "Father",
-    last_name: "Christmas",
-    age: 100
+    .first_name = "Father",
+    .flast_name = "Christmas",
+    .age = 100
   };
   ASSERT_EQ(expected, actual);
 }
 {% endhighlight %}
+
+Note: using the dots for the fields we initialize is called _designated
+initializer list_.
 
 We often think this as a unit test for the `person_from_json_string` function.
 It indirectly tests `person` as well, though often we would not write an
