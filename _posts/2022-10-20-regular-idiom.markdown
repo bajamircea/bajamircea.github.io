@@ -149,9 +149,11 @@ functions are instructions, it does not need additional virtual machine
 processing to adapt the code world to the real hardware world.
 
 The data types define how to interpret memory. On a typical 64 bit machine our
-`person` class has for each string 3 pointers of 8 bytes each (pointing to heal allocated
-arrays of `char`s), followed by integer of 4 bytes (signed, two's complement
-representation).
+`person` class has for each string 3 pointers of 8 bytes each (or a bit more to
+allow for small string optimisation), the pointers pointing to heap allocated
+arrays of `char`s, followed by integer of 4 bytes (signed, two's complement
+representation), followed by a padding of 4 bytes (so that in an array the
+string pointers are aligned to a multiple of 8 address).
 
 Of the characteristics of a regular data type, some are programming related
 like destructors, move, default constructor. But others like copy, equality and

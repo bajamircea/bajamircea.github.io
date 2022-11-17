@@ -24,7 +24,7 @@ This is a slightly simplified example from [Elements of Programming][eop]
 {% highlight c++ linenos %}
 template<typename T>
 class lower_bound_predicate {
-  const T& a; // const reference is good here
+  const T & a; // const reference is good here
 public:
   lower_bound_predicate(const T & a) : a(a)
   {}
