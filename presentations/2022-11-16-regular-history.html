@@ -1,0 +1,77 @@
+---
+layout: presentation
+title: History of normal type in C++
+---
+
+Mircea Baja @ 16 November 2022
+
+# History of normal type in C++
+
+---
+# Regular data
+
+```cpp
+struct person
+{
+  std::string first_name;
+  std::string last_name;
+  int age{};
+
+  constexpr std::strong_ordering
+    operator<=>(const person &) const noexcept = default;
+};
+```
+
+---
+# Agenda
+
+- struct from C
+- C copy
+- C++ constructor, destructor, copy, const
+- C++ equality and order (first attempt)
+- move
+- STL and the regularity concept
+- concepts in C++
+- regularity syntax and semantics
+- the many relationships
+- three-way comparison, aka the spaceship operator
+- better equality
+- better member
+- noexcept and constexpr
+- sanity and divergence from insanity
+- the better future
+
+
+
+---
+# Questions?
+
+---
+class: large-points
+
+# Regular data concept (syntax)
+
+- default constructible (noexcept)
+- destructible (implicitly noexcept)
+- copy constructor and assignment (can throw)
+- move constructor and assignment (noexcept)
+- equality (== and !=, noexcept, const)
+- order (<, >, <=, >=, <=>, noexcept, const)
+
+---
+class: large-points
+
+# Concept also has semantics
+
+- "it's a data class"
+- copy copies, move moves, etc.
+- no resource/memory leaks
+- copies are equal, substitutable
+- "moved from" at least can be destroyed and assigned
+- equality reflexive, symmetric, transitive
+- != is literally "not equal"
+- less than is strict total order
+- trichotomy
+- reasonable complexity of operations
+
+---
