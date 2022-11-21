@@ -13,9 +13,9 @@ class: large-points
 # Idioms
 
 - "Counting and looking enjoyed are by little humans"
-- A programming idiom is a group of rules and choices that uses language
-  features in a coherent, well understood way, in order to solve a specific
-  kind of problems.
+- A programming idiom is a group of detailed rules and choices that uses
+  language features in a coherent, well understood way, in order to solve
+  certain kinds of problems.
 - A mature programming language would support multiple idioms.
 - Will cover important common idioms:
   - Regular data and functions
@@ -545,7 +545,7 @@ I lower_bound(I f, I l, const T & a) {
 ```cpp
 template<typename I, typename T>
 I lower_bound(I f, I l, const T & a) {
-  auto p = [&a](const T& x) {
+  auto p = [&a](const T & x) {
       return !(x < a);
   };
   return partition_point(f, l, p);

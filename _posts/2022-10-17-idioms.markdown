@@ -17,9 +17,9 @@ example, but the ideas apply elsewhere as well. For example there will features
 to customize data copying, destructors, make members public or private,
 different of passing arguments to a function etc.
 
-**A programming idiom is a group of rules and choices that uses language
-features in a coherent, well understood way, in order to solve a specific kind
-of problems.**
+**A programming idiom is a group of detailed rules and choices that uses
+language features in a coherent, well understood way, in order to solve certain
+kinds of problems.**
 
 A mature programming language would support multiple idioms. Sample idioms that
 I'm going to cover here are:

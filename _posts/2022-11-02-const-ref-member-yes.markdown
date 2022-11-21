@@ -46,7 +46,7 @@ or you might do it with an equivalent lambda, but the mechanics is the same:
 {% highlight c++ linenos %}
 template<typename I, typename T>
 I lower_bound(I f, I l, const T & a) {
-  auto p = [&a](const T& x) {
+  auto p = [&a](const T & x) {
       return !(x < a);
   };
   return partition_point(f, l, p);
