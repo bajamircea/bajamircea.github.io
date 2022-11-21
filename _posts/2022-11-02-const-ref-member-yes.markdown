@@ -30,7 +30,7 @@ public:
   {}
 
   bool operator()(const T & x) {
-    return !(x <  a);
+    return !(x < a);
   }
 };
 
