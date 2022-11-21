@@ -1,0 +1,106 @@
+---
+layout: post
+title: 'C copy'
+categories: coding cpp
+---
+
+C structs get copy, but not comparison.
+
+This article is part of a series on [the history of regular data type in
+C++][regular-intro].
+
+
+# DIY
+
+To start with C did not copy structure types. So you could not assign a
+structure variable to another:
+
+{% highlight c++ linenos %}
+// can do this if x and y are int,
+x = y;
+// but can't do it if they are some struct
+{% endhighlight %}
+
+also can't pass them by value as function arguments
+
+{% highlight c++ linenos %}
+// can do this if x is int,
+int foo(int x);
+// but can't do it if they are some struct
+// struct sample bar(struct sample y);
+{% endhighlight %}
+
+Instead the approach was to explicitly use functions like `memcpy`.
+
+`memcpy` belongs to a family of function that can be used to do work similar to
+what C++ would generate for a regular class. In modern times such C functions
+look like this:
+- `void * memset(void * ptr, int value, size_t num);` to initialize
+- `void * memcpy(void * dest, const void * src, size_t num);` to copy
+- `void * memmove(void * dest, const void * src, size_t num);` to move
+- `int memcmp(const void * ptr1, const void * ptr2, size_t num);` to compare
+
+You would then do-it-yourself using functions like these for construction,
+copy/move, comparison.
+
+
+# C copy
+
+Then copy was added, so then you could do this:
+
+{% highlight c++ linenos %}
+// can do this if x and y are int,
+// also if they are some struct
+x = y;
+{% endhighlight %}
+
+and also:
+
+{% highlight c++ linenos %}
+// can do this if x is int,
+int foo(int x);
+// also it if they are some struct
+struct sample bar(struct sample y);
+{% endhighlight %}
+
+Behind the scenes `memcpy` was used to copy the contents of a variable to
+another when they were `struct`s.
+
+
+# No comparison
+
+But default comparison was not implemented for `struct`s:
+
+{% highlight c++ linenos %}
+// can do this if x and y are int,
+if (x < y) {
+  // ...
+}
+// but can't do it if they are some struct
+{% endhighlight %}
+
+The thinking was (wrongly) that `memcmp` alone would have to be used to
+implements such functionality, but that (correctly) `memcmp` would not be
+suitable because of padding: two structures would compare incorrectly because
+of spurious values in the padding.
+
+Instead of `memcmp`, default comparison should have been done memberwise
+(compare member variables, hence skipping padding), but that was not recognised
+at the time.
+
+Interestingly though, note that `memcmp` performs a three-way comparison: it
+returns an `int` which is `0` if the source and destination have equal content
+and negative or positive when one is smaller than the other (not necessarily
+`-1` or `1`). This will become relevant when we'll talk about the spaceship
+operator in C++: `<=>`.
+
+
+# Reference
+
+For some historic info on what C did and why see Alex Stepanov on A9 Videos: Efficient
+Programming with Components:<br/>
+[https://www.youtube.com/watch?v=aIHAEYyoTUc&list=PLHxtyCq_WDLXryyw91lahwdtpZsmo4BGD][a9-efficient]
+
+
+[regular-intro]:   {% post_url 2022-11-16-regular-history %}
+[a9-efficient]: https://www.youtube.com/watch?v=aIHAEYyoTUc&list=PLHxtyCq_WDLXryyw91lahwdtpZsmo4BGD

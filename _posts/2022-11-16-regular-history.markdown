@@ -4,7 +4,7 @@ title: 'History of normal type in C++'
 categories: coding cpp
 ---
 
-The ideas of regular data in C++ have a long and instructive history
+The ideas of regular data in C++ have a long and instructive history.
 
 
 Consider this type, `person` that I [introduced recently][regularidiom] in the
@@ -37,7 +37,7 @@ interesting deliberate and accidental events.
 
 # Articles in this series
 - [struct from C][c-struct]
-- C copy
+- [C copy][c-copy]
 - C++ constructor, destructor, copy, const
 - C++ equality and order (first attempt)
 - move
@@ -66,3 +66,4 @@ carefully some C++ committee papers.
 [idioms-intro]:    {% post_url 2022-10-17-idioms %}
 [regularidiom]:    {% post_url 2022-10-20-regular-idiom %}
 [c-struct]:        {% post_url 2022-11-19-struct-from-c %}
+[c-copy]:          {% post_url 2022-11-22-c-copy %}
