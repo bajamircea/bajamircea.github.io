@@ -211,14 +211,22 @@ The disadvantages are:
   - It's not easy to create objects of a type. You need to inject a factory
     class which adds to the code complexity.
 
+
 # Conclusion
 
 Using some form of dependency injection makes it trivial to write unit tests
 for any class of your choosing. It is a style that most developers from a
-traditional OO background will find it easy to understand.
+traditional OOP background will find it easy to understand.
 
 However I expect that in the future the concepts and modules for templates will
 make a template based approach a better method to do dependency injection.
 
 
+# References
+
+For ideas on using dependency injection at construction time in Java see [The
+Clean Code Talks - "Global State and Singletons" ][singletons] by Miško Hevery
+(13 Nov 2008).
+
 [dependency-reduction]:    {% post_url 2015-10-30-dependency-reduction %}
+[singletons]:              https://www.youtube.com/watch?v=-FRm3VPhseI

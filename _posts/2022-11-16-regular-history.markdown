@@ -10,9 +10,10 @@ The ideas of regular data in C++ have a long and instructive history.
 
 - [struct from C][c-struct]
 - [C copy][c-copy]
-- [C++ constructor, destructor, copy, const][cpp-copy]
+- [C++ constructor, destructor][cpp-constructor]
+- C++ copy
 - C++ equality and order (first attempt)
-- move
+- C++ move
 - STL and the regularity concept
 - concepts in C++
 - regularity syntax and semantics
@@ -70,4 +71,4 @@ carefully some C++ committee papers.
 [regularidiom]:    {% post_url 2022-10-20-regular-idiom %}
 [c-struct]:        {% post_url 2022-11-19-struct-from-c %}
 [c-copy]:          {% post_url 2022-11-22-c-copy %}
-[cpp-copy]:        {% post_url 2022-11-25-cpp-copy %}
+[cpp-constructor]: {% post_url 2022-11-25-cpp-constructor %}

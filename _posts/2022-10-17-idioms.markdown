@@ -77,8 +77,8 @@ A lot of the ideas in this series of articles come from [Elements of
 Programming][eop] by Alexander Stepanov and Paul McJones, a book that all
 programmers should read carefully (and almost nobody does).
 
-[eop]: http://elementsofprogramming.com/
-[presentation]: /presentations/2022-10-17-idioms.html
+[eop]:             http://elementsofprogramming.com/
+[presentation]:    /presentations/2022-10-17-idioms.html
 [regularidiom]:    {% post_url 2022-10-20-regular-idiom %}
 [cwrapperidiom]:   {% post_url 2022-10-23-c-api-wrap-idiom %}
 [interfacesidiom]: {% post_url 2022-10-26-mockable-interfaces-idiom %}

@@ -314,8 +314,17 @@ And lastly there are misunderstanding around the alternatives like usages of
 smart pointers and `const` for holding to the interfaces. In the next article
 we'll have a look at `const`.
 
-[idioms-intro]:    {% post_url 2022-10-17-idioms %}
-[cpp-lifetime]: {% post_url 2015-04-02-class-lifetime %}
-[dep-inj]:      {% post_url 2015-10-31-dependency-injection-interface %}
-[mocks]:        {% post_url 2022-05-31-mock-fake-spy %}
+
+# References
+
+For ideas on using dependency injection at construction time in Java (and some
+allusions to value/regular data types) see [The Clean Code Talks - "Global
+State and Singletons" ][singletons] by Miško Hevery (13 Nov 2008).
+
+
+[idioms-intro]:     {% post_url 2022-10-17-idioms %}
+[cpp-lifetime]:     {% post_url 2015-04-02-class-lifetime %}
+[dep-inj]:          {% post_url 2015-10-31-dependency-injection-interface %}
+[mocks]:            {% post_url 2022-05-31-mock-fake-spy %}
 [evil-inheritance]: https://www.youtube.com/watch?v=bIhUE5uUFOA
+[singletons]:       https://www.youtube.com/watch?v=-FRm3VPhseI
