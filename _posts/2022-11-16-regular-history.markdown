@@ -10,9 +10,11 @@ The ideas of regular data in C++ have a long and instructive history.
 
 - [struct from C][c-struct]
 - [C copy][c-copy]
-- [C++ constructor, destructor][cpp-constructor]
-- C++ copy
+- [C++ constructor, destructor and class][cpp-constructor]
+- [C++ copy][cpp-copy]
+- exception safety, noexcept
 - C++ equality and order (first attempt)
+- rule of three and composing
 - C++ move
 - STL and the regularity concept
 - concepts in C++
@@ -21,7 +23,7 @@ The ideas of regular data in C++ have a long and instructive history.
 - three-way comparison, aka the spaceship operator
 - better equality
 - better member
-- noexcept and constexpr
+- constexpr
 - sanity and divergence from insanity
 - the better future
 
@@ -72,3 +74,4 @@ carefully some C++ committee papers.
 [c-struct]:        {% post_url 2022-11-19-struct-from-c %}
 [c-copy]:          {% post_url 2022-11-22-c-copy %}
 [cpp-constructor]: {% post_url 2022-11-25-cpp-constructor %}
+[cpp-copy]:        {% post_url 2022-11-28-cpp-copy %}

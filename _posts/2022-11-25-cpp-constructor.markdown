@@ -1,10 +1,10 @@
 ---
 layout: post
-title: 'C++ constructor, destructor'
+title: 'C++ constructor, destructor and class'
 categories: coding cpp
 ---
 
-C++ introduces innovations such as constructor, destructor.
+C++ introduces innovations such as constructor, destructor and class.
 
 This article is part of a series on [the history of regular data type in
 C++][regular-intro].
@@ -56,7 +56,10 @@ struct foo {
 };
 {% endhighlight %}
 
-The constructor and destructor allow for initialisation and cleanup.
+The constructor and destructor allow for initialisation and cleanup. They apply
+automatically when an instance of the class is created or destructed. That is a
+big step forward compared with the DIY approach in C where the programmer has
+to remember to call equivalent functions manually.
 
 Constructor has more facilities that the destructor, such that you can have
 function parameters, hence you can have multiple constructors that differ in
@@ -86,6 +89,9 @@ their variable size the content can't be stored directly in the object, so they
 often allocate on the heap and store pointer(s) to the allocated data. The
 member variables of the class are local parts, at constant offset from the
 address of the object itself, while the pointed data are remote parts.
+
+
+# Class vs. struct
 
 You might not want the user of the class to accidentally change the pointer
 member, this leads to `public`, `private` and `protected` in C++ that control

@@ -1,0 +1,210 @@
+---
+layout: post
+title: 'C++ copy'
+categories: coding cpp
+---
+
+Copy in C++.
+
+This article is part of a series on [the history of regular data type in
+C++][regular-intro].
+
+
+# Motivation
+
+Once you have a class like:
+
+{% highlight c++ linenos %}
+struct foo {
+  bar * ptr;
+
+  foo() {
+    // allocate memory here
+  }
+
+  ~foo() {
+    // deallocate memory here
+  }
+};
+{% endhighlight %}
+
+the default copy in C would copy the value of the pointer, which leads to
+problems:
+
+{% highlight c++ linenos %}
+int main() {
+  foo x; // memory is allocated here
+  foo y = x; // y gets a copy of the pointer value
+}
+{% endhighlight %}
+
+When `y` and `x` get destroyed memory is deallocated twice, that's incorrect in
+this case.
+
+This creates the need to be able to customize copy in C++.
+
+
+# Const and references
+
+The syntax of copy uses two other innovations from C++. The usage of `const` to
+indicate an object that is not going to be changed: the source of copy does not
+change. Also the usage of the reference as some kind of pointer that can't be
+null: the source of copy always exists.
+
+
+# Copy constructor and assignment
+
+Copy customization in C++ involves syntax for copy constructor and assignment.
+The constructor is a constructor, hence a function with the same name as the
+class and without a return value. The assignment is `operator=`. Both take a
+`const &` of the same type as the class as the single function parameter.
+
+This is shown here for the class managing a resource:
+
+{% highlight c++ linenos %}
+struct foo {
+  bar * ptr;
+
+  foo(const & other) {
+    // copy construct here
+    // e.g. allocate memory pointed by ptr
+    // then copy bar from *(other.ptr)
+  }
+
+  foo & operator=(const & other) {
+    // copy assignment here
+    // needs to handle the case where
+    // ptr already points to something
+    return *this;
+  }
+};
+{% endhighlight %}
+
+The copy assignment syntax returns a reference to the class instance.
+Practically it's always `return *this;`. It's a weird historical artefact that
+some things are pointers (like `this`) and other things are references (like
+the function parameters for copy).
+
+
+# Efficiency
+
+The reason you have to implement both a copy constructor and a copy assignment,
+for what looks initially like a single operation (copy), is that they are
+subtly different and allow for maximum efficiency.
+
+A copy constructor starts with a new object, it does not have to care about
+existing values. In the case above it allocates memory and assigns that to the
+`ptr` member variable which did not had a correct value previously.
+
+On the other side the copy assignment has to care about existing values. In the
+case above it has to decide what to do with the value of the `ptr` member
+variable, for example deallocate before assigning a new one. Notice that we
+could also reuse the existing buffer that `ptr` points to, and indeed this is
+the kind of thing that `vector` can do as well: if the destination buffer is
+large enough then re-use it, don't throw it away by deallocating it (and
+allocate one to replace it).
+
+
+# Self assignment
+
+What if someone assigns an object to itself?
+
+{% highlight c++ linenos %}
+int main() {
+  foo x;
+  x = x; // self assignment
+}
+{% endhighlight %}
+
+The reality is that most of the time the assignment is not intentional and
+obvious as in the code above. Most of the copy assignment implementations take
+care of this. There are several options:
+- one is to carefully kraft the steps so that it does not matter if self
+  assigned
+- the other is to test for object identity as below
+
+{% highlight c++ linenos %}
+  foo & operator=(const & other) {
+    if (this != &other) {
+      // actual copy assignment here
+    }
+    return *this;
+  }
+{% endhighlight %}
+
+
+# Non-copyable
+
+The other option when dealing with classes that handle resources is to not
+copy. This is what many RAII types do to error on copy at compile time because:
+- resource copy would be expensive or undesirable: `std::unique_ptr`
+- resource copy would be impossible or undesirable: [wrappers for C handles
+  with invalid values][fit-raii]
+- copy is not desired, rollback work is done in destructor: `std::scoped_lock`
+
+Traditionally this was done by either making the copy constructor and
+assignment private or by deriving from a `noncopyable` class ([which is more
+complicated than one would expect][noncopyable]).
+
+The more modern version is to delete copy constructor and assignment:
+
+{% highlight c++ linenos %}
+  foo(const & other) = delete;
+  foo & operator=(const & other) = delete;
+{% endhighlight %}
+
+
+# Deep vs shallow copy
+
+Copying can be done deep or shallow.
+
+C copy is a shallow copy. It is a straight copy, if it contains pointers, only
+the value of the pointer is copied, not the pointed data.
+
+`std::shared_ptr` also does a shallow copy, kind of modelling the pointer: it
+increments the reference count, but does not copy the pointed data.
+
+Containers usually do a deep copy: e.g. `std::vector`, `std::map`,
+`std::string` also make a copy of their contents (if they can, more on that
+when we talk about how these operations compose). This is handy, but can be
+expensive. That's why they are often passed by `const` reference as function
+arguments to avoid the potentially expensive copy if they were passed by value.
+Later on, the move semantics was added to transfer ownership, avoiding a copy.
+
+
+# Return value optimisations
+
+Returning a value involves on paper multiple copies:
+
+{% highlight c++ linenos %}
+foo buzz() {
+  return foo();
+  // foo is default constructed
+  // and then copied into the return value
+}
+
+int main() {
+  foo x = buzz();
+  // the return value of buzz is copied into x
+}
+{% endhighlight %}
+
+Return value optimisation are rules that elide such spurious copies and
+construct default construct `foo` directly into `x`.
+
+
+# Copy means copy
+
+As time passed, the rules were changed to do further optimisations and elide
+copies in more scenarios. This breaks code that uses copy constructor or copy
+assignment to do other things.
+
+As Sean Parent says: [if the copy constructor does something else the code is
+incorrect](https://sean-parent.stlab.cc/presentations/2013-09-24-value-semantics/value-semantics.pdf).
+The same stands for the copy assignment.
+
+Copy must mean copy.
+
+[regular-intro]:   {% post_url 2022-11-16-regular-history %}
+[noncopyable]:     {% post_url 2017-02-22-noncopyable-adl %}
+[fit-raii]:        {% post_url 2022-06-29-fit-raii %}
