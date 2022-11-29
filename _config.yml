@@ -6,3 +6,4 @@ paginate: 1000
 title: bajamircea.github.io
 url: 'http://bajamircea.github.io'
 plugins: [jekyll-paginate, jekyll-feed]
+future: true

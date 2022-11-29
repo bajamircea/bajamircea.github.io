@@ -203,5 +203,5 @@ would be just 4, not 6.
 
 [boost-doc]: http://www.boost.org/doc/libs/1_63_0/libs/core/doc/html/core/noncopyable.html
 [hh-answer]: http://stackoverflow.com/questions/7823990/what-are-the-advantages-of-boostnoncopyable/7841332#7841332
-[cpp-copy]:  {% post_url 2022-11-28-cpp-copy %}
+[cpp-copy]:  {% post_url 2022-11-30-cpp-copy %}
 

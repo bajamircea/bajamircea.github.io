@@ -11,6 +11,7 @@ The ideas of regular data in C++ have a long and instructive history.
 - [struct from C][c-struct]
 - [C copy][c-copy]
 - [C++ constructor, destructor and class][cpp-constructor]
+- [Default constructor][default-constructor]
 - [C++ copy][cpp-copy]
 - exception safety, noexcept
 - C++ equality and order (first attempt)
@@ -67,11 +68,12 @@ Programming][eop] by Alexander Stepanov and Paul McJones, from comments done by
 Alexander Stepanov in recordings published on Youtube and from reading
 carefully some C++ committee papers.
 
-[eop]: http://elementsofprogramming.com/
-[presentation]: /presentations/2022-11-16-regular-history.html
+[eop]:             http://elementsofprogramming.com/
+[presentation]:    /presentations/2022-11-16-regular-history.html
 [idioms-intro]:    {% post_url 2022-10-17-idioms %}
 [regularidiom]:    {% post_url 2022-10-20-regular-idiom %}
 [c-struct]:        {% post_url 2022-11-19-struct-from-c %}
 [c-copy]:          {% post_url 2022-11-22-c-copy %}
 [cpp-constructor]: {% post_url 2022-11-25-cpp-constructor %}
-[cpp-copy]:        {% post_url 2022-11-28-cpp-copy %}
+[default-constructor]: {% post_url 2022-11-27-default-constructor %}
+[cpp-copy]:        {% post_url 2022-11-30-cpp-copy %}
