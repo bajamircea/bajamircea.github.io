@@ -13,13 +13,14 @@ The ideas of regular data in C++ have a long and instructive history.
 - [C++ constructor, destructor and class][cpp-constructor]
 - [Default constructor][default-constructor]
 - [C++ copy][cpp-copy]
-- exception safety, noexcept
+- [Exception safety, noexcept][exception-safety]
 - C++ equality and order (first attempt)
-- rule of three and composing
+- rule of three
 - C++ move
-- STL and the regularity concept
-- concepts in C++
+- STL and templates
+- composing
 - regularity syntax and semantics
+- concepts in C++
 - the many relationships
 - three-way comparison, aka the spaceship operator
 - better equality
@@ -68,12 +69,18 @@ Programming][eop] by Alexander Stepanov and Paul McJones, from comments done by
 Alexander Stepanov in recordings published on Youtube and from reading
 carefully some C++ committee papers.
 
-[eop]:             http://elementsofprogramming.com/
-[presentation]:    /presentations/2022-11-16-regular-history.html
-[idioms-intro]:    {% post_url 2022-10-17-idioms %}
-[regularidiom]:    {% post_url 2022-10-20-regular-idiom %}
-[c-struct]:        {% post_url 2022-11-19-struct-from-c %}
-[c-copy]:          {% post_url 2022-11-22-c-copy %}
-[cpp-constructor]: {% post_url 2022-11-25-cpp-constructor %}
+The "Design and Evolution of C++" by Bjarne Stroustrup is an important source
+for how ideas that lead to C++ from C came to be. It does stop at about 1994,
+so it does not cover later developments.
+
+
+[eop]:                 http://elementsofprogramming.com/
+[presentation]:        /presentations/2022-11-16-regular-history.html
+[idioms-intro]:        {% post_url 2022-10-17-idioms %}
+[regularidiom]:        {% post_url 2022-10-20-regular-idiom %}
+[c-struct]:            {% post_url 2022-11-19-struct-from-c %}
+[c-copy]:              {% post_url 2022-11-22-c-copy %}
+[cpp-constructor]:     {% post_url 2022-11-25-cpp-constructor %}
 [default-constructor]: {% post_url 2022-11-27-default-constructor %}
-[cpp-copy]:        {% post_url 2022-11-30-cpp-copy %}
+[cpp-copy]:            {% post_url 2022-11-30-cpp-copy %}
+[exception-safety]:    {% post_url 2022-12-02-exception-safety %}

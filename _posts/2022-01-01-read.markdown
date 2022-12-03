@@ -6,6 +6,9 @@ categories: read book
 
 List of books I've read in 2022
 
+- 2022-12-01 George & Weedon Grossmith: The Diary of a Nobody
+: Lovely funny insight into human nature
+
 - 2022-09-10 Benjamin Graham and Charles McGorlic: The Interpretation of Financial Statements
 : Once you have an idea of accounting, this is a good intro on how to look at
 the financial statements in a critical (i.e. careful) way.

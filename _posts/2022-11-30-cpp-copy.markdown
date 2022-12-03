@@ -65,13 +65,13 @@ This is shown here for the class managing a resource:
 struct foo {
   bar * ptr;
 
-  foo(const & other) {
+  foo(const foo & other) {
     // copy construct here
     // e.g. allocate memory pointed by ptr
     // then copy bar from *(other.ptr)
   }
 
-  foo & operator=(const & other) {
+  foo & operator=(const foo & other) {
     // copy assignment here
     // needs to handle the case where
     // ptr already points to something
@@ -124,7 +124,7 @@ care of this. There are several options:
 - the other is to test for object identity as below
 
 {% highlight c++ linenos %}
-  foo & operator=(const & other) {
+  foo & operator=(const foo & other) {
     if (this != &other) {
       // actual copy assignment here
     }
@@ -149,8 +149,8 @@ complicated than one would expect][noncopyable]).
 The more modern version is to delete copy constructor and assignment:
 
 {% highlight c++ linenos %}
-  foo(const & other) = delete;
-  foo & operator=(const & other) = delete;
+  foo(const foo & other) = delete;
+  foo & operator=(const foo & other) = delete;
 {% endhighlight %}
 
 
