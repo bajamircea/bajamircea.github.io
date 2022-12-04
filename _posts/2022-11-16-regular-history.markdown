@@ -14,11 +14,10 @@ The ideas of regular data in C++ have a long and instructive history.
 - [Default constructor][default-constructor]
 - [C++ copy][cpp-copy]
 - [Exception safety, noexcept][exception-safety]
-- C++ equality and order (first attempt)
-- rule of three
-- C++ move
+- [C++ equality and order (first attempt)][compare-classic]
 - STL and templates
-- composing
+- C++ move
+- rule of three and composing
 - regularity syntax and semantics
 - concepts in C++
 - the many relationships
@@ -84,3 +83,4 @@ so it does not cover later developments.
 [default-constructor]: {% post_url 2022-11-27-default-constructor %}
 [cpp-copy]:            {% post_url 2022-11-30-cpp-copy %}
 [exception-safety]:    {% post_url 2022-12-02-exception-safety %}
+[compare-classic]:     {% post_url 2022-12-05-compare-classic %}
