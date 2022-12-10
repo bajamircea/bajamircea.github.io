@@ -15,7 +15,7 @@ The ideas of regular data in C++ have a long and instructive history.
 - [C++ copy][cpp-copy]
 - [Exception safety, noexcept][exception-safety]
 - [C++ equality and order (first attempt)][compare-classic]
-- STL and templates
+- [Templates and STL][stl-templates]
 - C++ move
 - rule of three and composing
 - regularity syntax and semantics
@@ -84,3 +84,4 @@ so it does not cover later developments.
 [cpp-copy]:            {% post_url 2022-11-30-cpp-copy %}
 [exception-safety]:    {% post_url 2022-12-02-exception-safety %}
 [compare-classic]:     {% post_url 2022-12-05-compare-classic %}
+[stl-templates]:       {% post_url 2022-12-08-stl-templates %}
