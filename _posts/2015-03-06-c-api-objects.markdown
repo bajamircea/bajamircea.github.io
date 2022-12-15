@@ -86,6 +86,13 @@ HANDLE CreateEvent(...);
 BOOL SetEvent(HANDLE h);
 {% endhighlight %}
 
+Sometimes the handle is even more opaque (not a pointer) or just plain not a
+pointer. [For example in POSIX][posix-open], `open` returns an `int`:
+
+{% highlight c++ linenos %}
+int open(const char * pathname, int flags);
+{% endhighlight %}
+
 Handles usually have an invalid value. Often a null pointer indicates that the
 constructor failed.
 
@@ -103,6 +110,11 @@ more than one invalid value for a handle type. For example `CreateEvent`returns
 of error `INVALID_HANDLE_VALUE`, which is `-1`, even if the return type is the
 same as `CreateEvent`. **Ensure you check for the right invalid value depending
 on the constructor function**.
+
+That `-1` requires a `reinterpret_cast` sometimes. `constexpr` does not like
+`reinterpret_cast`.
+
+Also the POSIX `open` returns `-1` to indicate an error.
 
 {% highlight c++ linenos %}
 HANDLE e = CreateEvent(...);
@@ -215,3 +227,4 @@ effectively.
 
 [fwrite-doc]:      http://www.cplusplus.com/reference/cstdio/fwrite/
 [why-win-handle]:  http://blogs.msdn.com/b/oldnewthing/archive/2004/03/02/82639.aspx
+[posix-open]:      https://man7.org/linux/man-pages/man2/open.2.html

@@ -45,14 +45,13 @@ namespace cpp_util
   {
   public:
     using handle = typename Traits::handle;
-    static constexpr auto invalid_value = Traits::invalid_value;
 
   private:
     handle h_;
 
   public:
     raii_with_invalid_value() noexcept :
-      h_{ invalid_value }
+      h_{ Traits::invalid_value }
     {
     }
 
@@ -75,13 +74,13 @@ namespace cpp_util
     raii_with_invalid_value(raii_with_invalid_value && other) noexcept :
       h_{ other.h_ }
     {
-      other.h_ = invalid_value;
+      other.h_ = Traits::invalid_value;
     }
 
     raii_with_invalid_value & operator=(raii_with_invalid_value && other) noexcept
     {
       handle tmp = other.h_;
-      other.h_ = invalid_value;
+      other.h_ = Traits::invalid_value;
       if (is_valid())
       {
         Traits::close_handle(h_);
@@ -92,7 +91,7 @@ namespace cpp_util
 
     bool is_valid() const noexcept
     {
-      return h_ != invalid_value;
+      return h_ != Traits::invalid_value;
     }
 
     explicit operator bool() const noexcept
@@ -115,7 +114,7 @@ namespace cpp_util
       return &h_;
     }
 
-    void reset(handle h = invalid_value) noexcept
+    void reset(handle h = Traits::invalid_value) noexcept
     {
       if (is_valid())
       {
@@ -127,7 +126,7 @@ namespace cpp_util
     handle release() noexcept
     {
       handle tmp = h_;
-      h_ = invalid_value;
+      h_ = Traits::invalid_value;
       return tmp;
     }
   };
@@ -151,10 +150,6 @@ undesirable most of the time.
 The `get`, `reset` and `release` methods create some similarities in usage to
 smart pointers.
 
-Unlike `std::unique_ptr` it handles the case where the invalid is not
-`nullptr`. It provides the `is_valid()` to check for validity. `operator*` and
-`operator->` don't usually make sense for handles.
-
 `handle_reference` and `handle_pointer` are provided for direct access to the
 handle. Such access is a bit dangerous, but sometimes useful (hence the longer
 names), less dangerous than using naked handles for C APIs which e.g. use the
@@ -164,26 +159,44 @@ argument.
 The operator `bool` checks for `is_valid()`, it is `explicit`, limiting it's
 use e.g. to `if` tests.
 
-Equality is not implemented, because it does not make sense. The handles are
-often opaque and each valid handle points has a different value, so the only
-equal values will be those of invalid handles. Equality is linked to copying.
-The standard implemented equality for `std::unique_ptr`. That does not make
-sense for the same reason, only `nullptr` pointers will compare equal. Note
-that equality makes sense for `std::shared_ptr`, which has copy, it answers the
-question "do these two pointers point to the same thing?", which is possible
-for `std::shared_ptr`.
-
 All the methods are `noexcept` either explicitly or implicitly, which is useful
 when doing low level interactions with C code.
 
-Another reason for using `raii_with_invalid_value` instead of `std::unique_ptr`
-is that it provides a unifying common vocabulary for wrapping may C APIs.
 
-And another is that because of the traits mechanism it gives an option to have
-different handle wrapper types even when all the characteristics are the same:
-same handle type, same invalid value, same closing function. E.g. `HANDLE`
-(also `SC_HANDLE`) is used for many APIs in Windows, not always meaning the
-same thing (files, threads, events, semaphores etc.)
+## Why use `raii_with_invalid_value` instead of `std::unique_ptr`?
+
+Unlike `std::unique_ptr` it handles the case where the invalid value is not
+`nullptr`.  It provides the `is_valid()` to check for validity, which checks
+against the correct invalid value.
+
+`operator*` and `operator->`, provided by `std::unique_ptr`, but not
+`raii_with_invalid_value`, don't usually make sense for handles. Handles are
+sometimes opaque types or they are not even pointers (such as the handle type
+for POSIX `open` which is `int`). Instead `raii_with_invalid_value` provides
+additional functions such as `handle_pointer` that are useful when dealing with
+handles as explained above.
+
+Equality is not implemented, because it does not make sense. The handles are
+often opaque and each valid handle has a different value, so the only equal
+values will be those of invalid handles. Equality is linked to copying.  The
+standard implemented equality for `std::unique_ptr`. That is arguable a design
+mistake in `std::unique_ptr`. Equality there does not make sense for the same
+reason, only `nullptr` pointers will compare equal. Note that equality makes
+sense for `std::shared_ptr`, which has copy, it answers the question "do these
+two pointers point to the same thing?", which is possible for
+`std::shared_ptr`.
+
+Another reason is that because of the traits mechanism it gives an option to
+have different handle wrapper types even when all the characteristics are the
+same: same handle type, same invalid value, same closing function. E.g.
+`HANDLE` (also `SC_HANDLE`) is used for many APIs in Windows, not always
+meaning the same thing (files, threads, events, semaphores etc.)
+
+But fundamentally it's semantics. While you might sometimes just about use
+`std::unique_ptr`, `raii_with_invalid_value` is better suited tool to deal with
+much more of the [usual variation in handle behaviour in C APIs][c-objects] and
+refer to all such handle wrappers by the same name, leaving `std::unique_ptr`
+for the role of managing single owned heap allocated memory.
 
 
 ## cpp_util_lib/handle_arg.h
@@ -286,6 +299,10 @@ namespace cstdio
 }
 {% endhighlight %}
 
+NOTE: for the cases where the invalid value involves a `reintrepret_cast`, as
+it's the case in Windows for `INVALID_HANDLE_VALUE`, you might need to use
+`static inline auto invalid_value = ...` instead of the syntax above that uses
+`constexpr`. Reason is `constexpr` does not like `reinterpret_cast`.
 
 ## cstdio_lib/error.h
 
@@ -590,3 +607,4 @@ combinations.
 [fat-raii]:      {% post_url 2015-03-23-fat-raii %}
 [if-error-goto]: {% post_url 2015-03-15-if-error-goto %}
 [n1592]:         https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1592.pdf
+[c-objects]:     {% post_url 2015-03-06-c-api-objects %}
