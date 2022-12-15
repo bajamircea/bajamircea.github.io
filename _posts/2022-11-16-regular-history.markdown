@@ -60,6 +60,10 @@ In this series of articles I'm going to cover what I know about the history of
 the design supporting regular data types. The history is long and contains
 interesting deliberate and accidental events.
 
+**It is a selective history**, so that if we look at the types like the
+`person` above we can remember: "this is like this because of this
+reason/choice/accident".
+
 
 # References
 
