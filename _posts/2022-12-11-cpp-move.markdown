@@ -1,0 +1,168 @@
+---
+layout: post
+title: 'C++ move rationale'
+categories: coding cpp
+---
+
+Why is C++ move not destructive and what does that mean? We see that the way
+move is implemented in C++ is only one of the ways of doing move.
+
+This article is part of a series on [the history of regular data type in
+C++][regular-intro].
+
+
+# Motivation
+
+The motivation of move is fundamentally the transfer of data where ownership of
+the data can be transferred more efficiently than taking a copy (or where copy
+is not possible). It can improve fundamental operations like `swap`:
+
+{% highlight c++ linenos %}
+  // written like this swap makes unnecessary copies
+  foo tmp = a; // copy constructor
+  a = b;       // copy assignment
+  b = tmp;     // copy assignment
+  // end result: three deep copies
+{% endhighlight %}
+
+Historically, improving on the situation above required specializations of
+`swap` for various types.
+
+
+# C++ move syntax
+
+Syntax-wise C++ move relies on r-value references the mechanics of which I've
+[described previously in some details][move-forward].
+
+You have to implement the move constructor and assignment. Like in the case of
+copy, constructor and assignment require distinct implementations for maximum
+efficiency. For our class managing data via a pointer they can look like:
+
+{% highlight c++ linenos %}
+class foo {
+  bar * ptr;
+public:
+  // ...
+
+  foo(foo && other) : ptr{ other.ptr } noexcept {
+    other.ptr = nullptr;
+  }
+
+  foo & operator=(foo && other) noexcept {
+    if (this != &other) {
+      delete ptr; // asumes bar destructor does not throw
+      ptr = other.ptr;
+      other.ptr = nullptr;
+    }
+    return *this;
+  }
+};
+{% endhighlight %}
+
+This leads to a much better swap:
+
+{% highlight c++ linenos %}
+  T tmp = std::move(a); // move constructor
+  a = std::move(b);     // move assignment
+  b = std::move(tmp);   // move assignment
+  // end result: three ownership transfers
+{% endhighlight %}
+
+
+# "Move from" state
+
+When we moved from the `other`, the source of the move, we diligently assigned
+`nullptr` to `other.ptr`. That's because the compiler will call the destructor
+on the source of the move.
+
+What can you do with a "moved from" object?
+
+You have to be able to destruct it. This is because of the design of move in
+C++ that will call the destructor on the source of move.
+
+You have to be able to assign to it. This is because otherwise `swap` won't
+work (it uses move assignment).
+
+What else can you do with it?
+
+Academically the answer is "any operation that does not have pre-conditions".
+This is the path that components from the C++ standard library took (it does
+not use the term "moved from" or resource-less either). Some operations make
+sense, such as a function `assign` or other named functions that do assignment.
+But the path that the C++ standard took leads to absurd situations where you
+can call `.empty()` on a moved from container, though you might get either
+`true` or `false`. Similar `.size()` can return any size, `operator+` will
+happily append, but you can end with anything. That is silly: being able to
+call functions with no promise of outcome is useless.
+
+What I recommend is that you follow the rule: a "moved from" object can be
+destroyed, assigned and only operations that are specifically allowed can be
+called. Basically, if you wish, introduce an implicit pre-condition on most of
+the functions to not be called on a "moved from" object.
+
+
+# noexcept and move
+
+It's a historical accident that move constructors and assignment are not
+implicitly `noexcept` like the destructor. They should be. Failing that we have
+to diligently ensure that they are `noexcept`. As far as I can figure out it is
+due to Microsoft insistence on ensuring that end iterators don't get
+invalidated for containers like `set`, `map` and `list` even if those
+containers get moved. The move constructor for such containers can throw. The
+requirement is really niche, the downside of handling moves that can throw
+outweighs the gain (this bad choice has far implications like the exception
+guarantees of vector operations).
+
+I recommend that you design your move constructor and assignment so that they
+don't throw and **don't forget to explicitly mark the move constructor and
+assignment as noexcept**.
+
+
+# Other options
+
+Alex Stepanov said "[std] vector is just one kind of a vector". Similarly move
+can be implemented in many ways.
+
+In Elements of Programming, move is described in terms of copy of underlying
+type. For example, a typical vector has three pointers which it uses to manage
+the resizeable buffer which is allocated on the heap. The underlying type for
+such a vector would be a `struct` containing three pointers.
+
+This approach works well in EOP, in particular for re-arrangements which range
+from the simple `swap` we've seen above, to algorithms like `rotate` which uses
+clever maths to achieve `O(N)` complexity: the greatest common denominator
+(gcd) to determine the number of move cycles.
+
+A similar approach is taken by Rust (another programming language). There move
+is effectively a `memcpy` which leaves the source unchanged.
+
+In both cases they don't deal with containers that have pointers from the
+remote parts back to the local parts (such as a double linked list with the
+dummy node stored in the list itself), though theoretically a language like
+Rust could add customization points to adjust such pointers after the
+`memcpy`
+
+Destructive move, where the destructor is not called for the source of the move
+by the compiler has been considered during the design of the current move
+syntax in C++ (for what became C++11), see references below for more info. It
+is difficult for the compiler to always track if the object has been moved
+from. In particular for objects with static or thread storage duration. I also
+struggle with the case where the object is moved from a container even as
+simple as an `std::optional` or `std::unique_ptr`: in the latter case the
+memory still needs to be freed, but the destructor not called. Such move has to
+be `noexcept`, else situations like moving a type that has a base class become
+really complicated. So as explained in the references below, this approach has
+been de-prioritised for the time being as "too much pain for not enough gain".
+
+
+# References
+
+Why does C++ move semantics leave the source constructed? question and answer
+by Howard Hinnant on
+[stackoverflow](https://stackoverflow.com/questions/33455067/why-does-c-move-semantics-leave-the-source-constructed)
+
+Note on alternative move designs in
+[N1377](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2002/n1377.htm#Alternative%20move%20designs)
+
+[regular-intro]:   {% post_url 2022-11-16-regular-history %}
+[move-forward]:    {% post_url 2016-04-07-move-forward %}

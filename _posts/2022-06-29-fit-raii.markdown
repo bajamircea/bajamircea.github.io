@@ -299,7 +299,7 @@ namespace cstdio
 }
 {% endhighlight %}
 
-NOTE: for the cases where the invalid value involves a `reintrepret_cast`, as
+NOTE: for the cases where the invalid value involves a `reinterpret_cast`, as
 it's the case in Windows for `INVALID_HANDLE_VALUE`, you might need to use
 `static inline auto invalid_value = ...` instead of the syntax above that uses
 `constexpr`. Reason is `constexpr` does not like `reinterpret_cast`.
