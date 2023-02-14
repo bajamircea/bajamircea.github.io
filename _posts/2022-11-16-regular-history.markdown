@@ -17,7 +17,7 @@ The ideas of regular data in C++ have a long and instructive history.
 - [C++ equality and order (first attempt)][compare-classic]
 - [Templates and STL][stl-templates]
 - [C++ move rationale][cpp-move]
-- rule of three and composing
+- [Rule of three and composing][rule-of-three]
 - regularity syntax and semantics
 - concepts in C++
 - the many relationships
@@ -90,3 +90,4 @@ so it does not cover later developments.
 [compare-classic]:     {% post_url 2022-12-05-compare-classic %}
 [stl-templates]:       {% post_url 2022-12-08-stl-templates %}
 [cpp-move]:            {% post_url 2022-12-11-cpp-move %}
+[rule-of-three]:       {% post_url 2022-12-14-rule-of-three %}

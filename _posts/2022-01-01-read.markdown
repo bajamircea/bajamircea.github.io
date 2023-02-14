@@ -6,6 +6,10 @@ categories: read book
 
 List of books I've read in 2022
 
+- 2022-12-27 Stephen Cole Kleene: Recursive predicates and quantifiers - 1943
+: Used it to clarify some points in Kleene's Introduction to Metamathematics.
+Good summary of the state of affairs in recursion.
+
 - 2022-12-01 George & Weedon Grossmith: The Diary of a Nobody
 : Lovely funny insight into human nature
 
