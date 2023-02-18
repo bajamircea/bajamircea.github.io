@@ -5,7 +5,7 @@ categories: coding cpp
 ---
 
 Rule of three. Or rule of five. Or none of those rules: composing, interfaces,
-reference members and pimpl.
+reference members and Pimpl.
 
 This article is part of a series on [the history of regular data type in
 C++][regular-intro].

@@ -18,7 +18,7 @@ The ideas of regular data in C++ have a long and instructive history.
 - [Templates and STL][stl-templates]
 - [C++ move rationale][cpp-move]
 - [Rule of three and composing][rule-of-three]
-- regularity syntax and semantics
+- [Regular: syntax and semantics][syntax-semantics]
 - concepts in C++
 - the many relationships
 - three-way comparison, aka the spaceship operator
@@ -91,3 +91,4 @@ so it does not cover later developments.
 [stl-templates]:       {% post_url 2022-12-08-stl-templates %}
 [cpp-move]:            {% post_url 2022-12-11-cpp-move %}
 [rule-of-three]:       {% post_url 2022-12-14-rule-of-three %}
+[syntax-semantics]:    {% post_url 2022-12-18-regular-syntax-semantics %}
