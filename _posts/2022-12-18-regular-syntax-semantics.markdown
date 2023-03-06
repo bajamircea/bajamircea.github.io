@@ -59,7 +59,8 @@ assume that copy and move mean copy and move and can be elided.
 - Of all the functions above, only copy might throw (because it might need to
   allocate memory)
 - The functions above have reasonable complexity of operations: constant or at
-  most linear with the amount of data held.
+  most linear with the amount of data held
+- Independence: changing one value does not change other unrelated values
 
 
 ## Syntax requirements of a regular type
