@@ -53,7 +53,7 @@ of STL for inclusion in the C++ standard. And most of the people thought they
 now have a container library with some algorithms, while Alex Stepanov thought
 he had an algorithm library with some containers.
 
-But other than the algorithms and containers it had documentation. And the
+But other than the algorithms and containers, it had documentation. And the
 documentation specified requirements on the types used with the generic
 library.
 
@@ -102,9 +102,9 @@ mainly that did not have mapping.
 Very high level what we got is the following.
 
 The C++20 concepts check syntax requirements when using templates. It uses two
-new keywords: `concept` and `require`.
+new keywords: `concept` and `requires`.
 
-A `require` expression looks like a function and can be used to capture such
+A `requires` expression looks like a function and can be used to capture such
 requirements. E.g. the one below can be used to check that two variables of
 type `T` can be added together (`operator+` can be either a member of `T` or a
 standalone function: it does not matter which, as long as `x + x` compiles).
@@ -117,7 +117,7 @@ Inside the curly brackets of the require clause you can (and usually have) a
 sequence of checks.
 
 The keyword `concept` allows combining such requirements using AND and OR
-logical operator and giving them a name. Itself it is parametrised like a
+logical operators and giving them a name. Itself it is parametrised like a
 template: usually types, can take more than one type, but also non-type
 parameters such as an `int` value.
 
@@ -135,18 +135,18 @@ template<typename T>
 concept small_addable = addable<T> && (sizeof(T) <= 4);
 {% endhighlight %}
 
-Both `concept` and the `require` expression effectively provide a `bool` which
+Both `concept` and the `requires` expression effectively provide a `bool` which
 is true it the checks pass. E.g. it can provide info that a matrix type, a
 scalar type, `0` and `1` can be used together to multiply the matrix by the
 scalar and obtain a matrix, to build the scalar type from `0` or `1` etc.
 
 Then when you have a template (e.g. function or class templates) you can
-enforce those checks. The keyword `requires` is reused here in a `require`
+enforce those checks. The keyword `requires` is reused here in a `requires`
 clause:
 
 {% highlight c++ linenos %}
 template<typename T>
-T add(T x, Ty)
+T add(T x, T y)
   requires addable<T>
 {
   return x + y;
@@ -157,7 +157,7 @@ For simple cases like the one above we can have nicer syntax:
 
 {% highlight c++ linenos %}
 template<addable T>
-T add(T x, Ty)
+T add(T x, T y)
 {
   return x + y;
 }
@@ -175,12 +175,15 @@ auto add_one(incrementable auto x)
 }
 {% endhighlight %}
 
+Note that this simpler form would not work for the `add` function above without
+further changes because `x` and `y` would not necessarily be the same type.
+
 In complex cases the more verbose syntax is also available (the first
 `requires` is the clause, the second the expression).
 
 {% highlight c++ linenos %}
 template<typename T>
-T add(T x, Ty)
+T add(T x, T y)
   requires requires(T x) { x + x; }
 {
   return x + y;
@@ -199,6 +202,31 @@ The errors are not necessarily shorter.
 Some concepts were added to the language, though note that `std::regular` is
 weaker than the definition I gave in the previous article: it does not require
 order.
+
+
+# Just a tool
+
+Concepts are useful in the field of writing libraries that have generic
+solutions to constrain the kind of types that the library was designed to
+handle.
+
+In the end, the C++ concepts are just a tool that covers largely syntactic
+checks for generic solutions, an imperfect approximation of concepts in
+general. How much the C++ concepts  help depends a lot on how they are used.
+
+That's similar with `struct`: it allows to refer to a group of members, but the
+developer has to figure out which members to put together for say a `struct`
+containing the info about a person. The exact syntax requirements to check via
+concepts fall out of thinking what types would be suitable for a generic
+solution and careful library design.
+
+Often C++ concepts lead to a version of duck typing: "If it walks like a duck
+and it quacks like a duck, then it must be a duck", i.e. if a type matches
+this list of syntax requirements, then it matches the C++ concept, therefore it
+must match the concept for which the library was designed. The amount of checks
+is a matter of taste: increasing the number of checks increases the confidence
+that it's a duck, i.e. that it matches the concept, but too many restrictions
+might unnecessarily reject a type that would still work.
 
 
 # References
