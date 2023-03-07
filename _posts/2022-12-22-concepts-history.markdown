@@ -96,27 +96,104 @@ In the end Alex Stepanov was briefly involved and Bjarne Stroustrup lobbied
 what became the C++20 concepts, among other things convincing that it's all
 right to have pretty syntax (compared with the historical case of templates
 where complex syntax was apparently required to ensure distinction from
-"normal").
+"normal"). This proposal was sometimes called "C++ concepts lite" meaning
+mainly that did not have mapping.
 
 Very high level what we got is the following.
 
-A keyword `requires` can group syntactic requirements. It can be used where
-templates (e.g. function or class templates) are declared. The requirements
-take pretty much the same kind of parameters as templates: usually types, can
-take more than one type, but also non-type parameters such as an `int` value.
-It can be used to do syntax checks on such (usually) types.
+The C++20 concepts check syntax requirements when using templates. It uses two
+new keywords: `concept` and `require`.
 
-A keyword `concepts` allows combining such requirements using AND and OR
-logical operators and giving them a name. The name allows for several forms of
-nicer usages for simpler cases.
+A `require` expression looks like a function and can be used to capture such
+requirements. E.g. the one below can be used to check that two variables of
+type `T` can be added together (`operator+` can be either a member of `T` or a
+standalone function: it does not matter which, as long as `x + x` compiles).
 
-Both effectively provide a `bool` which is true it the checks pass. E.g. it
-can provide info if a matrix type, a scalar type, `0` and `1` can be used
-together to multiply the matrix by the scalar and obtain a matrix, to build the
-scalar type from `0` or `1` etc. Therefore the compiler can check if the
-constraints are satisfied and either ignore a candidate that does not meet the
-constraints or give an error. The selection mechanism is more convenient than
-alternatives e.g. `std::enable_if`. This helped with the `std::ranges` library.
+{% highlight c++ linenos %}
+requires (T x) { x + x; }
+{% endhighlight %}
+
+Inside the curly brackets of the require clause you can (and usually have) a
+sequence of checks.
+
+The keyword `concept` allows combining such requirements using AND and OR
+logical operator and giving them a name. Itself it is parametrised like a
+template: usually types, can take more than one type, but also non-type
+parameters such as an `int` value.
+
+Here is a simple usage:
+
+{% highlight c++ linenos %}
+template<typename T>
+concept addable = requires(T x) { x + x; };
+{% endhighlight %}
+
+Here is a usage that uses logical operators to combine checks:
+
+{% highlight c++ linenos %}
+template<typename T>
+concept small_addable = addable<T> && (sizeof(T) <= 4);
+{% endhighlight %}
+
+Both `concept` and the `require` expression effectively provide a `bool` which
+is true it the checks pass. E.g. it can provide info that a matrix type, a
+scalar type, `0` and `1` can be used together to multiply the matrix by the
+scalar and obtain a matrix, to build the scalar type from `0` or `1` etc.
+
+Then when you have a template (e.g. function or class templates) you can
+enforce those checks. The keyword `requires` is reused here in a `require`
+clause:
+
+{% highlight c++ linenos %}
+template<typename T>
+T add(T x, Ty)
+  requires addable<T>
+{
+  return x + y;
+}
+{% endhighlight %}
+
+For simple cases like the one above we can have nicer syntax:
+
+{% highlight c++ linenos %}
+template<addable T>
+T add(T x, Ty)
+{
+  return x + y;
+}
+{% endhighlight %}
+
+and in some cases the even simpler:
+
+{% highlight c++ linenos %}
+template<typename T>
+concept incrementable = requires (T x) { ++x; x++; };
+
+auto add_one(incrementable auto x)
+{
+  return ++x;
+}
+{% endhighlight %}
+
+In complex cases the more verbose syntax is also available (the first
+`requires` is the clause, the second the expression).
+
+{% highlight c++ linenos %}
+template<typename T>
+T add(T x, Ty)
+  requires requires(T x) { x + x; }
+{
+  return x + y;
+}
+{% endhighlight %}
+
+Using all this mechanics, the compiler can check if the constraints are
+satisfied and either ignore a candidate that does not meet the constraints or
+give an error. The selection mechanism is more convenient than alternatives
+e.g. `std::enable_if`. This helped with the `std::ranges` library where the
+compiler can choose different functions based on weather the arguments are
+iterators or ranges for example.
+
 The errors are not necessarily shorter.
 
 Some concepts were added to the language, though note that `std::regular` is
@@ -127,6 +204,10 @@ order.
 # References
 
 [Al Stevens Interviews Alex Stepanov][interview] (Dr. Dobb's Journal March 1995 issue)
+
+Concepts wording reference (Andrew Sutton):<br/>
+[https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0734r0.pdf](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/p0734r0.pdf)
+
 
 [regular-intro]:    {% post_url 2022-11-16-regular-history %}
 [interview]: https://www.boost.org/sgi/stl/drdobbs-interview.html

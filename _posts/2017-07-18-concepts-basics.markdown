@@ -228,10 +228,9 @@ The problem is that `Same` is a concept, and the intution says that it must
 take two types, e.g. `T` and `U`, and the concept enforces that the types are
 the same. But here we just see one type: `bool`. Where is the other type?
 
-What happens is that if what follows `->` contains is a concept as above, then
-the compiler invents some fictional function with that as the argument type and
-checks if it can pass the expression as the argument for that invented
-function.
+When after `->` there is a concept, as `Same<bool>` above, then the compiler
+invents some fictional function with that as the argument type and checks if it
+can pass the expression as the argument for that invented function.
 
 {% highlight c++ linenos %}
 void fn(Same<bool> x); // invent
@@ -361,6 +360,9 @@ Concepts proposal wording (Andrew Sutton)<br/>
 
 Ranges TS (Eric Niebler, Casey Carter)<br/>
 [http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4671.pdf](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4671.pdf)
+
+Stackoverflow answer for concepts placeholder type deduction (by Luc Danton):<br/>
+[https://stackoverflow.com/questions/43693697/c-concepts-placeholder-type-deduction](https://stackoverflow.com/questions/43693697/c-concepts-placeholder-type-deduction)
 
 [n4647]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2017/n4674.pdf
 
