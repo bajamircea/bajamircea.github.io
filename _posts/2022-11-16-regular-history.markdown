@@ -20,7 +20,7 @@ The ideas of regular data in C++ have a long and instructive history.
 - [Rule of three and composing][rule-of-three]
 - [Regular: syntax and semantics][syntax-semantics]
 - [History of concepts in C++][concepts-history]
-- the many relationships
+- [The many relations][many-relations]
 - three-way comparison, aka the spaceship operator
 - better equality
 - better member
@@ -93,3 +93,4 @@ so it does not cover later developments.
 [rule-of-three]:       {% post_url 2022-12-14-rule-of-three %}
 [syntax-semantics]:    {% post_url 2022-12-18-regular-syntax-semantics %}
 [concepts-history]:    {% post_url 2022-12-22-concepts-history %}
+[many-relations]:      {% post_url 2023-03-05-many-relations %}
