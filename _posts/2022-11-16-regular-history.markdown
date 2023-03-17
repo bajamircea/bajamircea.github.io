@@ -21,7 +21,8 @@ The ideas of regular data in C++ have a long and instructive history.
 - [Regular: syntax and semantics][syntax-semantics]
 - [History of concepts in C++][concepts-history]
 - [The many relations][many-relations]
-- three-way comparison, aka the spaceship operator
+- [History of the Three-way comparison, aka the spaceship
+  operator][spaceship-history]
 - better equality
 - better member
 - constexpr
@@ -94,3 +95,4 @@ so it does not cover later developments.
 [syntax-semantics]:    {% post_url 2022-12-18-regular-syntax-semantics %}
 [concepts-history]:    {% post_url 2022-12-22-concepts-history %}
 [many-relations]:      {% post_url 2023-03-05-many-relations %}
+[spaceship-history]:   {% post_url 2023-03-13-spaceship-history %}

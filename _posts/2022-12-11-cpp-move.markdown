@@ -91,9 +91,11 @@ not use the term "moved from" or resource-less either). Some operations make
 sense, such as a function `assign` or other named functions that do assignment.
 But the path that the C++ standard took leads to absurd situations where you
 can call `.empty()` on a moved from container, though you might get either
-`true` or `false`. Similar `.size()` can return any size, `operator+` will
+`true` or `false`. Similar `.size()` can return any size, `operator+=` will
 happily append, but you can end with anything. That is silly: being able to
-call functions with no promise of outcome is useless.
+call functions with no promise of outcome is useless. It falls into the
+category: just because you can do something does not mean it's a good idea to
+actually do it.
 
 What I recommend is that you follow the rule: a "moved from" object can be
 destroyed, assigned and only operations that are specifically allowed can be

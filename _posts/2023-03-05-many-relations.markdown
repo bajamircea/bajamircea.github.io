@@ -70,10 +70,16 @@ of the objects involved for equality.
 
 "Less than" is also special. It is related to equality via the trichotomy rule:
 given two values, one is less than the other or the values are equal. "Less
-than" is a special case of order relations.
+than" is a special case of order relations: it is strict.
 
-Order refers to any of the "less than", "greater than", "less than or equal",
-"greater than or equal". Comparison refers to order or equality relations.
+Order usually refers to any of the "less than", "greater than", "less than or
+equal", "greater than or equal". Comparison refers to order or equality
+relations.
+
+Sometimes terminology strong and weak is used e.g. strong equality is normal
+equality, while weak equality is equivalence, similar strong order is provided
+by the normal "less than" relation, while weak order has the trichotomy
+relation with an equivalence relation.
 
 
 # Language representation
@@ -106,9 +112,15 @@ properly, including one being the opposite of the other, and together with
 copy. For "less than" the sane approach is to use `<` and make sure it works
 properly with the other operators like `<=`, `>`, `>=` and with equality.
 
-Examples of non-heterogeneous predicates are those comparing `std::string` with
-literal strings or `std::string_view`, or testing equality of an iterator with
-the associated sentinel type in the `std::ranges` library.
+Examples of non-heterogeneous binary predicates are those comparing
+`std::string` with literal strings or `std::string_view`, or testing equality
+of an iterator with the associated sentinel type in the `std::ranges` library.
+
+Even if non-heterogeneous, binary predicates usually are happy to take the two
+different types in any order: we're as likely to compare a `std::string` with a
+literal string as to compare a literal string with a `std::string`. In some
+cases that's not the case, such as a predicate that indicates if path is a
+child of another (e.g. to implement some scanning exclusion).
 
 
 # The weird case of float
