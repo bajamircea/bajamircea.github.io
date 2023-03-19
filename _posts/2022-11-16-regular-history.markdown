@@ -23,11 +23,9 @@ The ideas of regular data in C++ have a long and instructive history.
 - [The many relations][many-relations]
 - [History of the Three-way comparison, aka the spaceship
   operator][spaceship-history]
-- better equality
-- better member
-- constexpr
-- sanity and divergence from insanity
-- the better future
+- [Pragmatic Regular structs][pragmatic-spaceship]
+- [Regular wannabes][regular-wannabes]
+- [The future of regular][regular-future]
 
 Also see the above in [presentation form][presentation]
 
@@ -96,3 +94,6 @@ so it does not cover later developments.
 [concepts-history]:    {% post_url 2022-12-22-concepts-history %}
 [many-relations]:      {% post_url 2023-03-05-many-relations %}
 [spaceship-history]:   {% post_url 2023-03-13-spaceship-history %}
+[pragmatic-spaceship]: {% post_url 2023-03-17-pragmatic-spaceship %}
+[regular-wannabes]:    {% post_url 2023-03-21-regular-wannabes %}
+[regular-future]:      {% post_url 2023-03-25-regular-future %}

@@ -7,6 +7,8 @@ categories: coding cpp
 How to implement comparisons for user defined data structures, using `tie`,
 before better reflection capabilities are added to C++
 
+*NOTE: This older article is left here for reference purposes, for better
+options to achieve the same functionality see [here][pragmatic-spaceship]
 
 # Introduction
 
@@ -207,5 +209,6 @@ NOTE: This simple implementation fails for `struct`s containing `float`s or
 [pearls]:          {% post_url 2018-05-06-alex-stepanov-pearls %}
 [tie-trick]:       {% post_url 2017-03-10-std-tie %}
 [reflection]:      {% post_url 2018-01-29-reflection %}
+[pragmatic-spaceship]: {% post_url 2023-03-17-pragmatic-spaceship %}
 
 
