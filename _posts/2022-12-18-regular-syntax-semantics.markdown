@@ -27,7 +27,10 @@ compiles: `T a; T b = a;`.
 The difference between syntactic and semantic requirements is somewhat
 arbitrary. Over time the compilers can perform more checks or assumes meaning
 for operations e.g. some optimisations (such as return value optimisation)
-assume that copy and move mean copy and move and can be elided.
+assume that copy and move mean copy and move and can be elided. Interestingly
+for comparisons `==` and `<` this is made harder because, as we'll see,
+historically and also when the spaceship `<=>` operator was introduced, people
+sometimes use `==` and `<` for weaker relations than equality or "less than".
 
 ## Semantics of a regular type
 

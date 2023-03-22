@@ -26,6 +26,7 @@ The ideas of regular data in C++ have a long and instructive history.
 - [Pragmatic Regular structs][pragmatic-spaceship]
 - [Regular wannabes][regular-wannabes]
 - [The future of regular][regular-future]
+- [Efficiency and the things we know][things-we-know]
 
 Also see the above in [presentation form][presentation]
 
@@ -97,3 +98,4 @@ so it does not cover later developments.
 [pragmatic-spaceship]: {% post_url 2023-03-17-pragmatic-spaceship %}
 [regular-wannabes]:    {% post_url 2023-03-21-regular-wannabes %}
 [regular-future]:      {% post_url 2023-03-25-regular-future %}
+[things-we-know]:      {% post_url 2023-03-28-things-we-know-efficiency %}

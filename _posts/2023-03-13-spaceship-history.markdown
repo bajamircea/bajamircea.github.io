@@ -83,8 +83,9 @@ parallelograms he uses the word equality to mean equality of areas.
 The problem with allowing the same operators to mean different things creates
 problems with composite types: the strength degrades to the lower denominator,
 and really who can explain in a rush the difference between strong and weak
-ordering? The better approach is to use methods like `is_equivalent` or
-`preceeds` and use those to customize algorithms for the type.
+ordering? Put it another way: deviation from normal, weirdness, composes badly.
+The better approach is to use methods like `is_equivalent` or `preceeds` and
+use those to customize algorithms for the type.
 
 Another particular technical issue is that in terms of the computation
 efficiency, `==` can often be implemented faster than checking if `<=>` returns

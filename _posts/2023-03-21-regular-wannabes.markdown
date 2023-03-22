@@ -5,7 +5,7 @@ categories: coding cpp
 ---
 
 There are all sorts of types that sometimes try to have regular
-characteristics.
+characteristics. A taxonomy of regular types.
 
 This article is part of a series on [the history of regular data type in
 C++][regular-intro].
@@ -27,7 +27,7 @@ There are proper strong regular types. They have have default constructor,
 destructor, copy, move, all proper comparison operators and all of the many
 semantic expectations.
 
-Examples are:
+Good regular examples are:
 - `int`: the dream regular type.
 - `std::string`: copy could throw, but that's usually OK, all dynamically
   allocated containers have this issue.
@@ -37,6 +37,8 @@ Examples are:
   contiguously items, even if not regular.
 - `std::pair`: similar issues with the vector, it all depends on member types.
   It does memberwise compare, which is what one would expect.
+- `std::optional`: orders the `nullopt` value ahead of the underlying
+  `value_type` order. That's OK.
 - `std::shared_ptr`: does shallow copy and comparison, but that OK, it uses
   atomics to address expectations around threading.
 
@@ -54,7 +56,10 @@ them) way:
   copy, you change the copy, but then it's still equal to the original (because
   they are views to the same data)
 - Then the standard relaxed the requirements further where the `std::regular`
-  concept does not require order. E.g. C++ iterators
+  concept does not require order. E.g. C++ iterators; note though they could
+  have had order, it's just that order for two iterators would reflect the
+  location in memory, not in the sequence (think pointers to nodes in a linked
+  list), and some would find that confusing.
 - And then further relaxed for `std::semiregular` to not even have equality
 - vtable interface based types that use `clone` methods to copy, with their own issues
   around comparisons
