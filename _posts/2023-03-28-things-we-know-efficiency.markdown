@@ -111,7 +111,7 @@ we move from a value, the move (constructor or assignment) also changes the
 moved from object. This is not required in the case of `rotate` because "we
 know" based on the clever reasoning that each of the `GCD(M, N)` number of
 cycles will be complete. Currently this might be an optimisation that does not
-take place in ++ because the compiler does not know that.
+take place in C++ because the compiler does not know that.
 
 
 # Replace
@@ -223,7 +223,7 @@ This illustrates that for library/language design there is a trade-off between
 elegance/simplicity and functionality/flexibility.
 
 If you insist that the `partition` predicate has to be a regular function,
-**yoy end up with a more elegant/simpler solution at the const of the kind of
+**you end up with a more elegant/simpler solution at the const of the kind of
 problems that the algorithm can solve**. The example I gave is probably
 dominated by IO operations, but should you aim to solve if efficiently, one
 solution involves exactly the same code as the `partition` algorithm.
