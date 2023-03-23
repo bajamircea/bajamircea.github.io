@@ -53,8 +53,9 @@ them) way:
 - Types like `float` have multiple issues around `NaN` (domain issues) and
   `-0.0`/`+0.0` (`==` does not mean equality)
 - Types like `string_view` which are not semantically regular e.g. you take a
-  copy, you change the copy, but then it's still equal to the original (because
-  they are views to the same data)
+  copy, you change the original string, but then it's still equal to the
+  original (because they are views to the same data)
+- Similarly `span`: you take a copy, you change the copy, they are still equal
 - Then the standard relaxed the requirements further where the `std::regular`
   concept does not require order. E.g. C++ iterators; note though they could
   have had order, it's just that order for two iterators would reflect the

@@ -73,7 +73,8 @@ A pointer and a size (or two pointers). It provides a constant view into either
 a `std::string` or a string literal, a sub-range of, or any other contiguous
 sequence of characters. The pointer points at the beginning, the size is the
 length of the sequence (or pointer to one past the last, i.e the end). It's a
-constant view, it does not allow changing the sequence it points to.
+constant view, it does not allow changing the sequence it points to (in order
+to be able to provide views into literal strings).
 
 
 ## Functions taking std::string_view
