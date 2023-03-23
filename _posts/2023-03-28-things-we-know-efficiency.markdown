@@ -44,10 +44,18 @@ not happen for those specific input values.
 
 # Binary search, lower bound, partition point
 
+<div align="center">
+{% include assets/2023-03-28-things-we-know-efficiency/01-partition-point.svg %}
+</div>
+
 There is a family of algorithms that use divide and conquer on a already
-ordered range. Here is for example `binary_search` that can efficiently find in
-the `value` is in the range by halving the search range at each step leading to
-`O(lg(N))` time complexity.
+ordered range: `partition_point` (illustrated above), `lower_bound`
+(`partition_point` for less than a given value), `binary_search` (`lower_bound`
+plus equality check).
+
+Below is for example `binary_search` that can efficiently find in the `value`
+is in the range by halving the search range at each step leading to `O(lg(N))`
+time complexity.
 
 {% highlight c++ linenos %}
 template<class It, class T>
@@ -55,9 +63,9 @@ template<class It, class T>
 bool binary_search(It first, It last, const T & value);
 {% endhighlight %}
 
-But itself it does not check if the sequence is sorted. Similar issues apply to
-lower bound and partition point for the requirement that the sequence is
-partitioned for the comparison used (defaults to '<').
+But `binary_search` itself it does not check if the sequence is sorted. Similar
+issues apply to lower bound and partition point for the requirement that the
+sequence is partitioned for the comparison used (defaults to '<').
 
 A runtime check that the input range is sorted would degrade the time
 complexity to `O(N)`.
@@ -106,6 +114,10 @@ there are `GCD(M, N)` such cycles where `N` is the total number of values betwee
 `first` and `last`, `M` is the number of values between `first` and `middle`
 and `GCD` is the greatest common divisor.
 
+<div align="center">
+{% include assets/2023-03-28-things-we-know-efficiency/02-rotate.svg %}
+</div>
+
 This is interesting because, in the C++ world of destructing moves, every time
 we move from a value, the move (constructor or assignment) also changes the
 moved from object. This is not required in the case of `rotate` because "we
@@ -121,7 +133,7 @@ The replace traverses a linear sequence and replaces a value with another:
 {% highlight c++ linenos %}
 template<class It, class T>
 // It is forward iterator
-It rotate(It first, It last, const T & old_value, const T & new_value);
+It replace(It first, It last, const T & old_value, const T & new_value);
 {% endhighlight %}
 
 But what if we use like this with references to values from the sequence?
@@ -195,7 +207,7 @@ Note that's covered in chapter 2 of EOP, but regularity is fundamental for most
 algorithms.
 
 
-# Irregular partition
+# Irregular partition "predicate"
 
 You have a vector of unique file names corresponding to files that you want to
 update. You want to separate this into the file names that correspond to files
@@ -212,6 +224,10 @@ template<class It, class UnaryPredicate>
 // It is bidirectional iterator
 It partition(It first, It last, UnaryPredicate p);
 {% endhighlight %}
+
+<div align="center">
+{% include assets/2023-03-28-things-we-know-efficiency/03-partition.svg %}
+</div>
 
 But the problem is that the predicate is not a regular function. EOP and the
 C++ standard define a predicate as a regular function. But in the case of the

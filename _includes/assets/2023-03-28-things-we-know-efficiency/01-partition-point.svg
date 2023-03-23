@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20230328-01-1" width="100%" viewBox="0 0 620.0 150.0">
+  <style>
+    #svg20230328-01-1 {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20230328-01-l1 {
+      stroke: black;
+      stroke-width: 3;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+    .svg20230328-01-l2 {
+      stroke: black;
+      stroke-width: 0;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: #ffce5c;
+    }
+    .svg20230328-01-l3 {
+      stroke: black;
+      stroke-width: 0;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: #6e54c9;
+    }
+    .svg20230328-01-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      dominant-baseline: middle;
+    }
+  </style>
+  <defs>
+    <marker id="svg20230328-01-arrow" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z"/>
+    </marker>
+  </defs>
+  <rect class="svg20230328-01-l2" x="10.0" y="56.0" width="100.0" height="30.0"/>
+  <rect class="svg20230328-01-l2" x="110.0" y="56.0" width="100.0" height="30.0"/>
+  <line class="svg20230328-01-l1" x1="110.0" x2="110.0" y1="56.0" y2="86.0"/>
+  <rect class="svg20230328-01-l3" x="210.0" y="56.0" width="100.0" height="30.0"/>
+  <line class="svg20230328-01-l1" x1="210.0" x2="210.0" y1="56.0" y2="86.0"/>
+  <rect class="svg20230328-01-l3" x="310.0" y="56.0" width="100.0" height="30.0"/>
+  <line class="svg20230328-01-l1" x1="310.0" x2="310.0" y1="56.0" y2="86.0"/>
+  <rect class="svg20230328-01-l3" x="410.0" y="56.0" width="100.0" height="30.0"/>
+  <line class="svg20230328-01-l1" x1="410.0" x2="410.0" y1="56.0" y2="86.0"/>
+  <rect class="svg20230328-01-l3" x="510.0" y="56.0" width="100.0" height="30.0"/>
+  <line class="svg20230328-01-l1" x1="510.0" x2="510.0" y1="56.0" y2="86.0"/>
+  <rect class="svg20230328-01-l1" x="10.0" y="56.0" width="600.0" height="30.0"/>
+  <line class="svg20230328-01-l1" x1="10.0" y1="26.0" x2="10.0" y2="46.0" marker-end="url(#svg20230328-01-arrow)"/>
+  <text class="svg20230328-01-t1" style="text-anchor: start" x="20.0" y="26.0">first</text>
+  <line class="svg20230328-01-l1" x1="610.0" y1="26.0" x2="610.0" y2="46.0" marker-end="url(#svg20230328-01-arrow)"/>
+  <text class="svg20230328-01-t1" style="text-anchor: end" x="600.0" y="26.0">last</text>
+  <line class="svg20230328-01-l1" x1="210.0" y1="116.0" x2="210.0" y2="96.0" marker-end="url(#svg20230328-01-arrow)"/>
+  <text class="svg20230328-01-t1" style="text-anchor: middle" x="210.0" y="132.0">partition point</text>
+</svg>
