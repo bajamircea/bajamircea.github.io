@@ -4,27 +4,18 @@ require_relative '../util/svg.rb'
 
 margin = 10.0
 
-cell_width = 100.0
+cell_width = 60.0
 cell_height = 30.0
 
-svg_width = 2 * margin + 6 * cell_width
-svg_height = 240.0
-
-radius = 55
+svg_width = 2 * margin + 10 * cell_width
+svg_height = 300.0
 
 text_height = 16
 
 text_top_y = margin + text_height
 
 seq_x = margin
-seq_y = text_top_y + 3 * margin
-
-cells = [true, true, false, true, false, true]
-
-seq_width = cells.length() * cell_width
-
-text_bottom_y1 = seq_y + cell_height + margin + text_height
-text_bottom_y2 = text_bottom_y1 + margin + text_height
+seq_y = margin
 
 def make_id(offset)
   return "svg20230328-03-" + offset.to_s
@@ -50,22 +41,37 @@ image = svg({
     }
     .#{make_id("l2")} {
       stroke: black;
-      stroke-width: 0;
+      stroke-width: 3;
       stroke-linecap: butt;
       stroke-linejoin: miter;
-      fill: #ffce5c;
+      fill: #caf0f8;
     }
     .#{make_id("l3")} {
       stroke: black;
-      stroke-width: 0;
+      stroke-width: 3;
       stroke-linecap: butt;
       stroke-linejoin: miter;
-      fill:  #6e54c9;
+      fill:  #90e0ef;
+    }
+    .#{make_id("l4")} {
+      stroke: black;
+      stroke-width: 3;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill:  #00b4d8;
+    }
+    .#{make_id("l5")} {
+      stroke: black;
+      stroke-width: 3;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill:  #0077b6;
     }
     .#{make_id("t1")} {
       font-family: sans-serif;
       font-size: 16px;
       dominant-baseline: middle;
+      text-anchor: middle;
     }
   CSS
 
@@ -81,120 +87,80 @@ image = svg({
     end
   end
 
+  texts = ["Infinite", "Terminating", "Circular", "ρ-shaped"]
 
-  cells.each_with_index do |color, index|
-    class_id = color ? "l3" : "l2"
-    x_start = seq_x + index * cell_width
-    rect(
-      class: make_id(class_id),
-      x: x_start,
-      y: seq_y,
-      width: cell_width,
-      height: cell_height
-      )
-    if index != 0
-      line(
-        class: make_id("l1"),
-        x1: x_start,
-        x2: x_start,
-        y1: seq_y,
-        y2: seq_y + cell_height
+  offset_y = 2 * (cell_height + margin/2)
+
+  for j in 0..3
+    y_start = seq_y + j * offset_y
+    for i in 0..3
+      x_start = seq_x + i * 2 * cell_width
+      if i != 0
+        line(
+          class: make_id("l1"),
+          x1: x_start - cell_width,
+          y1: y_start + cell_height / 2,
+          x2: x_start - margin,
+          y2: y_start + cell_height / 2,
+          marker_end: "url(##{make_id("arrow")})"
+          )
+      end
+      class_id = "l" + (i + 2).to_s
+      rect(
+        class: make_id(class_id),
+        x: x_start,
+        y: y_start,
+        width: cell_width,
+        height: cell_height
         )
     end
-  end
-
-  rect(
-    class: make_id("l1"),
-    x: seq_x,
-    y: seq_y,
-    width: seq_width,
-    height: cell_height
-    )
-
-  line(
-    class: make_id("l1"),
-    x1: seq_x,
-    y1: text_top_y,
-    x2: seq_x,
-    y2: seq_y - margin,
-    marker_end: "url(##{make_id("arrow")})"
-    )
-  text(
-    class: make_id("t1"),
-    style: "text-anchor: start",
-    x: seq_x + margin, y: text_top_y
-    ).add_text("first")
-
-  line(
-    class: make_id("l1"),
-    x1: seq_x + seq_width,
-    y1: text_top_y,
-    x2: seq_x + seq_width,
-    y2: seq_y - margin,
-    marker_end: "url(##{make_id("arrow")})"
-    )
-  text(
-    class: make_id("t1"),
-    style: "text-anchor: end",
-    x: seq_x + seq_width - margin, y: text_top_y
-    ).add_text("last")
-
-  text(
-    class: make_id("t1"),
-    style: "text-anchor: start",
-    x: seq_x + margin, y: text_bottom_y1
-    ).add_text("predicate eval order:")
-
-  order = [1, 4, 6, 5, 3, 2]
-  order.each_with_index do |value, index|
     text(
       class: make_id("t1"),
-      style: "text-anchor: middle",
-      x: seq_x + cell_width * index + cell_width/2, y: text_bottom_y2
-      ).add_text(value.to_s)
-
+      x: seq_x + cell_width * 9, y: y_start + cell_height/2
+      ).add_text(texts[j])
   end
 
-  line_y = text_bottom_y2 + 2 * margin
   line(
     class: make_id("l1"),
-    x1: seq_x + cell_width/2,
-    y1: line_y,
-    x2: seq_x + cell_width * 4 + cell_width/2 - margin,
-    y2: line_y,
-    marker_end: "url(##{make_id("arrow")})"
+    x1: seq_x + 7 * cell_width,
+    y1: seq_y + cell_height/2,
+    x2: seq_x + 8 * cell_width,
+    y2: seq_y + cell_height/2,
+    stroke_dasharray: "5,5",
     )
-  line_y += 2 * margin
-  line(
+
+  rad = 10
+
+  path_d = "M #{seq_x + 7 * cell_width} #{seq_y + 2 * offset_y + cell_height/2}"
+  path_d +=" l #{cell_width/2} 0"
+  path_d +=" q #{rad} 0 #{rad} #{rad}"
+  path_d +=" l 0 #{cell_height - rad}"
+  path_d +=" q 0 #{rad} -#{rad} #{rad}"
+  path_d +=" l -#{7 * cell_width - rad} 0"
+  path_d +=" q -#{rad} 0 -#{rad} -#{rad}"
+  path_d +=" l 0 -#{cell_height*0.2}"
+  path(
     class: make_id("l1"),
-    x1: seq_x + cell_width * 4 + cell_width/2,
-    y1: line_y,
-    x2: seq_x + cell_width/2 + margin,
-    y2: line_y,
-    marker_end: "url(##{make_id("arrow")})"
-    )
-  line_y += 2 * margin
-  line(
-    class: make_id("l1"),
-    x1: seq_x + cell_width + cell_width/2,
-    y1: line_y,
-    x2: seq_x + cell_width * 2 + cell_width/2 - margin,
-    y2: line_y,
-    marker_end: "url(##{make_id("arrow")})"
-    )
-  line_y += 2 * margin
-  line(
-    class: make_id("l1"),
-    x1: seq_x + cell_width * 2 + cell_width/2,
-    y1: line_y,
-    x2: seq_x + cell_width + cell_width/2 + margin,
-    y2: line_y,
+    d: path_d,
     marker_end: "url(##{make_id("arrow")})"
     )
 
+  path_d = "M #{seq_x + 7 * cell_width} #{seq_y + 3 * offset_y + cell_height/2}"
+  path_d +=" l #{cell_width/2} 0"
+  path_d +=" q #{rad} 0 #{rad} #{rad}"
+  path_d +=" l 0 #{cell_height - rad}"
+  path_d +=" q 0 #{rad} -#{rad} #{rad}"
+  path_d +=" l -#{5 * cell_width - rad} 0"
+  path_d +=" q -#{rad} 0 -#{rad} -#{rad}"
+  path_d +=" l 0 -#{cell_height*0.2}"
+  path(
+    class: make_id("l1"),
+    d: path_d,
+    marker_end: "url(##{make_id("arrow")})"
+    )
 end
 
 puts(image.render)
 
-save_to_file("_includes/assets/2023-03-28-things-we-know-efficiency", "03-partition.svg", image.render)
+save_to_file("_includes/assets/2023-03-28-things-we-know-efficiency", "03-orbits.svg", image.render)
 

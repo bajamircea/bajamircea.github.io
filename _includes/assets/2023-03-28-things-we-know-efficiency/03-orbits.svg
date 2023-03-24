@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20230328-03-1" width="100%" viewBox="0 0 620.0 300.0">
+  <style>
+    #svg20230328-03-1 {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20230328-03-l1 {
+      stroke: black;
+      stroke-width: 3;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: none;
+    }
+    .svg20230328-03-l2 {
+      stroke: black;
+      stroke-width: 3;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill: #caf0f8;
+    }
+    .svg20230328-03-l3 {
+      stroke: black;
+      stroke-width: 3;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill:  #90e0ef;
+    }
+    .svg20230328-03-l4 {
+      stroke: black;
+      stroke-width: 3;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill:  #00b4d8;
+    }
+    .svg20230328-03-l5 {
+      stroke: black;
+      stroke-width: 3;
+      stroke-linecap: butt;
+      stroke-linejoin: miter;
+      fill:  #0077b6;
+    }
+    .svg20230328-03-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      dominant-baseline: middle;
+      text-anchor: middle;
+    }
+  </style>
+  <defs>
+    <marker id="svg20230328-03-arrow" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z"/>
+    </marker>
+  </defs>
+  <rect class="svg20230328-03-l2" x="10.0" y="10.0" width="60.0" height="30.0"/>
+  <line class="svg20230328-03-l1" x1="70.0" y1="25.0" x2="120.0" y2="25.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <rect class="svg20230328-03-l3" x="130.0" y="10.0" width="60.0" height="30.0"/>
+  <line class="svg20230328-03-l1" x1="190.0" y1="25.0" x2="240.0" y2="25.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <rect class="svg20230328-03-l4" x="250.0" y="10.0" width="60.0" height="30.0"/>
+  <line class="svg20230328-03-l1" x1="310.0" y1="25.0" x2="360.0" y2="25.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <rect class="svg20230328-03-l5" x="370.0" y="10.0" width="60.0" height="30.0"/>
+  <text class="svg20230328-03-t1" x="550.0" y="25.0">Infinite</text>
+  <rect class="svg20230328-03-l2" x="10.0" y="80.0" width="60.0" height="30.0"/>
+  <line class="svg20230328-03-l1" x1="70.0" y1="95.0" x2="120.0" y2="95.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <rect class="svg20230328-03-l3" x="130.0" y="80.0" width="60.0" height="30.0"/>
+  <line class="svg20230328-03-l1" x1="190.0" y1="95.0" x2="240.0" y2="95.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <rect class="svg20230328-03-l4" x="250.0" y="80.0" width="60.0" height="30.0"/>
+  <line class="svg20230328-03-l1" x1="310.0" y1="95.0" x2="360.0" y2="95.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <rect class="svg20230328-03-l5" x="370.0" y="80.0" width="60.0" height="30.0"/>
+  <text class="svg20230328-03-t1" x="550.0" y="95.0">Terminating</text>
+  <rect class="svg20230328-03-l2" x="10.0" y="150.0" width="60.0" height="30.0"/>
+  <line class="svg20230328-03-l1" x1="70.0" y1="165.0" x2="120.0" y2="165.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <rect class="svg20230328-03-l3" x="130.0" y="150.0" width="60.0" height="30.0"/>
+  <line class="svg20230328-03-l1" x1="190.0" y1="165.0" x2="240.0" y2="165.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <rect class="svg20230328-03-l4" x="250.0" y="150.0" width="60.0" height="30.0"/>
+  <line class="svg20230328-03-l1" x1="310.0" y1="165.0" x2="360.0" y2="165.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <rect class="svg20230328-03-l5" x="370.0" y="150.0" width="60.0" height="30.0"/>
+  <text class="svg20230328-03-t1" x="550.0" y="165.0">Circular</text>
+  <rect class="svg20230328-03-l2" x="10.0" y="220.0" width="60.0" height="30.0"/>
+  <line class="svg20230328-03-l1" x1="70.0" y1="235.0" x2="120.0" y2="235.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <rect class="svg20230328-03-l3" x="130.0" y="220.0" width="60.0" height="30.0"/>
+  <line class="svg20230328-03-l1" x1="190.0" y1="235.0" x2="240.0" y2="235.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <rect class="svg20230328-03-l4" x="250.0" y="220.0" width="60.0" height="30.0"/>
+  <line class="svg20230328-03-l1" x1="310.0" y1="235.0" x2="360.0" y2="235.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <rect class="svg20230328-03-l5" x="370.0" y="220.0" width="60.0" height="30.0"/>
+  <text class="svg20230328-03-t1" x="550.0" y="235.0">ρ-shaped</text>
+  <line class="svg20230328-03-l1" x1="430.0" y1="25.0" x2="490.0" y2="25.0" stroke-dasharray="5,5"/>
+  <path class="svg20230328-03-l1" d="M 430.0 165.0 l 30.0 0 q 10 0 10 10 l 0 20.0 q 0 10 -10 10 l -410.0 0 q -10 0 -10 -10 l 0 -6.0" marker-end="url(#svg20230328-03-arrow)"/>
+  <path class="svg20230328-03-l1" d="M 430.0 235.0 l 30.0 0 q 10 0 10 10 l 0 20.0 q 0 10 -10 10 l -290.0 0 q -10 0 -10 -10 l 0 -6.0" marker-end="url(#svg20230328-03-arrow)"/>
+</svg>

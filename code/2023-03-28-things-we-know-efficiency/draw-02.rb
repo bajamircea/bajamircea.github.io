@@ -10,8 +10,6 @@ cell_height = 30.0
 svg_width = 2 * margin + 6 * cell_width
 svg_height = 190.0
 
-radius = 55
-
 text_height = 16
 
 text_top_y = margin + text_height

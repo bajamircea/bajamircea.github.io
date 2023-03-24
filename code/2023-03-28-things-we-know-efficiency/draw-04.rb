@@ -8,7 +8,7 @@ cell_width = 100.0
 cell_height = 30.0
 
 svg_width = 2 * margin + 6 * cell_width
-svg_height = 150.0
+svg_height = 270.0
 
 text_height = 16
 
@@ -17,14 +17,15 @@ text_top_y = margin + text_height
 seq_x = margin
 seq_y = text_top_y + 3 * margin
 
-text_bottom_y = seq_y + cell_height + 3 * margin + text_height
-
-cells = [false, false, true, true, true, true]
+cells = [true, true, false, true, false, true]
 
 seq_width = cells.length() * cell_width
 
+text_bottom_y1 = seq_y + cell_height + margin + text_height
+text_bottom_y2 = text_bottom_y1 + margin + text_height
+
 def make_id(offset)
-  return "svg20230328-01-" + offset.to_s
+  return "svg20230328-04-" + offset.to_s
 end
 
 image = svg({
@@ -57,7 +58,7 @@ image = svg({
       stroke-width: 0;
       stroke-linecap: butt;
       stroke-linejoin: miter;
-      fill: #6e54c9;
+      fill:  #6e54c9;
     }
     .#{make_id("t1")} {
       font-family: sans-serif;
@@ -136,22 +137,64 @@ image = svg({
     x: seq_x + seq_width - margin, y: text_top_y
     ).add_text("last")
 
-  line(
-    class: make_id("l1"),
-    x1: seq_x + 2 * cell_width,
-    y1: text_bottom_y - text_height,
-    x2: seq_x + 2 * cell_width,
-    y2: seq_y + cell_height + margin,
-    marker_end: "url(##{make_id("arrow")})"
-    )
   text(
     class: make_id("t1"),
-    style: "text-anchor: middle",
-    x: seq_x + 2 * cell_width, y: text_bottom_y
-    ).add_text("partition point")
+    style: "text-anchor: start",
+    x: seq_x + margin, y: text_bottom_y1
+    ).add_text("predicate eval order:")
+
+  order = [[1 , 0], [4, 1], [6, 1], [5, 1], [3, 0], [2, 0]]
+  order.each_with_index do |data, index|
+    value, offset = data
+    text(
+      class: make_id("t1"),
+      style: "text-anchor: middle",
+      x: seq_x + cell_width * index + cell_width/2,
+      y: text_bottom_y2 + offset * (5 * margin + text_height)
+      ).add_text(value.to_s)
+
+  end
+
+  line_y = text_bottom_y2 + 2 * margin
+  line(
+    class: make_id("l1"),
+    x1: seq_x + cell_width/2,
+    y1: line_y,
+    x2: seq_x + cell_width * 4 + cell_width/2 - margin,
+    y2: line_y,
+    marker_end: "url(##{make_id("arrow")})"
+    )
+  line_y += 2 * margin
+  line(
+    class: make_id("l1"),
+    x1: seq_x + cell_width * 4 + cell_width/2,
+    y1: line_y,
+    x2: seq_x + cell_width/2 + margin,
+    y2: line_y,
+    marker_end: "url(##{make_id("arrow")})"
+    )
+  line_y += 3 * margin + text_height
+  line(
+    class: make_id("l1"),
+    x1: seq_x + cell_width + cell_width/2,
+    y1: line_y,
+    x2: seq_x + cell_width * 2 + cell_width/2 - margin,
+    y2: line_y,
+    marker_end: "url(##{make_id("arrow")})"
+    )
+  line_y += 2 * margin
+  line(
+    class: make_id("l1"),
+    x1: seq_x + cell_width * 2 + cell_width/2,
+    y1: line_y,
+    x2: seq_x + cell_width + cell_width/2 + margin,
+    y2: line_y,
+    marker_end: "url(##{make_id("arrow")})"
+    )
+
 end
 
 puts(image.render)
 
-save_to_file("_includes/assets/2023-03-28-things-we-know-efficiency", "01-partition-point.svg", image.render)
+save_to_file("_includes/assets/2023-03-28-things-we-know-efficiency", "04-partition.svg", image.render)
 

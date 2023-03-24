@@ -142,15 +142,20 @@ But what if we use like this with references to values from the sequence?
 std::replace(v.begin(), v.end(), v[3], v[2]);
 {% endhighlight %}
 
-Although `const` the problem is that the `old_value` is alised, it's also part
-of the sequence. Another way to look at it is that `v[3]` is accessed both via
-the pointer behind the `const T &` and the pointer behind the `It first` after
-it gets incremented a few times.
+If the input is: `0, 2, 1, 2, 3, 2, 1` and expect to replace `2` with `1` and
+expect to get `0, 1, 1, 1, 3, 1, 1` you might be surprised when you get `0, 1,
+1, 1, 3, 2, 1`.
 
-In correct usage we know we're not doing that, but it's an interesting fact
-that in many cases (correct, unlike the incorrect usage of `replace` above),
-the compiler does not know that we're not aliasing and inserts more code to
-cope with that.
+Although `const`, the problem is that the `old_value` is alised, it's also part
+of the sequence, and part through the replacement we change what we're trying
+to do. Another way to look at aliasing is that `v[3]` is accessed both via the
+pointer behind the `const T &` and the pointer behind the `It first` after it
+gets incremented a few times.
+
+In correct usage we know we're not doing what the example above does, but it's
+an interesting fact that in many cases (correct, unlike the incorrect usage of
+`replace` above), the compiler does not know that we're not aliasing and
+inserts more code to cope with that.
 
 Note that one of the reason Fortran is faster than C/C++ is that Fortran
 assumes that function arguments do not alias.
@@ -173,14 +178,18 @@ Note that's covered in chapter 3 of EOP.
 # Orbits and regularity
 
 When you apply a function `T f(T x)` repeatedly the outcome can be:
-- infinite: it goes on without getting back to a previous value, e.g. append a
+- Infinite: it goes on without getting back to a previous value, e.g. append a
   char to a string (until we run out of memory)
-- terminating: eventually cannot go further: e.g. `unsigned int` increment
+- Terminating: eventually cannot go further: e.g. `unsigned int` increment
   terminates at the max value if we don't want it to overflow
-- circular: it comes back to where we started: e.g. `usigned int` increment
+- Circular: it comes back to where we started: e.g. `usigned int` increment
   that goes back to `0` after the max value
 - ρ-shaped: it creates a loop, but not to where we started, e.g. increment then
   take modulo(3) then leads to a sequence like `7, 2, 0, 1 , 2, 0, 1, ...`
+
+<div align="center">
+{% include assets/2023-03-28-things-we-know-efficiency/03-orbits.svg %}
+</div>
 
 For this domain if the shape is not infinite one can use algorithms that
 determine the shape by having a fast traversal followed by a slow traversal and
@@ -226,7 +235,7 @@ It partition(It first, It last, UnaryPredicate p);
 {% endhighlight %}
 
 <div align="center">
-{% include assets/2023-03-28-things-we-know-efficiency/03-partition.svg %}
+{% include assets/2023-03-28-things-we-know-efficiency/04-partition.svg %}
 </div>
 
 But the problem is that the predicate is not a regular function. EOP and the
