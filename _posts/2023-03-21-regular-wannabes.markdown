@@ -54,8 +54,11 @@ them) way:
   `-0.0`/`+0.0` (`==` does not mean equality)
 - Types like `string_view` which are not semantically regular e.g. you take a
   copy, you change the original string, but then it's still equal to the
-  original (because they are views to the same data)
-- Similarly `span`: you take a copy, you change the copy, they are still equal
+  original (because it's a view to the same data). Because it's a constant view
+  into data, it just about gets away with doing a shallow copy, but a deep
+  compare.
+- `span` unlike `string_view` also does a shallow copy of the pointers and
+  determine the range, but does not get away with doing a deep compare
 - Then the standard relaxed the requirements further where the `std::regular`
   concept does not require order. E.g. C++ iterators; note though they could
   have had order, it's just that order for two iterators would reflect the
@@ -77,7 +80,8 @@ In particular using `==` and `<` to mean less than equality and "less than"
 
 # References
 
-[Revisiting Regular Types][abseil]: by Titus Winters, 2018
+[Revisiting Regular Types][abseil]: by Titus Winters, 2018<br/>
+in particular for a discussion of options around `string_view` and `span`
 
 [regular-intro]:    {% post_url 2022-11-16-regular-history %}
 [abseil]: https://abseil.io/blog/20180531-regular-types

@@ -1,0 +1,285 @@
+---
+layout: post
+title: 'begin()'
+categories: coding cpp
+---
+
+C++ standard library variations on obtaining the start iterator for a sequence
+(as of C++20-ish). Not all the `begin()`s are the same.
+
+
+# The good
+
+## std::vector, the canonical case
+
+The vector has a member method `begin()` that returns an iterator, The iterator
+wraps a pointer, the pointer points to the first value in the underlying array
+(assuming the vector is not empty). That iterator can be used to point to other
+values in the underlying array and get a reference to read or write those
+values.
+
+What if the vector is `const`? The design decision for `std::vector` was to
+make it a regular type, hence it should behave like `int`, hence a `const
+std::vector` should not allow you to change it's values. That's why we have
+`std::vector<int>` and `const std::vector<int>`, but rarely `std::vector<const
+int>`.
+
+Therefore the vector has two `begin()` member methods:
+
+{% highlight c++ linenos %}
+template<typename T>
+class vector
+{
+// lots of other details skipped ...
+  constexpr iterator begin() noexcept {
+    return iterator(begin_);
+  }
+  constexpr const_iterator begin() const noexcept {
+    return const_iterator(begin_);
+  }
+};
+{% endhighlight %}
+
+For a `const` vector, the additional `begin() const` member method will be
+selected by the compiler. That `begin()` returns a `const_iterator`, which
+gives a reference to the `const` value, therefore through the `const_iterator`
+we can read the value, but not modify it.
+
+Later the vector got a `cbegin()` member method:
+
+{% highlight c++ linenos %}
+template<typename T>
+class vector
+{
+// lots of other details skipped ...
+  constexpr const_iterator cbegin() const noexcept {
+    return begin();
+  }
+};
+{% endhighlight %}
+
+The intent for that member method is to obtain a `const_iterator` when you have
+a non-const vector.
+
+A similar situation is for the end of the sequence with two member methods for
+`end()` and also a `cend()` member method.
+
+From the point of the user one can mix and match comparing `iterator`s with
+`const_iterator`s, which is handy, but results in a large number of functions
+to write by the implementer of the container (albeit all these functions have
+simple implementations).
+
+
+## std::string catchup
+
+`std::string` is a much older type than `std::vector`. From that older history
+it has member methods like `find` that return positions, with a special value
+`npos` for "not found".
+
+When large parts of STL such as `vector` where added to the standard library,
+`std::string` was retrofitted to have member methods like `begin` and `cbegin`
+just like the `vector`.
+
+
+## array and standalone functions
+
+The array however does not have member functions. So then standalone template
+functions were added for `begin`, `end`, `size`. The syntax through which they
+take the array is a bit surprising at first, but other than that the
+implementation is straight forward:
+
+{% highlight c++ linenos %}
+template<class T, std::size_t N>
+T * begin(T (&array)[N]) {
+    return array;
+}
+
+template<class T, std::size_t N>
+T * end(T (&array)[N]) {
+    return array + N;
+}
+
+template<class T, std::size_t N>
+size_t size(T (&array)[N]) {
+    return N;
+}
+{% endhighlight %}
+
+And overloads were created to call the member functions e.g. `begin()`
+otherwise, so that you can use the free function `std::begin` with both arrays
+or containers.
+
+
+## "for" loops
+
+With that we can loop:
+
+{% highlight c++ linenos %}
+for (std::vector<int>::iterator it = vec.begin();
+     it != vec.end();
+     ++it) {
+  // dereference it to either read or change values
+}
+{% endhighlight %}
+
+The whole `std::vector<int>::iterator is a mouthfull, especially when using
+`cbegin`:
+
+{% highlight c++ linenos %}
+for (std::vector<int>::const_iterator it = vec.cbegin();
+     it != vec.cend();
+     ++it) {
+  // dereference it to read values, but can't change values
+}
+{% endhighlight %}
+
+`auto` can simplify such loops:
+
+{% highlight c++ linenos %}
+for (auto it = vec.begin(); it != vec.end(); ++it) {
+  // dereference it to either read or change values
+}
+{% endhighlight %}
+
+And range-based for loops were introduced to simplify theese common scenarios
+further:
+
+{% highlight c++ linenos %}
+for (const auto & value : vec) {
+  // read value
+}
+// or if needed
+for (auto & value : vec) {
+  // read or change value
+}
+{% endhighlight %}
+
+The range-based for loops rely on the free functions `std::begin` and
+`std::end`.
+
+
+# The bad and the ugly
+
+# std::filesystem::directory_iterator
+
+`std::filesystem::directory_iterator` is called an "iterator", and yet it can
+be used in a range-based for loop to iterate through files in a folder as
+below:
+
+{% highlight c++ linenos %}
+for (const auto & dir_entry : directory_iterator("C:\\Some folder")) {
+  std::cout << dir_entry.path() << '\n';
+}
+{% endhighlight %}
+
+The reason it gives access to a directory entry rather than just the path is
+that the OS APIs it uses, e.g. `FindFirstFileExW` and `FindNextFileW` in
+Windows, also return file attribute, not just the file names.
+
+To do so it has member functions `begin()` and `end()` which each return ...
+drum rolls ... a `directory_iterator`. `begin()` just returns a copy, while the
+`end()` returns a default constructed one. This ends up roughly equivalent to:
+
+{% highlight c++ linenos %}
+for (auto it = directory_iterator("C:\\Some folder");
+     it != directory_iterator();
+     ++it) {
+  std::cout << it->path() << '\n';
+}
+{% endhighlight %}
+
+The `directory_iterator` is a weird type: it started life as something close to
+an iterator, then become more like a range, while it preserved the old name.
+The design/documentation also forces the storage of the handle returned from
+e.g.  `FindFirstFileExW` in a heap allocated, reference counted location. Also
+it's end iterator predates ideas of a sentinel for determining if we reached
+the end.
+
+Dereferencing the `directory_iterator` gives access to a `const
+std::filesystem::directory_entry`, so in a way it's a const iterator, but while
+it has a `begin()`, it does not currently have a `cbegin()`.
+
+
+# std::string_view
+
+A `string_view` gives read only access to a memory contiguous range of
+characters. That allows some unification for functions that take either string
+literals or `std::string` (and [do not care about zero
+termination][string-view]), so the access has to be read only to accomodate
+literals.
+
+As for the range, it typically stores two pointers and returns the first as the
+`begin()` and the last as the `end()`. But the iterators it returns are const
+iterators, and it's `cbegin()` returns the same const iterator.
+
+
+# std::span
+
+But what if you want access to a memory contiguous range of values, not
+necessarily characters (so not interoperability with `std::string` is required)
+and also get write access, not just read?
+
+Enter `std::span`. It derives from a class `gsl::span`, where `gsl` was a
+largely Microsoft supported library intended to make things safer.
+
+Like `string_view`, to expose the range, `span` typically stores two pointers
+and returns the first as the `begin()` and the last as the `end()`. But the
+iterators it returns are NOT const iterators.
+
+And here is where things get an interesting turn. `gsl::span` used to have a
+member function `cbegin()` that returned a const iterator. In the process of
+standardising the type as `std::span` people noticed that `std::span::cbegin()`
+returns a const iterator, but the free standing function `std::cbegin` returns
+a mutable iterator (i.e. [different types, see
+PL247](https://github.com/cplusplus/nbballot/issues/243)). That's because the
+free standing `std::cbegin` just makes the object constant and calls `begin()`
+on it, hoping to select the const member function `begin()`.
+
+But `std::span` has issues with constness. As a type it makes sense to model a
+pointer where just because the pointer is `const` (shallow), does not mean that
+the pointed data is `const` (deep). It's member function `begin()` returns a
+non const iterator (allowing to change the pointed data) even if the `span`
+object is `const` (can't change the pointers it embeds).
+
+In the rush of standardising `std::span`, it's `cbegin()` member function [was
+dropped, see LGW3320](https://cplusplus.github.io/LWG/issue3320), though
+hopefully these issues will be sorted out (see proposals
+[P2278r4](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2278r4.html)
+and
+[P2276r1](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2021/p2276r1.pdf)).
+
+
+## std::generator
+
+`std::generator` is a template type introduced in C++23 to support one of the
+usage scenarios of C++ coroutines: generate sequences.
+
+{% highlight c++ linenos %}
+std::generator<int> natural_numbers() {
+  int crt = 0;
+  for(;; ++crt) {
+    co_yield crt;
+  }
+}
+
+void foo() {
+  for (const int x : natural_numbers() | std::views::take(10)) {
+    std::cout << x << ' ';
+  }
+}
+{% endhighlight %}
+
+For the above to work, the `std::generator implements `begin()` and `end()`,
+but: "It is an undefined behavior to call `begin()` more than once on the same
+`generator` object."
+
+I suspect this is because like `directory_iterator` manages a resource (the
+`HANDLE` returned by `FindFirstFileExW`), the `generator` also manages a
+resource  (the coroutine state). The `directory_iterator` made the choice of
+using reference counting to manage this resource, making it copyable at
+additional cost, while `generator` gives up iterator copy and convenience in
+order to avoid that cost.
+
+
+[string-view]:   {% post_url 2018-11-15-string-view-corners %}
+[abseil]: https://abseil.io/blog/20180531-regular-types

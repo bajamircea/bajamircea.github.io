@@ -21,7 +21,7 @@ The ideas of regular data in C++ have a long and instructive history.
 - [Regular: syntax and semantics][syntax-semantics]
 - [History of concepts in C++][concepts-history]
 - [The many relations][many-relations]
-- [History of the Three-way comparison, aka the spaceship
+- [History of the three-way comparison, aka the spaceship
   operator][spaceship-history]
 - [Pragmatic Regular structs][pragmatic-spaceship]
 - [Regular wannabes][regular-wannabes]

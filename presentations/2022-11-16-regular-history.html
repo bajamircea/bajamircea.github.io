@@ -8,7 +8,7 @@ Mircea Baja @ 16 November 2022
 # History of normal type in C++
 
 ---
-# Regular data
+# Regular data as of C++20
 
 ```cpp
 struct person
@@ -27,21 +27,41 @@ struct person
 
 - struct from C
 - C copy
-- C++ constructor, destructor, copy, const
+- C++ constructor, destructor and class
+- Default constructor
+- C++ copy
+- Exception safety, noexcept
 - C++ equality and order (first attempt)
-- move
-- STL and the regularity concept
-- concepts in C++
-- regularity syntax and semantics
-- the many relationships
-- three-way comparison, aka the spaceship operator
-- better equality
-- better member
-- noexcept and constexpr
-- sanity and divergence from insanity
-- the better future
+- Templates and STL
+- C++ move rationale
+- Rule of 3 and composing
+- Regular syntax and semantics
+- History of concepts in C++
+- The many relations
+- History of the three-way comparison, aka the spaceship operator
+- Pragmatic Regular structs
+- Regular wannabes
+- The future of regular
+- Efficiency and the things we know
 
 
+---
+# Struct from C
+
+```cpp
+struct sample
+{
+  int w; // 4 bytes
+  char x; // 1 byte
+  // 3 bytes of padding here
+  int y; // 4 bytes
+  char z; // 1 byte
+  // 3 bytes of padding at the end
+}; // takes overall 16 bytes
+```
+
+- padding can be reduced by sorting members by size
+- such a type provides interpretation of memory
 
 ---
 # Questions?
