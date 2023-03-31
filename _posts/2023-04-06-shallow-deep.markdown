@@ -4,12 +4,14 @@ title: 'Shallow vs. deep'
 categories: coding cpp
 ---
 
-Brief note on terminology
+Brief note on terminology that is fine for describing an element of a class
+design, but not useful when deciding how to design a class.
+
 
 # Const and pointers
 
-When you have an `int` variable, `const` can be before or after the type, it's
-just a matter of taste, it does not make a difference to the type of the
+When you have an `int` variable, `const` can be used before or after the type,
+it's just a matter of taste, it does not make a difference to the type of the
 variable.  You can't change the value for a `const int`, but you can take a
 (non const copy and change the copy as much as you want to:
 
@@ -27,11 +29,11 @@ another_int = 42;
 {% endhighlight %}
 
 
-When you have a pointer it does matter if the `const` is before or after the
-`*`, you can have both or either. The `const` preceding `*` refers to the
-pointed type: can't change the pointed value. The `const`, following `*` refers
-to the value of the pointer: can't change the pointer itself, but can take a
-(non const) copy, and change the copy as much as we want to (to point to
+When you have a pointer however, it does matter if the `const` is before or
+after the `*`, you can have both or either. The `const` preceding `*` refers to
+the pointed type: can't change the pointed value. The `const`, following `*`
+refers to the value of the pointer: can't change the pointer itself, but can
+take a (non const) copy, and change the copy as much as we want to (to point to
 something else).
 
 {% highlight c++ linenos %}
@@ -119,7 +121,11 @@ the following:
 > Axiom: If you take a copy and change the original, then the copy is different
 > from the original
 
-This is only one of the many expectations of a concept type in particular.
+This is only one of the many expectations of a regular concept in particular.
+Even if you design a class that's not regular, it's often better to not
+implement behaviour that would lead to confusing behavior (e.g. not implement
+copy, move, comparisons) than to implement it and contradict axioms like the
+one above.
 
 When we look at it this way, it makes sense that `std::vector` does deep copy,
 `const` and comparisons: it's like an int. It makes sense that
