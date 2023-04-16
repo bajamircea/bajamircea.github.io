@@ -1,0 +1,33 @@
+---
+layout: post
+title: 'Books Read in 2023'
+categories: read book
+---
+
+List of books I've read in 2023
+
+- 2023-04-12 Herbert A. Simon: Reason in Human Affairs
+: Accidental repeat read of the book (first read it in 2018). This time I
+thought it was really great. 10 out of 10. It's short: 3 chapters. The first
+chapter introduces a description of the process involving human rationality
+which is that, other than processes that we handle subconsciously like
+breathing, we handle problems one by one in isolation, we generate
+alternatives, we stop at the first acceptable alternative (not necessarily the
+optimal one). This is similar to Kahneman's system 1 and 2 model. He's got an
+idea that this approach works in a mainly empty word where most of the time we
+only need to deal with one problem. Chapter 2 talks more about evolution and
+how such way of reasoning arises. He spends some time on selfishness vs.
+altruism and hits quite a few points on "survival of the fitter, not the
+fittest", on ecological niches, on the way variations are created. This chapter
+alone was more inspiring than the whole "The Selfish Gene" book. Chapter 3
+looks at what it means for the way society is structured, politics, markets and
+what can be expected to be sorted by human reason.
+
+- 2023-04-07 Philip A. Fisher: Common Stocks and Uncommon Profits and Other Writings
+: Interesting book on investment. The introduction to the book by the son of
+the author is worth half of the book (in terms of giving an insight on how the
+author really was and the effects of old age and isolation). The interesting
+part in the book was the focus on long term company growth and the insights
+into the required qualitative investigation to identify such stocks, which is a
+good complement to Benjamin Graham's "Intelligent Investor"
+

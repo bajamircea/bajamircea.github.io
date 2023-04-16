@@ -13,6 +13,11 @@ Good summary of the state of affairs in recursion.
 - 2022-12-01 George & Weedon Grossmith: The Diary of a Nobody
 : Lovely funny insight into human nature
 
+- 2022-09-10 Benjamin Graham: The Intelligent Investor - 1973
+: There are many superficial "get rich quick" books on investing. This is
+nothing like that. Full of wise advice. 10 out of 10. [Revised
+in a separate article][inteligent-investor] in more details.
+
 - 2022-09-10 Benjamin Graham and Charles McGorlic: The Interpretation of Financial Statements
 : Once you have an idea of accounting, this is a good intro on how to look at
 the financial statements in a critical (i.e. careful) way.
@@ -68,4 +73,6 @@ that avoid the recurse to geometric interpretations
 - 2022-01-04 Scott Jurek: Eat & Run
 : Runner's book in the spirit of Born to Run. This one is more
 auto-biographical, it was an easy pleasant read.
+
+[inteligent-investor]:    {% post_url 2022-10-10-intelligent-investor %}
 

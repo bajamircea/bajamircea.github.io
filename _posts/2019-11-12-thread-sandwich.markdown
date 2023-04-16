@@ -24,8 +24,8 @@ the threading concerns into several entities. The core application **function**
 is sandwiched between a thread **control** layer that manages pending workload
 and the **threading** layer that manages the actual thread lifetime.
 
-The example below mimics two jugglers throwing balls to each other. The balls
-are just `int`s with values 1, 2 and 3.
+The example below mimics two jugglers throwing balls to each other. The "balls"
+are just `int`s with values 1 and 2 initially, then 3 as well later.
 
 The dependencies between the involved objects looks like this:
 
@@ -34,7 +34,8 @@ The dependencies between the involved objects looks like this:
 The application **function** is in this case "when you handle a ball, throw it
 to the other juggler". In the code below it depends on the control layer for
 the other juggler (where the ball will be thrown) and it's implemented as
-lambdas inside the `main` function body (due to it's simplicity).
+lambdas inside the `main` function body (due to it's simplicity in this
+example).
 
 The **control** layer manages the balls to be handled by the juggler. In the
 code below it's implemented by the `thread_control` template class that holds a
@@ -50,7 +51,7 @@ manipulate that data:
 - `raw_data`: to access the data with no synchronization. This could be useful
   for scenarios where the user knows that synchronization is not required.
 
-The  **thread** layer handles starting and stopping the thread and runs the
+The **thread** layer handles starting and stopping the thread and runs the
 processing loop. In the code below it's implemented by the `stoppable_thread`
 template class. The constructor and destructor of `stoppable_thread` manage the
 lifetime of the native thread.
@@ -74,6 +75,7 @@ class thread_control
   std::mutex m_;
   std::condition_variable cv_;
 public:
+  // could also have an overload that moves
   void post_data(const DataType & x)
   {
     {
@@ -124,7 +126,7 @@ public:
   template<typename Fn>
   stoppable_thread(thread_control<DataType> & tc, Fn fn) :
     tc_{ tc },
-    td_{ [&]{ tc_.serve(fn); } }
+    td_{ [&, fn]{ tc_.serve(fn); } }
   {}
 
   ~stoppable_thread()
@@ -140,6 +142,7 @@ int main()
   thread_control<int> juggler_control_1;
   thread_control<int> juggler_control_2;
 
+  // can use raw_data, threads don't run yet
   juggler_control_1.raw_data().push_back(1);
   juggler_control_2.raw_data().push_back(2);
 
@@ -150,12 +153,14 @@ int main()
     stoppable_thread<int> juggler_thread_1(juggler_control_1, juggler_fn_1);
     stoppable_thread<int> juggler_thread_2(juggler_control_2, juggler_fn_2);
 
+    // threads run, use post_data
     juggler_control_1.post_data(3);
 
     std::this_thread::sleep_for(
       std::chrono::seconds(2));
   }
 
+  // can use raw_data again, threads don't run any more
   for (int x : juggler_control_1.raw_data())
   {
     std::cout << "Juggler 1 has ball " << x << '\n';
@@ -165,21 +170,19 @@ int main()
     std::cout << "Juggler 2 has ball " << x << '\n';
   }
 }
-// Prints:
+// Possible output:
 //Juggler 2 has ball 1
 //Juggler 2 has ball 3
 //Juggler 2 has ball 2
 {% endhighlight %}
 
 
-# Additional notes
-
 The code above is an example. I'm going to describe a few details that would
 hopefully disambiguate what aspects are important, and which are merely
 accidental.
 
 
-## Similarities to asio io_context
+# Similarities to asio io_context
 
 The `thread_control` is similar to the `asio::io_context` object. `io_contex`
 has similar methods to post work to a queue, to process work from the queue and
@@ -188,10 +191,12 @@ completion ports on Windows for example.
 
 Alternatively one could have the `thread_control` as a structure with public
 member variables and make the member functions as standalone functions. In that
-case `raw_data()` would no longer be required.
+case `raw_data()` would no longer be required. In more complex cases, where the
+queue was more complex I separated it out of the other items that are required
+for the thread synchronization (mutex, condition variable and stop flag).
 
 
-## Instantiation
+# Instantiation
 
 What creates the sandwich pattern is that dependencies are provided in
 constructors. This way:
@@ -206,7 +211,7 @@ We achieve customization using dependencies injected at construction without
 using inheritance. Inheritance is sometimes [a trap][thread-bug].
 
 
-## Object lifetime
+# Object lifetime
 
 The object lifetime is significant in several places above. It's controlled in
 the example above explicitly by having additional pairs of curly brackets or
@@ -262,7 +267,7 @@ are important, whereas in other cases there is simplification for the sake of
 the example.
 
 By properly using RAII in `stoppable_thread`, if we created the first thread in
-`main`, but there are errors creating the second one which throw an exeption,
+`main`, but there are errors creating the second one which throw an exception,
 the destructor of the first thread will take care of stopping it. This assumes
 that you'll add a `catch` block around the `main` body, which I've omitted for
 brevity. This is normal RAII related exception handling.
@@ -415,6 +420,48 @@ upfront and describe the functions to be run on such threads, as it's done in
 the code example above. This breaks the circular references by defining
 additional entities, such as the `thread_control` class that holds pending
 work.
+
+
+# Bugs
+
+**Update 2023-04-14**:
+
+The original code in this article had a bug that has been
+brought to my attention. Spot the difference:
+
+{% highlight c++ linenos %}
+  // incorrect
+  template<typename Fn>
+  stoppable_thread(thread_control<DataType> & tc, Fn fn) :
+    tc_{ tc },
+    td_{ [&]{ tc_.serve(fn); } }
+  {}
+
+  // correct
+  template<typename Fn>
+  stoppable_thread(thread_control<DataType> & tc, Fn fn) :
+    tc_{ tc },
+    td_{ [&, fn]{ tc_.serve(fn); } }
+  {}
+{% endhighlight %}
+
+The issue is that the incorrect code uses in the lambda a reference to the
+temporary `fn` from the `stoppable_thread` constructor, leading to intermittent
+crashes. The small difference in the correct code captures the `fn` by copy so
+that `serve` gets this copy rather than the reference that is potentially
+dangling by the time the thread function of `td_` actually runs.
+
+The bug shows how easy it is to make mistakes in multithreaded code. I believe
+that separating code in low level one, like `thread_control` and
+`stoppable_thread`, from code that generally does not have to care about the
+low level details, like the `juggler_fn_1` and `juggler_fn_2` functions that
+only have to care about calling the correct function, e.g. call `post_data`
+that itself will take care of the low level synchronization issues, is the
+right approach that makes it easier to deal with the complexities of
+multithreading and ensure correctness.
+
+A bug like the one above is easier to find and fix when dealing with smaller
+entities of code rather than when dealing with monolithic large entities.
 
 
 # Conclusion
