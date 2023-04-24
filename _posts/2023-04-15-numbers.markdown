@@ -1,0 +1,109 @@
+---
+layout: post
+title: 'Are the natural numbers real?'
+categories: maths logic
+---
+
+No. They are largely a human invention.
+
+
+# (non-)Euclidiean geometrie(s)
+
+Euclid's Elements, the best book in maths, proposed this situation where
+propositions were proved to be true via deductive reasoning starting with
+axioms (and definitions).
+
+As for the axioms, the belief was that they represent truths, why would one
+question it for "the whole is larger than the part"?
+
+It turns out that most questioning was for the 5<sup>th</sup> postulate
+(axiom), because of it's convoluted phrasing. The question was how many
+parallels exist in a plan through a point outside a straight line, and the
+5<sup>th</sup> said that one precisely.
+
+It took more than two thousands years to find that other options exist for the
+5<sup>th</sup>, such that the option that there is more than one parallel
+(hyperbolic geometry), or the option that there is no parallel (elliptic
+geometry).
+
+So then we moved around the 19<sup>th</sup> century from the situation where
+the geometry axioms were absolute truths, to one where they were just choices.
+They were not entirely arbitrary, because they work extremely well in certain
+human-scale situations (such a designing a building), but eventually break down
+at very small scale (such as when lines can't be divided further when we reach
+atomic scales), or very large (such as cosmic) scales.
+
+
+# Personal detour on Euclidean axioms
+
+As a fun fact, when I introduced to my child the 2<sup>nd</sup> postulate, "a
+straight line can be made arbitrary longer at both ends", they giggled and said
+"well, that's only until it meets at the side of the Earth" and I explained how
+in Euclidean geometry a line would be tangent to the surface of the Earth,
+it's not the 2D geometry on the surface of a sphere, but they should remember
+that thought.
+
+They nodded to understand and took the 2<sup>nd</sup> postulate as a truth.
+
+But eventually we had the discussion that elliptic geometries describe exactly
+the situation she thought of initially (the 2D geometry on the surface of a
+sphere) where straight lines do meet eventually and even such apparent self
+obvious truths that "a straight line can be made arbitrary longer at both ends"
+are questionable.
+
+
+# Natural numbers
+
+Around the middle of the 19<sup>th</sup> century to the first half of the
+20<sup>th</sup> century mathematicians turned their attention to natural
+numbers due to their fundamental role and tried to put it on a clear axiomatic
+basis. Several systems emerged, some based on the Peano approach (start at zero
+and apply a successor function to generate the natural numbers), some based on
+set theory (the empty set is zero, the set containing the empty set is 1 and so
+on). Such systems share surprising properties such as the ability to express
+problems that cannot be proven.
+
+But the question the is: are natural number real and the surprising properties
+unescapable or are they just one of the many possible human inventions just
+like geometry?
+
+And the answer is that natural numbers are a human invention. The systems of
+natural numbers have many assumptions such as the ability to recognize entities
+as being unique or the same, and the ability to go on forever. When that is a
+good approximation for the problems we look at, using the natural numbers and
+their derivatives is very successful. But they fail for problems such as
+counting the grains of sand on a beach and establishing the length of the coast
+of Great Britain.
+
+What's not purely human invention are mechanisms that we share with other
+animals. The evolutionary basis of the natural numbers is the ability of
+animals to use the nervous system to for example recognise enemies: none (I'm
+safe), one (I might be able to deal with), two (I might need to run), three (I
+should run), a few (help), some, many, lots (no chance). While we have an
+innate basis to distinguish between 2 and 3 entities, we don't have near the
+same confidence to distinguish without a lot of analysis between 246 and 250
+(with reference to the 1987 movie "Rain Man").
+
+
+# Personal detour on natural number thresholds
+
+Long time ago I had to investigate why a list in a product has lots of entries.
+I picked one such case. It had about 2000 entries. That's a lot, but decided to
+go through them and classify them to try figure out what's the underlying
+cause. Are certain types of entries more common? What's the cause? In the
+process of going through the 2000 entries one by one I soon discovered another
+issue.
+
+The list displayed the entries page by page, but pagination was broken and the
+first 50 entries were repeated instead of displaying 50 different entries each
+time. So in my case, the first 50 entries would have been repeated about 40
+times.
+
+And this issue was not reported. Thousands of customers complained by the large
+number of entries, but none complained that only 50 are displayed, the rest are
+repeats.
+
+My empirical observation is that somewhere between 20 and 50 our brains stop
+having a intuitive perception of precise numbers and use heuristics based on
+"there's lots", rather than precise numbers.
+
