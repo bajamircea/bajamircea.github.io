@@ -134,10 +134,20 @@ connection string in a member variable like above.
 
 # Dangling references risk
 
+{% highlight c++ linenos %}
+  foo(const foo &) = delete;
+  foo & operator=(const foo &) = delete;
+{% endhighlight %}
+
 Holding references creates questions about ensuring they are not dangling. If
 we don't plan to copy or move any of these objects that would address the
 issue. Deleting the copy constructor and assignment means this class won't be
-copied or moved. We do this for all the classes involved (`foo`, `bar`, `buzz`
+copied or moved. The language rules are that if the copy operations are
+deleted, the move one are also implicitly deleted. We take advantage of these
+rules to be less verbose (Observation: most developers forget to put `noexcept`
+for move constructor and assignment).
+
+We do this for all the classes involved with references (`foo`, `bar`, `buzz`
 and `waldo`).
 
 As we'll see later using smart pointers instead of references is not a good

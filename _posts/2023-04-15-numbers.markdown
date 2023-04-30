@@ -7,7 +7,7 @@ categories: maths logic
 No. They are largely a human invention.
 
 
-# (non-)Euclidiean geometrie(s)
+# (non-)Euclidiean geometry
 
 Euclid's Elements, the best book in maths, proposed this situation where
 propositions were proved to be true via deductive reasoning starting with
