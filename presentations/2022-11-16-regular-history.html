@@ -34,8 +34,8 @@ struct person
 - C++ equality and order (first attempt)
 - Templates and STL
 - C++ move rationale
-- Rule of 3 and composing
-- Regular syntax and semantics
+- Rule of three and composing
+- Regular: syntax and semantics
 - History of concepts in C++
 - The many relations
 - History of the three-way comparison, aka the spaceship operator
@@ -44,9 +44,8 @@ struct person
 - The future of regular
 - Efficiency and the things we know
 
-
 ---
-# Struct from C
+# struct from C
 
 ```cpp
 struct sample
@@ -64,34 +63,629 @@ struct sample
 - such a type provides interpretation of memory
 
 ---
-# Questions?
+# C copy motivation
+
+```cpp
+// can do this if x and y are int,
+x = y;
+// what if they are some struct?
+```
+
+```cpp
+// can do this if x is int,
+int foo(int x);
+// what if they are some struct?
+struct sample bar(struct sample y);
+```
+
+- initially the answer was: NO
+- eventually the answer was: YES
 
 ---
-class: large-points
+# C copy
 
+```cpp
+// to initialize:
+void * memset(void * ptr, int value, size_t num);
+
+// to copy:
+void * memcpy(void * dest, const void * src, size_t num);
+
+// to move:
+void * memmove(void * dest, const void * src, size_t num);
+
+// to compare:
+int memcmp(const void * ptr1, const void * ptr2, size_t num);
+```
+
+---
+# C copy
+
+- uses `memcpy` to copy
+- but can't use `memcmp` to compare because of padding
+
+```cpp
+// can do this if x and y are int,
+if (x &lt; y) {
+  // ...
+}
+// but can't do it if they are some struct
+```
+
+---
+# C++ class
+
+```cpp
+struct foo {
+
+  // member variable
+  int bar;
+
+  // member function
+  void buzz() {
+    // member function body
+    bar = 42;
+    // or
+    this->bar = 42;
+  }
+};
+```
+
+- `class` is the same as `struct` except default visibility
+   which is private for the `class`
+
+---
+# C++ constructor/destructor
+
+```cpp
+struct foo {
+
+  // constructor
+  foo() {
+    // constructor body
+  }
+
+  // destructor
+  // "not constructor"
+  ~foo() {
+    // destructor body
+  }
+};
+```
+---
+# C++ copy motivation
+
+```cpp
+struct foo {
+  bar * ptr;
+
+  foo() {
+    // allocate memory here
+  }
+
+  ~foo() {
+    // deallocate memory here
+  }
+};
+```
+
+```cpp
+int main() {
+  foo x; // memory is allocated here
+  foo y = x; // y gets a copy of the pointer value
+  // memory freed twice: ups!
+}
+```
+
+---
+# C++ copy
+
+```cpp
+struct foo {
+  bar * ptr;
+
+  foo(const foo & other) {
+    // copy construct here
+    // e.g. allocate memory pointed by ptr
+    // then copy bar from *(other.ptr)
+  }
+
+  foo & operator=(const foo & other) {
+    // copy assignment here
+    // needs to handle the case where
+    // ptr already points to something
+    return *this;
+  }
+};
+```
+
+- `const` and reference
+- reference vs. `this`
+- constructor and assignment: efficiency
+
+---
+# Self assignment, identity
+
+```cpp
+int main() {
+  foo x;
+  x = x; // self assignment
+}
+```
+
+Options:
+- don't self assign
+- handle it
+
+```cpp
+  foo & operator=(const foo & other) {
+    if (this != &other) {
+      // actual copy assignment here
+    }
+    return *this;
+  }
+```
+
+---
+# Non-copyable
+
+```cpp
+  foo(const foo & other) = delete;
+  foo & operator=(const foo & other) = delete;
+```
+
+---
+# Copy means copy
+
+- return value optimisations
+
+```cpp
+foo buzz() {
+  return foo();
+  // foo is default constructed
+  // and then copied into the return value
+}
+
+int main() {
+  foo x = buzz();
+  // the return value of buzz is copied into x
+}
+```
+
+---
+# Exception safety
+
+- basic: does not leak
+- does not throw: noexcept
+- strong (rollback) guarantee
+
+---
+# C++ comparison: first try
+
+```cpp
+class foo {
+  // ...
+public:
+  bool operator==(const foo & other) {
+    // compare *this with other
+    // return true if equal
+    // return false otherwise
+  }
+
+  // ...
+};
+```
+
+```cpp
+  // assuming a and b are of type foo
+  // operator == is called here
+  // *this is a, other is b
+  if (a == b) {
+    // ...
+  }
+```
+
+- motivation: complex number class
+
+---
+# Heterogenous: first try
+
+```cpp
+class foo {
+  // ...
+public:
+  bool operator==(const char * other) {
+    // compare *this with literal string
+  }
+
+  // ...
+};
+```
+
+- motivation: std::string
+
+```cpp
+  if (a == "test") {
+    // ...
+  }
+  // but this does not work
+  if ("test" == a) {
+    // ...
+  }
+```
+
+---
+# Friend trick
+
+```cpp
+class foo {
+  // ...
+public:
+  friend bool operator==(const foo & x, const char * y) {
+    // compare x with y
+    // return true if equal
+    // return false otherwise
+  }
+
+  // ...
+};
+```
+
+---
+# Similar
+
+Equality functions:
+```cpp
+bool operator!=(const foo & x, const foo & y) {
+  return !(x == y);
+}
+```
+
+Order functions:
+```cpp
+bool operator<=(const foo & x, const foo & y) {
+  return !(y < x);
+}
+bool operator>(const foo & x, const foo & y) {
+  return y < x;
+}
+bool operator>=(const foo & x, const foo & y) {
+  return !(x < y);
+}
+```
+
+???
+>
+
+---
+# STL
+
+```cpp
+#define private public
+```
+- macros
+- templates
+- STL (Alex Stepanov)
+
+
+- "What is an iterator? Not a class. Not a type. It is a concept. […] It is
+  something which doesn’t have a linguistic incarnation in C++. But it could."
+- The regular concept arouse from questions like: “if you design a vector as a
+  resizable array container, what types should the vector template accept?”
+
+---
+# C++ move motivation
+
+```cpp
+  // written like this swap makes unnecessary copies
+  foo tmp = a; // copy constructor
+  a = b;       // copy assignment
+  b = tmp;     // copy assignment
+  // end result: three deep copies
+```
+
+---
+# C++ move
+
+```cpp
+class foo {
+  bar * ptr;
+public:
+  // ...
+
+  foo(foo && other) : ptr{ other.ptr } noexcept {
+    other.ptr = nullptr;
+  }
+
+  foo & operator=(foo && other) noexcept {
+    if (this != &other) {
+      delete ptr; // asumes bar destructor does not throw
+      ptr = other.ptr;
+      other.ptr = nullptr;
+    }
+    return *this;
+  }
+};
+```
+
+- `noexcept` and move
+
+---
+# C++ move
+
+```cpp
+  T tmp = std::move(a); // move constructor
+  a = std::move(b);     // move assignment
+  b = std::move(tmp);   // move assignment
+  // end result: three ownership transfers
+```
+
+- "moved from" state: destroy or assign
+- destructive vs. non-destructive
+
+---
+# Regular data concept (semantics)
+
+- It's a data class.
+- You can create an instance of that class
+- You can destroy an instance of that class
+- It does not leak resources, it does not leak memory in particular, that's the
+  only kind of resource you would expect such a type to acquire, the destructor
+  in particular takes care of releasing the resources
+- You can take a copy (either by assignment or construction)
+- You can move it (also either by assignment or construction)
+- Move is an optimised version of copy for when the original is no longer
+  needed
+- "moved from" can at least be destroyed and assigned
+- You can test two instances for equality `==`
+- It does not matter how we compare for equality: `!=` is not equal, the
+  opposite of equal
+- Equality behaves properly: reflexive, symmetric, transitive, substitutable
+- A copy is equal to the original
+- ...
+
+---
+# Regular data concept (semantics)
+
+- ...
+- You can compare two instances for order
+- It does not matter how we compare for order: can use either of `<`, `>`,
+  `<=`, `>=`, `<=>`. E.g. `a < b` is the same as `b > a`
+- Less than `<` behaves properly, it is strict total order: irreflexive,
+  asymmetric, transitive. Similarly the other order functions.
+- Equality works properly with order. Trichotomy: either `a < b` or `a == b` or
+  `b < a`
+- Equality and comparison do not change the arguments, copy does not change the
+  source.
+- Of all the functions above, only copy might throw (because it might need to
+  allocate memory)
+- The functions above have reasonable complexity of operations: constant or at
+  most linear with the amount of data held
+- Independence: changing one value does not change other unrelated values
+
+???
+>
+
+---
 # Regular data concept (syntax)
 
-- default constructible (noexcept)
-- destructible (implicitly noexcept)
-- copy constructor and assignment (can throw)
-- move constructor and assignment (noexcept)
-- equality (== and !=, noexcept, const)
-- order (<, >, <=, >=, <=>, noexcept, const)
+- Default constructor (`noexcept`)
+- Destructor (implicitly `noexcept`)
+- Copy constructor and assignment
+- Move constructor and assignment (`noexcept`)
+- Equality: `==` and `!=` (`noexcept` and `const`)
+- Order: `<`, `>`, `<=`, `>=`, `<=>` (`noexcept` and `const`)
 
 ---
-class: large-points
+# C++20 concepts
 
-# Concept also has semantics
+- idea from Alex Stepanov (see STL/EOP)
+- but even C had such an idea e.g. `short`, `int`, `long` are all signed
+  integers
+- going all the way to the genus (from the ancient Greeks)
 
-- "it's a data class"
-- copy copies, move moves, etc.
-- no resource/memory leaks
-- copies are equal, substitutable
-- "moved from" at least can be destroyed and assigned
-- equality reflexive, symmetric, transitive
-- != is literally "not equal"
-- less than is strict total order
-- trichotomy
-- reasonable complexity of operations
+
+- `requires` expression
+
+```cpp
+requires (T x) { x + x; }
+```
 
 ---
+# C++20 concepts
+
+```cpp
+template<typename T>
+concept addable = requires(T x) { x + x; };
+```
+
+```cpp
+template<typename T>
+concept small_addable = addable<T> && (sizeof(T) <= 4);
+```
+
+???
+>
+
+---
+# C++20 concepts
+
+- `requires` clause
+
+```cpp
+template<typename T>
+T add(T x, T y)
+  requires addable<T>
+{
+  return x + y;
+}
+```
+
+```cpp
+template<addable T>
+T add(T x, T y)
+{
+  return x + y;
+}
+```
+
+---
+# C++20 concepts
+
+```cpp
+template<typename T>
+concept incrementable = requires (T x) { ++x; x++; };
+
+auto add_one(incrementable auto x)
+{
+  return ++x;
+}
+```
+
+- `requires` clause, then `requires` expression
+
+```cpp
+template<typename T>
+T add(T x, T y)
+  requires requires(T x) { x + x; }
+{
+  return x + y;
+}
+```
+
+---
+# C++20 concepts
+
+- they are just a tool: like `struct` (does not tell you how to use it)
+- e.g. used for `std::ranges`
+- errors not necessarily shorter
+- `std::regular` concept was demonetized from the "regular" concept
+
+---
+# Many relationships
+
+- homogeneous/heterogeneous
+- predicate: returns `bool`
+- total/partial: domain
+- identity, equality, equivalence
+- "less than" trichotomy with equality
+- weak order trichotomy with equivalence
+
+
+- the weird case of `float`: NaN and -0.0
+
+---
+# Spaceship operator
+
+- this: `<=>`
+- not: `>=< >-< |=| |-o-| <o>`
+
+
+- three-way comparison (see `memcmp`)
+- `= default`
+- simplifies symmetric heterogeneous comparisons
+
+
+- debatable:
+
+```
+                <- partial_ordering
+ weak_equality           ^
+                <-  weak_ordering
+       ^                 ^
+strong_equality <- strong_ordering
+```
+
+- the efficiency of equality
+???
+>
+
+---
+# Pragmatic spaceship
+
+```cpp
+struct person {
+  std::string first_name;
+  std::string last_name;
+  int age{};
+
+  constexpr std::strong_ordering
+    operator<=>(const person &) const noexcept = default;
+};
+```
+---
+# Good regulars
+
+- `int`: the dream regular type.
+- `std::string`: copy could throw, but that's usually OK, all dynamically
+  allocated containers have this issue.
+- `std::vector`: it is regular if the `value_type` is regular (it does
+  lexicographical compare, which is what one would expect), but not if the
+  `value_type` is not regular. It still makes sense to be able to store
+  contiguously items, even if not regular.
+- `std::pair`: similar issues with the vector, it all depends on member types.
+  It does memberwise compare, which is what one would expect.
+- `std::optional`: orders the `nullopt` value ahead of the underlying
+  `value_type` order. That's OK.
+- `std::shared_ptr`: does shallow copy and comparison, but that OK, it uses
+  atomics to address expectations around threading.
+
+---
+# Wannabes
+
+- Types like `std::map` in the Microsoft implementation that might throw for
+  default constructor or move constructor, but are otherwise OK. They might
+  also not have caught fully with `constexpr` support.
+- Types like `std::unordered_map` where the equality time complexity might be
+  `N^2`, but are otherwise OK. Maybe you say that those cases are outside the
+  domain of equality comparison
+- Types like `float` have multiple issues around `NaN` (domain issues) and
+  `-0.0`/`+0.0` (`==` does not mean equality)
+- Types like `string_view` which are not semantically regular e.g. you take a
+  copy, you change the original string, but then it's still equal to the
+  original (because it's a view to the same data). Because it's a constant view
+  into data, it just about gets away with doing a shallow copy, but a deep
+  compare.
+- `span` unlike `string_view` also does a shallow copy of the pointers and
+  determine the range, but does not get away with doing a deep compare
+- Then the standard relaxed the requirements further where the `std::regular`
+  concept does not require order. E.g. C++ iterators; note though they could
+  have had order, it's just that order for two iterators would reflect the
+  location in memory, not in the sequence (think pointers to nodes in a linked
+  list), and some would find that confusing.
+- And then further relaxed for `std::semiregular` to not even have equality
+- ...
+
+---
+# Wannabes
+
+- ...
+- vtable interface based types that use `clone` methods to copy, with their own issues
+  around comparisons
+- Types that can't be copied like RAII C-handle wrappers, but can be moved
+- Types that aren't even meant to be moved or copied like trait types: they are
+  just some syntactic mechanism to communicate with the compiler.
+
+**Some deviations from regular are meant to be, but others are caused by poor
+design.**
+
+In particular using `==` and `<` to mean less than equality and "less than"
+(pun intended) is wrong. Define instead methods like `is_equivalent` or
+`preceeds` and use those to customise algorithms.
+
+???
+>
+
+---
+# The future of regular
+
+```cpp
+regular_struct person {
+  std::string first_name;
+  std::string last_name;
+  int age;
+};
+```
+
+---
+# Questions?

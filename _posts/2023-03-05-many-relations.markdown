@@ -52,14 +52,14 @@ does not make sense if the divisor is `0`, but you can have a total relation
 When the sets in the Cartesian product are the same e.g. `A x A x A` the
 relation is **homogeneous**. In this case the domain word is further
 overloaded: it sometimes refers just to the set `A` rather than the Cartesian
-product.
+product. A relation that is not homogeneous is called **heterogeneous**.
 
 
 # The zoo of relations
 
 This general framework leads to a whole zoo of relations. But some are more
 special than others. Unary and binary predicates occur more often than other
-predicates. Homogeneous predicates are more common than non-homogeneous.
+predicates. Homogeneous predicates are more common in usage than heterogeneous.
 
 In particular equality is special. It is related to copy: when you take a copy
 you expect it to be equal to the original. It is a special case of an
@@ -112,11 +112,11 @@ properly, including one being the opposite of the other, and together with
 copy. For "less than" the sane approach is to use `<` and make sure it works
 properly with the other operators like `<=`, `>`, `>=` and with equality.
 
-Examples of non-heterogeneous binary predicates are those comparing
-`std::string` with literal strings or `std::string_view`, or testing equality
-of an iterator with the associated sentinel type in the `std::ranges` library.
+Examples of heterogeneous binary predicates are those comparing `std::string`
+with literal strings or `std::string_view`, or testing equality of an iterator
+with the associated sentinel type in the `std::ranges` library.
 
-Even if non-heterogeneous, binary predicates usually are happy to take the two
+Even if heterogeneous, binary predicates usually are happy to take the two
 different types in any order: we're as likely to compare a `std::string` with a
 literal string as to compare a literal string with a `std::string`. In some
 cases that's not the case, such as a predicate that indicates if path is a
