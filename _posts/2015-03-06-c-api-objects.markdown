@@ -215,7 +215,14 @@ FILE * stdout;
 FILE * stderr;
 {% endhighlight %}
 
-You can't close these handles.
+There are many scenarios where you might want to perform operations on these
+handles (e.g. `fread` on `stdin`) without closing them (there are also
+scenarios where you might want to close them).
+
+Similarly for registry handles in Windows, there are special values like
+`HKEY_LOCAL_MACHINE` that you want to use as argument to APIs like
+`RegOpenKeyExW`, but not close `HKEY_LOCAL_MACHINE` at the end of the usage
+(only the handle provided back from `RegOpenKeyExW`).
 
 
 ## Summary
