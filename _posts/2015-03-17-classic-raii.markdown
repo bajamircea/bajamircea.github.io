@@ -95,7 +95,7 @@ On the happy path this will create two `file` instances, each in charge with
 its own `FILE *`. When they go out of scope they will each be destructed,
 closing each file, in the reverse order of the declaration: `src` is created
 first, and destructed last. The scope of `dst` is surrounded by the scope of
-`dst`.
+`src`.
 
 If say the creation of `dst` fails, then the execution exits the scope,
 ensuring that the destructor if `src` is called closing its already opened
@@ -128,13 +128,11 @@ class file
 
 public:
   file(const char * file_name, const char * mode);
-  ~file();
-
-private:
+// used to be "private:" before "= delete"
   file(const file &) = delete;
   file & operator=(const file &) = delete;
+  ~file();
 
-public:
   size_t read(char * buffer, size_t size);
   void write(const char * buffer, size_t size);
   bool is_eof();

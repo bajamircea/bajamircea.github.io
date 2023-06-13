@@ -72,19 +72,16 @@ class file
 
   file(FILE * f, bool own);
 public:
-  ~file();
-private:
   file(const file &) = delete;
   file & operator=(const file &) = delete;
-public:
   file(file && other) noexcept;
   file & operator=(file && other) noexcept;
 
-public:
+  ~file();
+
   static file open(const char * file_name, const char * mode);
   static file stdout(bool own = false);
 
-public:
   size_t read(char * buffer, size_t size);
   void write(const char * buffer, size_t size);
   bool is_eof();
@@ -104,14 +101,6 @@ file::file(FILE * f, bool own) :
   f_{ f },
   own_{ own }
 {
-}
-
-file::~file()
-{
-  if (own_)
-  {
-    fclose(f_);
-  }
 }
 
 file::file(file && other) noexcept :
@@ -134,6 +123,14 @@ file & file::operator=(file && other) noexcept
     other.own_ = false;
   }
   return *this;
+}
+
+file::~file()
+{
+  if (own_)
+  {
+    fclose(f_);
+  }
 }
 
 file file::open(const char * file_name, const char * mode)
