@@ -101,7 +101,7 @@ PM: No, no, you have to tell me how long it will take.
 Dev: I don't know? 3 more days?
 
   Later that day
-Stakeholder: What's the project status
+Stakeholder: What's the project status?
 PM: It's late by 3 days. It's the developer's fault.
 Stakeholder: Tell them to not be late again.
 </pre></p>

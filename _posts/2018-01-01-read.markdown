@@ -47,13 +47,15 @@ read, not recommended.
 : Very good introduction to graph algorithms in a short book. The style is
 dense, but correct (one could provide more details, but would need to use more
 words). It has 9 chapters: 1 of basics, 4 on helper data structures and 4 on
-graph algorithms.  I did not quite get the last and a half chapters very
+graph algorithms. I did not quite get the last and a half chapters very
 difficult. The disjoined sets (one of the data structures) were easy to
 understand once the usage was clarified. However the analysis of the complexity
 of the disjoined sets operations is cool, but very difficult: it's the first
 time when I saw the Ackerman function used meaningfully for anything else other
 then a short statement "here is a function that grows faster than exponential".
-Difficulty rating: 3 pages per evening.
+NOTE: I found later that it took him about 1 year to derive the complexity
+analysis for the disjoined sets operations, then I did not feel so bad any
+more. Difficulty rating: 3 pages per evening.
 
 <img
   align="right"

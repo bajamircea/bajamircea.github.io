@@ -1,0 +1,269 @@
+---
+layout: presentation
+title: Coroutine task
+---
+
+Mircea Baja - 6 Aug 2023
+
+# Coroutines problem domain
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/00-cover.svg %}
+</div>
+
+---
+
+# Concurrent vs. parallel
+
+- illustrated using abstract pictures
+
+---
+
+# Sequential
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/01-sequential.svg %}
+</div>
+
+# Concurrent
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/03-concurrent.svg %}
+</div>
+
+- purple and yellow end later
+
+---
+
+# Sequential
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/01-sequential.svg %}
+</div>
+
+# Parallel
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/02-parallel.svg %}
+</div>
+
+- there is additional overhead (not illustrated)
+
+---
+
+# Sequential
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/01-sequential.svg %}
+</div>
+
+# Concurrent and parallel
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/04-concurrent-parallel.svg %}
+</div>
+
+- purple ends later
+
+---
+
+# Use cases for concurrency
+
+---
+
+# Compilers (maybe)
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/11-compiler.svg %}
+</div>
+
+- Melvin Conway: Design of a separable transition-diagram compiler
+- of Conway law fame: product design mirrors organisation structure
+- motivation: single pass compiler in memory constraints environments, each
+  "coroutine" can output zero or more than one results each time it's invoked
+- in the meantime: better ways of designing a compiler
+
+---
+
+# Simulations
+
+- Bjarne Stroustrup: A Set of C Classes for Co−routine Style Programming.
+Bell Laboratories Computer Science Technical Report CSTR−90. November 1980.
+- motivation: event driven simulations
+- `task` base class used to represent a independent activity which:
+  - suspends voluntarily
+  - can be resumed, canceled
+  - can wait, sleep
+  - provides an `int` result and communicates with other `task`s (e.g. producer
+    and consumer, server reading from a queue)
+  - work is done in the derived class constructor
+- one of the earliest libraries in C++ (think `complex` and `string` without
+  templates), yet did not make it to the standard
+- some of the problems it tries to solve turn out to be recurring
+
+---
+
+# GUI
+
+```cpp
+BOOL bRet;
+
+while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
+{
+  if (bRet == -1)
+  {
+    // handle the error and possibly exit
+  }
+  else
+  {
+    TranslateMessage(&msg); 
+    DispatchMessage(&msg); 
+  }
+}
+```
+
+---
+
+# GUI
+
+- usually single threaded: a single dedicated UI thread
+- the thread has a queue
+- the thread is blocked waiting for a message from the queue
+- when a message is returned the thread processes it via a `switch` statements
+- messages are added to the queue via `PostMessage` (from the same thread) or
+  `PostThreadMessage` (from a different thread)
+- there is also a special "quit" message
+
+---
+
+# Async IO
+
+---
+
+# Generator
+
+```cpp
+struct fib_state {
+  int x_1 = 1;
+  int x_2 = 0;
+};
+
+int next_fib(fib_state & state) {
+  int val = state.x_1 + state.x_2;
+  state.x_2 = state.x_1;
+  state.x_1 = val;
+  return val;
+}
+
+void foo() {
+  fib_state state;
+  while (true) {
+    int x = next_fib(state);
+    // use x
+  }
+}
+```
+---
+
+# Generator
+
+```cpp
+generator fib() {
+  int x_1 = 1;
+  int x_2 = 0;
+  while (true) {
+    int val = x_1 + x_2;
+    yield val;
+    x_2 = x_1;
+    x_1 = val;
+  }
+}
+
+void foo() {
+  for (int x: fib()) {
+    // use x
+  }
+}
+```
+
+- `val` is `yield`ed before `x_2` and `x_1` are updated
+
+---
+
+# Generator
+
+```cpp
+std::generator<int> fib() {
+  int x_1 = 1;
+  int x_2 = 0;
+  while (true) {
+    int val = x_1 + x_2;
+    co_yield val;
+    x_2 = x_1;
+    x_1 = val;
+  }
+}
+
+void foo() {
+  for (int x: fib()) {
+    // use x
+  }
+}
+```
+
+---
+
+# What are coroutines then?
+
+---
+
+# Function vs. coroutine
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/05-function-coroutines.svg %}
+</div>
+
+---
+
+# Coroutines
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/06-coroutines.svg %}
+</div>
+
+---
+
+# Stack
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/07-stack.svg %}
+</div>
+
+---
+
+# Stackful
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/08-stackful.svg %}
+</div>
+
+---
+
+# Stackless
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/09-stackless.svg %}
+</div>
+
+---
+
+# Duality
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/10-duality.svg %}
+</div>
+
+---
+
+# Questions?
+

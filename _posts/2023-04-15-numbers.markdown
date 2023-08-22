@@ -17,7 +17,7 @@ As for the axioms, the belief was that they represent truths, why would one
 question it for "the whole is larger than the part"?
 
 It turns out that most questioning was for the 5<sup>th</sup> postulate
-(axiom), because of it's convoluted phrasing. The question was how many
+(axiom), because of its convoluted phrasing. The question was how many
 parallels exist in a plan through a point outside a straight line, and the
 5<sup>th</sup> said that one precisely.
 

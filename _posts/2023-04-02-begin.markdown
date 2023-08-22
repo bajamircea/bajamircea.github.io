@@ -269,7 +269,7 @@ void foo() {
 }
 {% endhighlight %}
 
-For the above to work, the `std::generator implements `begin()` and `end()`,
+For the above to work, the `std::generator` implements `begin()` and `end()`,
 but: "It is an undefined behavior to call `begin()` more than once on the same
 `generator` object."
 

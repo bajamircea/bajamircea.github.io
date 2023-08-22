@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20230623-8-1" width="100%" viewBox="0 0 800 320">
+  <style>
+    #svg20230623-8-1 {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20230623-8-l1 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .svg20230623-8-l2 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 5;
+    }
+    .svg20230623-8-task_white {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #ffffff;
+    }
+    .svg20230623-8-task_grey {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #cccccc;
+    }
+    .svg20230623-8-task_green {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #c2b102;
+    }
+    .svg20230623-8-task_neutral2 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #6ac3d9;
+    }
+  </style>
+  <rect x="10" y="10" width="100" height="210" class="svg20230623-8-task_grey"/>
+  <rect x="10" y="220" width="100" height="80" class="svg20230623-8-task_white"/>
+  <rect x="290" y="10" width="100" height="240" class="svg20230623-8-task_grey"/>
+  <rect x="290" y="250" width="100" height="50" class="svg20230623-8-task_neutral2"/>
+  <rect x="570" y="10" width="100" height="220" class="svg20230623-8-task_grey"/>
+  <rect x="570" y="230" width="100" height="70" class="svg20230623-8-task_neutral2"/>
+</svg>

@@ -131,7 +131,7 @@ When we look at it this way, it makes sense that `std::vector` does deep copy,
 `const` and comparisons: it's like an int. It makes sense that
 `std::shared_ptr` does it shallow: it's like a pointer. `std::string_view` gets
 away with a combination of shallow copy and deep compare because it's a
-constant view: the deep compare`is debatable, but it's handy as well.
+constant view: the deep compare is debatable, but it's handy as well.
 `std::span` does not get away with a combination of shallow and deep because
 it's not a constant view; a combination of shallow copy, shallow `const` and
 deep compare would not meet the axiom above.

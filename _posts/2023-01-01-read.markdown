@@ -6,6 +6,69 @@ categories: read book
 
 List of books I've read in 2023
 
+<img
+  align="right"
+  alt="Book cover"
+  height="218px"
+  style="padding: 10px 40px"
+  src="/assets/2023-01-01-read/book_cover_im_kleene.jpg">
+
+
+- 2023-08-15 Stephen Cole Kleene: Introduction to Metamathematics (Ishi Press: 2009 reprint)
+: This was a 3 years+ marathon, one of the most difficult books I've read. The
+reason I persisted is that it was also full of ideas. The book captures the
+developments in mathematical logic, particularly in the 1930s to 1950s,
+particularly with questions "What can be proved?", "What can be calculated?". I
+started reading it out of interest around Gödel's incompleteness theorem.
+Compared with many other books, Kleene's has rigour both in terms of proofs and
+in terms of philosophical ideas about the assumptions made (e.g. the clearest
+explanation of the intuitionist/constructivist ideas). That helped me be more
+rigorous myself and develop my own ideas about numbers, reasoning and
+computing. I wish the bound vs.  free variables was better explained and that
+the choice of postulates was done earlier (rather than at the end of the book).
+10 out of 10, though it's not for everybody.
+
+<img
+  align="right"
+  alt="Book cover"
+  height="218px"
+  style="padding: 10px 40px"
+  src="/assets/2023-01-01-read/book_cover_algs_sedgewick.jpg">
+
+
+- 2023-08-11 R. Sedgewick and K. Wayne: Algorithms, online course on Coursera (Partt I and II)
+: I enjoyed the online course (free on Coursera at the moment). It was doable
+in a few months of evening and occasional weekend study. It's less verbose than
+the book, though the book might be interesting for details. It uses Java. At
+least it uses a sane subset of Java and warns about wrong choices of the
+language. I liked that it does not ignore engineering issues. Memorable ideas:
+  - the explanation how to design graph algorithms to not have to mutate the
+    graph structure.
+  - "we thought we understood red black trees in the 70s": related to the
+    design of left leaning reb black trees in the early 2000s so that deletion
+    is easiser to implement
+  - the idea that approximating complexity often suffices, rather a complete
+    precise description
+  - dealing with ideas of P vs. NP at the end of the course, the saner overview
+    I've seen to date
+  - There are all sort of usages of algorithms, e.g. for a search that returns
+    "found" even if the searched entry is not present (albeit with low
+    probability) is acceptable for some problem domains (though totally
+    unacceptable in other domains)
+  - I came to realise that "interview questions" are often taken from books
+    like this and are of academical interest rather than applying to the job
+    the interview is for
+  - the programming assignment were automatically graded. Did not accept
+    anything other than 100 out of 100. Found that I was getting better at
+    getting the max score due to familiarity with the expectations (e.g. work
+    done in constructor, use of memoisation was expected to reach performance
+    requirements) without really being a much better programmer.
+  - found that Java is poor of supporting abstractions compared with C++,
+    resulting in a programming style that often used larger classes, but
+    sometimes because of the constraints, I would make better choices e.g. two
+    arrays instead of an array of structures resulting in better space (no
+    padding) driven from attempts to avoid silly Java memory allocations
+
 - 2023-04-12 Herbert A. Simon: Reason in Human Affairs
 : Accidental repeat read of the book (first read it in 2018). This time I
 thought it was really great. 10 out of 10. It's short: 3 chapters. The first
