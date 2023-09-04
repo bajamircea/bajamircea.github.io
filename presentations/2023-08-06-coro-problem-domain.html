@@ -15,7 +15,9 @@ Mircea Baja - 6 Aug 2023
 
 # Concurrent vs. parallel
 
-- illustrated using abstract pictures
+- intuitively illustrated using abstract pictures
+- for intro into C++ standardese doublespeak see ["Forward Progress Guarantees in
+  C++ - Olivier Giroux - CppNow 2023"](https://www.youtube.com/watch?v=g9Rgu6YEuqY&t=978s)
 
 ---
 
@@ -87,8 +89,9 @@ Mircea Baja - 6 Aug 2023
 
 # Simulations
 
-- Bjarne Stroustrup: A Set of C Classes for Co−routine Style Programming.
-Bell Laboratories Computer Science Technical Report CSTR−90. November 1980.
+- Bjarne Stroustrup: [A Set of C++ Classes for Co−routine Style
+  Programming.](https://www.softwarepreservation.org/projects/c_plus_plus/cfront/release_e/doc/ClassesForCoroutines.pdf)
+  Bell Laboratories Computer Science Technical Report CSTR−90. November 1980.
 - motivation: event driven simulations
 - `task` base class used to represent a independent activity which:
   - suspends voluntarily
@@ -99,7 +102,8 @@ Bell Laboratories Computer Science Technical Report CSTR−90. November 1980.
   - work is done in the derived class constructor
 - one of the earliest libraries in C++ (think `complex` and `string` without
   templates), yet did not make it to the standard
-- some of the problems it tries to solve turn out to be recurring
+- some of the problems it tries to solve turn out to be recurring:
+  cancellation, time management, forking and joining, queues, etc.
 
 ---
 
@@ -137,6 +141,25 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 ---
 
 # Async IO
+
+- motivation: C10K (1999)
+- networking is often IO bound (wait for data to be sent or received)
+- what's wrong with `WaitForMultipleObjects`
+- IO completion ports: it's a queue again
+- (boost) ASIO
+- file IO
+- timers/events/registry monitoring
+- one problem: thread(s) blocked using API to get data from the queue
+- Windows thread pools
+- similar evolution on other OSes
+
+---
+
+# Nanocoroutines
+
+- motivation: is handle memory latencies for database JOINs
+- CppCon 2018: G. Nishanov [“Nano-coroutines to the Rescue! (Using Coroutines
+  TS, of Course)”](https://www.youtube.com/watch?v=j9tlJAqMV7U)
 
 ---
 
