@@ -1,0 +1,166 @@
+---
+layout: presentation
+title: Coroutine task
+---
+
+Mircea Baja - 5 Sept 2023
+
+# C++ coroutine mechanics
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/00-cover.svg %}
+</div>
+
+---
+
+# C++ coroutines
+
+- introduced in C++20
+- a large number of types and rules, most different from the others, ranging
+  - from new keywords and compiler implementation
+  - user implemented, but with language defined hooks for customization
+  - to "nice to have"s, but could be entirely implemented by user
+- NOTE: user(s) can further be divided into library writers and users of the
+  library (will conflate both together here)
+- stackless, decomposed into coroutine frame data and function(s)
+
+---
+
+# Visual layout
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/12-cpp-coro-stackless-fn.svg %}
+</div>
+
+
+---
+
+# Coroutine syntax
+
+```cpp
+task foo() {
+  co_await bar();
+}
+
+generator buzz() {
+  co_yield 42;
+}
+
+task wozz() {
+  co_return 42;
+}
+
+```
+
+- looks like a function
+- three new keywords:
+  - `co_await` used to define a suspension point
+  - `co_yield` to suspend and yield some value
+  - `co_return` to return a value at the end
+
+---
+
+# Returned types
+
+```cpp
+task<void> foo() {
+  co_await bar();
+}
+
+generator<int> buzz() {
+  co_yield 42;
+}
+
+task<int> wozz() {
+  co_return 42;
+}
+
+```
+
+- type of `co_return` is not the same as the functions declared return type
+- the declared return type allows access to the values passed to `co_return`
+  and `co_yield`, and it's often a template class that takes the type of
+  `co_return` and/or `co_yield` as a template parameter
+
+---
+
+# Promise type
+
+```cpp
+// given
+task foo() {
+  co_await bar();
+}
+```
+
+```cpp
+class task {
+public:
+  using promise_type = some_other_type;
+};
+
+// or
+
+class task {
+public:
+  class promise_type {
+  };
+};
+
+```
+
+- promise type associated to the coroutine via the declared return type
+- in the simplest: the `promise_type` type (literally) aliased or defined
+  within the declared return type
+
+---
+
+# Coroutine traits
+
+```cpp
+template<class, class...>
+struct coroutine_traits {};
+
+template<class R, class... Args>
+requires requires { typename R::promise_type; }
+struct coroutine_traits<R, Args...>
+{
+  using promise_type = typename R::promise_type;
+};
+```
+
+- this customization point allows using coroutine declared return types that do
+  not need to be change to expose a `promise_type` OR to consider coroutine
+  function arguments too in the resolution to the `promise_type`
+- this promise type has nothing to do with `std::promise`
+
+---
+
+# Body re-write
+
+```cpp
+  promise_type promise(<<promise constructor args>>>);
+  try {
+    co_await promise.initial_suspend();
+    function-body
+  }
+  catch (...) {
+    if (!made enough progress through initial_suspend) {
+      throw;
+    }
+    promise.undhandled_exception();
+  }
+  co_await promise.final_suspend();
+```
+
+- above pseudocode is a over-simplification
+- promise is allocated on the coroutine frame
+- it allows coroutine behaviour customization:
+  - should it suspend at the start?
+  - should it suspend at the end?
+  - what should it do if exceptions are thrown?
+
+---
+
+# Questions?
+

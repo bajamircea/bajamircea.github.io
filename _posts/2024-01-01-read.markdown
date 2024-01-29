@@ -1,0 +1,17 @@
+---
+layout: post
+title: 'Books Read in 2024'
+categories: read book
+---
+
+List of books I've read in 2024
+
+
+- 2024-01-25 Alan Turing: "Computing Machinery and Intelligence" (Mind, October 1950)
+: Interesting. It describes the imitation game: can a machine impersonate a
+human for a dialogue? The article is better at debunking common incorrect
+arguments for the negative answer, but quite visionary for the time is was
+written.
+
+- 2024-01-24 Rob Eastway and Jeremy Wyndham: Why do buses come in threes?
+: Easy maths puzzles book. Children like it.

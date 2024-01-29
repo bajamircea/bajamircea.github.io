@@ -7,7 +7,7 @@ categories: coding cpp
 C++ coroutines lab presentations. WORK IN PROGRESS
 
 - [Problem domain](/presentations/2023-08-06-coro-problem-domain.html)
-- Mechanics
+- [Mechanics](/presentations/2023-09-05-coro-mechanics.html)
 - Task
 - Timers
 - Windows Thread Pool

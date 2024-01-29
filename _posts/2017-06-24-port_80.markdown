@@ -26,5 +26,6 @@ It should not compile (or at least it should give a warning). Yet it does; on
 my system it prints 'i'. I rest my case.
 
 Once you figure out what happens: I wonder if fundamentally this is caused by
-literals not being separate types, e.g. `":"` is a `const char *`, `80` is an
-`int`, rather than separate types.
+literals not being separate types, e.g. `":"` is a `const char(&)[2]` which
+decays to`const char *`, `80` is an `int`, rather than separate types from
+objects `a` or `b` as in `const char * a;` or `int b;`

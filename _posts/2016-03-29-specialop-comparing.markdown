@@ -39,7 +39,7 @@ function with two arguments and return a `bool`.
 class X
 {
   // as a member function
-  bool operator== (const X & other) noexcept
+  bool operator== (const X & other) const noexcept
   {
     // ...
   }

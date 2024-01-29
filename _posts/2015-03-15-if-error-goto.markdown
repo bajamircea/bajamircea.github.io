@@ -17,7 +17,10 @@ logging the error `goto` is used to jump to the section at the end of the
 function where cleanup is performed.
 
 {% highlight c++ linenos %}
-FILE * f = fopen("file.name", "rb");
+FILE * f = 0;
+
+// after all inits:
+f = fopen("file.name", "rb");
 if ( ! f)
 {
   perror("Failed to open file.name");

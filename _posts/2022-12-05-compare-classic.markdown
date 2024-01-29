@@ -21,7 +21,7 @@ For example for equality you can do:
 class foo {
   // ...
 public:
-  bool operator==(const foo & other) {
+  bool operator==(const foo & other) const {
     // compare *this with other
     // return true if equal
     // return false otherwise

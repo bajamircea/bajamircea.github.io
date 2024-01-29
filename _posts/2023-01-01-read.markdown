@@ -6,6 +6,20 @@ categories: read book
 
 List of books I've read in 2023
 
+- 2023-12-18 Alexander Stepanov & Daniel Rose: From Mathematics to Generic Programming
+: The same theme as Elements of Programming (EOP), but in a much more
+accessible style. In EOP I had to work hard to figure out why he's saying
+things. Though for me that labour was valuable. Here things are much more
+explicitly stated. It was nice to see that the book covered things that I
+learned (from EOP, Euclid's Elements, IM) and things that I have thought about.
+For example when I read the proof for the Bézout Identity I thought "hey, it's
+not constructive" only to then read soon after in chapter 12.4 that "This is is
+an example of a nonconstructive proof". I confess I skimmed over some of the
+math parts. For me the book was a really nice read.
+
+- 2023-09-16 Lucian Boia: Primul Război Mondial, Controverse, paradoxuri, reinterpretări
+: Sadly the history repeats 100 years later with the current war against Ukraine
+
 <img
   align="right"
   alt="Book cover"
@@ -24,7 +38,7 @@ Compared with many other books, Kleene's has rigour both in terms of proofs and
 in terms of philosophical ideas about the assumptions made (e.g. the clearest
 explanation of the intuitionist/constructivist ideas). That helped me be more
 rigorous myself and develop my own ideas about numbers, reasoning and
-computing. I wish the bound vs.  free variables was better explained and that
+computing. I wish the bound vs. free variables was better explained and that
 the choice of postulates was done earlier (rather than at the end of the book).
 10 out of 10, though it's not for everybody.
 
@@ -45,7 +59,7 @@ language. I liked that it does not ignore engineering issues. Memorable ideas:
   - the explanation how to design graph algorithms to not have to mutate the
     graph structure.
   - "we thought we understood red black trees in the 70s": related to the
-    design of left leaning reb black trees in the early 2000s so that deletion
+    design of left leaning red black trees in the early 2000s so that deletion
     is easiser to implement
   - the idea that approximating complexity often suffices, rather a complete
     precise description
@@ -92,5 +106,9 @@ the author is worth half of the book (in terms of giving an insight on how the
 author really was and the effects of old age and isolation). The interesting
 part in the book was the focus on long term company growth and the insights
 into the required qualitative investigation to identify such stocks, which is a
-good complement to Benjamin Graham's "Intelligent Investor"
+good complement to Benjamin Graham's "Intelligent Investor".
 
+- 2023-03-01 Nigel Warburton: A Little History of Philosophy
+: It might not have been the author's direct intention, but this (lovely)
+book made me realize how much of much acclaimed philosophers is full of
+gobbledygook and total failure of critical thinking.

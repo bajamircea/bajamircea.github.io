@@ -479,13 +479,13 @@ namespace app_lib::file_util
 
     do
     {
-      size_t read_count = cstdio::file::read(src.get(), buffer, sizeof(buffer));
+      size_t read_count = cstdio::file::read(src, buffer, sizeof(buffer));
 
       if (read_count > 0)
       {
-        cstdio::file::write(dst.get(), buffer, read_count);
+        cstdio::file::write(dst, buffer, read_count);
       }
-    } while ( ! cstdio::file::is_eof(src.get()));
+    } while ( ! cstdio::file::is_eof(src));
 
     cstdio::file::close(dst);
   }

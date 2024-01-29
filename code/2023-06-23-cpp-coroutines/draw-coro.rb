@@ -785,5 +785,85 @@ end
 
 save_to_file("_includes/assets/2023-06-23-cpp-coroutines", "11-compiler.svg", image.render)
 
+image = svg({
+  id: make_id(12, 1),
+  width: "100%",
+  viewBox: "0 0 800 320",
+  }) do
+
+  style().add_text(<<-CSS)
+    ##{make_id(12, 1)} {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .#{make_id(12, "l1")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .#{make_id(12, "c1")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: #{color_pink};
+    }
+    .#{make_id(12, "c2")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: #{color_pink2};
+    }
+    .#{make_id(12, "c3")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: #{color_pink1};
+    }
+    .#{make_id(12, "l2")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 5;
+    }
+    .#{make_id(12, "task_white")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_white};
+    }
+    .#{make_id(12, "task_green")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_green3};
+    }
+    .#{make_id(12, "task_neutral2")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_neutral2};
+    }
+  CSS
+
+  rect(x: 10, y: 10, width: 80, height: 300, class: make_id(12, "task_white"))
+  rect(x: 130, y: 85, width: 80, height: 160, class: make_id(12, "task_neutral2"))
+
+  path(
+    class: make_id(12, "l1"),
+    d: "M 50 30 v 70 h 120 v 20"
+  )
+  path(
+    class: make_id(12, "l2"),
+    d: "M 170 120 v 20 l -120 -30 v 55 l 120 -15 v 40 l -120 -15 v 35
+    l 120 -10 v 35 l -120 -15 v 70"
+  )
+
+  circle(cx: 50, cy: 110, r: 7, class: make_id(12, "c1"))
+  circle(cx: 50, cy: 175, r: 7, class: make_id(12, "c2"))
+  circle(cx: 50, cy: 220, r: 7, class: make_id(12, "c3"))
+
+  rect(x: 290, y: 250, width: 100, height: 50, class: make_id(12,
+  "task_neutral2"))
+
+end
+
+# puts(image.render)
+
+save_to_file("_includes/assets/2023-06-23-cpp-coroutines", "12-cpp-coro-stackless-fn.svg", image.render)
+
 
 
