@@ -133,7 +133,7 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 - usually single threaded: a single dedicated UI thread
 - the thread has a queue
 - the thread is blocked waiting for a message from the queue
-- when a message is returned the thread processes it via a `switch` statements
+- when a message is returned, the thread processes it via a `switch` statements
 - messages are added to the queue via `PostMessage` (from the same thread) or
   `PostThreadMessage` (from a different thread)
 - there is also a special "quit" message
@@ -145,15 +145,68 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 - motivation: C10K (1999)
 - networking is often IO bound (wait for data to be sent or received)
 - what's wrong with `WaitForMultipleObjects`
-  - `O(N)` time complexity with the number of handles provided, explain why
+  - `O(N)` time complexity with the number of handles provided
+  - similar `select` for Linux
 - IO completion ports: it's a queue again
+  - similar `kevent` for Linux
 - (boost) ASIO
 - file IO
+- GPU work
 - timers/events/registry monitoring
 - one problem: thread(s) blocked using API to get data from the queue, can't
   have a thread check for work in multiple incompatible queue types
 - Windows thread pools
 - similar evolution on other OSes
+
+---
+
+# WaitForMultipleObjects
+
+- when a thread calls `WaitForMultipleObjects`, the caller provides a set of
+  objects it waits for
+- for each object in the set, the OS has to atomically add this thread ID to a
+  list associated to the object
+- the thread is suspended
+
+
+- when an object in the set is signaled, the OS finds the thread ID in the
+  object's list
+- the thread is scheduled to resume
+
+
+- when the thread resumes
+- for each object in the set, the OS has to atomically remove this thread ID
+  from the list associated to the object
+- `WaitForMultipleObjects` returns
+
+
+- The steps above lead to `O(N)` time complexity with the number of objects
+  provided, which is why `WaitForMultipleObjects` limits it to 64
+
+---
+
+# Completion port
+
+- when a thread calls `GetQueuedCompletionStatus`
+- it checks if work is queued (requires a lock)
+- if not, it suspeds, a single object needs to have this thread ID stored
+
+
+- when an object associated with the completion port is signaled
+- it's added to the queue
+- the thread is scheduled to resume (if needed)
+
+
+- when the thread resumes
+- it picks work from the queue
+- `GetQueuedCompletionStatus` return
+
+
+- it solves the `O(N)` problem, work to queue/dequeue one item does not depend
+  on the number of items in the queue
+- the disadvantage is that most such queueing systems are incompatible, a
+  thread is blocked on reading from a particular queue system
+
 
 ---
 
