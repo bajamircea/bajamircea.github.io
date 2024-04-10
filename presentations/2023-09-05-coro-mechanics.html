@@ -21,7 +21,7 @@ Mircea Baja - 5 Sept 2023
 </div>
 
 - optimisations are on top of this model e.g.:
- - return value and arguments might be passed via registry (calling
+ - return value and arguments might be passed via registers (calling
    conventions)
  - function body might be inlined
 
@@ -53,7 +53,8 @@ Mircea Baja - 5 Sept 2023
 {% include assets/2023-06-23-cpp-coroutines/12-cpp-coro-stackless-fn.svg %}
 </div>
 
-- stackless, decomposed into coroutine frame and function(s)
+- stackless, decomposed into coroutine frame and function(s), first call is
+  special
 
 ---
 
@@ -102,7 +103,7 @@ task wozz() {
   - `co_return` to return a value at the end
 - no just `return` in the coroutine body
 - other than that, normal code inside the coroutine body
-- can be member, template, but not destructor
+- can be member, template, but not destructor, not in `catch` blocks
 
 ---
 
@@ -147,6 +148,8 @@ struct suspend_always {
 };
 ```
 
+- this is an example of "nice to have"
+
 ---
 
 # std::suspend_never
@@ -164,7 +167,7 @@ struct suspend_always {
 
 ---
 
-# co_return
+# co_return, co_yield
 
 ```cpp
 task<int> wozz() {
@@ -193,10 +196,10 @@ generator<int> buzz() {
 - but the function mechanics uses hardware support such as assembly instruction
   `CALL` knows to save the current address on the stack, increment the stack
   pointer register and continue from the location provided
-- in practice a coroutine is broken into functions to exploit this hardware
+- in practice a coroutine is reduce to functions to exploit this hardware
   efficiency
   - the first of these functions is special: ramp
-  - the following resume from a previous suspension
+  - the following resume or destroy from a previous suspension
 
 
 ---
@@ -234,7 +237,8 @@ public:
 
 ```
 
-- promise type associated to the coroutine via the declared return type
+- this promise type has nothing to do with `std::promise`
+- usually promise type associated to the coroutine via the declared return type
 - in the simplest: the `promise_type` type (literally) aliased or defined
   within the declared return type
 
@@ -257,14 +261,13 @@ struct coroutine_traits<R, Args...>
 - this customization point allows using coroutine declared return types that do
   not need to be change to expose a `promise_type` OR to consider coroutine
   function arguments too in the resolution to the `promise_type`
-- this promise type has nothing to do with `std::promise`
 
 ---
 
 # Body re-write
 
 ```cpp
-  promise_type promise(<<promise constructor args>>>);
+  promise_type promise(<<promise constructor args>>);
   try {
     co_await promise.initial_suspend();
     // ... body here
@@ -284,17 +287,27 @@ struct coroutine_traits<R, Args...>
   - should it suspend at the start?
   - should it suspend at the end?
   - what should it do if exceptions are thrown?
-
+  - space on the frame to handle the values from `co_return` and/or `co_yield`
+  - etc.
 
 ---
 
 TODO:
+- constructing a promise
+
 - how state is stored
 - two options
-- temporary awaiters are stored on the coroutine frame
+
+- conversion between promise and coroutine_handle
+  - at constant offset
+
+- get_return_object
 
 - customizing awaiters
+- temporary awaiters are stored on the coroutine frame
+- the purpose of await suspend after coroutine is suspended
 - the three versions of await_suspend
+  - the tail recursion case
 
 
 ---

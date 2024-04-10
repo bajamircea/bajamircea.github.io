@@ -34,6 +34,7 @@ Mircea Baja - 6 Aug 2023
 </div>
 
 - purple and yellow end later
+- there is additional overhead (not illustrated)
 
 ---
 
@@ -66,6 +67,7 @@ Mircea Baja - 6 Aug 2023
 </div>
 
 - purple ends later
+- there is additional overhead (not illustrated)
 
 ---
 
@@ -138,24 +140,29 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
   `PostThreadMessage` (from a different thread)
 - there is also a special "quit" message
 
+
+- GUIs show the usage of queue of work to manage concurrency, of a blocking
+  function to get next piece of work, not necessarily in need of coroutines
+  (often long background activities are scheduled on additional threads)
+
 ---
 
 # Async IO
 
 - motivation: C10K (1999)
 - networking is often IO bound (wait for data to be sent or received)
-- what's wrong with `WaitForMultipleObjects`
+- what's wrong with `WaitForMultipleObjects` (more later)
   - `O(N)` time complexity with the number of handles provided
   - similar `select` for Linux
-- IO completion ports: it's a queue again
+- IO completion ports: it's a queue again (more later)
   - similar `kevent` for Linux
 - (boost) ASIO
 - file IO
-- GPU work
 - timers/events/registry monitoring
 - one problem: thread(s) blocked using API to get data from the queue, can't
   have a thread check for work in multiple incompatible queue types
-- Windows thread pools
+- Windows thread pools to unify work covered by IO completion ports e.g.
+  networking, with work not covered via IO completion ports
 - similar evolution on other OSes
 
 ---
@@ -164,8 +171,8 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 
 - when a thread calls `WaitForMultipleObjects`, the caller provides a set of
   objects it waits for
-- for each object in the set, the OS has to atomically add this thread ID to a
-  list associated to the object
+- for each object in the set, the OS has to atomically (thread safe) add this
+  thread ID to a list associated to the object
 - the thread is suspended
 
 
@@ -189,7 +196,7 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 
 - when a thread calls `GetQueuedCompletionStatus`
 - it checks if work is queued (requires a lock)
-- if not, it suspeds, a single object needs to have this thread ID stored
+- if not, it suspends, a single object needs to have this thread ID stored
 
 
 - when an object associated with the completion port is signaled
@@ -212,35 +219,7 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 
 # Async IO
 
-- without coroutines it's a lot of callbacks and manual memory management
-
-```cpp
-class session : public std::enable_shared_from_this<session>
-{
-  // ...
-  void do_read()
-  {
-    auto self(shared_from_this());
-    socket_.async_read_some(/*...*/,
-      [this, self](boost::system::error_code ec, std::size_t length) {
-        do_write(length);
-      });
-  }
-
-  void do_write(std::size_t length)
-  {
-    auto self(shared_from_this());
-    boost::asio::async_write(/*...*/,
-      [this, self](boost::system::error_code ec, std::size_t /*length*/) {
-        do_read();
-      });
-  }
-```
----
-
-# Async IO
-
-- logical coroutine equivalent:
+- network echo work with coroutine support
 
 ```cpp
 task echo(socket s) {
@@ -252,6 +231,34 @@ task echo(socket s) {
 }
 ```
 
+---
+
+# Async IO
+
+- without coroutines it's a lot of callbacks and manual memory management
+
+```cpp
+class session : public std::enable_shared_from_this<session>
+{
+  // ...
+  void do_read()
+  {
+    auto self(shared_from_this());
+    socket_.async_read_some(buff_/*...*/,
+      [this, self](boost::system::error_code ec, std::size_t length) {
+        do_write(length);
+      });
+  }
+
+  void do_write(std::size_t length)
+  {
+    auto self(shared_from_this());
+    boost::asio::async_write(buff_/*...*/,
+      [this, self](boost::system::error_code ec, std::size_t /*length*/) {
+        do_read();
+      });
+  }
+```
 
 ---
 
@@ -339,6 +346,49 @@ void foo() {
 # Exception-less mode
 
 - e.g. for using in kernel code without using C++ exceptions
+- this was important for Microsoft (that significantly drove towards C++
+  coroutine adoptions)
+
+---
+
+# GPU work
+
+- there is a lot of effort (e.g. by Nvidia) to make calculations work from C++
+  (algorithms, coroutines, sender/receives etc.) compatible with "normal" CPU
+  usage
+
+
+- beware that choices made for a use case (e.g. GPU) might be not the right
+  ones for another use case (e.g. async networking IO)
+
+---
+
+# Interaction with threads
+
+- single thread simplifies a lot of things, but has limits of how much
+  computation is available
+- explicit multithreading
+  - can a coroutine resume in a different thread?
+  - `scoped_lock|lock_guard<std::mutex>` potential for misuse
+
+---
+
+# Timing matters/choices
+
+- read operations might get more than what was requested (e.g. when request is
+  less than data in the IP package). Subsequent reads:
+  - could always queue the continuation (to allow fairness, at cost of
+    additional work)
+  - avoid queueing if data already available (maximise speed by avoiding work
+    in this case)
+
+
+- wait when_all(op1, op2, op3) can mean different things for different
+  environments:
+ - initiate all operations, the progress in parallel, return when the last one
+   (by time) completes (e.g. op2)
+ - initiate sequentially, progress is not parallel, return when the last one
+   (in sequence) completes (i.e. op3)
 
 
 ---
