@@ -11,18 +11,39 @@ Mircea Baja - 5 Sept 2023
 {% include assets/2023-06-23-cpp-coroutines/00-cover.svg %}
 </div>
 
+
+---
+
+# C++ functions reminder
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/13-function-stack.svg %}
+</div>
+
+- optimisations are on top of this model e.g.:
+ - return value and arguments might be passed via registry (calling
+   conventions)
+ - function body might be inlined
+
 ---
 
 # C++ coroutines
 
 - introduced in C++20
-- a large number of types and rules, most different from the others, ranging
+- spec has a large number of types and rules, most different from the others, ranging
   - from new keywords and compiler implementation
   - user implemented, but with language defined hooks for customization
   - to "nice to have"s, but could be entirely implemented by user
 - NOTE: user(s) can further be divided into library writers and users of the
   library (will conflate both together here)
-- stackless, decomposed into coroutine frame data and function(s)
+
+
+- reading list
+  - [spec
+    N4775](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/n4775.pdf):
+    relatively short, readable, but background info required
+  - [Lewis Baker's posts](https://lewissbaker.github.io/): long, not up to
+    date, but really good background info required to understand coroutines
 
 ---
 
@@ -31,6 +52,28 @@ Mircea Baja - 5 Sept 2023
 <div align="center">
 {% include assets/2023-06-23-cpp-coroutines/12-cpp-coro-stackless-fn.svg %}
 </div>
+
+- stackless, decomposed into coroutine frame and function(s)
+
+---
+
+# std::coroutine_handle
+
+- allows control of the coroutine frame via members
+
+
+- `void resume()`
+- `void destroy()`
+- `bool done()`
+- ...
+
+
+- handle, not RAII (e.g. it has copy, not just move)
+- also it's a template (in an unusual way for handles)
+
+
+- it has to be used with care: don't resume if destroyed, don't resume if not
+  suspended, don't destroy more than once, etc.
 
 
 ---
@@ -57,12 +100,77 @@ task wozz() {
   - `co_await` used to define a suspension point
   - `co_yield` to suspend and yield some value
   - `co_return` to return a value at the end
+- no just `return` in the coroutine body
+- other than that, normal code inside the coroutine body
+- can be member, template, but not destructor
 
 ---
 
-# Returned types
+# co_await is more important
+
+eventually resolves expression to an awaiter object that controls suspension
+
+then
 
 ```cpp
+auto x = co_await awaiter;
+```
+
+is roughly equivalent to
+
+```cpp
+if (!awaiter.await_ready()) {
+  // ... suspend coroutine (save data) here
+  awaiter.await_suspend(coroutine_handle) // 3 variations of
+  // ... return to caller here
+  // ...
+  // ... when resumed continue from here
+}
+auto x = awaiter.await_resume();
+```
+
+NOTE: call to `await_suspend` is after the coroutine data is saved (suspended),
+this helps with multithreading
+
+---
+
+# std::suspend_always
+
+```cpp
+struct suspend_always {
+  constexpr bool await_ready() const noexcept {
+    return true;
+  }
+
+  constexpr void await_suspend(coroutine_handle<>) const noexcept {}
+  constexpr void await_resume() const noexcept {}
+};
+```
+
+---
+
+# std::suspend_never
+
+```cpp
+struct suspend_always {
+  constexpr bool await_ready() const noexcept {
+    return false;
+  }
+
+  constexpr void await_suspend(coroutine_handle<>) const noexcept {}
+  constexpr void await_resume() const noexcept {}
+};
+```
+
+---
+
+# co_return
+
+```cpp
+task<int> wozz() {
+  co_return 42;
+}
+
 task<void> foo() {
   co_await bar();
 }
@@ -70,11 +178,6 @@ task<void> foo() {
 generator<int> buzz() {
   co_yield 42;
 }
-
-task<int> wozz() {
-  co_return 42;
-}
-
 ```
 
 - type of `co_return` is not the same as the functions declared return type
@@ -84,7 +187,29 @@ task<int> wozz() {
 
 ---
 
-# Promise type
+# Coroutine implemented as functions
+
+- mathematical equivalence of functions and coroutines (duality)
+- but the function mechanics uses hardware support such as assembly instruction
+  `CALL` knows to save the current address on the stack, increment the stack
+  pointer register and continue from the location provided
+- in practice a coroutine is broken into functions to exploit this hardware
+  efficiency
+  - the first of these functions is special: ramp
+  - the following resume from a previous suspension
+
+
+---
+
+# Ramp
+
+<div align="center">
+{% include assets/2023-06-23-cpp-coroutines/14-ramp-stack.svg %}
+</div>
+
+---
+
+# Determine promise type
 
 ```cpp
 // given
@@ -142,7 +267,7 @@ struct coroutine_traits<R, Args...>
   promise_type promise(<<promise constructor args>>>);
   try {
     co_await promise.initial_suspend();
-    function-body
+    // ... body here
   }
   catch (...) {
     if (!made enough progress through initial_suspend) {
@@ -159,6 +284,18 @@ struct coroutine_traits<R, Args...>
   - should it suspend at the start?
   - should it suspend at the end?
   - what should it do if exceptions are thrown?
+
+
+---
+
+TODO:
+- how state is stored
+- two options
+- temporary awaiters are stored on the coroutine frame
+
+- customizing awaiters
+- the three versions of await_suspend
+
 
 ---
 

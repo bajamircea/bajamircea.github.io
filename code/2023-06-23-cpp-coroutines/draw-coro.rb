@@ -750,7 +750,6 @@ image = svg({
     class: make_id(11, "t1"),
     x: 470, y: 50
   ).add_text("analysis")
-
   rect(x: 570, y: 80, width: 80, height: 120, class: make_id(11, "task_neutral2"))
 
   line(
@@ -865,5 +864,168 @@ end
 
 save_to_file("_includes/assets/2023-06-23-cpp-coroutines", "12-cpp-coro-stackless-fn.svg", image.render)
 
+image = svg({
+  id: make_id(13, 1),
+  width: "100%",
+  viewBox: "0 0 800 290",
+  }) do
+
+  style().add_text(<<-CSS)
+    ##{make_id(13, 1)} {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .#{make_id(13, "l1")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .#{make_id(13, "l2")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 5;
+    }
+    .#{make_id(13, "task_white")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_white};
+    }
+    .#{make_id(13, "task_grey")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_grey};
+    }
+    .#{make_id(13, "task_green")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_green3};
+    }
+    .#{make_id(13, "task_neutral2")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_neutral2};
+    }
+  CSS
+
+  rect(x: 10, y: 10, width: 100, height: 20, class: make_id(13, "task_grey"))
+  rect(x: 10, y: 30, width: 100, height: 80, class: make_id(13, "task_green"))
+  rect(x: 10, y: 110, width: 100, height: 20, class: make_id(13, "task_green"))
+  rect(x: 10, y: 130, width: 100, height: 60, class: make_id(13, "task_green"))
+  rect(x: 10, y: 190, width: 100, height: 30, class: make_id(13, "task_green"))
+  rect(x: 10, y: 220, width: 100, height: 55, class: make_id(13, "task_white"))
+
+  text(
+    class: make_id(13, "t1"), x: 120, y: 212
+  ).add_text("1. return value")
+  text(
+    class: make_id(13, "t1"), x: 120, y: 167
+  ).add_text("2. arguments")
+  text(
+    class: make_id(13, "t1"), x: 120, y: 127
+  ).add_text("3. return address")
+  text(
+    class: make_id(13, "t1"), x: 120, y: 77
+  ).add_text("4. local variables")
+
+
+end
+
+# puts(image.render)
+
+save_to_file("_includes/assets/2023-06-23-cpp-coroutines", "13-function-stack.svg", image.render)
+
+image = svg({
+  id: make_id(14, 1),
+  width: "100%",
+  viewBox: "0 0 800 320",
+  }) do
+
+  style().add_text(<<-CSS)
+    ##{make_id(14, 1)} {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .#{make_id(14, "l1")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .#{make_id(14, "l2")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 5;
+    }
+    .#{make_id(14, "task_white")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_white};
+    }
+    .#{make_id(14, "task_grey")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_grey};
+    }
+    .#{make_id(14, "task_green")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_green3};
+    }
+    .#{make_id(14, "task_neutral2")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_neutral2};
+    }
+  CSS
+
+  rect(x: 10, y: 10, width: 100, height: 70, class: make_id(14, "task_grey"))
+  rect(x: 10, y: 80, width: 100, height: 30, class: make_id(14, "task_green"))
+  rect(x: 10, y: 110, width: 100, height: 20, class: make_id(14, "task_green"))
+  rect(x: 10, y: 130, width: 100, height: 60, class: make_id(14, "task_green"))
+  rect(x: 10, y: 190, width: 100, height: 30, class: make_id(14, "task_green"))
+  rect(x: 10, y: 220, width: 100, height: 55, class: make_id(14, "task_white"))
+
+  rect(x: 400, y: 50, width: 100, height: 80, class: make_id(14, "task_neutral2"))
+  rect(x: 400, y: 130, width: 100, height: 60, class: make_id(14, "task_neutral2"))
+  rect(x: 400, y: 190, width: 100, height: 50, class: make_id(14, "task_neutral2"))
+  rect(x: 400, y: 240, width: 100, height: 35, class: make_id(14, "task_neutral2"))
+
+  text(
+    class: make_id(14, "t1"), x: 10, y: 297
+  ).add_text("stack")
+  text(
+    class: make_id(14, "t1"), x: 120, y: 212
+  ).add_text("1. return value")
+  text(
+    class: make_id(14, "t1"), x: 120, y: 167
+  ).add_text("2. arguments")
+  text(
+    class: make_id(14, "t1"), x: 120, y: 127
+  ).add_text("3. return address")
+  text(
+    class: make_id(14, "t1"), x: 120, y: 102
+  ).add_text("4. local variables (ramp)")
+  text(
+    class: make_id(14, "t1"), x: 520, y: 97
+  ).add_text("7. local variables (body)")
+  text(
+    class: make_id(14, "t1"), x: 520, y: 167
+  ).add_text("5. arguments")
+  text(
+    class: make_id(14, "t1"), x: 520, y: 222
+  ).add_text("6. promise")
+  text(
+    class: make_id(14, "t1"), x: 520, y: 262
+  ).add_text("8. state machine")
+  text(
+    class: make_id(14, "t1"), x: 400, y: 297
+  ).add_text("coroutine frame")
+
+end
+
+# puts(image.render)
+
+save_to_file("_includes/assets/2023-06-23-cpp-coroutines", "14-ramp-stack.svg", image.render)
 
 
