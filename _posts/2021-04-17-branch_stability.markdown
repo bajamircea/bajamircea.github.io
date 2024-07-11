@@ -56,8 +56,8 @@ stable line and that can be done merging in such a way that the first parent
 was on the stable line (see `git log --first-parent`).
 
 The issue with this approach is that the merge commit is different from the
-both it's parents, so it does not automatically inherit the confidence that it
-is a good, stable commit. E.g. at it's simplest the feature branch uses a
+both its parents, so it does not automatically inherit the confidence that it
+is a good, stable commit. E.g. at its simplest, the feature branch uses a
 function that was deleted from the stable branch.
 
 Therefore this results in one or more of the following trade-offs:
