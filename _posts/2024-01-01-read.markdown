@@ -7,6 +7,29 @@ categories: read book
 List of books I've read in 2024
 
 
+- 2024-07-31: Victor J. Katz: A History of Mathematics - An Introduction 3rd Edition (2009)
+: Very interesting book. It good to know maths theory, but knowing the history
+of how we got there is at least about as valuable. From the historic
+perspective theory makes sense, history provides the many answers for how the
+results were obtained, what avenues were attempted without success, what
+motivated the solutions given and for what problems. I acknowledge that I
+skimmed over areas where I lacked the maths knowledge to absorb all the details
+(it gets a bit complicated in the 20th century in particular).  Personally I
+find the history lessons about how flaws were discovered, and how they were
+addressed, very useful for critical thinking. Highly recommended. It should be
+part of the learning maths curriculum. 9 out of 10.
+
+- 2024-06-01 Daniel Lieberman: Exercised
+: The book is written in the style of "enthusiastic Harvard professor" that
+reminds me of Pinker. One recurring theme in the book is that some body
+processes that are important for our wellbeing are only triggered through
+physical activities. In the historical past we would have had plenty of
+physical activities, largely unwillingly because we would have rather preserve
+calories. In the modern work we live in a calorie rich with plenty of machines
+to do work for us. So it's important to exercise for physical and mental
+health. It's not easy (we need to make it fun, a habit), but it's easier than
+loosing weight.
+
 - 2024-01-25 Alan Turing: "Computing Machinery and Intelligence" (Mind, October 1950)
 : Interesting. It describes the imitation game: can a machine impersonate a
 human for a dialogue? The article is better at debunking common incorrect
