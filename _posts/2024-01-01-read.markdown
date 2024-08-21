@@ -7,6 +7,20 @@ categories: read book
 List of books I've read in 2024
 
 
+- 2024-08-09: John Stewart Mill: On Liberty (1859)
+: Great definition of liberty: think, say, do whatever as long as not harming
+others. It warns against tyranny of majority that mistakes divergence from
+mainstream as harm. Interesting exploration of not clear cut cases: ideas of
+alcohol prohibition, claimed rather than actual harm, speech inciting a mob,
+players in a game, etc. Diversity is required for truths to emerge, to improve,
+to consolidate. This links to Pinker saying that he sees students that
+confronted for the first time with extremist ideas they embrace them because
+they lack knowledge to debunk them. Great insight about socialism (mid 19th
+century): the idea of paying the able/hard working the same as the less
+able/less hard working. Wrong in that means of communication would create
+uniformity (was maybe right at the time). 9.5 out of 10 (the phrases are a bit
+long, as if lecturing)
+
 - 2024-07-31: Victor J. Katz: A History of Mathematics - An Introduction 3rd Edition (2009)
 : Very interesting book. It good to know maths theory, but knowing the history
 of how we got there is at least about as valuable. From the historic
