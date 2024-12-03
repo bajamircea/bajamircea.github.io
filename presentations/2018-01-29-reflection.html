@@ -572,7 +572,7 @@ Downstairs:
 - P0590 by Andrew Sutton, Herb Sutter
 
 Plumbing:
-- A lot of plumbing required: e.g. constexpr_vector, heterogenous for loop
+- A lot of plumbing required: e.g. constexpr_vector, heterogeneous for loop
 
 ---
 
@@ -651,7 +651,7 @@ struct compare_data_members
 # P0590, P0589, P0712
 by Andrew Sutton, Herb Sutter
 
-Type-based reflection with heterogenous containers
+Type-based reflection with heterogeneous containers
 
 - Uses $ as the reflection operator
 - $ applies to: variables, types, namespaces, functions
@@ -663,7 +663,7 @@ Type-based reflection with heterogenous containers
 - Requires more compiler intrinsics
 - Because they are template specialization properties are not instantiated
   until called (sometimes good, sometimes bad)
-- Getting class members returns a heterogenous tuple-like container
+- Getting class members returns a heterogeneous tuple-like container
 
 Disadvantages:
 - Still generates a lot of types: resource intensive compiler and complex usage style
@@ -688,7 +688,7 @@ void foo(int n) {
 
 ---
 
-# Heterogenous 'for' loop
+# Heterogeneous 'for' loop
 
 Aka. unrolled loop, loop expansion, tuple-based for loop
 

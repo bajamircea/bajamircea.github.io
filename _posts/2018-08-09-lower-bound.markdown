@@ -100,10 +100,10 @@ Is [the same as for][partition_point] `partition_point`: `O(lg(n))` (except for
 `ForwardIterator` only where it could still be useful sometimes).
 
 
-# Non-homogenous predicate
+# Non-homogeneous predicate
 
 The comparison predicate used by `lower_bound` does not have to have the same
-type for both arguments, i.e. it does not have to be homogenous. The first
+type for both arguments, i.e. it does not have to be homogeneous. The first
 argument is related to the `value_type` of the iterators, while the second
 argument is related to the type `T`, and sometimes these types are different.
 
@@ -145,6 +145,15 @@ For example one can look and find a contact by name like this:
     // ...
   }
 {% endhighlight %}
+
+This is similar to the discussion we had on the [linear find article][find].
+
+I've employed some of this idea in a complex case where syntactically the
+comparison was homogeneous (it compared file system paths), but semantically it
+was not, because the container contains a mixture of folder and file paths,
+while the value provided was a full file path, trying to determine if it's
+matches either a full file path on the container or it is in a folder path
+stored in the container.
 
 
 # Related algorithms

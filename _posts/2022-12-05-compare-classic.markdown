@@ -43,13 +43,13 @@ and it will be called when you compare using `==` two variables of type `foo`:
 {% endhighlight %}
 
 
-# Heterogenous and friend
+# Heterogeneous and friend
 
-The comparison above is homogenous, the types compared are the same type. It
+The comparison above is homogeneous, the types compared are the same type. It
 compares `foo` with `foo`. Most of the time you want to compare apples with
 apples and oranges with oranges.
 
-But the case where the types are different also occurs. This is a heterogenous
+But the case where the types are different also occurs. This is a heterogeneous
 comparison. For example we want to compare `std::string` with a literal string:
 
 {% highlight c++ linenos %}
@@ -176,7 +176,7 @@ bool operator>=(const foo & x, const foo & y) {
 }
 {% endhighlight %}
 
-Similar issues apply to the heterogenous operations, shown here for equality:
+Similar issues apply to the heterogeneous operations, shown here for equality:
 
 {% highlight c++ linenos %}
 bool operator==(const foo & x, const char * y) {

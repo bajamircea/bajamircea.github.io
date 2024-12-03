@@ -235,6 +235,39 @@ build a range e.g.: either the range from the value to the end or from the
 beginning to the value (if the iterator is `ForwardIterator`).
 
 
+# Non-homogeneous comparison
+
+In the example above we searched for `42` in a vector of `int`. The values in
+the container have the same type as the value we're looking for. That equality
+comparison is homogeneous.
+
+But there are cases where the value we're searching for is not of the same type
+as the values in the container (or the values pointed by the iterator, i.e. the
+value type of the container and/or iterator):
+
+{% highlight c++ linenos %}
+void foo(const std::vector<std::string>& v) {
+  auto it = algs::range::find(v, "bar");
+  if (it == v.end()) {
+    std::cout << "Not found\n";
+  }
+  else {
+    std::cout << "Found: " << *it << '\n';
+  }
+}
+{% endhighlight %}
+
+In the example above we're looking for a literal string in a vector of
+`std::string`. The reason this works is that there is an equality operator that
+allows comparing a `std::string` with a literal string. This equality comparison
+is heterogeneous. This is the meaning of the comment meant to describe the
+requirement that `T is equality comparable with ValueType(Range)`.
+
+This is the same idea as in the method `find` for a `std::set` which [was made
+a template function in C++14][n3465] to allow e.g. searching using a literal
+string in a `std::set<std::string>`.
+
+
 # Related algorithms
 
 - `find_if`, `find_if_not` (which take a predicate instead of a value)
@@ -279,3 +312,4 @@ to a user to allow dereferencing `last` and mutating the input to find a value.
 
 [min]:             {% post_url 2018-07-29-min-max %}
 [ranges-work]: http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0970r1.pdf
+[n3465]: https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3465.pdf

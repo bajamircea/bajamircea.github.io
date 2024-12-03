@@ -119,7 +119,7 @@ explicit about the idioms they support or the fact that multiple idioms might
 coexist in a large code base. They are often phrased as over simplified rules
 and often lack context.
 
-Thy are not state of the art, it's not where ideas and sound judgement come
+They are not state of the art, it's not where ideas and sound judgement come
 from.
 
 

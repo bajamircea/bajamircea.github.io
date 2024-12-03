@@ -24,8 +24,8 @@ struct person {
 If you want to use the class above as a key in an unordered container e.g.
 `unordered_set` or `unordered_map` you need to implement a hash for the class.
 
-First you'll disappointed that the hash must be a specialization of `std::hash`
-in the `std` namespace not in the namespace of `person`.
+First you'll be disappointed that the hash must be a specialization of
+`std::hash` in the `std` namespace not in the namespace of `person`.
 
 Once you get over that, you might think you can delegate it to the `std::tuple`
 hash using something on the lines of the `std::tie` [trick][tie-cpp].
