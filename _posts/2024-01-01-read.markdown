@@ -7,6 +7,19 @@ categories: read book
 List of books I've read in 2024
 
 
+- 2024-12-16: Lucian of Samosata: Alexander the False Prophet (2nd century AD)
+: Read it because it was referenced by Hume. Shows that religious scepticism
+has a long history, in this case related to the snake god Glycon invented by a
+chap Alexander (not the Great), and points to Epicureans that shared the
+scepticism.
+
+- 2024-10-27: David Hume: An Enquiry Concerning Human Understanding (1748/1777)
+: Really enjoyed reading it. The thesis is that human reasoning is at it's best
+inductive. We say that A causes B because we've seen in the past that B follows
+A and we're making a probabilistic prediction that next time A will also be
+followed by B. [I wrote some detailed notes][hume]. 10 out of 10 (not perfect,
+but hey, it's 18th century we're talking).
+
 - 2024-08-09: John Stewart Mill: On Liberty (1859)
 : Great definition of liberty: think, say, do whatever as long as not harming
 others. It warns against tyranny of majority that mistakes divergence from
@@ -52,3 +65,5 @@ written.
 
 - 2024-01-24 Rob Eastway and Jeremy Wyndham: Why do buses come in threes?
 : Easy maths puzzles book. Children like it.
+
+[hume]:    {% post_url 2024-10-27-hume-first-enquiry %}
