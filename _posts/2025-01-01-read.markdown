@@ -1,0 +1,14 @@
+---
+layout: post
+title: 'Books Read in 2025'
+categories: read book
+---
+
+List of books I've read in 2025
+
+
+- 2025-02-01: Alfred Tarski: The Semantic Conception of Truth (Mar 1944)
+: Disappointed because I had unrealistic expectations. Tarski focuses on a
+meaning of truth that is designed for the meta-mathematics and assumes that
+that's it. Did he read Hume?
+
