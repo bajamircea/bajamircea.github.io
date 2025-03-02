@@ -11,14 +11,19 @@ C++ coroutines lab presentations. WORK IN PROGRESS
 - [Problem domain](/presentations/2023-08-06-coro-problem-domain.html)
 - [Mechanics](/presentations/2023-09-05-coro-mechanics.html)
 - Scoped coroutines
+  - TODO discuss issue with reference parameters, lambda captures, pointers, string_views 
   - TODO the (invalid) `std::move` trick to call once
 - Trampoline
 - Timers
 - Structured concurency
+  - TODO: discuss the issue of detach/fire and forget
+    - lifetime
+    - error propagation
+  - TODO: discuss issue with blocking in bounded parallelism cases
+  - TODO: discuss issue with destructors blocking
 - Cancellation
 - Nursery
-- Threads and concurency
-  - TODO: discuss issue with blocking in bounded parallelism cases
+- Threading models
 - Windows Thread Pool
 
 <div align="center"><a href="/presentations/2023-08-06-coro-problem-domain.html">

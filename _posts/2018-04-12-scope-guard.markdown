@@ -159,7 +159,7 @@ class stack_unwinding
   int uncaught_exceptions_{ std::uncaught_exceptions() };
 
 public:
-  bool operator() {
+  bool operator()()
   {
     // if the number of exceptions in flight
     // is larger than when instance was constucted

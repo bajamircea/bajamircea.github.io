@@ -433,7 +433,7 @@ To deal with the situation:
 
 1. Wrap `FILE *` in a resource class. In the destructor ignore errors.
 2. Create a function that throws on `fclose`
-3. Don't forget to call that function.
+3. Don't forget to call that function (if you wrote to the file and all went well up to that point)
 
 {% highlight c++ linenos %}
 // 1
@@ -470,7 +470,7 @@ public:
 };
 
 // 2
-void close(file_raii & x)
+void close_file(file_raii & x)
 {
   int result = std::fclose(x.release()); // <-
   if (result != 0)
@@ -498,9 +498,10 @@ void write_to_file(const char * file_name)
 {% endhighlight %}
 
 The code above checks for all errors and reports only one:
-- If `fclose` fails then `write_to_file` fails with an exception.
-- If `fwrite` fails then it's exception propagates, though `fclose` is called
-  from the destructor
+- If `fclose` fails then `write_to_file` fails with an exception (because
+  `fwrite` reported success, but flushing fails later)
+- If `fwrite` fails then its exception propagates, though `fclose` is called
+  from the destructor and resources are cleaned
 
 ## Bad APIs
 
