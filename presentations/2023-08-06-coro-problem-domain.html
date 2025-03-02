@@ -267,6 +267,8 @@ class session : public std::enable_shared_from_this<session>
 - motivation: is handle memory latencies for database JOINs
 - CppCon 2018: G. Nishanov [“Nano-coroutines to the Rescue! (Using Coroutines
   TS, of Course)”](https://www.youtube.com/watch?v=j9tlJAqMV7U)
+- the "slow" operation is fetching data from memory to CPU cache
+- the allocation overheads of coroutines will have to be mitigated somehow
 
 ---
 
