@@ -130,8 +130,10 @@ based model where they hope to arbitrage between what they charge for usage and
 what it costs to run. There was no mention of simpler solutions of lower cost,
 maybe local rather than requiring cloud infrastructure and not a deep dive into
 the privacy implications of uploading personal data into their data centres.
+
 **That** is the analysis that you have to do to avoid being conned. The example
-of DeekSeek is that cheaper options are possible.
+of DeekSeek is that cheaper options are possible. In particular the high cost
+of training is suspicious.
 
 
 # AI coding
