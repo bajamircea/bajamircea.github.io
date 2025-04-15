@@ -10,11 +10,13 @@ C++ coroutines lab presentations. WORK IN PROGRESS
 
 - [Problem domain](/presentations/2023-08-06-coro-problem-domain.html)
 - [Mechanics](/presentations/2023-09-05-coro-mechanics.html)
+- std::generator
 - Scoped coroutines
-  - TODO discuss issue with reference parameters, lambda captures, pointers, string_views 
+  - TODO discuss issue with reference parameters, lambda captures, pointers, string_views
+    - the generator problems with scope
   - TODO the (invalid) `std::move` trick to call once
   - TODO the co_await by value trick
-    - TODO still )potential) scope issue
+    - TODO still (potential) scope issue
   - TODO why not eager
     - finall_suspend first
     - the issue with eager initial_suspend when actually suspended later
@@ -26,6 +28,10 @@ C++ coroutines lab presentations. WORK IN PROGRESS
     - a coroutine runs uninterrupted until a co_await
   - TODO: discuss the issue of detach/fire and forget
     - lifetime
+      - discuss bad advice that uses detached models
+      - https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rcoro-capture
+      - more bad advice https://devblogs.microsoft.com/oldnewthing/20211103-00/?p=105870
+      - though they really like detached in embedded environments, explain why
     - error propagation
   - TODO: discuss issue with blocking in bounded parallelism cases
   - TODO: discuss issue with destructors blocking
