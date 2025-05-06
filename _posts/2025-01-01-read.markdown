@@ -7,6 +7,12 @@ categories: read book
 List of books I've read in 2025
 
 
+- 2025-04-20: Arthur Schopenhauer: The Art of Always Being Right
+: When I previously encountered examples of informal fallacies, I found them
+difficult to internalize. This ironic (pamflet/short book) by Arthur
+Schopenhauer is written in a style that I found much easier to remember and
+apply: the subversive one.
+
 - 2025-02-01: Alfred Tarski: The Semantic Conception of Truth (Mar 1944)
 : Disappointed because I had unrealistic expectations. Tarski focuses on a
 meaning of truth that is designed for the meta-mathematics and assumes that
