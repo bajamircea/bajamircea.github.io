@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250506-12-1" width="100%" viewBox="0 0 800 320">
+  <style>
+    #svg20250506-12-1 {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20250506-12-queue {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #ffffff;
+    }
+    .svg20250506-12-l0 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: none;
+    }
+    .svg20250506-12-t1 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #ffffff;
+    }
+    .svg20250506-12-t2 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #cccccc;
+    }
+    .svg20250506-12-l1 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .svg20250506-12-l2 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 5;
+    }
+    .svg20250506-12-tx {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+  </style>
+  <defs>
+    <marker id="svg20250506-12-arrow" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z"/>
+    </marker>
+  </defs>
+  <rect x="10" y="50" width="80" height="150" class="svg20250506-12-queue"/>
+  <path class="svg20250506-12-l0" d="M 20 180 h 60"/>
+  <path class="svg20250506-12-l0" d="M 20 160 h 60"/>
+  <path class="svg20250506-12-l0" d="M 20 140 h 60"/>
+  <circle cx="50" cy="270" r="40" class="svg20250506-12-t1"/>
+  <path class="svg20250506-12-l1" d="M 50 200 v 22" marker-end="url(#svg20250506-12-arrow)"/>
+  <path class="svg20250506-12-l2" d="M 90 270 h 90 v -240 h -110 v 12" marker-end="url(#svg20250506-12-arrow)"/>
+  <circle cx="350" cy="270" r="40" class="svg20250506-12-t2"/>
+  <path class="svg20250506-12-l2" d="M 390 270 h 50 v -260 h -410 v 32" marker-end="url(#svg20250506-12-arrow)"/>
+  <text class="svg20250506-13-tx" x="100" y="210">GetMessage</text>
+</svg>

@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250506-6-1" width="100%" viewBox="0 0 800 320">
+  <style>
+    #svg20250506-6-1 {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20250506-6-l1 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .svg20250506-6-l2 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 5;
+    }
+    .svg20250506-6-task_white {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #ffffff;
+    }
+    .svg20250506-6-task_neutral2 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #6ac3d9;
+    }
+  </style>
+  <rect x="10" y="10" width="80" height="300" class="svg20250506-6-task_white"/>
+  <rect x="130" y="85" width="80" height="160" class="svg20250506-6-task_neutral2"/>
+  <path class="svg20250506-6-l1" d="M 50 30 v 70 h 120 v 20"/>
+  <path class="svg20250506-6-l2" d="M 170 120 v 20 l -120 -30 v 55 l 120 -15 v 40 l -120 -15 v 35
+    l 120 -10 v 35 l -120 -15 v 70"/>
+  <rect x="290" y="10" width="80" height="300" class="svg20250506-6-task_white"/>
+  <rect x="410" y="85" width="80" height="160" class="svg20250506-6-task_neutral2"/>
+  <rect x="530" y="85" width="80" height="140" class="svg20250506-6-task_neutral2"/>
+  <rect x="650" y="10" width="80" height="300" class="svg20250506-6-task_white"/>
+  <path class="svg20250506-6-l1" d="M 330 30 v 70 h 120 v 20 l 120 -20 v 50"/>
+  <path class="svg20250506-6-l2" d="M 570 150 l -120 -20 v 10 l -120 -30 v 180"/>
+  <path class="svg20250506-6-l2" d="M 690 30 v 200 l -120 -70 v 35 l -120 -40 v 50 l 120 0 v 10 h -120
+    v 20 l 240 5 v 55"/>
+</svg>

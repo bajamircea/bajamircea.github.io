@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250506-11-1" width="100%" viewBox="0 0 800 220">
+  <style>
+    #svg20250506-11-1 {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20250506-11-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .svg20250506-11-l1 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .svg20250506-11-l2 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #ffffff;
+    }
+    .svg20250506-11-task_neutral2 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #6ac3d9;
+    }
+  </style>
+  <path class="svg20250506-11-l2" d="M 10 80 h 60 l 20 20 v 100 h -80 z"/>
+  <line class="svg20250506-11-l1" x1="90" y1="140" x2="150" y2="140"/>
+  <text class="svg20250506-11-t1" x="50" y="35">source</text>
+  <rect x="150" y="80" width="80" height="120" class="svg20250506-11-task_neutral2"/>
+  <line class="svg20250506-11-l1" x1="230" y1="140" x2="290" y2="140"/>
+  <text class="svg20250506-11-t1" x="190" y="20">lexical</text>
+  <text class="svg20250506-11-t1" x="190" y="50">analysis</text>
+  <rect x="290" y="80" width="80" height="120" class="svg20250506-11-task_neutral2"/>
+  <line class="svg20250506-11-l1" x1="370" y1="140" x2="430" y2="140"/>
+  <text class="svg20250506-11-t1" x="330" y="20">syntactical</text>
+  <text class="svg20250506-11-t1" x="330" y="50">analysis</text>
+  <rect x="430" y="80" width="80" height="120" class="svg20250506-11-task_neutral2"/>
+  <line class="svg20250506-11-l1" x1="510" y1="140" x2="570" y2="140"/>
+  <text class="svg20250506-11-t1" x="470" y="20">data</text>
+  <text class="svg20250506-11-t1" x="470" y="50">analysis</text>
+  <rect x="570" y="80" width="80" height="120" class="svg20250506-11-task_neutral2"/>
+  <line class="svg20250506-11-l1" x1="650" y1="140" x2="710" y2="140"/>
+  <text class="svg20250506-11-t1" x="610" y="20">instruction</text>
+  <text class="svg20250506-11-t1" x="610" y="50">generator</text>
+  <path class="svg20250506-11-l2" d="M 710 80 h 60 l 20 20 v 100 h -80 z"/>
+  <text class="svg20250506-11-t1" x="750" y="35">code</text>
+</svg>
