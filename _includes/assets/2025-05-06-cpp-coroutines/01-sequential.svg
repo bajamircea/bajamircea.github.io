@@ -1,26 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="svg20250506-2-1" width="100%" viewBox="0 0 800 70">
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250506-1-box" width="100%" viewBox="0 0 800 70">
   <style>
-    #svg20250506-2-1 {
+    #svg20250506-1-box {
       border: 1px solid #e8e8e8;
       background-color: #f5f5f5;
     }
-    .svg20250506-2-task_blue {
+    .svg20250506-1-task_blue {
       stroke: #000000;
       stroke-width: 4;
       fill: #2d93ad;
     }
-    .svg20250506-2-task_purple {
+    .svg20250506-1-task_purple {
       stroke: #000000;
       stroke-width: 4;
       fill: #9665ac;
     }
-    .svg20250506-2-task_orange {
+    .svg20250506-1-task_orange {
       stroke: #000000;
       stroke-width: 4;
       fill: #f5bb00;
     }
   </style>
-  <rect x="10" y="10" width="220" height="50" class="svg20250506-2-task_purple"/>
-  <rect x="230" y="10" width="220" height="50" class="svg20250506-2-task_orange"/>
-  <rect x="450" y="10" width="110" height="50" class="svg20250506-2-task_blue"/>
+  <rect x="10" y="10" width="220" height="50" class="svg20250506-1-task_purple"/>
+  <rect x="230" y="10" width="220" height="50" class="svg20250506-1-task_orange"/>
+  <rect x="450" y="10" width="110" height="50" class="svg20250506-1-task_blue"/>
 </svg>
