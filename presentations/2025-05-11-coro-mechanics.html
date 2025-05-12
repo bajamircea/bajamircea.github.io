@@ -58,28 +58,6 @@ Mircea Baja - 11 May 2025
 
 ---
 
-# std::coroutine_handle
-
-- C++ class wrapper around a pointer to the coroutine frame
-- allows control of the coroutine frame via members of the class
-
-
-- `void resume()`
-- `void destroy()`
-- `bool done()`
-- ...
-
-
-- handle, not RAII (e.g. it has copy, not just move; copy copies the pointer)
-- also it's a template (in an unusual way for handles)
-
-
-- it has to be used with care: don't resume if destroyed, don't resume if not
-  suspended, don't destroy more than once, etc.
-
-
----
-
 # Coroutine syntax
 
 ```cpp
@@ -105,6 +83,7 @@ task wozz() {
 - no just `return` in the coroutine body
 - other than that, normal code inside the coroutine body
 - can be member, template, but not destructor, not in `catch` blocks
+
 
 ---
 
@@ -133,6 +112,27 @@ auto x = awaiter.await_resume();
 
 NOTE: call to `await_suspend` is after the coroutine data is saved (suspended),
 this helps with multithreading
+
+---
+
+# std::coroutine_handle
+
+- C++ class wrapper around a pointer to the coroutine frame
+- allows control of the coroutine frame via members of the class
+
+
+- `void resume()`
+- `void destroy()`
+- `bool done()`
+- ...
+
+
+- handle, not RAII (e.g. it has copy, not just move; copy copies the pointer)
+- also it's a template (in an unusual way for handles)
+
+
+- it has to be used with care: don't resume if destroyed, don't resume if not
+  suspended, don't destroy more than once, etc.
 
 ---
 
@@ -201,7 +201,6 @@ generator<int> buzz() {
   hardware efficiency
   - the first of these functions is special: ramp
   - the following resume or destroy from a previous suspension
-
 
 ---
 
@@ -293,7 +292,7 @@ struct coroutine_traits<R, Args...>
 
 ---
 
-# Promise
+# Promise construction
 
 ```cpp
   promise_type promise(<<promise constructor args>>);

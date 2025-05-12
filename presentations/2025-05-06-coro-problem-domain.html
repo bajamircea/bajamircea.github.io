@@ -251,7 +251,6 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 - The steps above lead to `O(N)` time complexity with the number of objects
   provided, which is why `WaitForMultipleObjects` limits it to 64
 
-
 ---
 
 # Completion port
@@ -259,7 +258,6 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/13-mt_queue.svg %}
 </div>
-
 
 ---
 
@@ -285,6 +283,17 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 - the disadvantage is that most such queueing systems are incompatible, a
   thread is blocked on reading from a particular queue system
 
+---
+
+# How about C++11 mechanisms?
+
+- `std::thread`: too much resources (e.g. stack) to just serve a single/few
+  operations
+- `std::async`: similar, also poorly defined behaviour
+- `std::future`/`std::promise`: require allocation and reference counting of
+  shared state, synchronization even for sequential activities AND detached
+  i.e. operation continues even if `std::future` does not wait for result
+  (potential for dangling references)
 
 ---
 
@@ -304,9 +313,11 @@ task<void> echo(socket s) {
 }
 ```
 
-- scope for the buffer
-- exceptions
-- cancellation
+- easy to understand behaviour e.g.:
+  - scope for the buffer
+  - exceptions (but slow, so use sparingly)
+  - cancellation
+- disadvantage: additional allocation
 
 ---
 
