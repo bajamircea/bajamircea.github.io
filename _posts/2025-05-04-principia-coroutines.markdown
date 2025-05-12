@@ -41,3 +41,36 @@ date, but really good background info required to understand coroutines
 - [CppCon 2018: G. Nishanov “Nano-coroutines to the Rescue! (Using Coroutines TS, of Course)](https://www.youtube.com/watch?v=j9tlJAqMV7U)
 - [Structured Networking in C++ - Dietmar Kühl - CppCon 2022](https://www.youtube.com/watch?v=XaNajUp-sGY)
 - [P2300R10 std::execution](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2300r10.html)
+
+# TODO - topics to cover
+
+- std::generator
+- Scoped coroutines
+  - TODO discuss issue with reference parameters, lambda captures, pointers, string_views
+    - the generator problems with scope
+  - TODO the (invalid) `std::move` trick to call once
+  - TODO the co_await by value trick
+    - TODO still (potential) scope issue
+  - TODO why not eager
+    - finall_suspend first
+    - the issue with eager initial_suspend when actually suspended later
+- Trampoline
+- Timers
+- Structured concurency
+  - sane principles
+    - a child coroutine does not outlives its parent
+    - a coroutine runs uninterrupted until a co_await
+  - TODO: discuss the issue of detach/fire and forget
+    - lifetime
+      - discuss bad advice that uses detached models
+      - https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rcoro-capture
+      - more bad advice https://devblogs.microsoft.com/oldnewthing/20211103-00/?p=105870
+      - though they really like detached in embedded environments, explain why
+    - error propagation
+  - TODO: discuss issue with blocking in bounded parallelism cases
+  - TODO: discuss issue with destructors blocking
+- Cancellation
+  - hiding cancellation from function signature (e.g. see `co_await get_cancellation_token()`
+- Nursery
+- Threading models
+- Windows Thread Pool
