@@ -1,6 +1,6 @@
 ---
 layout: presentation
-title: Coroutine task
+title: Coroutines problem domain
 ---
 
 Mircea Baja - 6 May 2025
@@ -184,10 +184,19 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 
 # GUI
 
+<div align="center">
+{% include assets/2025-05-06-cpp-coroutines/12-st_queue.svg %}
+</div>
+
+
+---
+
+# GUI
+
 - usually single threaded: a single dedicated UI thread
 - the thread has a queue
 - the thread is blocked waiting for a message from the queue
-- when a message is returned, the thread processes it via a `switch` statements
+- when a message is returned, the thread processes it via `switch` statements
 - messages are added to the queue via `PostMessage` (from the same thread) or
   `PostThreadMessage` (from a different thread)
 - there is also a special "quit" message
@@ -196,15 +205,6 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 - GUIs show the usage of queue of work to manage concurrency, of a blocking
   function to get next piece of work, not necessarily in need of coroutines
   (often long background activities are scheduled on additional threads)
-
----
-
-# GUI
-
-<div align="center">
-{% include assets/2025-05-06-cpp-coroutines/12-st_queue.svg %}
-</div>
-
 
 ---
 
@@ -251,6 +251,16 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 - The steps above lead to `O(N)` time complexity with the number of objects
   provided, which is why `WaitForMultipleObjects` limits it to 64
 
+
+---
+
+# Completion port
+
+<div align="center">
+{% include assets/2025-05-06-cpp-coroutines/13-mt_queue.svg %}
+</div>
+
+
 ---
 
 # Completion port
@@ -275,35 +285,32 @@ while( (bRet = GetMessage( &msg, hWnd, 0, 0 )) != 0)
 - the disadvantage is that most such queueing systems are incompatible, a
   thread is blocked on reading from a particular queue system
 
----
-
-# Completion port
-
-<div align="center">
-{% include assets/2025-05-06-cpp-coroutines/13-mt_queue.svg %}
-</div>
-
 
 ---
 
-# Async IO
+# Coroutines: Async IO
 
+- C++20 coroutines allow code as the one below
 - network echo work with coroutine support
 - motivation for this series of articles/presentations
 
 ```cpp
-task echo(socket s) {
+task<void> echo(socket s) {
   buffer buff;
   while (true) {
-    std::size_t length = co_await read_some(s, buff);
-    co_await write(s, buff, length);
+    std::size_t length = co_await async_read_some(s, buff);
+    co_await async_write(s, buff, length);
   }
 }
 ```
 
+- scope for the buffer
+- exceptions
+- cancellation
+
 ---
 
-# Async IO
+# Coroutines: Async IO
 
 - without coroutines it's a lot of callbacks and manual memory management
 
@@ -427,16 +434,26 @@ void foo() {
 - beware that choices made for a use case (e.g. GPU) might be not the right
   ones for another use case (e.g. async networking IO)
 
+---
+
 # Embedded work
 
+- don't throw exceptions
+- don't allocate
+
+---
+
 # Kernel mode
+
+- don't throw exceptions
+- allocations: don't throw `std::bad_alloc` either
 
 ---
 
 # Sender/receiver
 
 - concepts for concurrency included in C++26
-- can work with coroutines
+- can work with coroutines, CPU, GPU, embedded
 - can deliver fast code, no allocations
 - but with development complexity costs for simple sequential code
 
@@ -465,6 +482,8 @@ void foo() {
 - e.g. for using in kernel code without using C++ exceptions
 - this was important for Microsoft (that significantly drove towards C++
   coroutine adoptions)
+
+---
 
 # Memory allocations
 
@@ -495,6 +514,14 @@ void foo() {
  - initiate sequentially, progress is not interleaved, return when the last one
    (in sequence) completes (i.e. op3)
 
+---
+
+# Cancellation
+
+- it's easy to cancel before starting work
+- but in some cases the work can be pending for long periods of time: e.g. wait
+  for registry entry to change (i.e. even never) => cancellation mechanism IS
+  required
 
 ---
 
