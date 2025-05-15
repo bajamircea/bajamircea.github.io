@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250515-1-box" width="100%" viewBox="0 0 800 150">
+  <style>
+    #svg20250515-1-box {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20250515-1-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      dominant-baseline: middle;
+    }
+    .svg20250515-1-l1 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .svg20250515-1-task_white {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #ffffff;
+    }
+    .svg20250515-1-task_orange {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #f5bb00;
+    }
+  </style>
+  <defs>
+    <marker id="svg20250515-1-arrow" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z"/>
+    </marker>
+  </defs>
+  <rect x="10" y="10" width="100" height="30" class="svg20250515-1-task_orange"/>
+  <rect x="10" y="40" width="100" height="30" class="svg20250515-1-task_orange"/>
+  <text class="svg20250515-1-t1" x="20" y="25">head</text>
+  <text class="svg20250515-1-t1" x="20" y="55">tail</text>
+  <rect x="160" y="10" width="100" height="30" class="svg20250515-1-task_white"/>
+  <rect x="160" y="40" width="100" height="60" class="svg20250515-1-task_white"/>
+  <text class="svg20250515-1-t1" x="170" y="25">next</text>
+  <text class="svg20250515-1-t1" x="170" y="55">data</text>
+  <path class="svg20250515-1-l1" d="M 110 25 h 42" marker-end="url(#svg20250515-1-arrow)"/>
+  <rect x="310" y="10" width="100" height="30" class="svg20250515-1-task_white"/>
+  <rect x="310" y="40" width="100" height="60" class="svg20250515-1-task_white"/>
+  <text class="svg20250515-1-t1" x="320" y="25">next</text>
+  <text class="svg20250515-1-t1" x="320" y="55">data</text>
+  <path class="svg20250515-1-l1" d="M 260 25 h 42" marker-end="url(#svg20250515-1-arrow)"/>
+  <rect x="460" y="10" width="100" height="30" class="svg20250515-1-task_white"/>
+  <rect x="460" y="40" width="100" height="60" class="svg20250515-1-task_white"/>
+  <text class="svg20250515-1-t1" x="470" y="25">next</text>
+  <text class="svg20250515-1-t1" x="470" y="55">data</text>
+  <path class="svg20250515-1-l1" d="M 410 25 h 42" marker-end="url(#svg20250515-1-arrow)"/>
+  <rect x="610" y="10" width="100" height="30" class="svg20250515-1-task_white"/>
+  <rect x="610" y="40" width="100" height="60" class="svg20250515-1-task_white"/>
+  <line class="svg20250515-1-l1" x1="610" y1="40" x2="710" y2="10"/>
+  <text class="svg20250515-1-t1" x="620" y="25">next</text>
+  <text class="svg20250515-1-t1" x="620" y="55">data</text>
+  <path class="svg20250515-1-l1" d="M 560 25 h 42" marker-end="url(#svg20250515-1-arrow)"/>
+  <path class="svg20250515-1-l1" d="M 110 55 h 25 v 70 h 500 v -17" marker-end="url(#svg20250515-1-arrow)"/>
+</svg>

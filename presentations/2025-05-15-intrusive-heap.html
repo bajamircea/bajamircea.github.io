@@ -1,0 +1,288 @@
+---
+layout: presentation
+title: Intrusive heap
+---
+
+Mircea Baja - 15 May 2025
+
+# Intrusive heap
+
+<div align="center">
+{% include assets/2025-05-15-intrusive-heap/00-cover.svg %}
+</div>
+
+
+---
+
+# Intrusive queue
+
+<div align="center">
+{% include assets/2025-05-15-intrusive-heap/01-queue.svg %}
+</div>
+
+- intrusive
+- non-ownning
+- single linked
+- linear: end pointer is `nullptr`
+- header points to head and tail
+- no dummy node
+- no cached size
+
+---
+
+# Intrusive queue - why?
+
+- queue of work that is ready to be run: "ready queue"
+- data contains the function of work to be done
+  - e.g. resume coroutine that was previously suspendended
+- nodes are stored on the coroutine frames
+  - they are pushed to the end of queue when work is ready
+- thread loops pop-ing from the start of queue
+  - then runs work
+
+---
+
+# Implementation
+
+```cpp
+template<typename Node, Node* Node::*next>
+class intrusive_queue
+{
+  Node* head_{ nullptr };
+  Node* tail_{ nullptr };
+public:
+  intrusive_queue() noexcept = default;
+```
+
+---
+
+# Implementation
+
+```cpp
+intrusive_queue(const intrusive_queue&) = delete;
+intrusive_queue& operator=(const intrusive_queue&) = delete;
+
+intrusive_queue(intrusive_queue&& other) noexcept :
+  head_{ other.head_ }, tail_{ other.tail_ }
+{
+  other.head_ = nullptr;
+  other.tail_ = nullptr;
+}
+
+intrusive_queue& operator=(intrusive_queue && other) noexcept
+{
+```
+
+---
+
+# Implementation
+
+```cpp
+bool empty() const noexcept;
+
+void push(Node* what) noexcept
+
+Node* pop() noexcept;
+```
+
+---
+
+# Implementation
+
+```cpp
+void push(Node* what) noexcept
+{
+  what->*next = nullptr; // linear list, end is nullptr
+  if (nullptr == tail_)
+  {
+    head_ = what;
+  }
+  else
+  {
+    tail_->*next = what;
+  }
+  tail_ = what;
+}
+```
+
+---
+
+# Intrusive list
+
+<div align="center">
+{% include assets/2025-05-15-intrusive-heap/02-list.svg %}
+</div>
+
+- intrusive
+- non-ownning
+- double linked
+- linear
+- end iterator is nullptr
+- header points to head and tail
+- no dummy node
+- no cached size
+
+---
+
+# Intrusive list - why?
+
+- queue of work waiting for an event: "wait list"
+- data contains the function of work to be done when event is set
+  - e.g. resume coroutine that was previously suspendended
+- nodes are stored on the coroutine frames
+  - they are pushed to the end of wait list to wait for the event
+- when event is set process from the "wait list"
+  - move work to "ready queue"
+- if coroutine is cancelled remove work from "wait list"
+
+---
+
+# Implementation
+
+```cpp
+template<typename Node, Node* Node::*next, Node* Node::*prev>
+class intrusive_list
+{
+  Node* head_{ nullptr };
+  Node* tail_{ nullptr };
+public:
+  intrusive_list() noexcept = default;
+```
+
+---
+
+# Implementation
+
+```cpp
+bool empty() const noexcept;
+
+void push_back(Node* what) noexcept;
+
+void remove(Node* what) noexcept;
+
+Node* front() noexcept;
+
+Node* back() noexcept;
+
+Node* pop_front() noexcept;
+```
+
+---
+
+# Intrusive heap
+
+<div align="center">
+{% include assets/2025-05-15-intrusive-heap/03-heap.svg %}
+</div>
+
+---
+
+# Intrusive heap - insert
+
+<div align="center">
+{% include assets/2025-05-15-intrusive-heap/04-heap-insert.svg %}
+</div>
+
+---
+
+# Intrusive heap - why?
+
+- to implement e.g. `async_sleep_for(10ms)`
+  - with the correct time complexity
+  - and the correct noexcept semantics
+- convert duration to absolute time using a stable monotonic clock
+- use a min heap (earliest clock is at the top of the heap tree)
+- create node on coroutine frame
+- insert a new node in O(lg(N)) (e.g. a new coroutine waiting for a timer)
+- get the smallest node in O(1) (e.g. the next duration we need to wait for)
+- pop the smallest node in O(lg(N)) (e.g. after its duration has elapsed)
+- remove a node in O(lg(N)) (e.g. when the timer is cancelled)
+- all the operations are `noexcept`
+
+---
+
+# Intrusive heap node vs. array
+
+- normally heaps use arrays structures e.g. a vector
+  - then the three pointers are not required
+  - index arithmetic is used to calculated parent and child position
+- a node based heap has the right time complexity
+  - but at the cost of large constants involved
+  - node swaps touches lots of pointers
+
+---
+
+# Implementation
+
+```cpp
+template<typename Node, Node* Node::*parent,
+  Node* Node::*left, Node* Node::*right, typename Compare>
+class intrusive_heap
+{
+  Node* min_node_{ nullptr };
+  std::size_t size_{ 0 };
+
+public:
+  intrusive_heap() noexcept = default;
+```
+
+---
+
+# Implementation
+
+```cpp
+bool empty() const noexcept;
+
+std::size_t size() const noexcept;
+
+Node* min_node() noexcept;
+
+const Node* min_node() const noexcept;
+
+void insert(Node* new_node) noexcept;
+
+void remove(Node* node) noexcept;
+
+void pop_min() noexcept;
+```
+
+---
+
+```cpp
+      ++size_; // Assume new node is added
+      Node* new_node_parent = min_node_;
+
+      // size_ now is at least 2
+      // e.g. given if the size_ is now 5 (0...0101 in binary)
+      // - the position of most significant 1 bit is
+      //   returned by bit_width (3 in the example case)
+      //   and indicates the depth/level of the new node
+      // - then the following bits indicate the route to the node
+      //   with a 0 indicating left edge and a 1 indicating right edge
+      // - we use a 1 bit mask against the size to test those bits,
+      //   starting with a bit mask 0...0010 in binary for this example.
+      //   i.e. a 1 shifted 1 position (i.e. 3 - 2, which we can do as
+      //   bit_width is at least 2)
+      // - we first stop short of the last bit (mask 0...0001) to reach
+      //   the parent (in this case we just do one left), then we use
+      //   this last bit to insert to left or right of parent (right in
+      //   this case)
+      std::size_t mask = ((std::size_t)1 << (std::bit_width(size_) - 2));
+      while (mask != 1)
+      {
+        if (size_ & mask)
+        {
+          new_node_parent = new_node_parent->*right;
+        }
+        else
+        {
+          new_node_parent = new_node_parent->*left;
+        }
+        mask >>= 1;
+      }
+```
+
+---
+
+# Questions?
+

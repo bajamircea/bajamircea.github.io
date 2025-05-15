@@ -41,12 +41,6 @@ image = svg({
       border: 1px solid #e8e8e8;
       background-color: #f5f5f5;
     }
-    .#{make_id("t1")} {
-      font-family: sans-serif;
-      font-size: 16px;
-      font-weight: bold;
-      dominant-baseline: middle;
-    }
     .#{make_id("task_blue")} {
       stroke: #000000;
       stroke-width: 4;

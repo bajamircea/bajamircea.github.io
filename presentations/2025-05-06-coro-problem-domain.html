@@ -496,7 +496,7 @@ void foo() {
 
 ---
 
-# Memory allocations
+# Memory
 
 - how do we control allocations?
 - even better: how do we avoid allocations?
@@ -505,6 +505,9 @@ void foo() {
 - in some cases it's important to avoid allocations:
   - hot/performance sensitive code
   - kernel/embedded environments
+
+
+- also stack usage: it's easy to stack overflow
 
 ---
 
@@ -533,6 +536,15 @@ void foo() {
 - but in some cases the work can be pending for long periods of time: e.g. wait
   for registry entry to change (i.e. even never) => cancellation mechanism IS
   required
+
+---
+
+# Programming ergonomics
+
+- a library that can do anything might sacrifice ease of use
+  - and might not do specific things well
+- How easy is it to shoot yourself in the foot?
+  - sometimes safety is sacrificed to allow some usage scenarios
 
 ---
 
