@@ -72,6 +72,11 @@ image = svg({
       stroke-width: 4;
       fill: #{color_neutral};
     }
+    .#{make_id("t1")} {
+      font-family: sans-serif;
+      font-size: 16px;
+      dominant-baseline: middle;
+    }
   CSS
 
   rect(x: 10, y: 10, width: 100, height: 70, class: make_id("task_grey"))
@@ -87,34 +92,34 @@ image = svg({
   rect(x: 400, y: 240, width: 100, height: 35, class: make_id("task_neutral"))
 
   text(
-    class: make_id("t1"), x: 10, y: 297
+    class: make_id("t1"), x: 10, y: 290
   ).add_text("stack")
   text(
-    class: make_id("t1"), x: 120, y: 212
+    class: make_id("t1"), x: 120, y: 205
   ).add_text("1. return value")
   text(
-    class: make_id("t1"), x: 120, y: 167
+    class: make_id("t1"), x: 120, y: 160
   ).add_text("2. arguments")
   text(
-    class: make_id("t1"), x: 120, y: 127
+    class: make_id("t1"), x: 120, y: 120
   ).add_text("3. return address")
   text(
-    class: make_id("t1"), x: 120, y: 102
+    class: make_id("t1"), x: 120, y: 95
   ).add_text("4. local variables (ramp)")
   text(
-    class: make_id("t1"), x: 520, y: 97
+    class: make_id("t1"), x: 520, y: 90
   ).add_text("8. local variables (body)")
   text(
-    class: make_id("t1"), x: 520, y: 167
+    class: make_id("t1"), x: 520, y: 160
   ).add_text("6. arguments")
   text(
-    class: make_id("t1"), x: 520, y: 222
+    class: make_id("t1"), x: 520, y: 215
   ).add_text("7. promise")
   text(
-    class: make_id("t1"), x: 520, y: 262
+    class: make_id("t1"), x: 520, y: 255
   ).add_text("9. state machine*")
   text(
-    class: make_id("t1"), x: 400, y: 297
+    class: make_id("t1"), x: 400, y: 290
   ).add_text("5. coroutine frame")
 
 end
@@ -163,6 +168,11 @@ image = svg({
       stroke-width: 4;
       fill: #{color_green2};
     }
+    .#{make_id("t1")} {
+      font-family: sans-serif;
+      font-size: 16px;
+      dominant-baseline: middle;
+    }
   CSS
 
   rect(x: 10, y: 10, width: 100, height: 20, class: make_id("task_grey"))
@@ -173,16 +183,16 @@ image = svg({
   rect(x: 10, y: 220, width: 100, height: 55, class: make_id("task_white"))
 
   text(
-    class: make_id("t1"), x: 120, y: 212
+    class: make_id("t1"), x: 120, y: 205
   ).add_text("1. return value")
   text(
-    class: make_id("t1"), x: 120, y: 167
+    class: make_id("t1"), x: 120, y: 160
   ).add_text("2. arguments")
   text(
-    class: make_id("t1"), x: 120, y: 127
+    class: make_id("t1"), x: 120, y: 120
   ).add_text("3. return address")
   text(
-    class: make_id("t1"), x: 120, y: 77
+    class: make_id("t1"), x: 120, y: 70
   ).add_text("4. local variables")
 
 
@@ -317,6 +327,11 @@ image = svg({
       stroke-width: 4;
       fill: #{color_neutral};
     }
+    .#{make_id("t1")} {
+      font-family: sans-serif;
+      font-size: 16px;
+      dominant-baseline: middle;
+    }
   CSS
 
   rect(x: 10, y: 10, width: 100, height: 70, class: make_id("task_grey"))
@@ -332,34 +347,34 @@ image = svg({
   rect(x: 400, y: 240, width: 100, height: 35, class: make_id("task_neutral"))
 
   text(
-    class: make_id("t1"), x: 10, y: 297
+    class: make_id("t1"), x: 10, y: 290
   ).add_text("stack")
   text(
-    class: make_id("t1"), x: 120, y: 212
+    class: make_id("t1"), x: 120, y: 205
   ).add_text("1. return value")
   text(
-    class: make_id("t1"), x: 120, y: 167
+    class: make_id("t1"), x: 120, y: 160
   ).add_text("2. arguments")
   text(
-    class: make_id("t1"), x: 120, y: 127
+    class: make_id("t1"), x: 120, y: 120
   ).add_text("3. return address")
   text(
-    class: make_id("t1"), x: 120, y: 102
+    class: make_id("t1"), x: 120, y: 95
   ).add_text("4. local variables (ramp)")
   text(
-    class: make_id("t1"), x: 520, y: 97
+    class: make_id("t1"), x: 520, y: 90
   ).add_text("8. local variables (body)")
   text(
-    class: make_id("t1"), x: 520, y: 167
+    class: make_id("t1"), x: 520, y: 160
   ).add_text("6. arguments")
   text(
-    class: make_id("t1"), x: 520, y: 222
+    class: make_id("t1"), x: 520, y: 215
   ).add_text("7. promise")
   text(
-    class: make_id("t1"), x: 520, y: 262
+    class: make_id("t1"), x: 520, y: 255
   ).add_text("9. state machine*")
   text(
-    class: make_id("t1"), x: 400, y: 297
+    class: make_id("t1"), x: 400, y: 290
   ).add_text("5. coroutine frame")
 
 end

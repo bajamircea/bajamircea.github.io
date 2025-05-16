@@ -38,7 +38,6 @@
     .svg20250506-12-tx {
       font-family: sans-serif;
       font-size: 16px;
-      text-anchor: middle;
       dominant-baseline: middle;
     }
   </style>
@@ -56,5 +55,7 @@
   <path class="svg20250506-12-l2" d="M 90 270 h 90 v -240 h -110 v 12" marker-end="url(#svg20250506-12-arrow)"/>
   <circle cx="350" cy="270" r="40" class="svg20250506-12-t2"/>
   <path class="svg20250506-12-l2" d="M 390 270 h 50 v -260 h -410 v 32" marker-end="url(#svg20250506-12-arrow)"/>
-  <text class="svg20250506-12-tx" x="100" y="210">GetMessage</text>
+  <text class="svg20250506-12-tx" x="60" y="220">GetMessage</text>
+  <text class="svg20250506-12-tx" x="190" y="120">PostMessage</text>
+  <text class="svg20250506-12-tx" x="450" y="120">PostThreadMessage</text>
 </svg>

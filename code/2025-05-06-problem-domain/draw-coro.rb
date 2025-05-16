@@ -832,7 +832,6 @@ image = svg({
     .#{make_id("tx")} {
       font-family: sans-serif;
       font-size: 16px;
-      text-anchor: middle;
       dominant-baseline: middle;
     }
   CSS
@@ -875,8 +874,16 @@ image = svg({
 
   text(
     class: make_id("tx"),
-    x: 100, y: 210
+    x: 60, y: 220
   ).add_text("GetMessage")
+  text(
+    class: make_id("tx"),
+    x: 190, y: 120
+  ).add_text("PostMessage")
+  text(
+    class: make_id("tx"),
+    x: 450, y: 120
+  ).add_text("PostThreadMessage")
 
 end
 
@@ -986,7 +993,7 @@ image = svg({
 
   text(
     class: make_id("tx"),
-    x: 150, y: 210
+    x: 150, y: 215
   ).add_text("GetQueuedCompletionStatus x2")
 
 end

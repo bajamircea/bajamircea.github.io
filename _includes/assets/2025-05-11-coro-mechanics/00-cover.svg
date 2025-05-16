@@ -35,6 +35,11 @@
       stroke-width: 4;
       fill: #2d93ad;
     }
+    .svg20250511-0-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      dominant-baseline: middle;
+    }
   </style>
   <rect x="10" y="10" width="100" height="70" class="svg20250511-0-task_grey"/>
   <rect x="10" y="80" width="100" height="30" class="svg20250511-0-task_green"/>
@@ -46,14 +51,14 @@
   <rect x="400" y="130" width="100" height="60" class="svg20250511-0-task_neutral"/>
   <rect x="400" y="190" width="100" height="50" class="svg20250511-0-task_neutral"/>
   <rect x="400" y="240" width="100" height="35" class="svg20250511-0-task_neutral"/>
-  <text class="svg20250511-0-t1" x="10" y="297">stack</text>
-  <text class="svg20250511-0-t1" x="120" y="212">1. return value</text>
-  <text class="svg20250511-0-t1" x="120" y="167">2. arguments</text>
-  <text class="svg20250511-0-t1" x="120" y="127">3. return address</text>
-  <text class="svg20250511-0-t1" x="120" y="102">4. local variables (ramp)</text>
-  <text class="svg20250511-0-t1" x="520" y="97">8. local variables (body)</text>
-  <text class="svg20250511-0-t1" x="520" y="167">6. arguments</text>
-  <text class="svg20250511-0-t1" x="520" y="222">7. promise</text>
-  <text class="svg20250511-0-t1" x="520" y="262">9. state machine*</text>
-  <text class="svg20250511-0-t1" x="400" y="297">5. coroutine frame</text>
+  <text class="svg20250511-0-t1" x="10" y="290">stack</text>
+  <text class="svg20250511-0-t1" x="120" y="205">1. return value</text>
+  <text class="svg20250511-0-t1" x="120" y="160">2. arguments</text>
+  <text class="svg20250511-0-t1" x="120" y="120">3. return address</text>
+  <text class="svg20250511-0-t1" x="120" y="95">4. local variables (ramp)</text>
+  <text class="svg20250511-0-t1" x="520" y="90">8. local variables (body)</text>
+  <text class="svg20250511-0-t1" x="520" y="160">6. arguments</text>
+  <text class="svg20250511-0-t1" x="520" y="215">7. promise</text>
+  <text class="svg20250511-0-t1" x="520" y="255">9. state machine*</text>
+  <text class="svg20250511-0-t1" x="400" y="290">5. coroutine frame</text>
 </svg>
