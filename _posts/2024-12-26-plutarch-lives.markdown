@@ -1,10 +1,10 @@
 ---
 layout: post
-title: 'Plutarh''s Lives'
+title: 'Plutarch''s Lives'
 categories: review book
 ---
 
-Plutarh's Lives was written almost two thousands years ago and it's lovely to
+Plutarch's Lives was written almost two thousands years ago and it's lovely to
 see that side by side with iron age anachronisms there are human behaviours
 and human nature that we would encounter in our times.
 

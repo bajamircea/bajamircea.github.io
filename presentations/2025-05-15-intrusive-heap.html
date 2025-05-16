@@ -128,12 +128,16 @@ void push(Node* what) noexcept
 
 - queue of work waiting for an event: "wait list"
 - data contains the function of work to be done when event is set
-  - e.g. resume coroutine that was previously suspendended
+  - e.g. resume coroutine that was previously suspended
 - nodes are stored on the coroutine frames
   - they are pushed to the end of wait list to wait for the event
 - when event is set process from the "wait list"
   - move work to "ready queue"
 - if coroutine is cancelled remove work from "wait list"
+
+
+- same idea used for `stop_callback`s (i.e. work to do to cancel operations if
+  a stop is required)
 
 ---
 
@@ -169,6 +173,23 @@ Node* pop_front() noexcept;
 
 ---
 
+# What's a min heap?
+
+- a binary tree data structure
+- the min node is at the root
+- partially sorted
+  - a node is smaller than it's left and right ("the heap property")
+- the tree is complete
+  - all levels are full, except the last (but even that one is filled left to
+    right)
+
+
+- often stored in an array where node pointers are not needed
+- for our intrusive heap will use pointers to parent, left and right
+
+
+---
+
 # Intrusive heap
 
 <div align="center">
@@ -193,22 +214,17 @@ Node* pop_front() noexcept;
 - convert duration to absolute time using a stable monotonic clock
 - use a min heap (earliest clock is at the top of the heap tree)
 - create node on coroutine frame
+- node data is:
+  - absolute time used for comparisons
+  - and work to be done when the time is reached
 - insert a new node in O(lg(N)) (e.g. a new coroutine waiting for a timer)
 - get the smallest node in O(1) (e.g. the next duration we need to wait for)
+  - we want O(1) here because waiting for a timer might be interrupted by "some
+    other work is ready", so searching for the min node might be done multiple
+    times
 - pop the smallest node in O(lg(N)) (e.g. after its duration has elapsed)
 - remove a node in O(lg(N)) (e.g. when the timer is cancelled)
 - all the operations are `noexcept`
-
----
-
-# Intrusive heap node vs. array
-
-- normally heaps use arrays structures e.g. a vector
-  - then the three pointers are not required
-  - index arithmetic is used to calculated parent and child position
-- a node based heap has the right time complexity
-  - but at the cost of large constants involved
-  - node swaps touches lots of pointers
 
 ---
 
@@ -281,6 +297,50 @@ void pop_min() noexcept;
         mask >>= 1;
       }
 ```
+
+---
+
+# Intrusive heap: node vs. array
+
+- normally heaps use arrays structures e.g. a vector
+  - then the three pointers are not required
+  - index arithmetic is used to calculated parent and child position
+  - problem on removing entries when timers are cancelled
+- a node based heap has the right time complexity
+  - but at the cost of large constants involved
+  - node swaps touches lots of pointers
+
+---
+
+# Intrusive heap vs. red-black tree
+
+- neither has currently ready implementations in the C++ standard library
+- the algorithm for the heap is simpler once the `bid_width` trick is
+  understood
+- for a red-black tree then
+  - implementation options for the red-black tree would e.g. be to follow
+    Sedgewick's left leaning approach
+  - should a parent pointer be used in the node? Sedgewick's algorithm does
+    not: remove node requires search first
+  - min-node pointer (to the left-most node) needs to be maintained to give
+    O(1) access time to it
+- red-black tree is sorted, while the heap is only partially sorted
+  - there's got to be an advantage for the heap from not having to maintain a
+    more strict property
+- hard to make performance guesses short of profiling and deeper study
+
+---
+
+# Thread safety
+
+- none of the above is thread safe
+- at least a `std::mutex` is required to wrap access
+- there is a zoo of options available wait-free/lock-free etc.
+- in particular for queues of "ready to do work" that are processed by multiple
+  threads you might want to look at least at not using a single `std::mutex`,
+  but break the queue into multiple smaller queues (one per thread), each with
+  it's own lock and the ability to "steal" work when a thread completes it's
+  own work faster than other processing threads
 
 ---
 
