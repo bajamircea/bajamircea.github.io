@@ -1,0 +1,609 @@
+---
+layout: presentation
+title: Generator
+---
+
+Mircea Baja - 20 May 2025
+
+# Generator
+
+<div align="center">
+{% include assets/2025-05-20-generator/00-cover.svg %}
+</div>
+
+---
+
+# Motivation
+
+---
+
+# Manual state machine
+
+```cpp
+struct fib_state {
+  int x_1 = 1;
+  int x_2 = 0;
+};
+
+int next_fib(fib_state & state) {
+  int val = state.x_1 + state.x_2;
+  state.x_2 = state.x_1;
+  state.x_1 = val;
+  return val;
+}
+
+void foo() {
+  fib_state state;
+  while (true) {
+    int x = next_fib(state);
+    // use x, exit loop at some point
+  }
+}
+```
+
+---
+
+# Theoretical generator
+
+```cpp
+generator fib() {
+  int x_1 = 1;
+  int x_2 = 0;
+  while (true) {
+    int val = x_1 + x_2;
+    yield val;
+    x_2 = x_1;
+    x_1 = val;
+  }
+}
+
+void foo() {
+  for (int x: fib()) {
+    // use x, exit loop at some point
+  }
+}
+```
+
+- `val` is `yield`ed before `x_2` and `x_1` are updated
+
+
+---
+
+# C++23 generator
+
+```cpp
+std::generator<int> fib() {
+  int x_1 = 1;
+  int x_2 = 0;
+  while (true) {
+    int val = x_1 + x_2;
+    co_yield val;
+    x_2 = x_1;
+    x_1 = val;
+  }
+}
+
+void foo() {
+  for (int x: fib()) {
+    // use x, exit loop at some point
+  }
+}
+```
+
+---
+
+# Realistic usage
+
+```cpp
+std::generator<std::string> generate_proxies() {
+  std::optional<std::string> configured_proxy = get_configured_proxy();
+  if (configured_proxy.has_value()) {
+    co_yield *configured_proxy;
+  }
+
+  std::optional<std::string> system_proxy = get_system_proxy();
+  if (system_proxy.has_value()) {
+    co_yield *system_proxy;
+  }
+
+  std::vector<std::string> other_proxies = get_other_proxies();
+  for (const auto& p: other_proxies) {
+    co_yield p;
+  }
+
+  co_yield std::string(); // direct connection
+}
+
+```
+- delaying work of fetching proxies is hard, requires a state machine
+- scope of variables is hard with a hand-rolled state machine
+
+---
+
+# Usage
+
+---
+
+# Yield three values
+
+```cpp
+#include <generator>
+#include <iostream>
+
+std::generator<int> some_answers() {
+  co_yield 40;
+  co_yield 41;
+  co_yield 42;
+}
+
+void print_answers() {
+  for (int x: some_answers()) {
+    std::cout << x << '\n';
+  }
+}
+
+// prints:
+// 40
+// 41
+// 42
+```
+---
+
+# Diagram
+
+<div align="center">
+{% include assets/2025-05-20-generator/01-generator.svg %}
+</div>
+
+---
+
+# co_await, co_return
+
+- not compiling
+
+```cpp
+std::generator<int> foo() {
+  co_await bar(); // compilation error
+}
+
+std::generator<int> bar() {
+  co_return 42; // compilation error
+}
+```
+- compiling
+
+```cpp
+std::generator<int> buzz() {
+  co_return;
+}
+```
+---
+
+# Under the hood
+
+---
+
+# Generator template
+
+```cpp
+template <class T>
+class generator {
+public:
+```
+
+---
+
+# Promise, lazy
+
+```cpp
+  struct promise_type {
+    const T* value_;
+    std::exception_ptr exception_;
+
+    generator get_return_object() noexcept {
+      return { std::coroutine_handle<promise_type>::from_promise(*this) };
+    }
+    suspend_always initial_suspend() noexcept {
+      return {};
+    }
+    suspend_always final_suspend() noexcept {
+      return {};
+    }
+```
+
+---
+
+# co_yield, co_return, co_await
+
+```cpp
+    suspend_always yield_value(const T& value) noexcept {
+      value_ = &value;
+      return {};
+    }
+
+    void return_void() noexcept {
+    }
+
+    template <class U>
+    U&& await_transform(U&& something) {
+      static_assert(false, "can't co_await in generator coroutine");
+      return std::forward<U>(something);
+    }
+```
+
+---
+
+# Exceptions
+
+```cpp
+    void unhandled_exception() noexcept {
+        // discuss the throw scenario
+        exception_ = std::current_exception();
+    }
+  };// promise_type
+```
+
+---
+
+# Iterator construction
+
+```cpp
+  struct iterator {
+    // input iterator
+    std::coroutine_handle<promise_type> coro_{ nullptr };
+
+    iterator() noexcept = default;
+    explicit iterator(std::coroutine_handle<promise_type> coro) noexcept : coro_(coro) {
+    }
+```
+
+---
+
+# Iterator next
+
+```cpp
+    iterator& operator++() {
+      coro_.resume();
+      if (coro_.done()) {
+        auto& exception = std::exchange(coro_, nullptr).promise().exception_;
+        if (exception) {
+          std::rethrow_exception(exception);
+        }
+      }
+      return *this;
+    }
+```
+
+---
+
+# Iterator dereference
+
+```cpp
+    reference operator*() const noexcept {
+      return *coro_.promise().value_;
+    }
+  }; // iterator
+```
+
+---
+
+# Range
+
+
+```cpp
+  iterator begin() {
+    if (coro_) {
+      coro_.resume();
+      if (coro_.done()) {
+        auto& exception = std::exchange(coro_, nullptr).promise().exception_;
+        if (exception) {
+          std::rethrow_exception(exception);
+        }
+        return {};
+      }
+    }
+    return iterator{coro_};
+  }
+
+  iterator end() noexcept {
+    return {};
+  }
+```
+
+---
+
+# Coroutine frame lifetime
+
+```cpp
+private:
+  std::coroutine_handle<promise_type> coro_;
+
+public:
+  explicit generator(std::coroutine_handle<promise_type> coro) noexcept : coro_(coro) {
+  }
+
+  ~generator() {
+    if (coro_) {
+      coro_.destroy();
+    }
+  }
+}; // generator
+```
+
+---
+
+# Details
+
+---
+
+# C++23 std::ranges::elements_of
+
+```cpp
+co_yield some_value;
+
+co_yield std::ranges::elements_of(another_generator());
+```
+
+---
+
+# resume() NOT noexcept
+
+see [Raymond Chen: Why is coroutine_handle::resume()
+potentially-throwing?](https://devblogs.microsoft.com/oldnewthing/20210505-00/?p=105186)
+
+Remember that compiler generates a try block and calls
+`promise::unhandled_exception()` in the catch block. The options are:
+
+- capture the exception in an `exception_ptr`:
+
+```cpp
+void unhandled_exception() noexcept {
+  exception_ = std::current_exception();
+}
+```
+
+- rethrow immediately (in this scenario promise.resume() throws):
+
+```cpp
+void unhandled_exception() {
+  throw;
+}
+```
+
+- or not support exceptions (or similarly call `std::terminate()`)
+
+---
+
+# Allocator
+
+- the coroutine frame of the generator requires heap allocation
+- the C++23 std::generator also takes a user defined allocator
+- the compiler might optimise out the allocation, see [Halo: coroutine Heap
+  Allocation eLision Optimization: the joint
+  response](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0981r0.html)
+
+
+- but there is very little real control over if and how much is allocated on
+  the heap
+- NOTE: the hand-rolled state machine did not require allocation
+
+---
+
+# Indirect calls
+
+- due to resume() type erasure
+  - a pointer to a function is stored in the coroutine frame
+  - and the function will then do a switch based on the state of the coroutine
+- the compiler might optimise that out
+- or might not
+- NOTE: the hand-rolled state machine did not have indirect calls
+
+---
+
+# Novel options for bugs
+
+---
+
+# Spot the bug (example 1)
+
+```cpp
+std::generator<std::string> greek_letters(
+    const std::string& middle, const std::string& last) {
+  co_yield "alpha";
+  co_yield middle;
+  co_yield last;
+}
+
+void foo() {
+  std::string gamma("gamma");
+  auto alphabet = greek_letters(gamma, "omega");
+
+  for (const auto& letter: alphabet) {
+    std::cout << letter << '\n';
+  }
+}
+// expects to print:
+// alpha
+// gamma
+// omega
+```
+
+---
+
+# Spot the bug (example 1)
+
+```cpp
+std::generator<std::string> greek_letters(
+    const std::string& middle, const std::string& last) {
+  co_yield "alpha"; // OK, std::string temporary created on coroutine frame
+  co_yield middle;
+  co_yield last;
+}
+
+void foo() {
+  std::string gamma("gamma");
+  auto alphabet = greek_letters(gamma, "omega");
+
+  for (const auto& letter: alphabet) {
+    std::cout << letter << '\n';
+  }
+}
+```
+
+---
+
+# Spot the bug (example 1)
+
+```cpp
+std::generator<std::string> greek_letters(
+    const std::string& middle, const std::string& last) {
+  co_yield "alpha";
+  co_yield middle;
+  co_yield last;
+}
+
+void foo() {
+  std::string gamma("gamma");
+  auto alphabet = greek_letters(gamma, "omega");
+  // BUG, temporary of ramp is out of scope
+  for (const auto& letter: alphabet) {
+    std::cout << letter << '\n';
+  }
+}
+```
+
+---
+
+# Spot the bug (example 2)
+
+```cpp
+std::generator<std::string> greek_letters(
+    std::string&& middle, std::string&& last) {
+  co_yield "alpha";
+  co_yield middle;
+  co_yield last;
+}
+
+void foo() {
+  std::string gamma("gamma");
+  auto alphabet = greek_letters(std::move(gamma), "omega");
+
+  for (const auto& letter: alphabet) {
+    std::cout << letter << '\n';
+  }
+}
+```
+
+---
+
+# Spot the bug (example 2)
+
+```cpp
+std::generator<std::string> greek_letters(
+    std::string&& middle, std::string&& last) {
+  co_yield "alpha";
+  co_yield middle;
+  co_yield last;
+}
+
+void foo() {
+  std::string gamma("gamma");
+  auto alphabet = greek_letters(std::move(gamma), "omega");
+  // BUG, also remember std::move does not move
+  for (const auto& letter: alphabet) {
+    std::cout << letter << '\n';
+  }
+}
+```
+
+---
+
+# Fix 1 - fix by accident
+
+```cpp
+std::generator<std::string> greek_letters(
+    const std::string& middle, const std::string& last) {
+  co_yield "alpha";
+  co_yield middle;
+  co_yield last;
+}
+
+void foo() {
+  std::string gamma("gamma");
+
+  for (const auto& letter: greek_letters(gamma, "omega")) {
+    std::cout << letter << '\n';
+  }
+}
+```
+- C++23 has a [fix for range-based for
+  loops](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2718r0.html),
+  but old compilers (i.e. your compiler) might have not implemented it
+- but error prone
+- also see [how easy it is to get
+  confused, unless you are
+  Barry](https://stackoverflow.com/questions/79567505/c23-range-based-for-loop-lifetime-fixes-interraction-with-stdgenerator-arg)
+
+---
+
+# Fix 2 - pass by value
+
+```cpp
+std::generator<std::string> greek_letters(
+    std::string middle, std::string last) {
+  co_yield "alpha";
+  co_yield middle;
+  co_yield last;
+}
+
+void foo() {
+  std::string gamma("gamma");
+
+  for (const auto& letter: greek_letters(gamma, "omega")) {
+    std::cout << letter << '\n';
+  }
+}
+```
+- error prone (different rule from functions)
+- leads to either:
+  - additional copies
+  - additional moves (with their scope implications)
+
+---
+
+# Fix 3 - capture
+
+```cpp
+class greek_alphabet {
+  std::string middle_; std::string last_;
+public:
+  greek_alphabet(const std::string& middle, const std::string& last):
+    middle_{ middle}, last_{ last }
+  {}
+
+  std::generator<std::string> letters() const {
+    co_yield "alpha";
+    co_yield middle_;
+    co_yield last_;
+  }
+};
+
+void foo() {
+  std::string gamma("gamma");
+  greek_alphabet alphabet{ gamma, "omega" };
+
+  for (const auto& letter: alphabet.letters()) {
+    std::cout << letter << '\n';
+  }
+}
+```
+- error prone (different rule from functions)
+- leads to either:
+  - additional copies
+  - additional moves (with their scope implications)
+
+
+---
+
+# Questions?
+

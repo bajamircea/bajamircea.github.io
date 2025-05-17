@@ -380,7 +380,7 @@ void foo() {
   fib_state state;
   while (true) {
     int x = next_fib(state);
-    // use x
+    // use x, exit loop at some point
   }
 }
 ```
@@ -402,7 +402,7 @@ generator fib() {
 
 void foo() {
   for (int x: fib()) {
-    // use x
+    // use x, exit loop at some point
   }
 }
 ```
@@ -429,7 +429,7 @@ std::generator<int> fib() {
 
 void foo() {
   for (int x: fib()) {
-    // use x
+    // use x, exit loop at some point
   }
 }
 ```

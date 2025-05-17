@@ -22,6 +22,7 @@ WORK IN PROGRESS
 
 - [Problem domain](/presentations/2025-05-06-coro-problem-domain.html)
 - [Mechanics](/presentations/2025-05-11-coro-mechanics.html)
+- [Generator](/presentations/2025-05-20-generator.html)
 - [Intrusive heap](/presentations/2025-05-15-intrusive-heap.html)
 
 <div align="center">
@@ -46,7 +47,6 @@ date, but really good background info required to understand coroutines
 
 # TODO - topics to cover
 
-- std::generator
 - Scoped coroutines
   - TODO discuss issue with reference parameters, lambda captures, pointers, string_views
     - the generator problems with scope

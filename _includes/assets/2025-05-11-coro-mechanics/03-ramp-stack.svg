@@ -55,7 +55,7 @@
   <text class="svg20250511-3-t1" x="120" y="205">1. return value</text>
   <text class="svg20250511-3-t1" x="120" y="160">2. arguments</text>
   <text class="svg20250511-3-t1" x="120" y="120">3. return address</text>
-  <text class="svg20250511-3-t1" x="120" y="95">4. local variables (ramp)</text>
+  <text class="svg20250511-3-t1" x="120" y="95">4. local variables (ramp/resume)</text>
   <text class="svg20250511-3-t1" x="520" y="90">8. local variables (body)</text>
   <text class="svg20250511-3-t1" x="520" y="160">6. arguments</text>
   <text class="svg20250511-3-t1" x="520" y="215">7. promise</text>

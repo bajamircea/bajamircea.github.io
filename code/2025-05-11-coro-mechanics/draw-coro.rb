@@ -105,7 +105,7 @@ image = svg({
   ).add_text("3. return address")
   text(
     class: make_id("t1"), x: 120, y: 95
-  ).add_text("4. local variables (ramp)")
+  ).add_text("4. local variables (ramp/resume)")
   text(
     class: make_id("t1"), x: 520, y: 90
   ).add_text("8. local variables (body)")
@@ -360,7 +360,7 @@ image = svg({
   ).add_text("3. return address")
   text(
     class: make_id("t1"), x: 120, y: 95
-  ).add_text("4. local variables (ramp)")
+  ).add_text("4. local variables (ramp/resume)")
   text(
     class: make_id("t1"), x: 520, y: 90
   ).add_text("8. local variables (body)")

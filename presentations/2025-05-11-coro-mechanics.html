@@ -281,14 +281,12 @@ struct coroutine_traits<R, Args...>
   co_await promise.final_suspend();
 ```
 
-- above pseudocode is a over-simplification
-- promise is allocated on the coroutine frame
+- above pseudocode is an over-simplification
 - it allows coroutine behaviour customization:
+  - space on the frame to handle the values from `co_return` and/or `co_yield`
   - should it suspend at the start?
   - should it suspend at the end?
   - what should it do if exceptions are thrown?
-  - space on the frame to handle the values from `co_return` and/or `co_yield`
-  - etc.
 
 ---
 
