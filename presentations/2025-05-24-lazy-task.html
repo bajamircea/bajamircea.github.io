@@ -1,0 +1,61 @@
+---
+layout: presentation
+title: Lazy task
+---
+
+Mircea Baja - 24 May 2025
+
+# Lazy task
+
+<div align="center">
+{% include assets/2025-05-24-lazy-task/00-cover.svg %}
+</div>
+
+---
+
+# Motivation
+
+---
+
+# Goal
+
+```cpp
+task<void> echo(socket s) {
+  buffer buff;
+  while (true) {
+    std::size_t length = co_await async_read_some(s, buff);
+    co_await async_write(s, buff, length);
+  }
+}
+```
+
+- easy to understand behaviour e.g.:
+  - scope for the buffer
+  - exceptions (but slow, so use sparingly)
+  - cancellation
+
+---
+
+# Basic example
+
+```cpp
+task<void> bar() {
+  co_await async_sleep(10s);
+}
+task<void> foo() {
+  co_await bar();
+}
+```
+
+---
+
+# Basic example
+
+<div align="center">
+{% include assets/2025-05-24-lazy-task/01-simple.svg %}
+</div>
+
+---
+
+# Questions?
+

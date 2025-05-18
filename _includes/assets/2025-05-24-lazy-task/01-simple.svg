@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250524-1-box" width="100%" viewBox="0 0 800 320">
+  <style>
+    #svg20250524-1-box {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20250524-1-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .svg20250524-1-t2 {
+      font-family: sans-serif;
+      font-size: 16px;
+      dominant-baseline: middle;
+    }
+    .svg20250524-1-l1 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .svg20250524-1-l2 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 5;
+    }
+    .svg20250524-1-task_white {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #ffffff;
+    }
+    .svg20250524-1-task_neutral2 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #6ac3d9;
+    }
+  </style>
+  <rect x="10" y="10" width="80" height="300" class="svg20250524-1-task_white"/>
+  <rect x="130" y="70" width="80" height="170" class="svg20250524-1-task_neutral2"/>
+  <rect x="250" y="85" width="80" height="140" class="svg20250524-1-task_neutral2"/>
+  <path class="svg20250524-1-l1" d="M 50 30 v 70 l 120 -20 v 40 l 120 -25 v 55"/>
+  <path class="svg20250524-1-l2" d="M 290 150 l -120 -20 v 10 l -120 -30 v 100 l 240 -50"/>
+  <path class="svg20250524-1-l1" d="M 290 160 v 55 l -120 -65 v 80 l -120 -10 v 70"/>
+  <text class="svg20250524-1-t1" x="170" y="55">foo</text>
+  <text class="svg20250524-1-t1" x="290" y="70">bar</text>
+  <text class="svg20250524-1-t2" x="55" y="190">10s</text>
+</svg>
