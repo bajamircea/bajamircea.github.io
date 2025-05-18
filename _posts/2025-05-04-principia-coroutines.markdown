@@ -15,6 +15,11 @@ journey that covers interesting, but less common parts of C++.
 
 > Ivan: "This is not the C++ I'm used to see"
 
+There are multiple goals. There is the indirect goal of generally learning
+about concurrency, about C++, but also specifically answering the question
+"what would it take to write a library that can do concurrency in C++,
+potentially involving coroutines"?
+
 WORK IN PROGRESS
 
 

@@ -120,10 +120,9 @@ task wozz() {
 - it has to be used with care: don't resume if destroyed, don't resume if not
   suspended, don't destroy more than once, etc.
 
-
 ---
 
-# Stack and coroutine frame
+# Ramp start
 
 <div align="center">
 {% include assets/2025-05-11-coro-mechanics/03-ramp-stack.svg %}
@@ -436,36 +435,273 @@ struct promise_type {
 
 ---
 
-# co_return, co_yield
+# co_return expression
+
+```cpp
+  co_return expression;
+```
+
+is re-writen as:
+
+```cpp
+  promise.return_value(expression);
+```
+
+- type of `co_return` is not the same as the functions declared return type
+- the declared return type (e.g. `task<int>` allows access to the values passed
+  to `co_return`, via the promise, therefore it's commonly a template class
+  that takes the type of `co_return` as a template parameter
+- can choose to not implement `promise.return_value` to limit how that kind of
+  coroutine can be used (via compilation errors)
+
+---
+
+# co_return expression
 
 ```cpp
 task<int> wozz() {
   co_return 42;
 }
+```
 
+compiler error for the `wozz` if the
+`task<int>::promise_type.return_value(int)` does not compile/exist, to compile
+you need at least something like:
+
+```cpp
+struct promise_type {
+  // ...
+  void return_value(int x) noexcept {
+    value_ = x;
+  }
+};
+```
+
+---
+
+# co_return void
+
+```cpp
+  co_return;
+```
+
+is re-writen as:
+
+```cpp
+  promise.return_void();
+```
+
+- can choose to not implement `promise.return_void` to limit how that kind of
+  coroutine can be used (via compilation errors) e.g. implement just
+  `promise.return_value` to only allow `co_return expression;`
+
+---
+
+# co_return void
+
+```cpp
 task<void> foo() {
-  co_await bar();
+  co_return;
 }
 
-generator<int> buzz() {
+task<void> buzz() {
+  co_await bar();
+}
+```
+- `co_return;` can be implicit if the function reaches it's end (as in `buzz`)
+
+```cpp
+struct promise_type {
+  // ...
+  void return_void() noexcept {
+  }
+};
+```
+
+you need to implement at least one of `return_value` or `return_void`
+
+---
+
+# co_yield
+
+```cpp
+  co_yield expression;
+```
+
+is re-writen as:
+
+```cpp
+  co_await promise.yield_value(expr);
+```
+
+- can choose to not implement `promise.yield_value` to limit how that kind of
+  coroutine can be used (via compilation errors)
+
+---
+
+# co_yield
+
+```cpp
+generator<int> foo() {
   co_yield 42;
 }
 ```
 
-- type of `co_return` is not the same as the functions declared return type
-- the declared return type allows access to the values passed to `co_return`
-  and `co_yield`, and it's often a template class that takes the type of
-  `co_return` and/or `co_yield` as a template parameter
+for that to compile you need something like
+
+```cpp
+struct promise_type {
+  // ...
+  std::suspend_always yield_value(int x) noexcept {
+    value_ = x;
+  }
+};
+```
 
 ---
 
-TODO:
-- how state is stored
-- two options
+# Allocation control
 
-- the three versions of await_suspend
-  - the tail recursion case
+- get_return_object_on_allocation_failure()
+- custom operator new and delete
 
+# await_transform
+
+---
+
+# The three versions of await_suspend
+
+---
+
+# void
+
+if await_suspend returns `void`:
+
+```cpp
+if (!awaiter.await_ready()) {
+  // ... suspend coroutine (save data) here
+  awaiter.await_suspend(coroutine_handle)
+  // ... return to caller here
+  // ...
+  // ... when resumed continue from here
+}
+auto x = awaiter.await_resume();
+```
+
+---
+
+# bool
+
+if await_suspend returns `bool`:
+
+```cpp
+if (!awaiter.await_ready()) {
+  // ... suspend coroutine (save data) here
+  if (awaiter.await_suspend(coroutine_handle)) {
+    // ... return to caller here
+    // ...
+    // ... when resumed continue from here
+  }
+}
+auto x = awaiter.await_resume();
+```
+
+Why?
+- sometimes the result is already available and can resume immediately without
+  returning to the caller
+
+---
+
+# std::coroutine_handle
+
+if await_suspend returns `coroutine_handle`:
+
+```cpp
+if (!awaiter.await_ready()) {
+  // ... suspend coroutine (save data) here
+  auto h = awaiter.await_suspend(coroutine_handle)) {
+    h.resume();
+    // ... return to caller here
+    // ...
+    // ... when resumed continue from here
+  }
+}
+auto x = awaiter.await_resume();
+```
+
+Why?
+- allows a coroutine to resume another specified one before returning to the
+  caller
+- it's complicated and has to do with avoiding stack overflows
+
+Also `std::noop_coroutine()` gives us a handle to use to not really resume
+another coroutine.
+
+---
+
+# The stack overflow scenario
+
+```cpp
+task completes_synchronously() {
+  co_return;
+}
+
+task loop_synchronously(int count) {
+  for (int i = 0; i < count; ++i) {
+    co_await completes_synchronously();
+  }
+}
+```
+see
+[Lewis Baker: C++ Coroutines: Understanding Symmetric
+Transfer](https://lewissbaker.github.io/2020/05/11/understanding_symmetric_transfer)
+
+---
+
+# How coroutine state works
+
+---
+
+# How it could work
+
+In many ways but:
+- it needs to handle two cases:
+  - resume
+  - destroy
+- it needs to keep the promise at a constant offset
+
+Concretely
+1. Could store two function pointers in the state part of the coro, when the
+state is saved update those functions to be the next step functions
+2. Could store two fixed function pointers, store an index ("we got to step
+N"), when the functions are called switch/jump to the work for step N
+3. Other creative ways
+
+Practically it's a variation of option 2.
+
+---
+
+# Tail recursion
+
+The pseudocode for symmetric transfer
+
+```cpp
+if (!awaiter.await_ready()) {
+  // ... suspend coroutine (save data) here
+  auto h = awaiter.await_suspend(coroutine_handle)) {
+    h.resume();
+    // ... return to caller here
+    // ...
+    // ... when resumed continue from here
+  }
+}
+auto x = awaiter.await_resume();
+```
+
+The pseudocode above does not capture that really the compiler implements the
+state machine of the coroutine using glorious `goto`/jump statements and the
+h.resume() is positioned to the end (before returning to the called) allowing
+for tail recursion optimisation to avoid stack overflow.
 
 ---
 
