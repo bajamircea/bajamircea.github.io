@@ -3,14 +3,13 @@ layout: presentation
 title: C++ coroutine mechanics
 ---
 
-Mircea Baja - 11 May 2025
-
 # C++ coroutine mechanics
 
 <div align="center">
 {% include assets/2025-05-11-coro-mechanics/00-cover.svg %}
 </div>
 
+Mircea Baja - 11 May 2025
 
 ---
 
@@ -47,6 +46,33 @@ Mircea Baja - 11 May 2025
 
 ---
 
+# Coroutine syntax
+
+```cpp
+task foo() {
+  auto x = co_await bar();
+}
+
+generator buzz() {
+  co_yield 42;
+}
+
+task wozz() {
+  co_return 42;
+}
+```
+
+- looks like a function (the signature is the ramp function signature)
+- three new keywords:
+  - `co_await` used to define a (potential) suspension point
+  - `co_yield` to (potentially) suspend and yield some value
+  - `co_return` to return a value at the end
+- no just `return` in the coroutine body
+- other than that, normal code inside the coroutine body
+- can be member, template, but not destructor, not in `catch` blocks
+
+---
+
 # Visual layout
 
 <div align="center">
@@ -58,40 +84,202 @@ Mircea Baja - 11 May 2025
 
 ---
 
-# Coroutine syntax
+# Coroutine implemented as functions
 
-```cpp
-task foo() {
-  co_await bar();
-}
+- mathematical equivalence of functions and coroutines (duality)
+- but the function mechanics uses hardware support such as assembly instruction
+  `CALL` knows to save the current address on the stack, increment the stack
+  pointer register and continue from the location provided
+- in practice a coroutine is implemented in terms of functions to exploit this
+  hardware efficiency
+  - the first of these functions is special: ramp
+  - the following resume and eventually destroy from a previous suspension
+- coroutine frame is allocated on the heap (unless customized or optimized out)
+  - keeps data between suspension points
 
-generator buzz() {
-  co_yield 42;
-}
+---
 
-task wozz() {
-  co_return 42;
-}
+# std::coroutine_handle
 
-```
+- C++ class wrapper around a pointer to the coroutine frame
+- allows control of the coroutine frame via members of the class
 
-- looks like a function
-- three new keywords:
-  - `co_await` used to define a suspension point
-  - `co_yield` to suspend and yield some value
-  - `co_return` to return a value at the end
-- no just `return` in the coroutine body
-- other than that, normal code inside the coroutine body
-- can be member, template, but not destructor, not in `catch` blocks
+
+- `void resume()`
+- `void destroy()`
+- `bool done()`
+- ...
+
+
+- handle, not RAII:
+  - e.g. it has copy, not just move; copy copies the pointer
+  - destroy() does not get called automatically on the handle destruction
+- also it's a template (in an unusual way for handles)
+
+
+- it has to be used with care: don't resume if destroyed, don't resume if not
+  suspended, don't destroy more than once, etc.
 
 
 ---
 
-# co_await is more important
+# Stack and coroutine frame
 
-eventually resolves expression to an awaiter object that controls suspension
+<div align="center">
+{% include assets/2025-05-11-coro-mechanics/03-ramp-stack.svg %}
+</div>
 
-then
+---
+
+# Ramp start
+
+```cpp
+// given
+task<std::string> foo(int x) {
+  int y = co_await bar();
+  co_return std::to_string(x + y);
+}
+
+// ramp gets called somewhere
+  task<std::string> t = foo(42);
+```
+
+1. ramp function return value is `t` of type `task<std::string>`
+2. argument is `42` of type `int`
+3. return address is calle's return address
+4. stack used by the ramp (e.g. for call to malloc to allocate coroutine frame)
+5. coroutine frame is allocated
+6. `42` of type `int` is copied to the frame (so that it can be accessed later)
+7. promise what?
+
+- this promise type has nothing to do with `std::promise`
+
+
+---
+
+# std::coroutine_traits
+
+```cpp
+template<class, class...>
+struct coroutine_traits {};
+
+template<class R, class... Args>
+requires requires { typename R::promise_type; }
+struct coroutine_traits<R, Args...>
+{
+  using promise_type = typename R::promise_type;
+};
+```
+
+- this customization point allows using coroutine declared return types that do
+  not need to be change to expose a `promise_type` (e.g. use with `std::future`
+  instead of our `task<std::string>`) OR to consider coroutine
+  function arguments too in the resolution to the `promise_type`
+- rarely cusomized in practice, usually:
+
+```cpp
+  using coroutine_traits<task<std::string>, int>::promise_type =
+    task<std::string>::promise_type;
+```
+
+---
+
+# Promise type
+
+```cpp
+class task {
+public:
+  class promise_type {
+  };
+};
+
+// or
+
+class task {
+public:
+  using promise_type = some_other_type;
+};
+```
+
+- this promise type has nothing to do with `std::promise`
+- two options: the `promise_type` is defined within the declared return type or
+  aliased to some other type defined elsewhere
+
+---
+
+# Promise construction
+
+```cpp
+  promise_type promise(<<promise constructor args>>);
+```
+
+- the compiler looks for a constructor that matches the arguments provided to
+  the coroutine (`int` in our example)
+- else (typical) falls back to a default constructor
+
+
+The promise allows all sorts of coroutine customization
+
+---
+
+# Re-write
+
+---
+
+# Body re-write
+
+```cpp
+  promise_type promise(<<promise constructor args>>);
+  try {
+    co_await promise.initial_suspend();
+    // ... body here
+  }
+  catch (...) {
+    if (!made enough progress through initial_suspend) {
+      throw;
+    }
+    promise.undhandled_exception();
+  }
+  co_await promise.final_suspend();
+```
+
+- above pseudocode is an over-simplification
+- it allows coroutine behaviour customization:
+  - space on the frame to handle the values from `co_return` and/or `co_yield`
+  - should it suspend at the start?
+  - should it suspend at the end?
+  - what should it do if exceptions are thrown?
+
+
+---
+
+# co_await expression re-write
+
+For an expression in the coroutine body (e.g. not initial_suspend or
+final_suspend):
+
+```cpp
+auto x = co_await expression;
+```
+
+Start with the expression:
+- if the promise has a `await_transform`: apply that to the expression to get an
+  awaitable
+- else: continue with the expression as the awaitable
+
+Then with the awaitable
+- if the awaitable has a member `operator co_await`: call that to get an
+  awaiter
+- else if there is some non-member `operator co_await` taking the awaitable:
+  call that to get an awaiter
+- else: continue with the awaitable as the awaiter
+
+Then expect that the awaiter has three specific `await_...` methods.
+
+---
+
+# co_await awaiter re-write
+
 
 ```cpp
 auto x = co_await awaiter;
@@ -110,29 +298,25 @@ if (!awaiter.await_ready()) {
 auto x = awaiter.await_resume();
 ```
 
-NOTE: call to `await_suspend` is after the coroutine data is saved (suspended),
-this helps with multithreading
+- this is still pseudocode as it involves jumps e.g. to resume where somehow
+  object continue as if they were in scope
 
 ---
 
-# std::coroutine_handle
+# Suspend point
 
-- C++ class wrapper around a pointer to the coroutine frame
-- allows control of the coroutine frame via members of the class
-
-
-- `void resume()`
-- `void destroy()`
-- `bool done()`
-- ...
-
-
-- handle, not RAII (e.g. it has copy, not just move; copy copies the pointer)
-- also it's a template (in an unusual way for handles)
-
-
-- it has to be used with care: don't resume if destroyed, don't resume if not
-  suspended, don't destroy more than once, etc.
+- the call to `await_suspend` is after the coroutine data is saved (suspended)
+  - e.g. it needs to save to the coroutine frame "next time continue from step
+    N"
+- this helps with multithreading as await suspend might call some API the
+  completion of which will resume concurrently with await_suspend completing
+  - e.g. that other thread can resume from step N, does not need to add
+    synchronization to wait for await_suspend to complete
+- but is not sufficient, in multithreaded scenarios additional care and
+  synchronization might be required
+- the (potentially temporary) awaiter is stored on the coroutine frame while
+  the coroutine is suspended
+- await_ready allows optimisations to skip this "save" work
 
 ---
 
@@ -149,7 +333,19 @@ struct suspend_always {
 };
 ```
 
-- this is an example of "nice to have"
+- this is an example of "nice to have", e.g. often returned from
+  initial_suspend to have a lazy coroutine that suspends before the body is
+  executed
+
+e.g.
+```cpp
+struct promise_type {
+  // ...
+  std::suspend_always initial_suspend() noexcept {
+    return {};
+  }
+};
+```
 
 ---
 
@@ -163,6 +359,78 @@ struct suspend_always {
 
   constexpr void await_suspend(coroutine_handle<>) const noexcept {}
   constexpr void await_resume() const noexcept {}
+};
+```
+
+---
+
+# Promise-based customizations
+
+---
+
+# Ramp return object
+
+```cpp
+auto return_object = promise.get_return_object();
+```
+
+e.g. implemented as:
+```cpp
+struct promise_type {
+  // ...
+  task get_return_object() noexcept {
+    return { std::coroutine_handle<promise_type>::from_promise(*this) };
+  }
+};
+```
+
+- this is the return value from the ramp function (stored on the stack - point
+  1)
+  - basically returned the first time the coroutine suspends
+  - quite common is to suspend in `initial_suspend`
+
+
+- conversion between `promise` and `coroutine_handle` implies the promise is
+  stored at a constant offset from the coroutine frame address
+---
+
+# Additional suspend points
+
+```cpp
+co_await promise.initial_suspend();
+// ...
+co_await promise.final_suspend();
+```
+
+e.g.
+```cpp
+struct promise_type {
+  // ...
+  std::suspend_always initial_suspend() noexcept {
+    return {};
+  }
+};
+```
+
+---
+
+# Exceptions
+
+```cpp
+catch(...) {
+  promise.unhandled_exception();
+}
+// ...
+co_await promise.final_suspend();
+```
+
+e.g.
+```cpp
+struct promise_type {
+  // ...
+  void unhandled_exception() noexcept {
+    exception_ptr_ = std::current_exception();
+  }
 };
 ```
 
@@ -191,154 +459,10 @@ generator<int> buzz() {
 
 ---
 
-# Coroutine implemented as functions
-
-- mathematical equivalence of functions and coroutines (duality)
-- but the function mechanics uses hardware support such as assembly instruction
-  `CALL` knows to save the current address on the stack, increment the stack
-  pointer register and continue from the location provided
-- in practice a coroutine is implemented in terms of functions to exploit this
-  hardware efficiency
-  - the first of these functions is special: ramp
-  - the following resume or destroy from a previous suspension
-
----
-
-# Ramp
-
-<div align="center">
-{% include assets/2025-05-11-coro-mechanics/03-ramp-stack.svg %}
-</div>
-
----
-
-# Determine promise type
-
-```cpp
-// given
-task foo() {
-  co_await bar();
-}
-```
-
-```cpp
-class task {
-public:
-  using promise_type = some_other_type;
-};
-
-// or
-
-class task {
-public:
-  class promise_type {
-  };
-};
-
-```
-
-- this promise type has nothing to do with `std::promise`
-- usually promise type associated to the coroutine via the declared return type
-- in the simplest: the `promise_type` type (literally) aliased or defined
-  within the declared return type
-
----
-
-# Coroutine traits
-
-```cpp
-template<class, class...>
-struct coroutine_traits {};
-
-template<class R, class... Args>
-requires requires { typename R::promise_type; }
-struct coroutine_traits<R, Args...>
-{
-  using promise_type = typename R::promise_type;
-};
-```
-
-- this customization point allows using coroutine declared return types that do
-  not need to be change to expose a `promise_type` OR to consider coroutine
-  function arguments too in the resolution to the `promise_type`
-
----
-
-# Body re-write
-
-```cpp
-  promise_type promise(<<promise constructor args>>);
-  try {
-    co_await promise.initial_suspend();
-    // ... body here
-  }
-  catch (...) {
-    if (!made enough progress through initial_suspend) {
-      throw;
-    }
-    promise.undhandled_exception();
-  }
-  co_await promise.final_suspend();
-```
-
-- above pseudocode is an over-simplification
-- it allows coroutine behaviour customization:
-  - space on the frame to handle the values from `co_return` and/or `co_yield`
-  - should it suspend at the start?
-  - should it suspend at the end?
-  - what should it do if exceptions are thrown?
-
----
-
-# Promise construction
-
-```cpp
-  promise_type promise(<<promise constructor args>>);
-```
-
-- the compiler looks for a constructor that matches the arguments provided to
-  the coroutine
-- else (typical) falls back to a default constructor
-
-
-- the promise allows storage of additional content in the coroutine frame,
-  e.g.:
-  - values returned by `co_return` until they are picked by the caller
-  - the parent coroutine (to be resumed when this coroutine completes)
-- customization of `co_await`
-
----
-
-# get_return_object
-
-```cpp
-task promise_type::get_return_object() noexcept
-{
-  return { std::coroutine_handle<promise_type>::from_promise(*this) };
-}
-```
-
-- this is the return value from the ramp function
-  - basically the first time the coroutine suspends
-  - quite common is to suspend in `initial_suspend`
-
-
-- conversion between `promise` and `coroutine_handle` implies the promise is
-  stored at a constant offset from the coroutine frame address
-
----
-
 TODO:
 - how state is stored
 - two options
 
-- conversion between promise and coroutine_handle
-  - at constant offset
-
-
-- customizing awaiters
-- temporary awaiters are stored on the coroutine frame
-- the purpose of await suspend after coroutine is suspended
 - the three versions of await_suspend
   - the tail recursion case
 

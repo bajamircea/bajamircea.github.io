@@ -33,7 +33,7 @@ end
 image = svg({
   id: make_id("box"),
   width: "100%",
-  viewBox: "0 0 800 320",
+  viewBox: "0 0 800 300",
   }) do
 
   style().add_text(<<-CSS)
@@ -105,10 +105,10 @@ image = svg({
   ).add_text("3. return address")
   text(
     class: make_id("t1"), x: 120, y: 95
-  ).add_text("4. local variables (ramp/resume)")
+  ).add_text("4. function local variables")
   text(
     class: make_id("t1"), x: 520, y: 90
-  ).add_text("8. local variables (body)")
+  ).add_text("8. coroutine body local variables")
   text(
     class: make_id("t1"), x: 520, y: 160
   ).add_text("6. arguments")
@@ -134,7 +134,7 @@ $crt_id += 1
 image = svg({
   id: make_id("box"),
   width: "100%",
-  viewBox: "0 0 800 290",
+  viewBox: "0 0 800 300",
   }) do
 
   style().add_text(<<-CSS)
@@ -168,6 +168,11 @@ image = svg({
       stroke-width: 4;
       fill: #{color_green2};
     }
+    .#{make_id("task_neutral")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_neutral};
+    }
     .#{make_id("t1")} {
       font-family: sans-serif;
       font-size: 16px;
@@ -175,13 +180,16 @@ image = svg({
     }
   CSS
 
-  rect(x: 10, y: 10, width: 100, height: 20, class: make_id("task_grey"))
-  rect(x: 10, y: 30, width: 100, height: 80, class: make_id("task_green"))
+  rect(x: 10, y: 10, width: 100, height: 70, class: make_id("task_grey"))
+  rect(x: 10, y: 80, width: 100, height: 30, class: make_id("task_green"))
   rect(x: 10, y: 110, width: 100, height: 20, class: make_id("task_green"))
   rect(x: 10, y: 130, width: 100, height: 60, class: make_id("task_green"))
   rect(x: 10, y: 190, width: 100, height: 30, class: make_id("task_green"))
   rect(x: 10, y: 220, width: 100, height: 55, class: make_id("task_white"))
 
+  text(
+    class: make_id("t1"), x: 10, y: 290
+  ).add_text("stack")
   text(
     class: make_id("t1"), x: 120, y: 205
   ).add_text("1. return value")
@@ -192,9 +200,8 @@ image = svg({
     class: make_id("t1"), x: 120, y: 120
   ).add_text("3. return address")
   text(
-    class: make_id("t1"), x: 120, y: 70
-  ).add_text("4. local variables")
-
+    class: make_id("t1"), x: 120, y: 95
+  ).add_text("4. function local variables")
 
 end
 
@@ -288,7 +295,7 @@ $crt_id += 1
 image = svg({
   id: make_id("box"),
   width: "100%",
-  viewBox: "0 0 800 320",
+  viewBox: "0 0 800 300",
   }) do
 
   style().add_text(<<-CSS)
@@ -360,10 +367,10 @@ image = svg({
   ).add_text("3. return address")
   text(
     class: make_id("t1"), x: 120, y: 95
-  ).add_text("4. local variables (ramp/resume)")
+  ).add_text("4. function local variables")
   text(
     class: make_id("t1"), x: 520, y: 90
-  ).add_text("8. local variables (body)")
+  ).add_text("8. coroutine local variables")
   text(
     class: make_id("t1"), x: 520, y: 160
   ).add_text("6. arguments")

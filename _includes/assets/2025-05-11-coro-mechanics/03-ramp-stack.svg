@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="svg20250511-3-box" width="100%" viewBox="0 0 800 320">
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250511-3-box" width="100%" viewBox="0 0 800 300">
   <style>
     #svg20250511-3-box {
       border: 1px solid #e8e8e8;
@@ -55,8 +55,8 @@
   <text class="svg20250511-3-t1" x="120" y="205">1. return value</text>
   <text class="svg20250511-3-t1" x="120" y="160">2. arguments</text>
   <text class="svg20250511-3-t1" x="120" y="120">3. return address</text>
-  <text class="svg20250511-3-t1" x="120" y="95">4. local variables (ramp/resume)</text>
-  <text class="svg20250511-3-t1" x="520" y="90">8. local variables (body)</text>
+  <text class="svg20250511-3-t1" x="120" y="95">4. function local variables</text>
+  <text class="svg20250511-3-t1" x="520" y="90">8. coroutine local variables</text>
   <text class="svg20250511-3-t1" x="520" y="160">6. arguments</text>
   <text class="svg20250511-3-t1" x="520" y="215">7. promise</text>
   <text class="svg20250511-3-t1" x="520" y="255">9. state machine*</text>
