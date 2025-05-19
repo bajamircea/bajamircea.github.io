@@ -42,8 +42,14 @@ task<void> echo(socket s) {
 task<void> bar() {
   co_await async_sleep(10s);
 }
+
 task<void> foo() {
   co_await bar();
+}
+
+void somewhere() {
+  // run foo()
+  // also resume sleeping coroutines
 }
 ```
 
@@ -54,6 +60,328 @@ task<void> foo() {
 <div align="center">
 {% include assets/2025-05-24-lazy-task/01-simple.svg %}
 </div>
+
+---
+
+# Basic example - in foo
+
+<div align="center">
+{% include assets/2025-05-24-lazy-task/02-in-foo.svg %}
+</div>
+
+---
+
+# Basic example - in bar *
+
+<div align="center">
+{% include assets/2025-05-24-lazy-task/03-bar-created.svg %}
+</div>
+
+---
+
+# Basic example - sleep - wakeup
+
+<div align="center">
+{% include assets/2025-05-24-lazy-task/04-sleep-wakeup.svg %}
+</div>
+
+---
+
+# Basic example - back in foo
+
+<div align="center">
+{% include assets/2025-05-24-lazy-task/05-back-in-foo.svg %}
+</div>
+
+---
+
+# Code
+
+---
+
+# Promise base
+
+```cpp
+template<typename T>
+class promise_base {
+  std::variant<std::monostate, T, std::exception_ptr> result_;
+
+public:
+  template<typename U>
+    requires std::convertible_to<U, T>
+  void return_value(U && x) noexcept(std::is_nothrow_constructible_v<T, U>)
+  {
+    assert(0 == result_.index());
+    result_.template emplace<1>(std::forward<U>(x));
+  }
+
+  void unhandled_exception() noexcept {
+    assert(0 == result_.index());
+    result_.template emplace<2>(std::current_exception());
+  }
+```
+
+---
+
+# Promise base
+
+
+```cpp
+  T get_result() const {
+    switch(result_.index()) {
+      case 1:
+        return std::move(std::get<1>(result_));
+      case 2:
+        std::rethrow_exception(std::get<2>(result_));
+      default:
+        std::terminate();
+    }
+  }
+}; // promise_base
+```
+
+---
+
+# Promise base - void
+
+```cpp
+template<>
+class promise_base<void> {
+  std::exception_ptr exception_{};
+
+public:
+  void return_void() noexcept {
+  }
+
+  void unhandled_exception() noexcept {
+    assert(nullptr == exception_);
+    exception_ = std::current_exception();
+  }
+
+  void get_result() const {
+    if (exception_) {
+      std::rethrow_exception(exception_);
+    }
+  }
+
+  std::exception_ptr get_result_exception() const noexcept {
+    return exception_;
+  }
+};
+```
+
+---
+
+# Promise
+
+```cpp
+template<typename T>
+class [[nodiscard]] task {
+public:
+  class promise_type : public promise_base<T> {
+    friend task;
+
+    std::coroutine_handle<> parent_coro_;
+
+  public:
+    promise_type() noexcept = default;
+
+    promise_type(const promise_type&) = delete;
+    promise_type& operator=(const promise_type&) = delete;
+
+    task get_return_object() noexcept {
+      return { std::coroutine_handle<promise_type>::from_promise(*this) };
+    }
+```
+
+---
+
+# Promise - lazy
+
+```cpp
+    std::suspend_always initial_suspend() noexcept {
+      return {};
+    }
+
+    struct final_awaiter {
+      [[nodiscard]] constexpr bool await_ready() const noexcept {
+        return false;
+      }
+
+      std::coroutine_handle<> await_suspend(
+          std::coroutine_handle<promise_type> child_coro) noexcept {
+        return child_coro.promise().parent_coro_;
+      }
+
+      [[noreturn]] constexpr void await_resume() const noexcept {
+        std::unreachable(); //std::terminate();
+      }
+    }; // final_awaiter
+
+    final_awaiter final_suspend() noexcept {
+      return {};
+    }
+  }; // promise_type
+```
+
+---
+
+# Task
+
+```cpp
+private:
+  unique_coroutine_handle<promise_type> unique_child_coro_;
+
+  task(std::coroutine_handle<promise_type> child_coro) noexcept :
+    unique_child_coro_{ child_coro }
+  {
+  }
+
+public:
+  task(const co&) = delete;
+  task& operator=(const co&) = delete;
+```
+
+---
+
+# Task awaiter
+
+```cpp
+  [[nodiscard]] constexpr bool await_ready() const noexcept {
+    return false;
+  }
+
+  std::coroutine_handle<> await_suspend(
+      std::coroutine_handle<> parent_coro) noexcept {
+    std::coroutine_handle<promise_type> child_coro = unique_child_coro_.get();
+    child_coro.promise().parent_coro_ = parent_coro;
+    return child_coro;
+  }
+
+  T await_resume() const {
+    return unique_child_coro_.get().promise().get_result();
+  }
+}; // task
+```
+
+---
+
+# Discussion
+
+---
+
+# History
+
+This is close to the task/lazy [P1056r1
+proposal](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1056r1.html)
+which did not make it.
+
+---
+
+# Q: How do we start one?
+
+- e.g. in our simple exemple how do we start `foo()`?
+- the problem is that we need to `co_await` in order to have a coroutine
+  handle, and we can only `co_await` in a coroutine
+- A: the answer is long, will explain another time
+
+---
+
+# Bad: no cancellation
+
+- needs major changes to support cancellation
+
+---
+
+# Good: lazy
+
+Bad example: `future.then` is concurrent with work being done
+```cpp
+future<int> f = get_future_for_async_activity();
+future<string> f2 = f.then([](int i) {
+  return std::to_string(i);
+});
+std::cout << f2.get() << '\n';
+```
+- setting "continuation" (the lambda specified in `then`) requires
+  synchronization
+
+
+- also Q: What to do in final_suspend for eager tasks if the parent can't be
+  resumed becaus it did not suspend? A: more synchronization
+
+---
+
+# Good: lazy
+
+Another reason is (correct) error handling becomes impractical for anything but
+the most trivial examples of eager work see [Structured Concurrency: Writing
+Safer Concurrent Code with Coroutines... - Lewis Baker - CppCon
+2019](https://www.youtube.com/watch?v=1Wy5sq3s2rg)
+
+```cpp
+future f1 = eager_async_work1();
+bool joined_f1 = false;
+std::exception_ptr ex;
+try {
+  co_await eager_async_work2();
+  joined_f1 = true;
+  co_await std::move(f1);
+  co_return;
+} catch(...) {
+  ex = current_exception();
+}
+if (!joined_f1) co_await std::move(f1);
+std::rethrow_exception(ex);
+```
+---
+
+# Bad: Scope for bugs
+
+- same as for the std::generator
+
+```cpp
+task<void> foo() {
+  task<void> bar("alpha");
+  co_await bar;
+}
+```
+
+--
+
+```cpp
+task<void> bar(const std::string& letter) {
+  std::cout << letter << '\n';
+  co_return;
+}
+```
+
+---
+
+# The move trick
+
+```cpp
+template<typename T>
+class [[nodiscard]] task {
+  // ...
+  task_awaiter operator co_await() && {
+    return {std::move(unique_child_coro_};
+  }
+};
+```
+
+Meant to prevent
+```cpp
+task<void> foo() {
+  task<void> bar("alpha");
+  co_await bar;
+  co_await bar;
+}
+```
+
+I don't think this is a good solution for things that are meant to be done only
+once. In particular if std::move is used in both places it compiles, but is
+incorrect code. Also it sill has the reference bug.
 
 ---
 

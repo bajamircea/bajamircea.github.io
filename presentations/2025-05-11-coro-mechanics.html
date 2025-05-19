@@ -383,8 +383,8 @@ struct promise_type {
 };
 ```
 
-- this is the return value from the ramp function (stored on the stack - point
-  1)
+- this is the return value from the ramp function (spaced reserved on the stack
+  at point 1, stored on the stack - point 10)
   - basically returned the first time the coroutine suspends
   - quite common is to suspend in `initial_suspend`
 

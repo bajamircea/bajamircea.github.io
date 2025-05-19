@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250524-4-box" width="100%" viewBox="0 0 800 320">
+  <style>
+    #svg20250524-4-box {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20250524-4-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .svg20250524-4-t2 {
+      font-family: sans-serif;
+      font-size: 16px;
+      dominant-baseline: middle;
+    }
+    .svg20250524-4-l1 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .svg20250524-4-l2 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 5;
+    }
+    .svg20250524-4-task_white {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #ffffff;
+    }
+    .svg20250524-4-task_green {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #8ea604;
+    }
+    .svg20250524-4-task_grey {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #cccccc;
+    }
+    .svg20250524-4-task_neutral {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #2d93ad;
+    }
+    .svg20250524-4-task_neutral2 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #6ac3d9;
+    }
+    .svg20250524-4-task_orange {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #f5bb00;
+    }
+    .svg20250524-4-task_pink {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #ff36ab;
+    }
+    .svg20250524-4-task_purple {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #9665ac;
+    }
+  </style>
+  <defs>
+    <marker id="svg20250524-4-arrow" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z"/>
+    </marker>
+  </defs>
+  <rect x="10" y="10" width="80" height="300" class="svg20250524-4-task_white"/>
+  <rect x="130" y="70" width="80" height="170" class="svg20250524-4-task_neutral2"/>
+  <rect x="250" y="85" width="80" height="140" class="svg20250524-4-task_neutral2"/>
+  <rect x="390" y="20" width="80" height="30" class="svg20250524-4-task_grey"/>
+  <rect x="390" y="50" width="80" height="220" class="svg20250524-4-task_white"/>
+  <rect x="390" y="80" width="80" height="30" class="svg20250524-4-task_purple"/>
+  <rect x="510" y="70" width="80" height="170" class="svg20250524-4-task_neutral"/>
+  <rect x="510" y="150" width="80" height="30" class="svg20250524-4-task_purple"/>
+  <rect x="630" y="70" width="80" height="170" class="svg20250524-4-task_neutral"/>
+  <rect x="630" y="90" width="80" height="30" class="svg20250524-4-task_green"/>
+  <path class="svg20250524-4-l1" d="M 50 30 v 70 l 120 -20 v 40 l 120 -25 v 55"/>
+  <path class="svg20250524-4-l2" d="M 290 150 l -120 -20 v 10 l -120 -30 v 100 l 240 -50"/>
+  <line class="svg20250524-4-l1" x1="470" y1="95" x2="503" y2="73" marker-end="url(#svg20250524-4-arrow)"/>
+  <line class="svg20250524-4-l1" x1="590" y1="165" x2="624" y2="73" marker-end="url(#svg20250524-4-arrow)"/>
+  <line class="svg20250524-4-l1" x1="630" y1="105" x2="596" y2="73" marker-end="url(#svg20250524-4-arrow)"/>
+  <path class="svg20250524-4-l1" d="M 470 195 h 20 v 60 h 240 v -169 l -14 -13" marker-end="url(#svg20250524-4-arrow)"/>
+  <text class="svg20250524-4-t1" x="170" y="55">foo</text>
+  <text class="svg20250524-4-t1" x="290" y="70">bar</text>
+  <text class="svg20250524-4-t2" x="55" y="190">10s</text>
+  <text class="svg20250524-4-t2" x="390" y="285">stack</text>
+  <text class="svg20250524-4-t2" x="510" y="55">foo frame</text>
+  <text class="svg20250524-4-t2" x="630" y="55">bar frame</text>
+</svg>

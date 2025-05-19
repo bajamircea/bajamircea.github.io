@@ -47,18 +47,18 @@
   <rect x="10" y="130" width="100" height="60" class="svg20250511-0-task_green"/>
   <rect x="10" y="190" width="100" height="30" class="svg20250511-0-task_green"/>
   <rect x="10" y="220" width="100" height="55" class="svg20250511-0-task_white"/>
-  <rect x="400" y="50" width="100" height="80" class="svg20250511-0-task_neutral"/>
-  <rect x="400" y="130" width="100" height="60" class="svg20250511-0-task_neutral"/>
-  <rect x="400" y="190" width="100" height="50" class="svg20250511-0-task_neutral"/>
-  <rect x="400" y="240" width="100" height="35" class="svg20250511-0-task_neutral"/>
+  <rect x="400" y="50" width="100" height="35" class="svg20250511-0-task_neutral"/>
+  <rect x="400" y="85" width="100" height="50" class="svg20250511-0-task_neutral"/>
+  <rect x="400" y="135" width="100" height="60" class="svg20250511-0-task_neutral"/>
+  <rect x="400" y="195" width="100" height="80" class="svg20250511-0-task_neutral"/>
   <text class="svg20250511-0-t1" x="10" y="290">stack</text>
-  <text class="svg20250511-0-t1" x="120" y="205">1. return value</text>
+  <text class="svg20250511-0-t1" x="120" y="205">1. return value = 10.</text>
   <text class="svg20250511-0-t1" x="120" y="160">2. arguments</text>
   <text class="svg20250511-0-t1" x="120" y="120">3. return address</text>
   <text class="svg20250511-0-t1" x="120" y="95">4. function local variables</text>
-  <text class="svg20250511-0-t1" x="520" y="90">8. coroutine body local variables</text>
-  <text class="svg20250511-0-t1" x="520" y="160">6. arguments</text>
-  <text class="svg20250511-0-t1" x="520" y="215">7. promise</text>
-  <text class="svg20250511-0-t1" x="520" y="255">9. state machine*</text>
-  <text class="svg20250511-0-t1" x="400" y="290">5. coroutine frame</text>
+  <text class="svg20250511-0-t1" x="400" y="35">5. coroutine frame</text>
+  <text class="svg20250511-0-t1" x="520" y="65">9. state machine*</text>
+  <text class="svg20250511-0-t1" x="520" y="110">7. promise</text>
+  <text class="svg20250511-0-t1" x="520" y="170">6. arguments</text>
+  <text class="svg20250511-0-t1" x="520" y="235">8. coroutine body local variables</text>
 </svg>

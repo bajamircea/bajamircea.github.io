@@ -22,7 +22,6 @@ potentially involving coroutines"?
 
 WORK IN PROGRESS
 
-
 # Presentations
 
 - [Problem domain](/presentations/2025-05-06-coro-problem-domain.html)
@@ -54,21 +53,13 @@ date, but really good background info required to understand coroutines
 # TODO - topics to cover
 
 - synthetic_coroutine
-- Scoped coroutines
-  - TODO discuss issue with reference parameters, lambda captures, pointers, string_views
-    - the generator problems with scope
-  - TODO the (invalid) `std::move` trick to call once
-  - TODO the co_await by value trick
-    - TODO still (potential) scope issue
-  - TODO why not eager
-    - finall_suspend first
-    - the issue with eager initial_suspend when actually suspended later
 - Trampoline
-- Timers
 - Structured concurency
   - sane principles
     - a child coroutine does not outlives its parent
     - a coroutine runs uninterrupted until a co_await
+  - TODO discuss issue with reference parameters, lambda captures, pointers, string_views
+    - the generator problems with scope
   - TODO: discuss the issue of detach/fire and forget
     - lifetime
       - discuss bad advice that uses detached models
@@ -80,6 +71,7 @@ date, but really good background info required to understand coroutines
   - TODO: discuss issue with destructors blocking
 - Cancellation
   - hiding cancellation from function signature (e.g. see `co_await get_cancellation_token()`
+- Timers
 - Nursery
 - Threading models
 - Windows Thread Pool

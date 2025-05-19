@@ -86,17 +86,17 @@ image = svg({
   rect(x: 10, y: 190, width: 100, height: 30, class: make_id("task_green"))
   rect(x: 10, y: 220, width: 100, height: 55, class: make_id("task_white"))
 
-  rect(x: 400, y: 50, width: 100, height: 80, class: make_id("task_neutral"))
-  rect(x: 400, y: 130, width: 100, height: 60, class: make_id("task_neutral"))
-  rect(x: 400, y: 190, width: 100, height: 50, class: make_id("task_neutral"))
-  rect(x: 400, y: 240, width: 100, height: 35, class: make_id("task_neutral"))
+  rect(x: 400, y: 50, width: 100, height: 35, class: make_id("task_neutral"))
+  rect(x: 400, y: 85, width: 100, height: 50, class: make_id("task_neutral"))
+  rect(x: 400, y: 135, width: 100, height: 60, class: make_id("task_neutral"))
+  rect(x: 400, y: 195, width: 100, height: 80, class: make_id("task_neutral"))
 
   text(
     class: make_id("t1"), x: 10, y: 290
   ).add_text("stack")
   text(
     class: make_id("t1"), x: 120, y: 205
-  ).add_text("1. return value")
+  ).add_text("1. return value = 10.")
   text(
     class: make_id("t1"), x: 120, y: 160
   ).add_text("2. arguments")
@@ -107,23 +107,22 @@ image = svg({
     class: make_id("t1"), x: 120, y: 95
   ).add_text("4. function local variables")
   text(
-    class: make_id("t1"), x: 520, y: 90
-  ).add_text("8. coroutine body local variables")
+    class: make_id("t1"), x: 400, y: 35
+  ).add_text("5. coroutine frame")
   text(
-    class: make_id("t1"), x: 520, y: 160
-  ).add_text("6. arguments")
-  text(
-    class: make_id("t1"), x: 520, y: 215
-  ).add_text("7. promise")
-  text(
-    class: make_id("t1"), x: 520, y: 255
+    class: make_id("t1"), x: 520, y: 65
   ).add_text("9. state machine*")
   text(
-    class: make_id("t1"), x: 400, y: 290
-  ).add_text("5. coroutine frame")
+    class: make_id("t1"), x: 520, y: 110
+  ).add_text("7. promise")
+  text(
+    class: make_id("t1"), x: 520, y: 170
+  ).add_text("6. arguments")
+  text(
+    class: make_id("t1"), x: 520, y: 235
+  ).add_text("8. coroutine body local variables")
 
 end
-
 
 #puts(image.render)
 
@@ -348,17 +347,17 @@ image = svg({
   rect(x: 10, y: 190, width: 100, height: 30, class: make_id("task_green"))
   rect(x: 10, y: 220, width: 100, height: 55, class: make_id("task_white"))
 
-  rect(x: 400, y: 50, width: 100, height: 80, class: make_id("task_neutral"))
-  rect(x: 400, y: 130, width: 100, height: 60, class: make_id("task_neutral"))
-  rect(x: 400, y: 190, width: 100, height: 50, class: make_id("task_neutral"))
-  rect(x: 400, y: 240, width: 100, height: 35, class: make_id("task_neutral"))
+  rect(x: 400, y: 50, width: 100, height: 35, class: make_id("task_neutral"))
+  rect(x: 400, y: 85, width: 100, height: 50, class: make_id("task_neutral"))
+  rect(x: 400, y: 135, width: 100, height: 60, class: make_id("task_neutral"))
+  rect(x: 400, y: 195, width: 100, height: 80, class: make_id("task_neutral"))
 
   text(
     class: make_id("t1"), x: 10, y: 290
   ).add_text("stack")
   text(
     class: make_id("t1"), x: 120, y: 205
-  ).add_text("1. return value")
+  ).add_text("1. return value = 10.")
   text(
     class: make_id("t1"), x: 120, y: 160
   ).add_text("2. arguments")
@@ -369,20 +368,20 @@ image = svg({
     class: make_id("t1"), x: 120, y: 95
   ).add_text("4. function local variables")
   text(
-    class: make_id("t1"), x: 520, y: 90
-  ).add_text("8. coroutine local variables")
+    class: make_id("t1"), x: 400, y: 35
+  ).add_text("5. coroutine frame")
   text(
-    class: make_id("t1"), x: 520, y: 160
-  ).add_text("6. arguments")
-  text(
-    class: make_id("t1"), x: 520, y: 215
-  ).add_text("7. promise")
-  text(
-    class: make_id("t1"), x: 520, y: 255
+    class: make_id("t1"), x: 520, y: 65
   ).add_text("9. state machine*")
   text(
-    class: make_id("t1"), x: 400, y: 290
-  ).add_text("5. coroutine frame")
+    class: make_id("t1"), x: 520, y: 110
+  ).add_text("7. promise")
+  text(
+    class: make_id("t1"), x: 520, y: 170
+  ).add_text("6. arguments")
+  text(
+    class: make_id("t1"), x: 520, y: 235
+  ).add_text("8. coroutine body local variables")
 
 end
 
