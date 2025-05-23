@@ -30,6 +30,7 @@ WORK IN PROGRESS
 - [Generator](/presentations/2025-05-20-generator.html)
 - [Lazy task](/presentations/2025-05-24-lazy-task.html)
 - [Intrusive heap](/presentations/2025-05-15-intrusive-heap.html)
+- [Concurency threading models](/presentations/2025-05-28-threading-models.html)
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/00-cover.svg %}
@@ -54,25 +55,33 @@ date, but really good background info required to understand coroutines
 
 # TODO - topics to cover
 
+- callback
+- stop_token
 - Structured concurency
+  - chains
   - sane principles
     - a child coroutine does not outlives its parent
     - a coroutine runs uninterrupted until a co_await
-  - TODO discuss issue with reference parameters, lambda captures, pointers, string_views
+  - discuss issue with reference parameters, lambda captures, pointers, string_views
     - the generator problems with scope
-  - TODO: discuss the issue of detach/fire and forget
+  - discuss the issue of detach/fire and forget
     - lifetime
       - discuss bad advice that uses detached models
       - https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rcoro-capture
       - more bad advice https://devblogs.microsoft.com/oldnewthing/20211103-00/?p=105870
       - though they really like detached in embedded environments, explain why
     - error propagation
-  - TODO: discuss issue with blocking in bounded parallelism cases
-  - TODO: discuss issue with destructors blocking
+  - sync start a chain
+  - wait_any, wait_all
+  - wait_for
+  - nursery
 - Cancellation
   - hiding cancellation from function signature (e.g. see `co_await get_cancellation_token()`
 - Trampoline
 - Timers
-- Nursery
-- Threading models
+- Threading synchronization in await_suspend
+  - none (no cancellation)
+  - mutex
+  - atomic bool
 - Windows Thread Pool
+

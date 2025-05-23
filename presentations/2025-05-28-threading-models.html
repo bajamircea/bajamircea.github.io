@@ -1,0 +1,194 @@
+---
+layout: presentation
+title: Concurency threading models
+---
+
+Mircea Baja - 28 May 2025
+
+# Concurency threading models
+
+<div align="center">
+{% include assets/2025-05-28-threading-models/00-cover.svg %}
+</div>
+
+---
+
+# Single threaded (ST)
+
+<div align="center">
+{% include assets/2025-05-28-threading-models/01-single-threaded.svg %}
+</div>
+
+---
+
+# Single threaded (ST)
+
+- in a pure single threaded model the advantage is that no thread
+  synchronization is required: minimalistic code
+- but then not really useful because of the lack of interaction with other
+  threads
+  - even things like CTRL-C in a Windows console requires reacting to events
+    from other threads
+  - so external cancellations are practically out of the picture
+- maybe useful for simulations that run to completion
+
+
+- BUT: it makes a great learning tool
+  - because of the minimalistic code
+  - and can compare overhead of solutions that use thread synchronization
+
+---
+
+# Single threaded (ST) - detail
+
+<div align="center">
+{% include assets/2025-05-28-threading-models/02-single-threaded-detail.svg %}
+</div>
+
+---
+
+# Single threaded (ST) - detail
+
+- the "queue" is more complicated if we want to have timers:
+  - the ready queue: work that is ready to be executed
+  - the timers heap: min heap of timers (the one at the top is the first one to
+    expire)
+- the thread reads alternatively from the ready queue and the timers heap
+- if the ready queue is empty and the next timer has not yet expired then sleep
+  until the timer is due to expire
+- some fairness logic is required to ensure that it can't get into loops where
+  some part of the queue is ignored
+
+---
+
+# Multi-threaded (MT)
+
+<div align="center">
+{% include assets/2025-05-28-threading-models/03-multi-threaded.svg %}
+</div>
+
+---
+
+# Multi-threaded (MT)
+
+- access to the queue requires synchronization
+- more subtly data shared between different streams of work requires
+  synchronization
+- at least a std::mutex is required to wrap access
+
+---
+
+# Multi-threaded (MT) - detail
+
+<div align="center">
+{% include assets/2025-05-28-threading-models/04-multi-threaded-detail.svg %}
+</div>
+
+---
+
+# Multi-threaded (MT) - detail
+
+- there is a zoo of options available wait-free/lock-free etc.
+- in particular for queues of "ready to do work" that are processed by multiple
+  threads you might want to look at least at not using a single `std::mutex`, but
+  break the queue into multiple smaller queues (one per thread), each with it's
+  own lock and the ability to "steal" work when a thread completes it's own
+  work faster than other processing threads see [Better Code: Concurrency -
+  Sean Parent](https://www.youtube.com/watch?v=zULU6Hhp42w)
+
+
+- other threads can add work to the queue
+- there can be additional queues e.g. for a "event" that can notify, they would
+  also require synchronization
+
+---
+
+# Heterogeneous apartment
+
+<div align="center">
+{% include assets/2025-05-28-threading-models/05-heterogeneous.svg %}
+</div>
+
+---
+
+# Heterogeneous apartment
+
+- different kind of queues: pool of threads (or thread) blocked reading from queue
+- need to schedule execution on different kind of threads that have the
+  capability to execute the operation/computation/work/API
+
+
+- sometimes queues are build in hardware: interrupt priority in embedded
+  environments
+- sometimes code/computation is executed on GPUs
+
+
+- a large/complex application might have multiple communicating heterogeneous
+  apartments
+
+---
+
+# Mainly one thread (T1)
+
+<div align="center">
+{% include assets/2025-05-28-threading-models/06-t1.svg %}
+</div>
+
+---
+
+# Mainly one thread (T1) - example
+
+- `ReadFileEx`: provide C callback (completion routine)
+- `SleepEx`: callbacks are called
+  - use top of the min heap to determine the sleep duration
+- Windows thread pool for Windows events
+  - when a Windows event is set, from a thread in the default Windows thread
+    pool, add to the "ready queue", signal event, use `WaitForSingleObjectEx`
+    instead of `SleepEx`
+
+---
+
+# Mainly one thread (T1) - locking
+
+- can reduce synchronization requirements because only one activity will be run
+  at a time
+
+
+### Many T1 variations
+
+E.g. locking strategies:
+- many low granularity locks (e.g. one for the "ready queue", another one for
+  the "timer heap"
+- single lock: e.g. in the style of the Python GIL (Global Interpreter Lock)
+
+
+- care needs to be taken for cancellations triggered from another thread
+  - one option is to schedule it on the "ready queue" so that the cancellation
+    work is done from the "one thread"
+
+---
+
+# Bounded parallelism - IMPORTANT!
+
+- the case with blocking threads
+  - you have N threads in a pool
+  - one tread waits for a activity to be executed on another thread in the pool
+  - now you have N - 1 threads in the pool
+- "a multi-threaded program is not correct if it can't run single-threaded"
+  - described by Sean Parent when a single thread was used to run application
+    in browser
+
+Common blocking to avoid:
+- in the destructor
+  - don't block in the destructor waiting
+- cancellation
+  - don't block waiting for work to react to cancellation trigger
+- event signalling
+  - don't wait for work to be completed on event notification
+- std::future.get()
+  - inherently blocking (another bad thing about std::future)
+
+---
+
+# Questions?
+

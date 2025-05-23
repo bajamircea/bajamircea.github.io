@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250528-4-box" width="100%" viewBox="0 0 800 320">
+  <style>
+    #svg20250528-4-box {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20250528-4-queue {
+      fill: #f4e04d;
+    }
+    .svg20250528-4-queue2 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #f2ed6f;
+    }
+    .svg20250528-4-l0 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: none;
+    }
+    .svg20250528-4-t1 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #cee397;
+    }
+    .svg20250528-4-t2 {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #cccccc;
+    }
+    .svg20250528-4-l1 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .svg20250528-4-l2 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 5;
+    }
+    .svg20250528-4-tx {
+      font-family: sans-serif;
+      font-size: 16px;
+      dominant-baseline: middle;
+    }
+  </style>
+  <defs>
+    <marker id="svg20250528-4-arrow" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z"/>
+    </marker>
+  </defs>
+  <rect x="20" y="40" width="260" height="170" class="svg20250528-4-queue"/>
+  <rect x="30" y="50" width="80" height="150" class="svg20250528-4-queue2"/>
+  <path class="svg20250528-4-l0" d="M 40 180 h 60"/>
+  <path class="svg20250528-4-l0" d="M 40 160 h 60"/>
+  <path class="svg20250528-4-l0" d="M 40 140 h 60"/>
+  <rect x="170" y="50" width="80" height="150" class="svg20250528-4-queue2"/>
+  <path class="svg20250528-4-l0" d="M 180 180 h 60"/>
+  <path class="svg20250528-4-l0" d="M 180 160 h 60"/>
+  <path class="svg20250528-4-l0" d="M 180 140 h 60"/>
+  <circle cx="70" cy="270" r="40" class="svg20250528-4-t1"/>
+  <circle cx="210" cy="270" r="40" class="svg20250528-4-t1"/>
+  <path class="svg20250528-4-l1" d="M 70 200 v 22" marker-end="url(#svg20250528-4-arrow)"/>
+  <path class="svg20250528-4-l2" d="M 210 200 l -112 32" marker-end="url(#svg20250528-4-arrow)"/>
+  <path class="svg20250528-4-l2" d="M 30 270 h -15 v -240 h 35 v 12" marker-end="url(#svg20250528-4-arrow)"/>
+  <path class="svg20250528-4-l1" d="M 210 200 v 22" marker-end="url(#svg20250528-4-arrow)"/>
+  <path class="svg20250528-4-l2" d="M 70 200 l 112 32" marker-end="url(#svg20250528-4-arrow)"/>
+  <path class="svg20250528-4-l2" d="M 250 270 h 15 v -240 h -35 v 12" marker-end="url(#svg20250528-4-arrow)"/>
+  <circle cx="370" cy="270" r="40" class="svg20250528-4-t2"/>
+  <path class="svg20250528-4-l2" d="M 410 270 h 15 v -260 h -335"/>
+  <path class="svg20250528-4-l2" d="M 190 10 v 32" marker-end="url(#svg20250528-4-arrow)"/>
+  <path class="svg20250528-4-l2" d="M 90 10 v 32" marker-end="url(#svg20250528-4-arrow)"/>
+</svg>
