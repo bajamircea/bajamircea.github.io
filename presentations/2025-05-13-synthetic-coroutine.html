@@ -1,0 +1,187 @@
+---
+layout: presentation
+title: Synthetic coroutine
+---
+
+# Synthetic coroutine
+
+<div align="center">
+{% include assets/2025-05-13-synthetic-coroutine/00-cover.svg %}
+</div>
+
+Mircea Baja - 13 May 2025
+
+---
+
+# std::coroutine_handle
+
+- C++ class wrapper around a pointer to the coroutine frame
+- allows control of the coroutine frame via members of the class
+
+
+- `void resume()`
+- `void destroy()`
+- `bool done()`
+- ...
+
+---
+
+# Coroutine state constraints
+
+- it needs to handle two cases:
+  -  resume
+  -  destroy
+- it needs to keep the promise at a constant offset (for all promises of the
+  same type)
+
+Concretely
+
+1. Could store two function pointers in the state part of the coro, when the state is saved update those functions to be the next step functions
+2. Could store two fixed function pointers, store an index ("we got to step N"), when the functions are called switch/jump to the work for step N
+3. Other creative ways
+
+Practically it's a variation of option 2.
+
+---
+
+# Coroutine frame
+
+<div align="center">
+{% include assets/2025-05-13-synthetic-coroutine/00-cover.svg %}
+</div>
+
+---
+
+# ABI
+
+```cpp
+struct coroutine_frame_abi
+{
+  void (*resume)(void*);
+  void (*destroy)(void*);
+};
+```
+
+- coroutine frame starts with the two pointers above
+- followed by the promise
+- followed by state index
+
+---
+
+# Therefore
+
+Given `std::coroutine_handle<some_promise> coro;`:
+
+- `coro` istores just a pointer to the coroutine frame `pf_` that it interprets
+  as a pointer to a `coroutine_frame_abi`
+- `coro.resume()`: calls `pf_->resume(pf_)`
+- `coro.destroy()`: calls `pf_->destroy(pf_)`
+- `coro.done()`: checks if `pf->resume == nullptr`
+
+---
+
+# Why this choice?
+
+See [Raymond Chen: Speculation on the design decisions that led to the common
+ABI for C++
+coroutines](https://devblogs.microsoft.com/oldnewthing/20220103-00/?p=106109)
+and [Debugging coroutine handles: The Microsoft Visual C++ compiler, clang, and
+gcc](https://devblogs.microsoft.com/oldnewthing/20211007-00/?p=105777)
+
+But it boils down to:
+- when state needs to be saved it's cheaper to write a single integer rather
+  than write two pointers
+- there are costs with having lots of small functions, one per state (e.g.
+  related with call guards)
+
+---
+
+# Example
+
+```cpp
+using synthetic_resume_fn_ptr = void (*)(void* x) noexcept;
+
+class synthetic_resumable_coroutine_frame : public coroutine_frame_abi
+{
+  synthetic_resume_fn_ptr resume_fn_{ nullptr };
+  void* x_{ nullptr };
+public:
+  synthetic_resumable_coroutine_frame(synthetic_resume_fn_ptr resume_fn, void* x) noexcept :
+    coroutine_frame_abi{ .resume=resume_impl, .destroy=destroy_impl },
+    resume_fn_{ resume_fn },
+    x_{ x }
+  {
+    assert(nullptr != resume_fn);
+  }
+
+  synthetic_resumable_coroutine_frame(const synthetic_resumable_coroutine_frame&) = delete;
+  synthetic_resumable_coroutine_frame& operator=(
+    const synthetic_resumable_coroutine_frame&) = delete;
+
+  std::coroutine_handle<> get_coroutine_handle() noexcept {
+    return std::coroutine_handle<>::from_address(this);
+  }
+```
+
+---
+
+# Example
+
+```cpp
+private:
+  static void resume_impl(void* frame_ptr) noexcept {
+    assert(frame_ptr != nullptr);
+    synthetic_resumable_coroutine_frame* self =
+      reinterpret_cast<synthetic_resumable_coroutine_frame*>(frame_ptr);
+    self->resume_fn_(self->x_);
+  }
+
+  static void destroy_impl(void*) noexcept {
+    std::unreachable();
+    //std::terminate();
+  }
+}; // synthetic_resumable_coroutine_frame
+```
+
+---
+
+# Test
+
+```cpp
+TEST(synthetic_coroutine_resume_synthetic_resumable) {
+  bool done{ false };
+  coro_st::synthetic_resume_fn_ptr done_when_resumed =
+    +[](void* x) noexcept {
+      bool* p_done = reinterpret_cast<bool*>(x);
+      *p_done = true;
+    };
+  coro_st::synthetic_resumable_coroutine_frame root_frame{
+    done_when_resumed, &done};
+
+  std::coroutine_handle<> handle = root_frame.get_coroutine_handle();
+
+  ASSERT_FALSE(handle.done());
+
+  handle.resume();
+  ASSERT_TRUE(done);
+}
+```
+
+---
+
+# Difficulties in using synthetic coroutines
+
+- the ABI is not a documented contract, might change in the future
+- the actual resume implementation uses tail recursion for the symmetric
+  transfer
+  - that's hard/not possible with the interface returning void from `resume`
+  - see [Step 13: Implementing symmetric-transfer and the
+    noop-coroutine](https://lewissbaker.github.io/2022/08/27/understanding-the-compiler-transform#step-13-implementing-symmetric-transfer-and-the-noop-coroutine)
+  - though some people try [C++ Coroutines and Structured Concurrency in
+    Practice - Dmitry Prokoptsev - C++Now
+    2024](https://www.youtube.com/watch?v=sWeOIS14Myg)
+
+---
+
+# Questions?
+

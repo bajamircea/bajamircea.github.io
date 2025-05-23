@@ -26,6 +26,7 @@ WORK IN PROGRESS
 
 - [Problem domain](/presentations/2025-05-06-coro-problem-domain.html)
 - [Mechanics](/presentations/2025-05-11-coro-mechanics.html)
+- [Synthetic coroutine](/presentations/2025-05-13-synthetic-coroutine.html)
 - [Generator](/presentations/2025-05-20-generator.html)
 - [Lazy task](/presentations/2025-05-24-lazy-task.html)
 - [Intrusive heap](/presentations/2025-05-15-intrusive-heap.html)
@@ -48,12 +49,11 @@ date, but really good background info required to understand coroutines
 - [CppCon 2018: G. Nishanov “Nano-coroutines to the Rescue! (Using Coroutines TS, of Course)](https://www.youtube.com/watch?v=j9tlJAqMV7U)
 - [Structured Networking in C++ - Dietmar Kühl - CppCon 2022](https://www.youtube.com/watch?v=XaNajUp-sGY)
 - [P2300R10 std::execution](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2300r10.html)
+- [P2175R0: Composable cancellation for sender-based async operations](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p2175r0.html#appendix-a-the-stop_when-algorithm)
 - [P3552R1 Add a Coroutine Task Type](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p3552r1.pdf)
 
 # TODO - topics to cover
 
-- synthetic_coroutine
-- Trampoline
 - Structured concurency
   - sane principles
     - a child coroutine does not outlives its parent
@@ -71,6 +71,7 @@ date, but really good background info required to understand coroutines
   - TODO: discuss issue with destructors blocking
 - Cancellation
   - hiding cancellation from function signature (e.g. see `co_await get_cancellation_token()`
+- Trampoline
 - Timers
 - Nursery
 - Threading models
