@@ -161,6 +161,18 @@ reference to the value, and then can remove the node from the list, all while
 keeping the rest as simple as possible.
 
 
+## Double linked first-last
+
+Like the single list first-last the header is not minimalistic, but the
+iterator is. An end iterator is a null pointer.
+
+![Double linked first-last](/assets/2018-06-28-linked-lists-examples/09-double-first-last.png)
+
+It allows iterating forwards and backwards, but it does not have a full
+bidirectional iterator because once the end is reached we can't go back from
+the single null pointer value that represents the end.
+
+
 ## Double linked circular
 
 A circular double linked list without a dummy node has a minimalist header, but
@@ -170,6 +182,8 @@ a (relatively) complex iterator and no fixed end iterator.
 
 Like the single linked circular, there are two option on how the iterator gets
 the value of the tail: directly, as above, or indirectly, through the header.
+Each of the two options has similar issues as for the single linked circular
+when nodes are added or removed.
 
 
 ## Double linked with allocated dummy node
@@ -228,6 +242,7 @@ pointing back to the header need to be adjusted.
     <tr>
       <th>Option vs. List type</th>
       <th>Double linked linear</th>
+      <th>Double linked first-last</th>
       <th>Double linked circular</th>
       <th>Double linked allocated dummy node</th>
       <th>Double linked dummy node in header</th>
@@ -240,9 +255,11 @@ pointing back to the header need to be adjusted.
       <td><strong>Double</strong></td>
       <td><strong>Double</strong></td>
       <td><strong>Double</strong></td>
+      <td><strong>Double</strong></td>
     </tr>
     <tr>
       <td>Linear or Circular</td>
+      <td>Linear</td>
       <td>Linear</td>
       <td>Circular</td>
       <td>Circular</td>
@@ -251,6 +268,7 @@ pointing back to the header need to be adjusted.
     <tr>
       <td>Minimalistic header</td>
       <td>Yes</td>
+      <td><strong>No</strong></td>
       <td>Yes</td>
       <td>Yes</td>
       <td><strong>No</strong></td>
@@ -260,10 +278,12 @@ pointing back to the header need to be adjusted.
       <td>No</td>
       <td>No</td>
       <td>No</td>
+      <td>No</td>
       <td><strong>Yes</strong></td>
     </tr>
     <tr>
       <td>Dummy node</td>
+      <td>No</td>
       <td>No</td>
       <td>No</td>
       <td><strong>Yes</strong></td>
@@ -272,6 +292,7 @@ pointing back to the header need to be adjusted.
     <tr>
       <td>Minimalistic iterator</td>
       <td>Yes</td>
+      <td>Yes</td>
       <td><strong>No</strong></td>
       <td>Yes</td>
       <td>Yes</td>
@@ -279,19 +300,22 @@ pointing back to the header need to be adjusted.
     <tr>
       <td>Permanent end</td>
       <td>Yes</td>
-      <td><strong>No</strong> / Yes</td>
-      <td><strong>No</strong> / Yes</td>
+      <td>Yes</td>
+      <td><strong>No</strong> / Yes (2)</td>
+      <td><strong>No</strong> / Yes (3)</td>
       <td>Yes</td>
     </tr>
     <tr>
       <td>Iterator type</td>
       <td><strong>Forward</strong></td>
+      <td><strong>Forward and Backward</strong> (1)</td>
       <td>Bidirectional</td>
       <td>Bidirectional</td>
       <td>Bidirectional</td>
     </tr>
     <tr>
       <td>front, push_front, pop_front, insertion/erasure after</td>
+      <td>Yes</td>
       <td>Yes</td>
       <td>Yes</td>
       <td>Yes</td>
@@ -303,10 +327,12 @@ pointing back to the header need to be adjusted.
       <td>Yes</td>
       <td>Yes</td>
       <td>Yes</td>
+      <td>Yes</td>
     </tr>
     <tr>
       <td>pop_back</td>
       <td><strong>No</strong></td>
+      <td>Yes</td>
       <td>Yes</td>
       <td>Yes</td>
       <td>Yes</td>
@@ -317,12 +343,14 @@ pointing back to the header need to be adjusted.
       <td>Yes</td>
       <td>Yes</td>
       <td>Yes</td>
+      <td>Yes</td>
     </tr>
     <tr>
       <td>Throwing default/move</td>
       <td>No</td>
       <td>No</td>
-      <td>No / <strong>Yes</strong></td>
+      <td>No</td>
+      <td>No / <strong>Yes</strong> (3)</td>
       <td>No</td>
     </tr>
   </tbody>
@@ -330,13 +358,22 @@ pointing back to the header need to be adjusted.
 
 Options in **bold** are not the best compared with other list types.
 
-Double linked nodes are larger by one pointer size to the single linked ones,
-but they provide insert and erase before iterator.
+(1) For double linked first-last once the end is reached we can’t go back from
+the single null pointer value that represents the end, therefore not
+bidirectional.
 
-Double linked with allocated dummy node need to make choose between:
+(2) Double linked circular can make a choice on the iterator storing:
+
+- a direct pointer to the tail (end not permanent)
+- a pointer to the header, access the tail via the header (end permanent)
+
+(3) Double linked with allocated dummy node need to make choose between:
 
 - No permanent end
 - Or throwing default and move constructors
+
+Double linked nodes are larger by one pointer size to the single linked ones,
+but they provide insert and erase before iterator.
 
 Double linked with dummy node in header is a good choice overall. Note that
 although it uses additional space for the dummy node, we already counted this
