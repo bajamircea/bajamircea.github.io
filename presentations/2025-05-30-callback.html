@@ -1,0 +1,249 @@
+---
+layout: presentation
+title: Callback
+---
+
+Mircea Baja - 31 May 2025
+
+# Callback
+
+<div align="center">
+{% include assets/2025-05-30-callback/00-cover.svg %}
+</div>
+
+
+---
+
+# Capture
+
+```cpp
+class callback
+{
+  void* x_{ nullptr };
+  void (*fn_)(void* x) noexcept { nullptr };
+
+public:
+  callback() noexcept = default;
+  callback(void* x, void (*fn)(void* x) noexcept) noexcept :
+    x_{ x },
+    fn_{ fn }
+  {
+    assert(nullptr != fn_);
+  }
+
+  callback(const callback&) noexcept = default;
+  callback& operator=(const callback&) noexcept = default;
+```
+
+- pure callback (`void`, `noexcept`, no arguments other than `x`)
+- some unusual copy: `default` and  `noexcept`, but makes sense here
+
+---
+
+# Invoke
+
+```cpp
+  void invoke() noexcept
+  {
+    assert(nullptr != fn_);
+    fn_(x_);
+  }
+
+  void operator()() noexcept
+  {
+    invoke();
+  }
+
+  bool is_callable() noexcept
+  {
+    return nullptr != fn_;
+  }
+}; // callback
+```
+
+---
+
+# Convenience, not `void`
+
+```cpp
+template<typename T, void (*fn)(T&) noexcept>
+struct make_function_callback_impl
+{
+  static void invoke(void* x_void) noexcept
+  {
+    assert(x_void != nullptr);
+    T* x = reinterpret_cast<T*>(x_void);
+    return std::invoke(fn, *x);
+  }
+};
+
+template<auto FnPtr, typename T>
+callback make_function_callback(T& x)
+{
+  return callback{ &x, &make_function_callback_impl<T, FnPtr>::invoke };
+}
+```
+
+- unusual order of templates in `make_function_callback` but makes sense here
+- unusual static in template
+
+
+---
+
+# Convenience, not `void`
+
+```cpp
+TEST(callback_trivial_function)
+{
+  coro_st::callback cb;
+
+  bool called{ false };
+
+  cb = coro_st::make_function_callback<+[](bool & x) noexcept {
+    x = true;
+  }>(called);
+
+  ASSERT_FALSE(called);
+
+  cb.invoke();
+
+  ASSERT_TRUE(called);
+}
+```
+
+- unusual lambda, uses plus, no capture => it's a function
+
+---
+
+# Convenience, member
+
+```cpp
+template<typename T, void (T::*member_fn)() noexcept>
+struct make_member_callback_impl
+{
+  static void invoke(void* x_void) noexcept
+  {
+    assert(x_void != nullptr);
+    T* x = reinterpret_cast<T*>(x_void);
+    return std::invoke(member_fn, x);
+  }
+};
+
+template<auto MemberFnPtr, typename T>
+callback make_member_callback(T* x)
+{
+  return callback{ x, &make_member_callback_impl<T, MemberFnPtr>::invoke };
+}
+```
+
+---
+
+# Convenience, member
+
+```cpp
+TEST(callback_trivial_member)
+{
+  coro_st::callback cb;
+
+  // assuming X is a class that has a member function
+  X x;
+
+  cb = coro_st::make_member_callback<&X::member_function>(&x);
+
+  cb.invoke();
+
+  // x.member_function was called
+}
+```
+
+---
+
+# Convenience, resume
+
+```cpp
+inline callback make_resume_coroutine_callback(std::coroutine_handle<> handle)
+{
+  return callback{ handle.address(), +[](void* x) noexcept {
+    std::coroutine_handle<> original_handle = std::coroutine_handle<>::from_address(x);
+    original_handle.resume();
+  }};
+}
+```
+
+---
+
+# Convenience, resume
+
+```cpp
+TEST(callback_resume)
+{
+  // coroutine
+  dummy_co co = async_foo();
+
+  coro_st::callback cb =
+    coro_st::make_resume_coroutine_callback(co.unique_child_coro.get());
+
+  cb.invoke();
+
+  // coroutine is resumed
+}
+```
+
+---
+
+# resume
+
+- discuss resume throwing
+
+```cpp
+  promise_type promise(<<promise constructor args>>);
+  try {
+    co_await promise.initial_suspend();
+    // ... body here
+  }
+  catch (...) {
+    if (!made enough progress through initial_suspend) {
+      throw;
+    }
+    promise.undhandled_exception();
+  }
+  co_await promise.final_suspend();
+```
+
+---
+
+# Alternatives
+
+- std::function
+  - D: allocation, indirect call
+- virtual function
+  - D: indirect call, worse for coroutine resume or multiple member functions
+- resume style ABI
+  - D: indirect call
+
+
+Trade offs are:
+- allocation
+- memory/space
+- level of call indirection
+
+---
+
+# Applications
+
+- ready queue
+- timer heap
+- stop callback
+- continuations (what do do when things complete)
+
+---
+
+# Disadvantages
+
+- not the perfect solution (we'll see other options at sender/receiver)
+- but will do
+
+---
+
+# Questions?
+

@@ -31,6 +31,7 @@ WORK IN PROGRESS
 - [Lazy task](/presentations/2025-05-24-lazy-task.html)
 - [Intrusive heap](/presentations/2025-05-15-intrusive-heap.html)
 - [Concurency threading models](/presentations/2025-05-28-threading-models.html)
+- [Callback](/presentations/2025-05-30-callback.html)
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/00-cover.svg %}
@@ -55,7 +56,6 @@ date, but really good background info required to understand coroutines
 
 # TODO - topics to cover
 
-- callback
 - stop_token
 - Structured concurency
   - chains
@@ -83,5 +83,17 @@ date, but really good background info required to understand coroutines
   - none (no cancellation)
   - mutex
   - atomic bool
+- C++ coroutine weak points
+  - weak allocation control: have allocator, but allocation size is runtime
+    info
+    - no option to allocate on stack e.g. for a know type can control
+      allocation on stack or heap (std::unique_ptr)
+  - resume and destroy mechanisms are indirect calls: call a function that
+    fetches a function pointer that makes a switch
+  - a large vocabulary of terms: learning curve obstacle
+- senders receivers
+  - compare example with read size then data (senders vs. coroutine)
+  - design by committee (poorly explained, e.g. alternatives not explained)
+    - customization points overload
 - Windows Thread Pool
 
