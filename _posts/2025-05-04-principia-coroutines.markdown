@@ -32,6 +32,7 @@ WORK IN PROGRESS
 - [Intrusive heap](/presentations/2025-05-15-intrusive-heap.html)
 - [Concurency threading models](/presentations/2025-05-28-threading-models.html)
 - [Callback](/presentations/2025-05-30-callback.html)
+- [Stop source, token, callback](/presentations/2025-06-03-stop.html)
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/00-cover.svg %}
@@ -56,8 +57,8 @@ date, but really good background info required to understand coroutines
 
 # TODO - topics to cover
 
-- stop_token
 - Structured concurency
+  - continuation
   - chains
   - sane principles
     - a child coroutine does not outlives its parent

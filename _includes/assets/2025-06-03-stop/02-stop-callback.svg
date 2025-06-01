@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250603-2-box" width="100%" viewBox="0 0 800 300">
+  <style>
+    #svg20250603-2-box {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20250603-2-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      dominant-baseline: middle;
+    }
+    .svg20250603-2-l1 {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .svg20250603-2-l2 {
+      stroke: #000000;
+      stroke-dasharray: 5;
+      stroke-width: 2;
+      fill: none;
+    }
+    .svg20250603-2-task_white {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #ffffff;
+    }
+    .svg20250603-2-task_orange {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #f5bb00;
+    }
+    .svg20250603-2-task_pink {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #ff36ab;
+    }
+    .svg20250603-2-task_red {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #ee6055;
+    }
+  </style>
+  <defs>
+    <marker id="svg20250603-2-arrow" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z"/>
+    </marker>
+  </defs>
+  <rect x="30" y="10" width="100" height="100" class="svg20250603-2-task_white"/>
+  <path class="svg20250603-2-l1" d="M 80 30 v 65 h -60" marker-end="url(#svg20250603-2-arrow)"/>
+  <rect x="180" y="40" width="100" height="30" class="svg20250603-2-task_white"/>
+  <text class="svg20250603-2-t1" x="190" y="55">next</text>
+  <rect x="180" y="70" width="100" height="30" class="svg20250603-2-task_white"/>
+  <text class="svg20250603-2-t1" x="190" y="85">prev</text>
+  <rect x="180" y="100" width="100" height="60" class="svg20250603-2-task_orange"/>
+  <text class="svg20250603-2-t1" x="190" y="130">callback</text>
+  <path class="svg20250603-2-l1" d="M 180 100 l 100 -30"/>
+  <rect x="330" y="40" width="100" height="30" class="svg20250603-2-task_white"/>
+  <text class="svg20250603-2-t1" x="340" y="55">next</text>
+  <rect x="330" y="70" width="100" height="30" class="svg20250603-2-task_white"/>
+  <text class="svg20250603-2-t1" x="340" y="85">prev</text>
+  <rect x="330" y="100" width="100" height="60" class="svg20250603-2-task_pink"/>
+  <text class="svg20250603-2-t1" x="340" y="130">callback</text>
+  <path class="svg20250603-2-l1" d="M 330 70 l 100 -30"/>
+  <rect x="480" y="130" width="100" height="30" class="svg20250603-2-task_red"/>
+  <text class="svg20250603-2-t1" x="490" y="145">stop</text>
+  <rect x="480" y="160" width="100" height="30" class="svg20250603-2-task_white"/>
+  <text class="svg20250603-2-t1" x="490" y="175">head</text>
+  <rect x="480" y="190" width="100" height="30" class="svg20250603-2-task_white"/>
+  <text class="svg20250603-2-t1" x="490" y="205">tail</text>
+  <path class="svg20250603-2-l2" d="M 80 40 h 92" marker-end="url(#svg20250603-2-arrow)"/>
+  <path class="svg20250603-2-l1" d="M 280 55 h 42" marker-end="url(#svg20250603-2-arrow)"/>
+  <path class="svg20250603-2-l1" d="M 330 85 h -42" marker-end="url(#svg20250603-2-arrow)"/>
+  <path class="svg20250603-2-l1" d="M 480 175 h -250 v -7" marker-end="url(#svg20250603-2-arrow)"/>
+  <path class="svg20250603-2-l1" d="M 480 205 h -25 v -120 h -17" marker-end="url(#svg20250603-2-arrow)"/>
+  <text class="svg20250603-2-t1" x="140" y="25">stop_callback</text>
+  <rect x="630" y="10" width="100" height="150" class="svg20250603-2-task_white"/>
+  <rect x="630" y="160" width="100" height="80" class="svg20250603-2-task_orange"/>
+  <rect x="630" y="240" width="100" height="20" class="svg20250603-2-task_pink"/>
+  <rect x="630" y="260" width="100" height="30" class="svg20250603-2-task_white"/>
+  <path class="svg20250603-2-l1" d="M 680 30 v 240" marker-end="url(#svg20250603-2-arrow)"/>
+  <path class="svg20250603-2-l2" d="M 680 145 h -92" marker-end="url(#svg20250603-2-arrow)"/>
+  <text class="svg20250603-2-t1" x="500" y="115">source.request_stop()</text>
+  <rect x="30" y="220" width="100" height="50" class="svg20250603-2-task_white"/>
+  <path class="svg20250603-2-l2" d="M 630 230 h -492" marker-end="url(#svg20250603-2-arrow)"/>
+  <path class="svg20250603-2-l1" d="M 20 230 h 60 v 22" marker-end="url(#svg20250603-2-arrow)"/>
+</svg>

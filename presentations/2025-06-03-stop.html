@@ -1,0 +1,328 @@
+---
+layout: presentation
+title: Stop source, token, callback
+---
+
+Mircea Baja - 3 June 2025
+
+# Stop source, token, callback
+
+<div align="center">
+{% include assets/2025-06-03-stop/00-cover.svg %}
+</div>
+
+---
+
+# Motivation
+
+- what do we need to implement cancellation?
+- std has `std::stop_source`, `std::stop_token` and `std::stop_callback`
+- introduced for `std::jthread` in C++20
+- how do they work?
+- let's explore single threaded variants
+
+---
+
+# Dummy stop source and token
+
+<div align="center">
+{% include assets/2025-06-03-stop/01-stop-token.svg %}
+</div>
+
+- `stop` has a one way transition from `false` to `true`, `stop_token` holder cannot
+  `request_stop()`
+- `stop_token` holder can poll using `stop_requested()`
+
+---
+
+# Dummy stop source
+
+```cpp
+class stop_source
+{
+  bool stop_{ false };
+public:
+  stop_source() noexcept = default;
+
+  stop_source(const stop_source&) = delete;
+  stop_source& operator=(const stop_source&) = delete;
+
+  bool stop_requested() const noexcept {
+    return stop_;
+  }
+
+  bool request_stop() noexcept {
+    if (stop_) { return false; }
+    stop_ = true; return true;
+  }
+
+  stop_token get_token() noexcept {
+    return stop_token{ this };
+  }
+}; // dummy stop_source
+```
+
+---
+
+# Dummy stop token
+
+```cpp
+class stop_token
+{
+  friend stop_source;
+
+  stop_source* source_ = nullptr;
+
+  explicit stop_token(stop_source* source) noexcept : source_{ source } {
+  }
+
+public:
+  stop_token(const stop_token&) noexcept = default;
+  stop_token& operator=(const stop_token&) noexcept = default;
+
+  bool stop_requested() const noexcept;
+};
+
+// define stop_source, then:
+
+inline bool stop_token::stop_requested() const noexcept {
+  return source_->stop_requested();
+}
+```
+
+---
+
+# Comments
+
+- the point of the `stop_source` is to allow a holder to check if it needs to
+  stop without being able to request a stop
+- forward declarations sometimes abused to gain compilation times at the cost
+  of code maintenance difficulties, but this is a genuine case where forward
+  declaration is required to break the circular dependency between: the
+  `stop_source` that needs to return a `stop_token` AND the `stop_token` that
+  needs to check the contents of the `stop_source`
+
+
+But can we avoid polling?
+
+---
+
+# Stop callback usage
+
+```cpp
+TEST(stop_util_trivial)
+{
+  stop_source source;
+  stop_token token = source.get_token();
+
+  bool called{ false };
+  coro_st::stop_callback callback{ token, [&called]() noexcept {
+    called = true;
+  }};
+
+  ASSERT_FALSE(called);
+
+  ASSERT_TRUE(source.request_stop());
+
+  ASSERT_TRUE(called);
+}
+```
+
+---
+
+# Stop callback
+
+<div align="center">
+{% include assets/2025-06-03-stop/02-stop-callback.svg %}
+</div>
+
+- the `stop_callback` gets to the list header via the `stop_token`
+- callback is invoked by the caller of `stop_source.request_stop()`
+
+---
+# Stop callback - late
+
+<div align="center">
+{% include assets/2025-06-03-stop/03-stop-late.svg %}
+</div>
+
+- callback is invoked by constructor of `stop_callback`
+
+---
+
+# The intrusive list
+
+```cpp
+struct stop_list_node {
+  stop_list_node* next{ nullptr };
+  stop_list_node* prev{ nullptr };
+  callback cb{};
+
+  stop_list_node() noexcept = default;
+
+  stop_list_node(const stop_list_node&) = delete;
+  stop_list_node& operator=(const stop_list_node&) = delete;
+};
+
+using stop_list = intrusive_list<stop_list_node,
+                    &stop_list_node::next, &stop_list_node::prev>;
+```
+
+---
+
+# Stop source members
+
+```cpp
+class stop_source
+{
+  template <typename Fn>
+  friend class stop_callback;
+
+  bool stop_{ false };
+  stop_list callbacks_{};
+```
+
+---
+
+# Stop source request_stop
+
+```cpp
+  bool request_stop() noexcept {
+    if (stop_) {
+      return false;
+    }
+    stop_ = true;
+    while(true) {
+      // handle case where callbacks remove other callbacks
+      stop_list_node* node = callbacks_.pop_front();
+      if (node == nullptr) {
+        break;
+      }
+      callback copy_cb = node->cb;
+      // stop_callback destructor will not invoke
+      node->cb = callback{};
+      copy_cb.invoke();
+    }
+    return true;
+  }
+```
+
+---
+
+# Stop callback constructor
+
+```cpp
+template<>
+class stop_callback<callback>
+{
+  stop_source* source_ = nullptr;
+  stop_list_node node_;
+public:
+  stop_callback(stop_token token, callback fn) noexcept :
+    source_{ token.source_ }
+  {
+    assert(source_ != nullptr);
+    assert(fn.is_callable());
+    if (source_->stop_requested()) {
+      fn();
+    }
+    else {
+      node_.cb = fn;
+      source_->callbacks_.push_back(&node_);
+    }
+  }
+```
+
+---
+
+# Stop callback destructor
+
+```cpp
+  ~stop_callback() {
+    // handle case where it was not stopped
+    // also handle cases where it was already called
+    if (node_.cb.is_callable()) {
+      source_->callbacks_.remove(&node_);
+    }
+  }
+}; // stop_callback
+```
+
+---
+
+# Care
+
+Needs to be taken to handle cases:
+
+- stop_callback is destructed and request_stop was not called: don't call the
+  callback
+- request_stop iterates through the list of stop_callback nodes, but the list
+  content changes as the callbacks are called (e.g. a callback might remove
+  other nodes as part of the cancellation work it does)
+- request_stop was called before the stop_callback is constructed
+  stopped
+- only shown single threaded code, more complexity is required to handle
+  multi-threading (e.g. a stop_callback destructor runs around the time when
+  the callback is called due to a request_stop: the destructor needs to wait)
+- the stop_callback nodes should not move
+- the stop_source should not move (e.g. our stop_token has a reference to it)
+
+---
+
+# `std::stop_source` issues
+
+```cpp
+stop_source();
+explicit stop_source( std::nostopstate_t nss ) noexcept;
+stop_source( const stop_source& other ) noexcept;
+stop_source( stop_source&& other ) noexcept;
+```
+
+- WAIT, WHAT?
+  - why is the default constructor not `noexcept`?
+  - what's `nostopstate_t`?
+  - how is copy `noexcept`?
+  - how can it be moved?
+- also what's `stop_possible()`?
+
+---
+
+# `std::stop_source` design
+
+- the design is one that was suitable for std::jthread
+- it involves allocating the stop_source state hence:
+  - constructor of stop_source can throw bad::alloc
+  - copy of stop_source is noexcept: it increments reference count to
+    stop_source state
+- e.g. a small allocation is not a big problem when a thread is started
+
+- Bummer! We had great plans, now what?
+
+---
+
+# `std::inplace_stop_...`
+
+- proposal derived from work on senders/receivers introduced in C++26 the
+  std::inplace_stop_source, std::inplace_stop_token and
+  std::inplace_stop_callback
+- it also comes with a concept that is meant to cover the `std::stop_source`
+  oddities e.g. `stop_possible()` (which is hardcoded to `true` for
+  `std::inplace_stop_source`
+- there is also support for getting the associated stop_callback type to a
+  stop_token type (via `callback_type`)
+
+---
+
+# Last words
+
+- There might still be value in a single threaded `stop_...` version for some
+  T1 threading model
+- We used a `callback` (two pointers) in the node of our `stop_callback`:
+  - additional space used in the node
+  - but the level of indirection of calling the cancellation might be reduced
+  - more research is needed if that makes sense
+
+---
+
+# Questions?
+
