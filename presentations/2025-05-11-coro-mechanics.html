@@ -66,8 +66,8 @@ task wozz() {
 - three new keywords:
   - `co_await` used to define a (potential) suspension point
   - `co_yield` to (potentially) suspend and yield some value
-  - `co_return` to return a value at the end
-- no just `return` in the coroutine body
+  - `co_return` to return a value at the end, no just `return` in the coroutine
+    body
 - other than that, normal code inside the coroutine body
 - can be member, template, but not destructor, not in `catch` blocks
 
@@ -80,18 +80,19 @@ task wozz() {
 </div>
 
 - stackless, decomposed into coroutine frame and function(s), first call is
-  special
+  special: ramp
 
 ---
 
 # Coroutine implemented as functions
 
 - mathematical equivalence of functions and coroutines (duality)
-- but the function mechanics uses hardware support such as assembly instruction
-  `CALL` knows to save the current address on the stack, increment the stack
+- functions are NOT implemented using coroutines
+- function mechanics uses hardware support such as assembly instruction `CALL`
+  which "knows" to save the current address on the stack, increment the stack
   pointer register and continue from the location provided
-- in practice a coroutine is implemented in terms of functions to exploit this
-  hardware efficiency
+- coroutines are implemented using functions
+- reason is to exploit this function hardware efficiency
   - the first of these functions is special: ramp
   - the following resume and eventually destroy from a previous suspension
 - coroutine frame is allocated on the heap (unless customized or optimized out)
@@ -151,7 +152,7 @@ task<std::string> foo(int x) {
 6. `42` of type `int` is copied to the frame (so that it can be accessed later)
 7. promise what?
 
-- this promise type has nothing to do with `std::promise`
+- this promise has practically nothing to do with `std::promise`
 
 
 ---
@@ -200,7 +201,6 @@ public:
 };
 ```
 
-- this promise type has nothing to do with `std::promise`
 - two options: the `promise_type` is defined within the declared return type or
   aliased to some other type defined elsewhere
 
@@ -254,6 +254,8 @@ The promise allows all sorts of coroutine customization
 
 # co_await expression re-write
 
+Of the three `co_...` keywords `co_await` is more special.
+
 For an expression in the coroutine body (e.g. not initial_suspend or
 final_suspend):
 
@@ -261,19 +263,19 @@ final_suspend):
 auto x = co_await expression;
 ```
 
-Start with the expression:
+Start with the **expression**:
 - if the promise has a `await_transform`: apply that to the expression to get an
   awaitable
 - else: continue with the expression as the awaitable
 
-Then with the awaitable
+Then with the **awaitable**
 - if the awaitable has a member `operator co_await`: call that to get an
   awaiter
 - else if there is some non-member `operator co_await` taking the awaitable:
   call that to get an awaiter
 - else: continue with the awaitable as the awaiter
 
-Then expect that the awaiter has three specific `await_...` methods.
+Then expect that the **awaiter** has three specific `await_...` methods.
 
 ---
 
@@ -315,6 +317,8 @@ auto x = awaiter.await_resume();
   synchronization might be required
 - the (potentially temporary) awaiter is stored on the coroutine frame while
   the coroutine is suspended
+  - because all data that spans a suspension point needs to be stored in the
+    coroutine frame (8) to be available the next time the coroutine is resumed
 - await_ready allows optimisations to skip this "save" work
 
 ---
@@ -476,6 +480,8 @@ struct promise_type {
   }
 };
 ```
+- options on how to capture the argument (by value, by const reference, by
+  rvalue reference etc.)
 
 ---
 
@@ -558,14 +564,18 @@ struct promise_type {
 };
 ```
 
+- and then the `generator` has to get access to `value_` somehow
+
 ---
 
 # Allocation control
 
-- get_return_object_on_allocation_failure()
 - custom operator new and delete
+- get_return_object_on_allocation_failure()
 
 # await_transform
+
+- e.g. can be used to disallow `co_await`
 
 ---
 

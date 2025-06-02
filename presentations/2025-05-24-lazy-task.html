@@ -360,6 +360,10 @@ task<void> bar(const std::string& letter) {
 
 # The move trick
 
+Used by Lewis Baker's coro library, also see [Raymond Chen: Making it
+impossible to co_await a task
+twice](https://devblogs.microsoft.com/oldnewthing/20210414-00/?p=105095)
+
 ```cpp
 template<typename T>
 class [[nodiscard]] task {
@@ -379,9 +383,9 @@ task<void> foo() {
 }
 ```
 
-I don't think this is a good solution for things that are meant to be done only
-once. In particular if std::move is used in both places it compiles, but is
-incorrect code. Also it sill has the reference bug.
+**Clever, but not a good solution for things that are meant to be done only
+once**. In particular if std::move is used in both places it compiles, but is
+incorrect code. Also it still has the reference argument bug.
 
 ---
 
