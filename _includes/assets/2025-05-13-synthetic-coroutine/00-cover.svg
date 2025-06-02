@@ -45,7 +45,7 @@
   <rect x="400" y="190" width="200" height="35" class="svg20250513-0-task_neutral"/>
   <path class="svg20250513-0-task_neutral" d="M 400 255 v -30 h 200 v 55 z"/>
   <text class="svg20250513-0-t1" x="620" y="43">9.1. resume fn pointer</text>
-  <text class="svg20250513-0-t1" x="620" y="78">9.2. resume fn pointer</text>
+  <text class="svg20250513-0-t1" x="620" y="78">9.2. destroy fn pointer</text>
   <text class="svg20250513-0-t1" x="620" y="140">7. promise</text>
   <text class="svg20250513-0-t1" x="620" y="208">9.3. suspend index</text>
   <text class="svg20250513-0-t1" x="620" y="268">6. arguments</text>

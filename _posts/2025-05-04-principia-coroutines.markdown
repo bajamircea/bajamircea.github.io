@@ -33,6 +33,7 @@ WORK IN PROGRESS
 - [Concurency threading models](/presentations/2025-05-28-threading-models.html)
 - [Callback](/presentations/2025-05-30-callback.html)
 - [Stop source, token, callback](/presentations/2025-06-03-stop.html)
+- [Structured concurency](/presentations/2025-06-07-structured-concurency.html)
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/00-cover.svg %}
@@ -57,25 +58,6 @@ date, but really good background info required to understand coroutines
 
 # TODO - topics to cover
 
-- Structured concurency
-  - continuation
-  - chains
-  - sane principles
-    - a child coroutine does not outlives its parent
-    - a coroutine runs uninterrupted until a co_await
-  - discuss issue with reference parameters, lambda captures, pointers, string_views
-    - the generator problems with scope
-  - discuss the issue of detach/fire and forget
-    - lifetime
-      - discuss bad advice that uses detached models
-      - https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rcoro-capture
-      - more bad advice https://devblogs.microsoft.com/oldnewthing/20211103-00/?p=105870
-      - though they really like detached in embedded environments, explain why
-    - error propagation
-  - sync start a chain
-  - wait_any, wait_all
-  - wait_for
-  - nursery
 - Cancellation
   - hiding cancellation from function signature (e.g. see `co_await get_cancellation_token()`
 - Trampoline

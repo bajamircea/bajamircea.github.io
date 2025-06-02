@@ -126,7 +126,7 @@ image = svg({
   ).add_text("9.1. resume fn pointer")
   text(
     class: make_id("t1"), x: 620, y: 78
-  ).add_text("9.2. resume fn pointer")
+  ).add_text("9.2. destroy fn pointer")
   text(
     class: make_id("t1"), x: 620, y: 140
   ).add_text("7. promise")

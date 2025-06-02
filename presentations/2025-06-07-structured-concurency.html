@@ -1,0 +1,43 @@
+---
+layout: presentation
+title: Structured concurency
+---
+
+Mircea Baja - 7 June 2025
+
+# Structured concurency
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurency/00-cover.svg %}
+</div>
+
+---
+
+# Motivation
+
+---
+
+- continuation
+- chains
+- sane principles
+  - a child coroutine does not outlives its parent
+  - a coroutine runs uninterrupted until a co_await
+- discuss issue with reference parameters, lambda captures, pointers, string_views
+  - the generator problems with scope
+- discuss the issue of detach/fire and forget
+  - lifetime
+    - discuss bad advice that uses detached models
+    - https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rcoro-capture
+    - more bad advice https://devblogs.microsoft.com/oldnewthing/20211103-00/?p=105870
+    - though they really like detached in embedded environments, explain why
+  - error propagation
+- sync start a chain
+- wait_any, wait_all
+- wait_for
+- nursery
+
+
+---
+
+# Questions?
+
