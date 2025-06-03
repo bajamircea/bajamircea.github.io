@@ -146,7 +146,8 @@ Mircea Baja - 6 May 2025
 - Bjarne Stroustrup: [A Set of C++ Classes for Co−routine Style
   Programming.](https://www.softwarepreservation.org/projects/c_plus_plus/cfront/release_e/doc/ClassesForCoroutines.pdf)
   Bell Laboratories Computer Science Technical Report CSTR−90. November 1980.
-- motivation: event driven simulations
+- motivation: event driven simulations (e.g. Bjarne's Ph.D. thesis work in Cambridge
+  UK)
 - `task` base class used to represent a independent activity which:
   - suspends voluntarily
   - can be resumed, canceled
@@ -159,6 +160,41 @@ Mircea Baja - 6 May 2025
 - some of the problems it tries to solve turn out to be recurring:
   cancellation, time management, forking and joining, queues, debugging, stack
   size, memory overhead etc.
+
+---
+
+# While down memory lane (1)
+
+[A History of C++: 1979− 1991 Bjarne Stroustrup
+(1995)](https://www.stroustrup.com/hopl2.pdf)
+
+"was used to write the library that supported the desired styles of concurrency.
+Please note that ‘‘styles’’ is plural. I considered it crucial – as I still do
+– that more than one notion of concurrency should be expressible in the
+language. This decision has been reconfirmed repeatedly by me and my
+colleagues, by other C++ users, and by the C++ standards committee. There are
+many applications for which support for concurrency is essential, but there is
+no one dominant model for concurrency support; thus when support is needed it
+should be provided through a library or a special purpose extension so that a
+particular form of concurrency support does not preclude other forms."
+
+- this is another recurring theme: there are all sort of ways to do concurrency
+
+---
+
+# While down memory lane (2)
+
+[A History of C++: 1979− 1991 Bjarne Stroustrup
+(1995)](https://www.stroustrup.com/hopl2.pdf)
+
+"C with Classes could not provide benefits at the expense of removing
+‘‘dangerous’’ or ‘‘ugly’’ features of C. This observation/principle had to be
+repeated often to people (rarely C with Classes users) who wanted C with
+Classes made safer by increasing static type checking along the lines of early
+Pascal"
+
+- this is another recurring theme: e.g. drive to use Rust "for safety" is not a
+  grass-roots movement from the C++ users/developers
 
 ---
 

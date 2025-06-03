@@ -55,6 +55,7 @@ date, but really good background info required to understand coroutines
 - [P2300R10 std::execution](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2300r10.html)
 - [P2175R0: Composable cancellation for sender-based async operations](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p2175r0.html#appendix-a-the-stop_when-algorithm)
 - [P3552R1 Add a Coroutine Task Type](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p3552r1.pdf)
+- [Introduction to Wait-free Algorithms in C++ Programming - Daniel Anderson - CppCon 2024](https://www.youtube.com/watch?v=kPh8pod0-gk)
 
 # TODO - topics to cover
 

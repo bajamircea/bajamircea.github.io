@@ -328,7 +328,7 @@ auto x = awaiter.await_resume();
 ```cpp
 struct suspend_always {
   constexpr bool await_ready() const noexcept {
-    return true;
+    return false;
   }
 
   constexpr void await_suspend(coroutine_handle<>) const noexcept {}
@@ -357,7 +357,7 @@ struct promise_type {
 ```cpp
 struct suspend_always {
   constexpr bool await_ready() const noexcept {
-    return false;
+    return true;
   }
 
   constexpr void await_suspend(coroutine_handle<>) const noexcept {}
