@@ -59,10 +59,35 @@ date, but really good background info required to understand coroutines
 
 # TODO - topics to cover
 
+- More in threading model
+  - embedded concurrency
+    - detached mode
+    - queue in hardware: interrupt priorities
+  - GPU
+    - NVIDIA motivation e.g.
+      - use local GPU plus remote GPUs
+      - use GPU to accelerate CPU work
+  - executor/scheduler
+  - granularity
+- What's wrong with
+  - std::async
+  - std::future and std::promise
 - Cancellation
+  - nature of cancellation
+  - cooperative
+    - poll
+    - stop callback
+  - asynchronous
+    - best effort, e.g. might not cancel immediately or might still complete
+  - what if cancel is slow: the server/detection pattern
   - hiding cancellation from function signature (e.g. see `co_await get_cancellation_token()`
 - Trampoline
 - Timers
+- context passing (adv/disadv):
+  - explicit as an argument
+  - buried
+- The issue of dual language:
+  - e.g. implementing vs. using (as seen in boost::asio)
 - Threading synchronization in await_suspend
   - none (no cancellation)
   - mutex

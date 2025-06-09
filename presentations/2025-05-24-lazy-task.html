@@ -48,8 +48,9 @@ task<void> foo() {
 }
 
 void somewhere() {
-  // run foo()
-  // also resume sleeping coroutines
+  // start foo()
+  // also resume sleeping coroutines when time expires
+  // until foo() is done
 }
 ```
 
@@ -308,13 +309,14 @@ std::cout << f2.get() << '\n';
 
 
 - also Q: What to do in final_suspend for eager tasks if the parent can't be
-  resumed becaus it did not suspend? A: more synchronization
+  resumed because it did not suspend (it only called the ramp)? A: more
+  synchronization
 
 ---
 
 # Good: lazy
 
-Another reason is (correct) error handling becomes impractical for anything but
+Another reason is: (correct) error handling becomes impractical for anything but
 the most trivial examples of eager work see [Structured Concurrency: Writing
 Safer Concurrent Code with Coroutines... - Lewis Baker - CppCon
 2019](https://www.youtube.com/watch?v=1Wy5sq3s2rg)

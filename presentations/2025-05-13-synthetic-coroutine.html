@@ -70,10 +70,10 @@ struct coroutine_frame_abi
 
 # Therefore
 
-Given `std::coroutine_handle<some_promise> coro;`:
+Given `std::coroutine_handle<some_promise> coro;`
 
-- `coro` istores just a pointer to the coroutine frame `pf_` that it interprets
-  as a pointer to a `coroutine_frame_abi`
+- `coro` stores: a pointer to the coroutine frame `pf_` that it interprets as a
+  pointer to a `coroutine_frame_abi`
 - `coro.resume()`: calls `pf_->resume(pf_)`
 - `coro.destroy()`: calls `pf_->destroy(pf_)`
 - `coro.done()`: checks if `pf->resume == nullptr`
