@@ -95,11 +95,11 @@ callback make_function_callback(T& x)
 ```cpp
 TEST(callback_trivial_function)
 {
-  coro_st::callback cb;
+  callback cb;
 
   bool called{ false };
 
-  cb = coro_st::make_function_callback<+[](bool & x) noexcept {
+  cb = make_function_callback<+[](bool & x) noexcept {
     x = true;
   }>(called);
 
@@ -143,12 +143,12 @@ callback make_member_callback(T* x)
 ```cpp
 TEST(callback_trivial_member)
 {
-  coro_st::callback cb;
+  callback cb;
 
   // assuming X is a class that has a member function
   X x;
 
-  cb = coro_st::make_member_callback<&X::member_function>(&x);
+  cb = make_member_callback<&X::member_function>(&x);
 
   cb.invoke();
 
@@ -180,8 +180,8 @@ TEST(callback_resume)
   // coroutine
   dummy_co co = async_foo();
 
-  coro_st::callback cb =
-    coro_st::make_resume_coroutine_callback(co.unique_child_coro.get());
+  callback cb =
+    make_resume_coroutine_callback(co.unique_child_coro.get());
 
   cb.invoke();
 

@@ -116,7 +116,7 @@ TEST(stop_util_trivial)
   stop_token token = source.get_token();
 
   bool called{ false };
-  coro_st::stop_callback callback{ token, [&called]() noexcept {
+  stop_callback callback{ token, [&called]() noexcept {
     called = true;
   }};
 

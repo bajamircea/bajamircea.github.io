@@ -120,7 +120,7 @@ std::generator<std::string> generate_proxies() {
 
 ---
 
-# Usage
+# More on usage
 
 ---
 
@@ -203,10 +203,10 @@ public:
     generator get_return_object() noexcept {
       return { std::coroutine_handle<promise_type>::from_promise(*this) };
     }
-    suspend_always initial_suspend() noexcept {
+    std::suspend_always initial_suspend() noexcept {
       return {};
     }
-    suspend_always final_suspend() noexcept {
+    std::suspend_always final_suspend() noexcept {
       return {};
     }
 ```
@@ -216,7 +216,7 @@ public:
 # co_yield, co_return, co_await
 
 ```cpp
-    suspend_always yield_value(const T& value) noexcept {
+    std::suspend_always yield_value(const T& value) noexcept {
       value_ = &value;
       return {};
     }
