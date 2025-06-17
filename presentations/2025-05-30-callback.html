@@ -238,6 +238,67 @@ Trade offs are:
 
 ---
 
+# Ready queue: intrusive queue
+
+```cpp
+template<typename Node, Node* Node::*next>
+class intrusive_queue {
+  Node* head_{ nullptr };
+  Node* tail_{ nullptr };
+public:
+  // constructor, move etc ...
+
+  bool empty() const noexcept {
+    return head_ == nullptr;
+  }
+
+  void push(Node* what) noexcept {
+    // add to back
+  }
+
+  Node* pop() noexcept {
+    // return front or nullptr
+  }
+};
+```
+
+---
+
+# Ready queue
+
+```cpp
+struct ready_node {
+  ready_node() noexcept = default;
+
+  ready_node(const ready_node&) = delete;
+  ready_node& operator=(const ready_node&) = delete;
+
+  ready_node* next{};
+  callback cb{};
+};
+
+using ready_queue = cpp_util::intrusive_queue<ready_node, &ready_node::next>;
+```
+
+---
+
+# Ready queue: usage
+
+```cpp
+// consume existing entries
+ready_queue local_ready = std::move(ready_queue_);
+while (!local_ready.empty()) {
+  auto* ready_node = local_ready.pop();
+
+  callback cb = ready_node->cb;
+  assert(cb.is_callable());
+  cb.invoke();
+}
+// then check timer heap
+```
+
+---
+
 # Disadvantages
 
 - not the perfect solution (we'll see other options at sender/receiver)

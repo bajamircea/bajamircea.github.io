@@ -164,10 +164,6 @@ public:
       std::rethrow_exception(exception_);
     }
   }
-
-  std::exception_ptr get_result_exception() const noexcept {
-    return exception_;
-  }
 };
 ```
 
@@ -344,8 +340,8 @@ std::rethrow_exception(ex);
 
 ```cpp
 task<void> foo() {
-  task<void> bar("alpha");
-  co_await bar;
+  task<void> t = bar("alpha");
+  co_await t;
 }
 ```
 
@@ -379,9 +375,9 @@ class [[nodiscard]] task {
 Meant to prevent
 ```cpp
 task<void> foo() {
-  task<void> bar("alpha");
-  co_await bar;
-  co_await bar;
+  task<void> t = bar("alpha");
+  co_await t;
+  co_await t;
 }
 ```
 

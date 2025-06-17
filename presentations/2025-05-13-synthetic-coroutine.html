@@ -76,7 +76,7 @@ Given `std::coroutine_handle<some_promise> coro;`
   pointer to a `coroutine_frame_abi`
 - `coro.resume()`: calls `pf_->resume(pf_)`
 - `coro.destroy()`: calls `pf_->destroy(pf_)`
-- `coro.done()`: checks if `pf->resume == nullptr`
+- `coro.done()`: checks if `pf_->resume == nullptr`
 
 ---
 

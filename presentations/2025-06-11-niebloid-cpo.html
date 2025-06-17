@@ -1,0 +1,484 @@
+---
+layout: presentation
+title: Niebloid, tag invoke, CPO etc.
+---
+
+Mircea Baja - 11 June 2025
+
+# Niebloid, tag invoke, CPO etc.
+
+```cpp
+namespace zoo {
+  namespace _make_sound_impl {
+
+    struct make_sound_t {
+      auto operator()(/*function parameters here*/) const {
+        make_sound(t);
+      }
+    }; // struct make_sound_t
+  } // namespace _make_sound_impl
+
+  inline constexpr _make_sound_impl::make_sound_t make_sound{};
+} // namespace zoo
+```
+
+---
+
+# Motivation
+
+Eric Niebler drove development of new customization points techniques, first in
+the work for `std::ranges`, then in the work for `std::execution`. It's useful
+to be aware of these techniques to be able to read (library) code to understand
+how things actually work.
+
+---
+
+# Customization points
+
+C++ allows for all sort of customization points:
+- virtual function interfaces
+- special functions/operators e.g. constructor, `operator==`
+- curiously recurring template pattern (CRTP)
+- function overloads
+- [class template specialization](http://www.gotw.ca/publications/mill17.htm)
+- etc.
+
+They all have advantages and disadvantages. E.g. virtual function interfaces
+give clear compile time errors, but have runtime overhead and struggle in a
+generic environment (roughly because they are too precise about the types in
+the interface)
+
+---
+
+# Swap - pre C++11 std
+
+```cpp
+namespace std {
+  template<typename T>
+  void swap(T& a, T& b) {
+    // pre C++11 code
+    T tmp = a;
+    a = b;
+    b = tmp;
+  }
+}
+```
+
+Pre C++11 `swap` was doing 2 copies. One would customize it e.g. `std::vector`
+customized it to avoid the copy of the values in the dynamic array.
+
+---
+
+# Swap - pre C++11 customize
+
+```cpp
+namespace my {
+  class SomeType {
+    // some private data here
+  };
+  void swap(SomeType& a, SomeType& b) {
+    // custom implementation here
+  }
+}
+```
+
+Customization is also called `swap`
+
+A common pattern is to for the customized `swap` to call a member `void
+swap(SomeType& other);`
+
+---
+
+# Swap usage
+
+```cpp
+template<typename T>
+void some_algoritm() {
+  // some code, assume a and b of type T
+  using namespace std;
+  swap(a, b);
+  // more code
+}
+```
+
+If the arguments `a` and `b` are of the type `my::SomeType`, then `my::swap`
+will be looked up in the namespace `my` and the customization is used,  else
+(if no customization) `std::swap` will be used.
+
+Technique relies on argument dependent lookup (ADL) rules.
+
+But it's easy to forget to use the two steps correctly when using `std::swap`.
+
+---
+
+# Swap - post C++11
+
+```cpp
+namespace std {
+  template<typename T>
+  void swap(T& a, T& b) {
+    // post C++11 code
+    T tmp = std::move(a);
+    a = std::move(b);
+    b = std::move(tmp);
+  }
+}
+```
+
+- move is used
+- this is example code e.g. ignoring `noexcept` specification
+
+NOTE: The customization point now is really the move constructor and assignment
+
+---
+
+# Niebloid
+
+A **niebloid** is a customization point technique invented by Eric Niebler to
+improve upon the previous state of customization points in the C++ `std`
+library such as the one used for `std::swap`, towads one more suitable for the
+`std::ranges` library he was working on. It involves a global function object
+and fixes some issues around ADL and concept enforcement.
+
+---
+
+# Niebloid example
+
+Say you write an `zoo` library and provide this customizable `zoo::make_sound`
+function. You want this to only apply to animals, with a default implementation
+for birds.
+
+---
+
+# Step by step
+
+---
+
+# Step by step (1)
+
+```cpp
+namespace zoo {
+  struct make_sound_t {
+    auto operator()(/*function parameters here*/) const {
+      // implementation here
+    }
+  };
+} // namespace zoo
+```
+
+Say you have a struct `zoo::make_sound_t` that implements `operator()`.
+
+That's a functor.
+
+---
+
+# Step by step (2)
+
+```cpp
+void foo() {
+  zoo::make_sound_t make_sound;
+  // more code here
+  // eventually invoke make_sound(...arguments here...)
+};
+```
+
+And if we have a variable of that type, `make_sound` is a function object.
+
+---
+
+# Step by step (3)
+
+```cpp
+zoo::make_sound_t make_sound;
+void foo() {
+  // more code here
+  // eventually invoke make_sound(...arguments here...)
+};
+```
+
+And if we declare it outside the scope of a function, `make_sound` is now a
+global function object.
+
+---
+
+# Step by step (4)
+
+```cpp
+namespace zoo {
+  struct make_sound_t {
+    auto operator()(/*function parameters here*/) const {
+      // implementation here
+    }
+  };
+
+  inline constexpr make_sound_t make_sound;
+} // namespace zoo
+```
+
+And if we declare it in the header we need to ensure it's `inline` (and
+`constexpr`). 
+
+`inline` does not mean `inline`, it means "if multiple cpp files include this
+header, there is just one single `make_sound` variable, not one for each cpp
+file".
+
+Wait does `constexpr` not imply `inline`? Sometimes it does, but not for
+variables.
+
+---
+
+# Step by step (5)
+
+```cpp
+namespace zoo {
+  namespace _make_sound_impl {
+
+    auto make_sound(/*function parameters here*/) {
+      // some actual implementation
+    }
+
+    struct make_sound_t {
+      auto operator()(/*function parameters here*/) const {
+        make_sound(/*pass function parameters here*/);
+      }
+    }; // struct make_sound_t
+  } // namespace _make_sound_impl
+
+  inline constexpr _make_sound_impl::make_sound_t make_sound{};
+} // namespace zoo
+```
+
+Move the functor in an implementation/"hidden" namespace, then call an
+implementation function with the same name as the global function object.
+
+We've got a niebloid here.
+
+---
+
+# More complete example
+
+Goal recap: you write an `zoo` library and provide this customizable
+`zoo::make_sound` function. You want this to only apply to animals, with a
+default implementation for birds.
+
+---
+
+```cpp
+// library namespace
+namespace zoo {
+
+  // Concepts for animal and bird
+  template<typename T>
+  concept is_animal = requires(const T& t) {
+    t.breathe_eat_sleep();
+  };
+  template<typename T>
+  concept is_bird = is_animal<T> && requires(const T& t) {
+    t.flap();
+  };
+```
+
+---
+
+```cpp
+  // "hidden" namespace
+  namespace _make_sound_impl {
+
+    // Provide default implementation for birds
+    template<is_bird T>
+    auto make_sound(const T& t) {
+      t.flap();
+    }
+
+    // The customization point global object type
+    struct make_sound_t {
+      // Constrain to animals only
+      template<is_animal T>
+      // It's a function object
+      auto operator()(const T& t) const {
+        make_sound(t);
+      }
+    }; // struct make_sound_t
+  } // namespace _make_sound_impl
+
+  // The customization point global object
+  inline constexpr _make_sound_impl::make_sound_t make_sound{};
+} // namespace zoo
+```
+
+---
+
+# Usage of the example
+
+---
+
+# Accept default implementation
+
+```cpp
+namespace pet {
+  struct budgie {
+    // budgie is a bird
+    void breathe_eat_sleep() const {}
+    void flap() const { std::println("Flap!"); }
+  };
+} // namespace pet
+
+int main() {
+  pet::budgie x;
+  // default implementation of make_sound
+  // for birds calls flap()
+  zoo::make_sound(x); // Flap!
+}
+```
+
+---
+
+# Customize, skip default
+
+```cpp
+namespace pet {
+  struct duck {
+    // duck is a bird
+    void breathe_eat_sleep() const {}
+    void flap() const { std::println("Swoosh!"); }
+  };
+
+  // custom implementation, despite being a bird
+  void make_sound(const duck&) {
+    std::println("Quack!");
+  }
+} // namespace pet
+
+int main() {
+  pet::duck x;
+  zoo::make_sound(x); // Quack!
+}
+```
+
+---
+
+# Error: default not available
+
+```cpp
+namespace pet {
+  struct cat {
+    // not a bird, just an animal
+    void breathe_eat_sleep() const {}
+    void purr() const {}
+  };
+} // namespace pet
+
+int main() {
+  pet::cat x;
+  // Error: because 'pet::cat' does not satisfy 'is_bird'
+  // or
+  // Error: no matching function for call to 'make_sound'
+  zoo::make_sound(x);
+}
+```
+
+---
+
+# Provide implementation, no default
+
+```cpp
+namespace pet {
+  struct dog {
+    // not a bird, just an animal
+    void breathe_eat_sleep() const {}
+    void chase() const {}
+  };
+
+  // but provides custom make_sound
+  void make_sound(const dog&) {
+    std::println("Woof!");
+  }
+} // namespace pet
+
+int main() {
+  pet::dog x;
+  zoo::make_sound(x); // Woof!
+}
+```
+
+---
+
+# Error: constraints not satisfied
+
+```cpp
+namespace pet {
+  struct butterfly {
+    // not even an animal
+    void flap() const { std::println("Flip!"); }
+  };
+} // namespace pet
+
+int main() {
+  pet::butterfly x;
+  // Error: because 'pet::butterfly' does not satisfy 'is_animal'
+  zoo::make_sound(x);
+}
+```
+
+---
+
+# Rationale (1)
+
+- removes the need for the two step usage
+  - Q: why do we care about `swap`?
+  - A: the same applies to `begin`, `end` etc.
+- allows enforcement of concepts
+
+
+- one downside: a lot of additional code
+
+---
+
+# Rationale (2)
+
+```cpp
+// in namespace std
+template< /* ... */ >
+bool all_of( InputIt first, InputIt last, UnaryPredicate p );
+
+// in namespace std::ranges
+template< /* ... */ > constexpr
+bool all_of( I first, S last, Pred pred, Proj proj = {} );
+
+// somewhere, calls which one?
+using namespace std::ranges;
+bool result = all_of(iter1, iter2, pred);
+```
+
+The technique of global function object can be used independently of trying to
+have a customization point
+
+Helped with ranges vs. algorithm disambiguation (in effect disabling ADL,
+because ADL only applies to functions, not variables)
+
+---
+
+# But
+
+As a customization point, it requires reserving global names e.g. `swap`,
+`begin`, `end` etc.
+
+The sender/receiver made heavy use of customization points.
+
+What to do: one choice is to combine with another technique, the usage of tags
+
+---
+
+# Tags
+
+---
+
+# Bibliography
+
+- [Eric Niebler: Customization Point Design in C++11 and Beyond, 2014-10-21](https://ericniebler.com/2014/10/21/customization-point-design-in-c11-and-beyond/)
+- [Eric Niebler: Suggested Design for Customization Points, 2015-03-11](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4381.html)
+
+---
+
+# Questions?
+

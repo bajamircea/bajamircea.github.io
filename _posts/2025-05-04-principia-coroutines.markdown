@@ -34,6 +34,7 @@ WORK IN PROGRESS
 - [Callback](/presentations/2025-05-30-callback.html)
 - [Stop source, token, callback](/presentations/2025-06-03-stop.html)
 - [Structured concurency](/presentations/2025-06-07-structured-concurency.html)
+- [Niebloid, tag invoke, CPO etc.](/presentations/2025-06-11-niebloid-cpo.html)
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/00-cover.svg %}
