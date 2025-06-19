@@ -8,18 +8,17 @@ Mircea Baja - 11 June 2025
 # Niebloid, tag invoke, CPO etc.
 
 ```cpp
-namespace zoo {
-  namespace _make_sound_impl {
+namespace __as_awaitable {
+  struct as_awaitable_t {
+    template <class _Tp, class _Promise>
+    auto operator()(_Tp&& __t, _Promise& __promise) const
+      return tag_invoke(*this, static_cast<_Tp&&>(__t), __promise);
+    }
+  };
+}
 
-    struct make_sound_t {
-      auto operator()(/*function parameters here*/) const {
-        make_sound(t);
-      }
-    }; // struct make_sound_t
-  } // namespace _make_sound_impl
-
-  inline constexpr _make_sound_impl::make_sound_t make_sound{};
-} // namespace zoo
+using __as_awaitable::as_awaitable_t;
+inline constexpr as_awaitable_t as_awaitable{};
 ```
 
 ---
@@ -111,8 +110,8 @@ namespace my {
 
 Customization is also called `swap`
 
-A common pattern is to for the customized `swap` to call a member `void
-swap(SomeType& other);`
+A common pattern is for the customized `swap` to call a member `void
+swap(SomeType& other);` that has access to the private data.
 
 ---
 
@@ -249,7 +248,7 @@ And if we declare it in the header we need to ensure it's `inline` (and
 header, there is just one single `make_sound` variable, not one for each cpp
 file".
 
-Wait does `constexpr` not imply `inline`? Sometimes it does, but not for
+Wait, does `constexpr` not imply `inline`? Sometimes it does, but not for
 variables.
 
 ---
@@ -321,7 +320,7 @@ namespace zoo {
     struct make_sound_t {
       // Constrain to animals only
       template<is_animal T>
-      // It's a function object
+      // It's a functor
       auto operator()(const T& t) const {
         make_sound(t);
       }
@@ -457,7 +456,9 @@ void test_butterfly() {
 - allows enforcement of concepts
 
 
-- one downside: a lot of additional code
+- one downside: unusual code that's not easy for the untrained eye to confirm
+  it's correct (this brings memories of [Why Not Specialize Function
+  Templates?](http://www.gotw.ca/publications/mill17.htm)
 
 ---
 
@@ -527,8 +528,8 @@ What to do: one choice is to combine with another technique, the usage of tags
 # Tags
 
 Classic technique to achieve different implementations, the canonical case is
-it's used with iterators where different algorithms are available depending on
-the capabilities of the iterator type
+used in conjunction with iterators where different algorithms are available
+depending on the capabilities of the iterator type
 
 ---
 
@@ -544,6 +545,8 @@ namespace std {
 }
 ```
 
+Tags are empty `struct`s.
+
 Note `random_access_iterator_tag` derives from `bidirectional_iterator_tag`
 
 ---
@@ -554,7 +557,7 @@ Note `random_access_iterator_tag` derives from `bidirectional_iterator_tag`
 template<class T> struct iterator_traits<BinaryTreeIterator<T>> {
   using value_type = T;
   // ... and the tag
-  typedef bidirectional_iterator_tag iterator_category;
+  using iterator_category = bidirectional_iterator_tag;
 };
 ```
 
@@ -574,7 +577,7 @@ and match techniques.
 template <class BidirectionalIterator>
 inline void evolve(BidirectionalIterator first, BidirectionalIterator last) {
   evolve(first, last,
-    typename iterator_traits<BidirectionalIterator>::iterator_category());
+    typename iterator_traits<BidirectionalIterator>::iterator_category{});
 }
 
 template <class BidirectionalIterator>
@@ -659,7 +662,7 @@ namespace zoo {
 
     // Constrain to animals only
     template<is_animal T>
-    // It's a function object
+    // It's a functor
     auto operator()(const T& t) const {
       std::tag_invoke(*this, t);
     }
@@ -811,6 +814,8 @@ done pre-C++11 (but almost nobody did because of the complexity involved).
   2014-10-21](https://ericniebler.com/2014/10/21/customization-point-design-in-c11-and-beyond/)
 - [Eric Niebler, Suggested Design for Customization Points,
   2015-03-11](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4381.html)
+- [Barry Revzin: Why tag_invoke is not the solution I
+  want](https://brevzin.github.io/c++/2020/12/01/tag-invoke/)
 - [P2547R1: Language Support for Customisable
   Functions](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2547r1.html)
 
