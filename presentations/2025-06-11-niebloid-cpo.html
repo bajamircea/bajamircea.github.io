@@ -33,6 +33,30 @@ how things actually work.
 
 ---
 
+# Motivation
+
+```cpp
+namespace __as_awaitable {
+  struct as_awaitable_t {
+    template <class _Tp, class _Promise>
+    auto operator()(_Tp&& __t, _Promise& __promise) const
+      return tag_invoke(*this, static_cast<_Tp&&>(__t), __promise);
+    }
+  };
+}
+
+using __as_awaitable::as_awaitable_t;
+inline constexpr as_awaitable_t as_awaitable{};
+```
+
+Q: How do we make sense of this code?
+
+A: It obviously makes use of `tag_invoke` as a niebloid style customization point.
+
+Q: What?
+
+---
+
 # Customization points
 
 C++ allows for all sort of customization points:
@@ -43,10 +67,13 @@ C++ allows for all sort of customization points:
 - [class template specialization](http://www.gotw.ca/publications/mill17.htm)
 - etc.
 
-They all have advantages and disadvantages. E.g. virtual function interfaces
-give clear compile time errors, but have runtime overhead and struggle in a
-generic environment (roughly because they are too precise about the types in
-the interface)
+They all have advantages and disadvantages.
+
+E.g. virtual function interfaces give clear compile time errors (if overload
+does not match interface OR missing overload), but have runtime overhead
+(virtual table pointer, indirect calls and allocations to return interfaces)
+and struggle in a generic environment (roughly because they are too precise
+about the types in the interface)
 
 ---
 
@@ -323,7 +350,7 @@ namespace pet {
   };
 } // namespace pet
 
-int main() {
+void test_budgie() {
   pet::budgie x;
   // default implementation of make_sound
   // for birds calls flap()
@@ -349,7 +376,7 @@ namespace pet {
   }
 } // namespace pet
 
-int main() {
+void test_duck() {
   pet::duck x;
   zoo::make_sound(x); // Quack!
 }
@@ -368,7 +395,7 @@ namespace pet {
   };
 } // namespace pet
 
-int main() {
+void test_cat() {
   pet::cat x;
   // Error: because 'pet::cat' does not satisfy 'is_bird'
   // or
@@ -395,7 +422,7 @@ namespace pet {
   }
 } // namespace pet
 
-int main() {
+void test_dog() {
   pet::dog x;
   zoo::make_sound(x); // Woof!
 }
@@ -413,7 +440,7 @@ namespace pet {
   };
 } // namespace pet
 
-int main() {
+void test_butterfly() {
   pet::butterfly x;
   // Error: because 'pet::butterfly' does not satisfy 'is_animal'
   zoo::make_sound(x);
@@ -437,15 +464,43 @@ int main() {
 # Rationale (2)
 
 ```cpp
-// in namespace std
-template< /* ... */ >
-bool all_of( InputIt first, InputIt last, UnaryPredicate p );
+namespace std {
+  template< /* ... */ >
+  bool all_of( InputIt first, InputIt last, UnaryPredicate p );
+}
 
-// in namespace std::ranges
-template< /* ... */ > constexpr
-bool all_of( I first, S last, Pred pred, Proj proj = {} );
+namespace std::ranges {
+  template< /* ... */ > constexpr
+  bool all_of( I first, S last, Pred pred, Proj proj = {} );
+}
 
 // somewhere, calls which one?
+using namespace std::ranges;
+bool result = all_of(iter1, iter2, pred);
+```
+
+The problem is that there are two `all_of` that could work (e.g. but one
+expects both iterators to be the same, the other accepts a sentinel for
+`last`).
+
+---
+
+# Rationale (2)
+
+```cpp
+namespace std {
+  template< /* ... */ >
+  bool all_of( InputIt first, InputIt last, UnaryPredicate p );
+}
+
+namespace std::ranges {
+  template< /* ... */ >
+  struct __all_of_fn { /* operator() here */ };
+
+  inline constexpr __all_of_fn all_of{};
+}
+
+// somewhere, calls ranges::all_of
 using namespace std::ranges;
 bool result = all_of(iter1, iter2, pred);
 ```
@@ -471,12 +526,293 @@ What to do: one choice is to combine with another technique, the usage of tags
 
 # Tags
 
+Classic technique to achieve different implementations, the canonical case is
+it's used with iterators where different algorithms are available depending on
+the capabilities of the iterator type
+
+---
+
+# Tags: empty classes
+
+```cpp
+namespace std {
+  struct input_iterator_tag { };
+  struct output_iterator_tag { };
+  struct forward_iterator_tag: public input_iterator_tag { };
+  struct bidirectional_iterator_tag: public forward_iterator_tag { };
+  struct random_access_iterator_tag: public bidirectional_iterator_tag { };
+}
+```
+
+Note `random_access_iterator_tag` derives from `bidirectional_iterator_tag`
+
+---
+
+# Tags: traits give tag
+
+```cpp
+template<class T> struct iterator_traits<BinaryTreeIterator<T>> {
+  using value_type = T;
+  // ... and the tag
+  typedef bidirectional_iterator_tag iterator_category;
+};
+```
+
+The traits give additional information about a type without having to modify
+the type itself.
+
+This example also uses [class template
+specialization](http://www.gotw.ca/publications/mill17.htm). Again, one can mix
+and match techniques.
+
+---
+
+# Tags: dispatch based on the tag
+
+```cpp
+// user calls this
+template <class BidirectionalIterator>
+inline void evolve(BidirectionalIterator first, BidirectionalIterator last) {
+  evolve(first, last,
+    typename iterator_traits<BidirectionalIterator>::iterator_category());
+}
+
+template <class BidirectionalIterator>
+inline void evolve(BidirectionalIterator first, BidirectionalIterator last,
+  bidirectional_iterator_tag) {
+  // more generic, but less efficient algorithm
+}
+
+template <class RandomAccessIterator>
+inline void evolve(RandomAccessIterator first, RandomAccessIterator last,
+  random_access_iterator_tag) {
+  // more efficient, but less generic algorithm
+}
+```
+
+Note advanced usage of tags that also takes advantage of tag inheritance for
+selection of more specialized algorithm.
+
+---
+
+# tag_invoke
+
+The goal is to avoid an ever growing number of globally reserved names such as
+`swap`, `begin`, `end` etc. for customization points.
+
+So it starts by reserving a single, oddly named (to avoid conflicts in existing
+code): `tag_invoke`.
+
+---
+
+# tag_invoke
+
+```cpp
+namespace std {
+  struct tag_invoke_t {
+    template<typename ...Args>
+    auto operator()(Args&&... args) const {
+      tag_invoke(std::forward<Args>(args)...);
+    }
+  };
+  inline constexpr tag_invoke_t tag_invoke{};
+} // namespace std
+```
+NOTE: make believe code, `std::tag_invoke` is not actually in the standard
+
+---
+
+# More complete example
+
+Goal recap: you write an zoo library and provide this customizable
+zoo::make_sound function. You want this to only apply to animals, with a
+default implementation for birds.
+
+But this time with tag_invoke
+
+---
+
+```cpp
+// library namespace
+namespace zoo {
+  // Concepts for animal and bird
+  template<typename T>
+  concept is_animal = requires(const T& t) {
+    t.breathe_eat_sleep();
+  };
+  template<typename T>
+  concept is_bird = is_animal<T> && requires(const T& t) {
+    t.flap();
+  };
+```
+
+---
+
+```cpp
+  // The customization point global object type
+  struct make_sound_t {
+    // Provide default implementation for birds
+    template<is_bird T>
+    friend auto tag_invoke(make_sound_t, const T& t) {
+      t.flap();
+    }
+
+    // Constrain to animals only
+    template<is_animal T>
+    // It's a function object
+    auto operator()(const T& t) const {
+      std::tag_invoke(*this, t);
+    }
+  }; // struct make_sound_t
+
+  // The customization point global object
+  inline constexpr make_sound_t make_sound{};
+} // namespace zoo
+```
+
+---
+
+# Usage of the example
+
+But this time with tag_invoke
+
+---
+
+# Accept default implementation
+
+```cpp
+namespace pet {
+  struct budgie {
+    // budgie is a bird
+    void breathe_eat_sleep() const {}
+    void flap() const { std::println("Flap!"); }
+  };
+} // namespace pet
+
+void test_budgie() {
+  pet::budgie x;
+  // default implementation of make_sound
+  // for birds calls flap()
+  zoo::make_sound(x); // Flap!
+}
+```
+
+---
+
+# Customize, skip default
+
+```cpp
+namespace pet {
+  struct duck {
+    // duck is a bird
+    void breathe_eat_sleep() const {}
+    void flap() const { std::println("Swoosh!"); }
+  };
+
+  // custom implementation, despite being a bird
+  void tag_invoke(zoo::make_sound_t, const duck&) {
+    std::println("Quack!");
+  }
+} // namespace pet
+
+void test_duck() {
+  pet::duck x;
+  zoo::make_sound(x); // Quack!
+}
+```
+
+---
+
+# Error: default not available
+
+```cpp
+namespace pet {
+  struct cat {
+    // not a bird, just an animal
+    void breathe_eat_sleep() const {}
+    void purr() const {}
+  };
+} // namespace pet
+
+void test_cat() {
+  pet::cat x;
+  // Error: but message is long
+  zoo::make_sound(x);
+}
+```
+
+---
+
+# Provide implementation, no default
+
+```cpp
+namespace pet {
+  struct dog {
+    // not a bird, just an animal
+    void breathe_eat_sleep() const {}
+    void chase() const {}
+  };
+
+  // but provides custom make_sound
+  void tag_invoke(zoo::make_sound_t, const dog&) {
+    std::println("Woof!");
+  }
+} // namespace pet
+
+void test_dog() {
+  pet::dog x;
+  zoo::make_sound(x); // Woof!
+}
+```
+
+---
+
+# Error: constraints not satisfied
+
+```cpp
+namespace pet {
+  struct butterfly {
+    // not even an animal
+    void flap() const { std::println("Flip!"); }
+  };
+} // namespace pet
+
+void test_butterfly() {
+  pet::butterfly x;
+  // Error: but message is long
+  zoo::make_sound(x);
+}
+```
+
+---
+
+# tag_invoke
+
+But there are downsides. One of which is that there are lots of `tag_invoke`
+overloads, which at least makes compilation error diagnostics very difficult
+for anything but the most trivial examples.
+
+---
+
+# Future
+
+What to do?
+
+[P2547R1: Language Support for Customisable Functions](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2547r1.html)
+
+Maybe a language construct. This is similar to the move semantics that could be
+done pre-C++11 (but almost nobody did because of the complexity involved).
+
 ---
 
 # Bibliography
 
-- [Eric Niebler: Customization Point Design in C++11 and Beyond, 2014-10-21](https://ericniebler.com/2014/10/21/customization-point-design-in-c11-and-beyond/)
-- [Eric Niebler: Suggested Design for Customization Points, 2015-03-11](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4381.html)
+- [Eric Niebler, Customization Point Design in C++11 and Beyond,
+  2014-10-21](https://ericniebler.com/2014/10/21/customization-point-design-in-c11-and-beyond/)
+- [Eric Niebler, Suggested Design for Customization Points,
+  2015-03-11](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/n4381.html)
+- [P2547R1: Language Support for Customisable
+  Functions](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2547r1.html)
 
 ---
 
