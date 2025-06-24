@@ -237,7 +237,7 @@ The promise allows all sorts of coroutine customization
     if (!made enough progress through initial_suspend) {
       throw;
     }
-    promise.undhandled_exception();
+    promise.unhandled_exception();
   }
   co_await promise.final_suspend();
 ```
