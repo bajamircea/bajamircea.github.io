@@ -13,7 +13,34 @@ Mircea Baja - 7 June 2025
 
 ---
 
-# Motivation
+# Structured programming
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurency/01-structured-programming.svg %}
+</div>
+
+[Nathaniel J. Smith: Notes on structured concurrency, or: Go statement
+considered
+harmful](https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/)
+
+- `goto` corresponds to low level assembly `jump` instructions
+- ends in spagetti code: graphs that do not obviously reduce to sequential
+  (i.e. linear)
+- replaced with constructs that reduce to sequential
+- in modern languages even `goto` is tamed (only jumps within the same
+  function)
+  - but kept for the three cases where it's needed once every 20 years or so
+
+---
+
+# Unstructured concurrency
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurency/02-goto-vs-detached.svg %}
+</div>
+
+
+Low level C APIs expose a detached behaviour where 
 
 ---
 
