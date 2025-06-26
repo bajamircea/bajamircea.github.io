@@ -67,11 +67,11 @@ Then you have functions that use the handle:
 {% highlight c++ linenos %}
 std::wstring read_registry_string(
   registry_handle_arg key,
-  const std::wstring & sub_key_path);
+  const std::wstring & value_name);
 
 std::vector<std::wstring> read_registry_multistring(
   registry_handle_arg key,
-  const std::wstring & sub_key_path);
+  const std::wstring & value_name);
 {% endhighlight %}
 
 Then you might have the situation where closing the handle could fail. That's
@@ -160,12 +160,12 @@ setting the error code for all other errors:
 {% highlight c++ linenos %}
 std::wstring read_registry_string(
   registry_handle_arg key,
-  const std::wstring & sub_key_path,
+  const std::wstring & value_name,
   std::error_code & ec);
 
 std::wstring read_registry_string(
   registry_handle_arg key,
-  const std::wstring & sub_key_path);
+  const std::wstring & value_name);
 {% endhighlight %}
 
 When functions have defaulted parameters, the error code should be the last

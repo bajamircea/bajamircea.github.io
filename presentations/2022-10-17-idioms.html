@@ -170,7 +170,7 @@ using registry_handle_arg = handle_arg<registry_handle>;
 ```cpp
 std::wstring read_registry_string(
   registry_handle_arg key,
-  const std::wstring & sub_key_path);
+  const std::wstring & value_name);
 ```
 
 --
@@ -178,7 +178,7 @@ std::wstring read_registry_string(
 ```cpp
 std::vector<std::wstring> read_registry_multistring(
   registry_handle_arg key,
-  const std::wstring & sub_key_path);
+  const std::wstring & value_name);
 ```
 
 ---
@@ -256,12 +256,12 @@ void foo() {
 ```cpp
 std::wstring read_registry_string(
   registry_handle_arg key,
-  const std::wstring & sub_key_path,
+  const std::wstring & value_name,
   std::error_code & ec);
 
 std::wstring read_registry_string(
   registry_handle_arg key,
-  const std::wstring & sub_key_path);
+  const std::wstring & value_name);
 ```
 
 - `std::bad_alloc` vs `noexcept`

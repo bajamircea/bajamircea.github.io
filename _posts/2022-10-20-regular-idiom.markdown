@@ -100,7 +100,7 @@ TEST(person_from_json, trivial)
   person actual  = person_from_json_string("...");
   person expected{
     .first_name = "Father",
-    .flast_name = "Christmas",
+    .last_name = "Christmas",
     .age = 100
   };
   ASSERT_EQ(expected, actual);
