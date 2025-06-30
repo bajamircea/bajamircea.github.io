@@ -33,22 +33,57 @@ harmful](https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement
 
 ---
 
+# Low level concurrency APIs
+
+```cpp
+int WSAAPI WSARecv(
+  [in]      SOCKET                             s,
+  [in, out] LPWSABUF                           lpBuffers,
+  [in]      DWORD                              dwBufferCount,
+  [out]     LPDWORD                            lpNumberOfBytesRecvd,
+  [in, out] LPDWORD                            lpFlags,
+  [in]      LPWSAOVERLAPPED                    lpOverlapped,
+  [in]      LPWSAOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine
+);
+```
+
+- Can be called with a pointer to the completion routine (a callback)
+- Until that routine is called (or cancelled) the socket, buffer, overlapped
+  structure (often a derived type holding more data)
+  - need to be kept alive
+  - they might be accessed during or after the call to `WSARecv`
+
+---
+
 # Unstructured concurrency
 
 <div align="center">
 {% include assets/2025-06-07-structured-concurency/02-goto-vs-detached.svg %}
 </div>
 
-Low level C APIs expose a detached behaviour where 
+[Nathaniel J. Smith: Notes on structured concurrency, or: Go statement
+considered
+harmful](https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/)
 
+Low level C APIs expose a detached behaviour which on one side is necessary,
+like `jump` statements in assembly, but we want that wrapped in structured
+concurrency primitives that are easier to use correctly.
+
+Easy to say, but what are some examples of structured concurrency primitives?
 
 ---
 
-# wait_any
+# An example: wait_any
 
 <div align="center">
 {% include assets/2025-06-07-structured-concurency/03-wait_any.svg %}
 </div>
+
+- we started three tasks
+- the second completed first
+- the other two are cancelled
+- continues when all three are completed (cancelled or otherwise)
+- returns the value of winner (second task in this case)
 
 ---
 
