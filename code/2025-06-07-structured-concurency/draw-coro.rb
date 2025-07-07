@@ -661,587 +661,319 @@ save_to_file("_includes/assets/2025-06-07-structured-concurency", "03-wait_any.s
 
 $crt_id += 1
 
+image = svg({
+  id: make_id("box"),
+  width: "100%",
+  viewBox: "0 0 800 180",
+  }) do
 
-# $crt_id += 1
-# 
-# image = svg({
-#   id: make_id("box"),
-#   width: "100%",
-#   viewBox: "0 0 800 320",
-#   }) do
-# 
-#   style().add_text(<<-CSS)
-#     ##{make_id("box")} {
-#       border: 1px solid #e8e8e8;
-#       background-color: #f5f5f5;
-#     }
-#     .#{make_id("t1")} {
-#       font-family: sans-serif;
-#       font-size: 16px;
-#       text-anchor: middle;
-#       dominant-baseline: middle;
-#     }
-#     .#{make_id("t2")} {
-#       font-family: sans-serif;
-#       font-size: 16px;
-#       dominant-baseline: middle;
-#     }
-#     .#{make_id("l1")} {
-#       stroke: #000000;
-#       stroke-width: 2;
-#       fill: none;
-#     }
-#     .#{make_id("l2")} {
-#       stroke: #000000;
-#       stroke-width: 2;
-#       fill: none;
-#       stroke-dasharray: 5;
-#     }
-#     .#{make_id("task_white")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_white};
-#     }
-#     .#{make_id("task_green")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_green};
-#     }
-#     .#{make_id("task_grey")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_grey};
-#     }
-#     .#{make_id("task_neutral")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_neutral};
-#     }
-#     .#{make_id("task_neutral2")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_neutral2};
-#     }
-#     .#{make_id("task_orange")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_orange};
-#     }
-#     .#{make_id("task_pink")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_pink};
-#     }
-#     .#{make_id("task_purple")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_purple};
-#     }
-#   CSS
-# 
-#   defs() do
-#     marker(
-#       id: make_id("arrow"),
-#       viewBox: "0, 0, 10, 10",
-#       refX: 5, refY: 5,
-#       markerWidth: 6, markerHeight: 6,
-#       orient: "auto-start-reverse"
-#     ) do
-#       path(d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z")
-#     end
-#   end
-# 
-#   rect(x: 10, y: 10, width: 80, height: 300, class: make_id("task_white"))
-#   rect(x: 130, y: 70, width: 80, height: 170, class: make_id("task_neutral2"))
-# 
-#   rect(x: 390, y: 20, width: 80, height: 30, class: make_id("task_grey"))
-#   rect(x: 390, y: 50, width: 80, height: 220, class: make_id("task_white"))
-#   rect(x: 390, y: 80, width: 80, height: 30, class: make_id("task_purple"))
-#   rect(x: 510, y: 70, width: 80, height: 170, class: make_id("task_neutral"))
-# 
-#   path(
-#     class: make_id("l1"),
-#     d: "M 50 30 v 70 l 120 -20 v 40"
-#   )
-# 
-#   line(
-#     class: make_id("l1"),
-#     x1: 470, y1: 95, x2: 503, y2: 73,
-#     marker_end: "url(##{make_id("arrow")})"
-#   )
-# 
-#   text(
-#     class: make_id("t1"),
-#     x: 170, y: 55
-#   ).add_text("foo")
-#   text(
-#     class: make_id("t2"),
-#     x: 390, y: 285
-#   ).add_text("stack")
-#   text(
-#     class: make_id("t2"),
-#     x: 510, y: 55
-#   ).add_text("foo frame")
-# 
-# end
-# 
-# # puts(image.render)
-# 
-# save_to_file("_includes/assets/2025-05-24-lazy-task", "02-in-foo.svg", image.render)
-# 
-# $crt_id += 1
-# 
-# image = svg({
-#   id: make_id("box"),
-#   width: "100%",
-#   viewBox: "0 0 800 320",
-#   }) do
-# 
-#   style().add_text(<<-CSS)
-#     ##{make_id("box")} {
-#       border: 1px solid #e8e8e8;
-#       background-color: #f5f5f5;
-#     }
-#     .#{make_id("t1")} {
-#       font-family: sans-serif;
-#       font-size: 16px;
-#       text-anchor: middle;
-#       dominant-baseline: middle;
-#     }
-#     .#{make_id("t2")} {
-#       font-family: sans-serif;
-#       font-size: 16px;
-#       dominant-baseline: middle;
-#     }
-#     .#{make_id("l1")} {
-#       stroke: #000000;
-#       stroke-width: 2;
-#       fill: none;
-#     }
-#     .#{make_id("l2")} {
-#       stroke: #000000;
-#       stroke-width: 2;
-#       fill: none;
-#       stroke-dasharray: 5;
-#     }
-#     .#{make_id("task_white")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_white};
-#     }
-#     .#{make_id("task_green")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_green};
-#     }
-#     .#{make_id("task_grey")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_grey};
-#     }
-#     .#{make_id("task_neutral")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_neutral};
-#     }
-#     .#{make_id("task_neutral2")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_neutral2};
-#     }
-#     .#{make_id("task_orange")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_orange};
-#     }
-#     .#{make_id("task_pink")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_pink};
-#     }
-#     .#{make_id("task_purple")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_purple};
-#     }
-#   CSS
-# 
-#   defs() do
-#     marker(
-#       id: make_id("arrow"),
-#       viewBox: "0, 0, 10, 10",
-#       refX: 5, refY: 5,
-#       markerWidth: 6, markerHeight: 6,
-#       orient: "auto-start-reverse"
-#     ) do
-#       path(d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z")
-#     end
-#   end
-# 
-#   rect(x: 10, y: 10, width: 80, height: 300, class: make_id("task_white"))
-#   rect(x: 130, y: 70, width: 80, height: 170, class: make_id("task_neutral2"))
-#   rect(x: 250, y: 85, width: 80, height: 140, class: make_id("task_neutral2"))
-# 
-#   rect(x: 390, y: 20, width: 80, height: 30, class: make_id("task_grey"))
-#   rect(x: 390, y: 50, width: 80, height: 220, class: make_id("task_white"))
-#   rect(x: 390, y: 80, width: 80, height: 30, class: make_id("task_purple"))
-#   rect(x: 510, y: 70, width: 80, height: 170, class: make_id("task_neutral"))
-#   rect(x: 510, y: 150, width: 80, height: 30, class: make_id("task_purple"))
-#   rect(x: 630, y: 70, width: 80, height: 170, class: make_id("task_neutral"))
-#   rect(x: 630, y: 90, width: 80, height: 30, class: make_id("task_green"))
-# 
-#   path(
-#     class: make_id("l1"),
-#     d: "M 50 30 v 70 l 120 -20 v 40 l 120 -25"
-#   )
-# 
-#   line(
-#     class: make_id("l1"),
-#     x1: 470, y1: 95, x2: 503, y2: 73,
-#     marker_end: "url(##{make_id("arrow")})"
-#   )
-#   line(
-#     class: make_id("l1"),
-#     x1: 590, y1: 165, x2: 624, y2: 73,
-#     marker_end: "url(##{make_id("arrow")})"
-#   )
-#   line(
-#     class: make_id("l1"),
-#     x1: 630, y1: 105, x2: 596, y2: 73,
-#     marker_end: "url(##{make_id("arrow")})"
-#   )
-# 
-#   text(
-#     class: make_id("t1"),
-#     x: 170, y: 55
-#   ).add_text("foo")
-#   text(
-#     class: make_id("t1"),
-#     x: 290, y: 70
-#   ).add_text("bar")
-#   text(
-#     class: make_id("t2"),
-#     x: 390, y: 285
-#   ).add_text("stack")
-#   text(
-#     class: make_id("t2"),
-#     x: 510, y: 55
-#   ).add_text("foo frame")
-#   text(
-#     class: make_id("t2"),
-#     x: 630, y: 55
-#   ).add_text("bar frame")
-# 
-# end
-# 
-# # puts(image.render)
-# 
-# save_to_file("_includes/assets/2025-05-24-lazy-task", "03-bar-created.svg", image.render)
-# 
-# $crt_id += 1
-# 
-# image = svg({
-#   id: make_id("box"),
-#   width: "100%",
-#   viewBox: "0 0 800 320",
-#   }) do
-# 
-#   style().add_text(<<-CSS)
-#     ##{make_id("box")} {
-#       border: 1px solid #e8e8e8;
-#       background-color: #f5f5f5;
-#     }
-#     .#{make_id("t1")} {
-#       font-family: sans-serif;
-#       font-size: 16px;
-#       text-anchor: middle;
-#       dominant-baseline: middle;
-#     }
-#     .#{make_id("t2")} {
-#       font-family: sans-serif;
-#       font-size: 16px;
-#       dominant-baseline: middle;
-#     }
-#     .#{make_id("l1")} {
-#       stroke: #000000;
-#       stroke-width: 2;
-#       fill: none;
-#     }
-#     .#{make_id("l2")} {
-#       stroke: #000000;
-#       stroke-width: 2;
-#       fill: none;
-#       stroke-dasharray: 5;
-#     }
-#     .#{make_id("task_white")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_white};
-#     }
-#     .#{make_id("task_green")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_green};
-#     }
-#     .#{make_id("task_grey")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_grey};
-#     }
-#     .#{make_id("task_neutral")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_neutral};
-#     }
-#     .#{make_id("task_neutral2")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_neutral2};
-#     }
-#     .#{make_id("task_orange")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_orange};
-#     }
-#     .#{make_id("task_pink")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_pink};
-#     }
-#     .#{make_id("task_purple")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_purple};
-#     }
-#   CSS
-# 
-#   defs() do
-#     marker(
-#       id: make_id("arrow"),
-#       viewBox: "0, 0, 10, 10",
-#       refX: 5, refY: 5,
-#       markerWidth: 6, markerHeight: 6,
-#       orient: "auto-start-reverse"
-#     ) do
-#       path(d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z")
-#     end
-#   end
-# 
-#   rect(x: 10, y: 10, width: 80, height: 300, class: make_id("task_white"))
-#   rect(x: 130, y: 70, width: 80, height: 170, class: make_id("task_neutral2"))
-#   rect(x: 250, y: 85, width: 80, height: 140, class: make_id("task_neutral2"))
-# 
-#   rect(x: 390, y: 20, width: 80, height: 30, class: make_id("task_grey"))
-#   rect(x: 390, y: 50, width: 80, height: 220, class: make_id("task_white"))
-#   rect(x: 390, y: 80, width: 80, height: 30, class: make_id("task_purple"))
-#   rect(x: 510, y: 70, width: 80, height: 170, class: make_id("task_neutral"))
-#   rect(x: 510, y: 150, width: 80, height: 30, class: make_id("task_purple"))
-#   rect(x: 630, y: 70, width: 80, height: 170, class: make_id("task_neutral"))
-#   rect(x: 630, y: 90, width: 80, height: 30, class: make_id("task_green"))
-# 
-#   path(
-#     class: make_id("l1"),
-#     d: "M 50 30 v 70 l 120 -20 v 40 l 120 -25 v 55"
-#   )
-#   path(
-#     class: make_id("l2"),
-#     d: "M 290 150 l -120 -20 v 10 l -120 -30 v 100 l 240 -50"
-#   )
-# 
-#   line(
-#     class: make_id("l1"),
-#     x1: 470, y1: 95, x2: 503, y2: 73,
-#     marker_end: "url(##{make_id("arrow")})"
-#   )
-#   line(
-#     class: make_id("l1"),
-#     x1: 590, y1: 165, x2: 624, y2: 73,
-#     marker_end: "url(##{make_id("arrow")})"
-#   )
-#   line(
-#     class: make_id("l1"),
-#     x1: 630, y1: 105, x2: 596, y2: 73,
-#     marker_end: "url(##{make_id("arrow")})"
-#   )
-#   path(
-#     class: make_id("l1"),
-#     d: "M 470 195 h 20 v 60 h 240 v -169 l -14 -13",
-#     marker_end: "url(##{make_id("arrow")})"
-#   )
-# 
-#   text(
-#     class: make_id("t1"),
-#     x: 170, y: 55
-#   ).add_text("foo")
-#   text(
-#     class: make_id("t1"),
-#     x: 290, y: 70
-#   ).add_text("bar")
-#   text(
-#     class: make_id("t2"),
-#     x: 55, y: 190
-#   ).add_text("10s")
-#   text(
-#     class: make_id("t2"),
-#     x: 390, y: 285
-#   ).add_text("stack")
-#   text(
-#     class: make_id("t2"),
-#     x: 510, y: 55
-#   ).add_text("foo frame")
-#   text(
-#     class: make_id("t2"),
-#     x: 630, y: 55
-#   ).add_text("bar frame")
-# 
-# end
-# 
-# # puts(image.render)
-# 
-# save_to_file("_includes/assets/2025-05-24-lazy-task", "04-sleep-wakeup.svg", image.render)
-# 
-# $crt_id += 1
-# 
-# image = svg({
-#   id: make_id("box"),
-#   width: "100%",
-#   viewBox: "0 0 800 320",
-#   }) do
-# 
-#   style().add_text(<<-CSS)
-#     ##{make_id("box")} {
-#       border: 1px solid #e8e8e8;
-#       background-color: #f5f5f5;
-#     }
-#     .#{make_id("t1")} {
-#       font-family: sans-serif;
-#       font-size: 16px;
-#       text-anchor: middle;
-#       dominant-baseline: middle;
-#     }
-#     .#{make_id("t2")} {
-#       font-family: sans-serif;
-#       font-size: 16px;
-#       dominant-baseline: middle;
-#     }
-#     .#{make_id("l1")} {
-#       stroke: #000000;
-#       stroke-width: 2;
-#       fill: none;
-#     }
-#     .#{make_id("l2")} {
-#       stroke: #000000;
-#       stroke-width: 2;
-#       fill: none;
-#       stroke-dasharray: 5;
-#     }
-#     .#{make_id("task_white")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_white};
-#     }
-#     .#{make_id("task_green")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_green};
-#     }
-#     .#{make_id("task_grey")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_grey};
-#     }
-#     .#{make_id("task_neutral")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_neutral};
-#     }
-#     .#{make_id("task_neutral2")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_neutral2};
-#     }
-#     .#{make_id("task_orange")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_orange};
-#     }
-#     .#{make_id("task_pink")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_pink};
-#     }
-#     .#{make_id("task_purple")} {
-#       stroke: #000000;
-#       stroke-width: 4;
-#       fill: #{color_purple};
-#     }
-#   CSS
-# 
-#   defs() do
-#     marker(
-#       id: make_id("arrow"),
-#       viewBox: "0, 0, 10, 10",
-#       refX: 5, refY: 5,
-#       markerWidth: 6, markerHeight: 6,
-#       orient: "auto-start-reverse"
-#     ) do
-#       path(d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z")
-#     end
-#   end
-# 
-#   rect(x: 10, y: 10, width: 80, height: 300, class: make_id("task_white"))
-#   rect(x: 130, y: 70, width: 80, height: 170, class: make_id("task_neutral2"))
-#   rect(x: 250, y: 85, width: 80, height: 140, class: make_id("task_neutral2"))
-# 
-#   rect(x: 390, y: 20, width: 80, height: 30, class: make_id("task_grey"))
-#   rect(x: 390, y: 50, width: 80, height: 220, class: make_id("task_white"))
-#   rect(x: 390, y: 80, width: 80, height: 30, class: make_id("task_purple"))
-#   rect(x: 510, y: 70, width: 80, height: 170, class: make_id("task_neutral"))
-# 
-#   path(
-#     class: make_id("l1"),
-#     d: "M 50 30 v 70 l 120 -20 v 40 l 120 -25 v 55"
-#   )
-#   path(
-#     class: make_id("l2"),
-#     d: "M 290 150 l -120 -20 v 10 l -120 -30 v 100 l 240 -50"
-#   )
-#   path(
-#     class: make_id("l1"),
-#     d: "M 290 160 v 55 l -120 -65 v 80"
-#   )
-# 
-#   line(
-#     class: make_id("l1"),
-#     x1: 470, y1: 95, x2: 503, y2: 73,
-#     marker_end: "url(##{make_id("arrow")})"
-#   )
-# 
-#   text(
-#     class: make_id("t1"),
-#     x: 170, y: 55
-#   ).add_text("foo")
-#   text(
-#     class: make_id("t1"),
-#     x: 290, y: 70
-#   ).add_text("bar")
-#   text(
-#     class: make_id("t2"),
-#     x: 55, y: 190
-#   ).add_text("10s")
-#   text(
-#     class: make_id("t2"),
-#     x: 390, y: 285
-#   ).add_text("stack")
-#   text(
-#     class: make_id("t2"),
-#     x: 510, y: 55
-#   ).add_text("foo frame")
-# 
-# end
-# 
-# # puts(image.render)
-# 
-# save_to_file("_includes/assets/2025-05-24-lazy-task", "05-back-in-foo.svg", image.render)
-# 
-# $crt_id += 1
+  style().add_text(<<-CSS)
+    ##{make_id("box")} {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .#{make_id("t1")} {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .#{make_id("l1")} {
+      stroke: #{color_blue};
+      stroke-width: 3;
+      fill: none;
+    }
+    .#{make_id("arrow")} {
+      stroke: #{color_blue};
+      stroke-width: 1;
+      fill: #{color_blue};
+    }
+    .#{make_id("l2")} {
+      stroke: #{color_green};
+      stroke-width: 3;
+      fill: none;
+    }
+    .#{make_id("arrow2")} {
+      stroke: #{color_green};
+      stroke-width: 1;
+      fill: #{color_green};
+    }
+    .#{make_id("l3")} {
+      stroke: #{color_purple};
+      stroke-width: 3;
+      fill: none;
+    }
+    .#{make_id("arrow3")} {
+      stroke: #{color_purple};
+      stroke-width: 1;
+      fill: #{color_purple};
+    }
+    .#{make_id("l4")} {
+      stroke: #{color_red};
+      stroke-width: 3;
+      fill: none;
+    }
+    .#{make_id("box_white")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: #{color_white};
+    }
+  CSS
+
+  defs() do
+    marker(
+      id: make_id("arrow"),
+      viewBox: "0, 0, 10, 10",
+      refX: 5, refY: 5,
+      markerWidth: 6, markerHeight: 6,
+      orient: "auto-start-reverse",
+    ) do
+      path(
+        d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z",
+        class: make_id("arrow")
+      )
+    end
+    marker(
+      id: make_id("arrow2"),
+      viewBox: "0, 0, 10, 10",
+      refX: 5, refY: 5,
+      markerWidth: 6, markerHeight: 6,
+      orient: "auto-start-reverse",
+    ) do
+      path(
+        d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z",
+        class: make_id("arrow2")
+      )
+    end
+    marker(
+      id: make_id("arrow3"),
+      viewBox: "0, 0, 10, 10",
+      refX: 5, refY: 5,
+      markerWidth: 6, markerHeight: 6,
+      orient: "auto-start-reverse",
+    ) do
+      path(
+        d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z",
+        class: make_id("arrow3")
+      )
+    end
+  end
+
+  path(
+    class: make_id("l1"),
+    d: "M 140 30 c 0 20 -10 20 -50 20 s -50 0 -50 20",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+  path(
+    class: make_id("l2"),
+    d: "M 140 30 v 40",
+    marker_end: "url(##{make_id("arrow2")})"
+  )
+  path(
+    class: make_id("l3"),
+    d: "M 140 30 c 0 20 10 20 50 20 s 50 0 50 20",
+    marker_end: "url(##{make_id("arrow3")})"
+  )
+
+  path(
+    class: make_id("l1"),
+    d: "M 40 113 c 0 20 10 20 50 20 s 50 0 50 20"
+  )
+  path(
+    class: make_id("l3"),
+    d: "M 240 113 c 0 20 -10 20 -50 20 s -50 0 -50 20"
+  )
+  path(
+    class: make_id("l2"),
+    d: "M 140 113 v 40",
+    marker_end: "url(##{make_id("arrow2")})"
+  )
+
+  rect(x: 10, y: 82, width: 60, height: 40, class: make_id("box_white"))
+  rect(x: 110, y: 82, width: 60, height: 30, class: make_id("box_white"))
+  rect(x: 210, y: 82, width: 60, height: 35, class: make_id("box_white"))
+
+  text(
+    class: make_id("t1"),
+    x: 140, y: 15
+  ).add_text("wait_all")
+end
+
+# puts(image.render)
+
+save_to_file("_includes/assets/2025-06-07-structured-concurency", "04-wait_all.svg", image.render)
+
+$crt_id += 1
+
+image = svg({
+  id: make_id("box"),
+  width: "100%",
+  viewBox: "0 0 800 180",
+  }) do
+
+  style().add_text(<<-CSS)
+    ##{make_id("box")} {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .#{make_id("t1")} {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .#{make_id("l1")} {
+      stroke: #{color_blue};
+      stroke-width: 3;
+      fill: none;
+    }
+    .#{make_id("arrow")} {
+      stroke: #{color_blue};
+      stroke-width: 1;
+      fill: #{color_blue};
+    }
+    .#{make_id("l2")} {
+      stroke: #{color_green};
+      stroke-width: 3;
+      fill: none;
+    }
+    .#{make_id("arrow2")} {
+      stroke: #{color_green};
+      stroke-width: 1;
+      fill: #{color_green};
+    }
+    .#{make_id("l3")} {
+      stroke: #{color_purple};
+      stroke-width: 3;
+      fill: none;
+    }
+    .#{make_id("arrow3")} {
+      stroke: #{color_purple};
+      stroke-width: 1;
+      fill: #{color_purple};
+    }
+    .#{make_id("l4")} {
+      stroke: #{color_red};
+      stroke-width: 3;
+      fill: none;
+    }
+    .#{make_id("box_white")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: #{color_white};
+    }
+  CSS
+
+  defs() do
+    marker(
+      id: make_id("arrow"),
+      viewBox: "0, 0, 10, 10",
+      refX: 5, refY: 5,
+      markerWidth: 6, markerHeight: 6,
+      orient: "auto-start-reverse",
+    ) do
+      path(
+        d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z",
+        class: make_id("arrow")
+      )
+    end
+    marker(
+      id: make_id("arrow2"),
+      viewBox: "0, 0, 10, 10",
+      refX: 5, refY: 5,
+      markerWidth: 6, markerHeight: 6,
+      orient: "auto-start-reverse",
+    ) do
+      path(
+        d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z",
+        class: make_id("arrow2")
+      )
+    end
+    marker(
+      id: make_id("arrow3"),
+      viewBox: "0, 0, 10, 10",
+      refX: 5, refY: 5,
+      markerWidth: 6, markerHeight: 6,
+      orient: "auto-start-reverse",
+    ) do
+      path(
+        d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z",
+        class: make_id("arrow3")
+      )
+    end
+  end
+
+  path(
+    class: make_id("l1"),
+    d: "M 140 30 c 0 20 -10 20 -50 20 s -50 0 -50 20",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+  path(
+    class: make_id("l2"),
+    d: "M 140 30 v 40",
+    marker_end: "url(##{make_id("arrow2")})"
+  )
+  path(
+    class: make_id("l3"),
+    d: "M 140 30 c 0 20 10 20 50 20 s 50 0 50 20",
+    marker_end: "url(##{make_id("arrow3")})"
+  )
+
+  path(
+    class: make_id("l1"),
+    d: "M 40 113 c 0 20 10 20 50 20 s 50 0 50 20"
+  )
+  path(
+    class: make_id("l3"),
+    d: "M 240 113 c 0 20 -10 20 -50 20 s -50 0 -50 20"
+  )
+  path(
+    class: make_id("l2"),
+    d: "M 140 113 v 40",
+    marker_end: "url(##{make_id("arrow2")})"
+  )
+
+  path(
+    class: make_id("box_white"),
+    d: "M 10 82 h 60 v 30 l -60 10 z"
+  )
+  rect(x: 110, y: 82, width: 60, height: 30, class: make_id("box_white"))
+  path(
+    class: make_id("box_white"),
+    d: "M 210 82 h 60 v 30 l -60 10 z"
+  )
+
+  line(
+    class: make_id("l4"),
+    x1: 15, y1: 115, x2: 25, y2: 105
+  )
+  line(
+    class: make_id("l4"),
+    x1: 15, y1: 105, x2: 25, y2: 115
+  )
+  circle(
+    class: make_id("l4"),
+    cx: 117, cy: 105, r: 4
+  )
+  line(
+    class: make_id("l4"),
+    x1: 215, y1: 115, x2: 225, y2: 105
+  )
+  line(
+    class: make_id("l4"),
+    x1: 215, y1: 105, x2: 225, y2: 115
+  )
+
+  text(
+    class: make_id("t1"),
+    x: 140, y: 15
+  ).add_text("wait_all")
+end
+
+# puts(image.render)
+
+save_to_file("_includes/assets/2025-06-07-structured-concurency", "05-wait_all_cancel.svg", image.render)
+
+$crt_id += 1
+
+

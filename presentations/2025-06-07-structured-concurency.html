@@ -30,6 +30,8 @@ harmful](https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement
 - in modern languages even `goto` is tamed (only jumps within the same
   function)
   - but kept for the three cases where it's needed once every 20 years or so
+- structured programming is what enables further high level language constructs
+  like RAII
 
 ---
 
@@ -69,15 +71,47 @@ Low level C APIs expose a detached behaviour which on one side is necessary,
 like `jump` statements in assembly, but we want that wrapped in structured
 concurrency primitives that are easier to use correctly.
 
-Easy to say, but what are some examples of structured concurrency primitives?
+We don't want to continue to stay low level and error prone.
 
 ---
 
-# An example: wait_any
+# Example bad
+
+```cpp
+int value = get_value();
+std::shared_ptr<Foo> sharedFoo = get_foo();
+{
+  const auto lambda = [value, sharedFoo]() -> std::future<void>
+  {
+    co_await something();
+    // "sharedFoo" and "value" have already been destroyed
+    // the "shared" pointer didn't accomplish anything
+  };
+  lambda();
+} // the lambda closure object has now gone out of scope
+```
+
+- [CP.51: Do not use capturing lambdas that are
+  coroutines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cp51-do-not-use-capturing-lambdas-that-are-coroutines),
+  similar incorrect recommendations elsewhere: [A capturing lambda can be a
+  coroutine, but you have to save your captures while you still
+  can](https://devblogs.microsoft.com/oldnewthing/20211103-00/?p=105870)
+- the example uses unstructured concurrency: the `lambda()` is assumed to be
+  eager and run in detached mode
+- the coding guideline, instead of pointing out to the unstructured concurrency
+  as a bad thing, makes recommendations about the usage of `shared_ptr`
+  (additional allocations), avoiding using lambda captures, gives up on RAII
+
+---
+
+# Example good: wait_any
 
 <div align="center">
 {% include assets/2025-06-07-structured-concurency/03-wait_any.svg %}
 </div>
+
+Easy to say, but what are some examples of structured concurrency primitives?
+`wait_any`
 
 - we started three tasks
 - the second completed first
@@ -87,19 +121,103 @@ Easy to say, but what are some examples of structured concurrency primitives?
 
 ---
 
-- continuation
+# Example good: wait_all
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurency/04-wait_all.svg %}
+</div>
+
+- we started three tasks
+- the second completed first, nevermind
+- continues when all three are completed
+- returns the value of each (e.g. as a tuple)
+
+---
+
+# wait_all cancel
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurency/05-wait_all_cancel.svg %}
+</div>
+
+- but when task fails then the remaining are cancelled
+- there are quite a lot of similarities in this behaviour to `wait_any`
+
+---
+
+# Structured concurrency
+
+---
+
+# The basics should work
+
+```cpp
+task<void> echo(socket s) {
+  buffer buff;
+  while (true) {
+    std::size_t length = co_await async_read_some(s, buff);
+    co_await async_write(s, buff, length);
+  }
+}
+```
+
+- we have local variables: `buff`, `length`
+- RAII works: `buff` gets destroyed on scope exit
+- we have a `while(true)` loop
+- `read_some` takes a reference to the buffer variable
+
+---
+
+# The basics should work
+
+- variable declarations
+- if/else
+- for loops
+- function calls
+- RAII
+- lambdas
+- pass argument by reference
+
+
+- We've seen that the C++ core guidelines give up on this, [CP.53: Parameters
+  to coroutines should not be passed by
+  reference](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cp53-parameters-to-coroutines-should-not-be-passed-by-reference)
+- We'll see that the sender/receiver framework partially gives up on this and
+  has "algorithms" for basic stuff e.g. `just` for variable declaration,
+  `repeat` for loops, `then` for function calls and care is required for
+  algorithms passing
+
+---
+
+# Continuation
+
+```cpp
+task<void> echo(socket s) {
+  buffer buff;
+  while (true) {
+    std::size_t length = co_await async_read_some(s, buff);
+    co_await async_write(s, buff, length);
+  }
+}
+```
+
+- for example `co_await async_write(...)`
+- `echo` runs uninterrupted until a `co_await`
+- `async_write` is lazy, does not introduce concurency
+- `co_await` introduces concurrency
+- but `echo` only continues when `co_await` completes
+
+
+- concurrency introduced by `co_await` does not outlive the parent
+
+---
+
 - chains
-- sane principles
-  - a child coroutine does not outlives its parent
-  - a coroutine runs uninterrupted until a co_await
 - discuss issue with reference parameters, lambda captures, pointers, string_views
   - the generator problems with scope
 - discuss the issue of detach/fire and forget
   - sharing data e.g. by value
   - lifetime
-    - discuss bad advice that uses detached models
-    - https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rcoro-capture
-    - more bad advice https://devblogs.microsoft.com/oldnewthing/20211103-00/?p=105870
     - though they really like detached in embedded environments, explain why
   - error propagation
 - sync start a chain
