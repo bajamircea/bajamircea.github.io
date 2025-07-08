@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250607-6-box" width="100%" viewBox="0 0 800 210">
+  <style>
+    #svg20250607-6-box {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20250607-6-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .svg20250607-6-l1 {
+      stroke: #2d93ad;
+      stroke-width: 3;
+      fill: none;
+    }
+    .svg20250607-6-arrow {
+      stroke: #2d93ad;
+      stroke-width: 1;
+      fill: #2d93ad;
+    }
+    .svg20250607-6-box_white {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: #ffffff;
+    }
+  </style>
+  <defs>
+    <marker id="svg20250607-6-arrow" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z" class="svg20250607-6-arrow"/>
+    </marker>
+  </defs>
+  <rect x="100" y="82" width="60" height="30" class="svg20250607-6-box_white"/>
+  <path class="svg20250607-6-l1" d="M 60 30 v 58 c 20 -70 70 -40 70 -18" marker-end="url(#svg20250607-6-arrow)"/>
+  <path class="svg20250607-6-l1" d="M 130 113 c -5 30 -40 30 -70 -18 v 96" marker-end="url(#svg20250607-6-arrow)"/>
+  <rect x="30" y="140" width="60" height="30" class="svg20250607-6-box_white"/>
+  <text class="svg20250607-6-t1" x="60" y="15">continuation</text>
+</svg>

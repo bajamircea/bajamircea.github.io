@@ -976,4 +976,77 @@ save_to_file("_includes/assets/2025-06-07-structured-concurency", "05-wait_all_c
 
 $crt_id += 1
 
+image = svg({
+  id: make_id("box"),
+  width: "100%",
+  viewBox: "0 0 800 210",
+  }) do
+
+  style().add_text(<<-CSS)
+    ##{make_id("box")} {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .#{make_id("t1")} {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .#{make_id("l1")} {
+      stroke: #{color_blue};
+      stroke-width: 3;
+      fill: none;
+    }
+    .#{make_id("arrow")} {
+      stroke: #{color_blue};
+      stroke-width: 1;
+      fill: #{color_blue};
+    }
+    .#{make_id("box_white")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: #{color_white};
+    }
+  CSS
+
+  defs() do
+    marker(
+      id: make_id("arrow"),
+      viewBox: "0, 0, 10, 10",
+      refX: 5, refY: 5,
+      markerWidth: 6, markerHeight: 6,
+      orient: "auto-start-reverse",
+    ) do
+      path(
+        d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z",
+        class: make_id("arrow")
+      )
+    end
+  end
+
+  rect(x: 100, y: 82, width: 60, height: 30, class: make_id("box_white"))
+  path(
+    class: make_id("l1"),
+    d: "M 60 30 v 58 c 20 -70 70 -40 70 -18",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+  path(
+    class: make_id("l1"),
+    d: "M 130 113 c -5 30 -40 30 -70 -18 v 96",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+  rect(x: 30, y: 140, width: 60, height: 30, class: make_id("box_white"))
+  text(
+    class: make_id("t1"),
+    x: 60, y: 15
+  ).add_text("continuation")
+end
+
+# puts(image.render)
+
+save_to_file("_includes/assets/2025-06-07-structured-concurency", "06-continuation.svg", image.render)
+
+$crt_id += 1
+
 

@@ -151,25 +151,6 @@ Easy to say, but what are some examples of structured concurrency primitives?
 
 # The basics should work
 
-```cpp
-task<void> echo(socket s) {
-  buffer buff;
-  while (true) {
-    std::size_t length = co_await async_read_some(s, buff);
-    co_await async_write(s, buff, length);
-  }
-}
-```
-
-- we have local variables: `buff`, `length`
-- RAII works: `buff` gets destroyed on scope exit
-- we have a `while(true)` loop
-- `read_some` takes a reference to the buffer variable
-
----
-
-# The basics should work
-
 - variable declarations
 - if/else
 - for loops
@@ -189,7 +170,58 @@ task<void> echo(socket s) {
 
 ---
 
-# Continuation
+# Example good
+
+```cpp
+task<void> echo(socket s) {
+  buffer buff;
+  while (true) {
+    std::size_t length = co_await async_read_some(s, buff);
+    co_await async_write(s, buff, length);
+  }
+}
+```
+
+- we have local variables: `buff`, `length`
+- RAII works: `buff` gets destroyed on scope exit
+  - but currently it can't be used for joining async work
+- we have a `while(true)` loop
+- `read_some` takes a reference to the buffer variable
+
+---
+
+# Basic: continuation
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurency/06-continuation.svg %}
+</div>
+
+- do this, THEN do that
+
+---
+
+# Example bad: std::future
+
+```cpp
+std::future<int> f = go_async_work(some_arg);
+// attach continuation (hypothetical, not in std)
+f.then([](int x) {
+  // use x
+});
+```
+
+- a model where async work is started eager has the issue that attaching the
+  continuation is potentially racing with the async work, therefore
+  synchronization is required between the async work providing the result into
+  the `std::future` and the `std::future` setting a continuation to be called
+  when a result is available
+- a better model is to create lazy work which needs to be started later, but
+  gives the opportunity to set the continuation before the async work is
+  started, thus avoiding races
+
+---
+
+# Example good: lazy
 
 ```cpp
 task<void> echo(socket s) {
@@ -209,6 +241,11 @@ task<void> echo(socket s) {
 
 
 - concurrency introduced by `co_await` does not outlive the parent
+- in this form it creates a parent-child relationship that makes `co_await`
+  behave **logically** like a function call (except that execution can be
+  interleaved at that point with other coroutines while this one waits for the
+  child to complete
+
 
 ---
 
