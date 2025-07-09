@@ -249,7 +249,42 @@ task<void> echo(socket s) {
 
 ---
 
-- chains
+# Chain of continuations
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurency/07-chain.svg %}
+</div>
+
+- it is dynamic over time: further links are added to the right or they go away
+- it has a root, it starts somewhere
+- it has a leaf terminal
+
+- only the leaf has at a certain point in time a pending operation that in
+  effect the whole chain is waiting on
+- only the leaf needs to register a `stop_callback` to react to cancellation
+- if this is a chain of coroutines then it can go to the root and destroy the
+  root coroutinem which in turn via RAII will destroy it's child, which in turn
+  via RAII ...
+
+---
+
+# Example
+
+```cpp
+task<void> echo(socket s) {
+  buffer buff;
+  while (true) {
+    std::size_t length = co_await async_read_some(s, buff);
+    co_await async_write(s, buff, length);
+  }
+}
+```
+
+- `echo` might have a parent
+- `async_read_some` and `async_write` are leaves (at different points in time)
+
+---
+
 - discuss issue with reference parameters, lambda captures, pointers, string_views
   - the generator problems with scope
 - discuss the issue of detach/fire and forget
