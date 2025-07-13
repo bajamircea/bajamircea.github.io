@@ -7,6 +7,14 @@ categories: read book
 List of books I've read in 2025
 
 
+- Paul Freedman: The Early Middle Ages, 284–1000
+: Not a book, but video lectures from Open Yale Courses on the fall of the
+Roman Empire, the raise of Christianism and Islam and the "Dark Ages" (that
+were not that dark, but different). It looks like that's not his specialist
+area, but he's a really good historian and teacher. It turns out that heresies
+are what the winners call religious controversies, mysticism and thuggery go
+hand in hand and Merovingians make good can names.
+
 - 2025-04-20: Arthur Schopenhauer: The Art of Always Being Right
 : When I previously encountered examples of informal fallacies, I found them
 difficult to internalize. This ironic (pamflet/short book) by Arthur

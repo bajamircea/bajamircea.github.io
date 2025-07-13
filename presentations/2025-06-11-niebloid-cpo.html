@@ -797,6 +797,35 @@ for anything but the most trivial examples.
 
 ---
 
+# Customize, friend trick
+
+```cpp
+namespace pet {
+  struct duck {
+    // duck is a bird
+    void breathe_eat_sleep() const {}
+    void flap() const { std::println("Swoosh!"); }
+
+    // custom implementation, despite being a bird
+    friend void tag_invoke(zoo::make_sound_t, const duck&) {
+      std::println("Quack!");
+    }
+  };
+} // namespace pet
+
+void test_duck() {
+  pet::duck x;
+  zoo::make_sound(x); // Quack!
+}
+```
+
+- the `friend` trick to define a non-member function helps reduce somehow the
+  candidates
+- but customizing things like `connect(sender, receiver)` still leads to all
+  the `tag_invoke` for both the `sender` and the `receiver` being considered
+
+---
+
 # Future
 
 What to do?

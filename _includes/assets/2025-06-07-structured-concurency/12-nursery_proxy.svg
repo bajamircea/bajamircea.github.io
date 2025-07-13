@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250607-12-box" width="100%" viewBox="0 0 800 230">
+  <style>
+    #svg20250607-12-box {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20250607-12-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: middle;
+      dominant-baseline: middle;
+    }
+    .svg20250607-12-l1 {
+      stroke: #2d93ad;
+      stroke-width: 3;
+      fill: none;
+    }
+    .svg20250607-12-arrow {
+      stroke: #2d93ad;
+      stroke-width: 1;
+      fill: #2d93ad;
+    }
+    .svg20250607-12-l2 {
+      stroke: #8ea604;
+      stroke-width: 3;
+      fill: none;
+    }
+    .svg20250607-12-arrow2 {
+      stroke: #8ea604;
+      stroke-width: 1;
+      fill: #8ea604;
+    }
+    .svg20250607-12-l3 {
+      stroke: #9665ac;
+      stroke-width: 3;
+      fill: none;
+    }
+    .svg20250607-12-arrow3 {
+      stroke: #9665ac;
+      stroke-width: 1;
+      fill: #9665ac;
+    }
+    .svg20250607-12-l4 {
+      stroke: #ee6055;
+      stroke-width: 3;
+      fill: none;
+    }
+    .svg20250607-12-box_white {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: #ffffff;
+    }
+  </style>
+  <defs>
+    <marker id="svg20250607-12-arrow" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z" class="svg20250607-12-arrow"/>
+    </marker>
+    <marker id="svg20250607-12-arrow2" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z" class="svg20250607-12-arrow2"/>
+    </marker>
+    <marker id="svg20250607-12-arrow3" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z" class="svg20250607-12-arrow3"/>
+    </marker>
+  </defs>
+  <path class="svg20250607-12-l1" d="M 40 30 v 28" marker-end="url(#svg20250607-12-arrow)"/>
+  <path class="svg20250607-12-l2" d="M 70 70 h 29" marker-end="url(#svg20250607-12-arrow2)"/>
+  <path class="svg20250607-12-l3" d="M 170 110 h 29" marker-end="url(#svg20250607-12-arrow3)"/>
+  <path class="svg20250607-12-l1" d="M 40 130 v 60"/>
+  <path class="svg20250607-12-l3" d="M 240 140 c 0 20 -10 20 -100 20 s -100 0 -100 20"/>
+  <path class="svg20250607-12-l2" d="M 140 130 v 5 c 0 20 -10 20 -50 20 s -50 0 -50 20 v 15" marker-end="url(#svg20250607-12-arrow2)"/>
+  <rect x="10" y="70" width="60" height="60" class="svg20250607-12-box_white"/>
+  <rect x="110" y="70" width="60" height="40" class="svg20250607-12-box_white"/>
+  <rect x="110" y="110" width="60" height="25" class="svg20250607-12-box_white"/>
+  <rect x="210" y="110" width="60" height="30" class="svg20250607-12-box_white"/>
+  <circle class="svg20250607-12-l4" cx="117" cy="128" r="4"/>
+  <line class="svg20250607-12-l4" x1="215" y1="136" x2="225" y2="126"/>
+  <line class="svg20250607-12-l4" x1="215" y1="126" x2="225" y2="136"/>
+  <text class="svg20250607-12-t1" x="40" y="15">proxy 0</text>
+  <text class="svg20250607-12-t1" x="140" y="50">proxy 1</text>
+  <text class="svg20250607-12-t1" x="240" y="90">proxy 2</text>
+</svg>

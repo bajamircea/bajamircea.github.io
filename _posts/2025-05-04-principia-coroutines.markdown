@@ -80,6 +80,8 @@ date, but really good background info required to understand coroutines
     - stop callback
   - asynchronous
     - best effort, e.g. might not cancel immediately or might still complete
+  - the bottom up/top down/timer
+  - low level synchronization required for callbacks
   - what if cancel is slow: the server/detection pattern
   - hiding cancellation from function signature (e.g. see `co_await get_cancellation_token()`
 - Trampoline

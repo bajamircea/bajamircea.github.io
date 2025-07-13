@@ -50,10 +50,11 @@ int WSAAPI WSARecv(
 ```
 
 - Can be called with a pointer to the completion routine (a callback)
-- Until that routine is called (or cancelled) the socket, buffer, overlapped
+- Until that routine is called (or cancelled): the socket, buffer, overlapped
   structure (often a derived type holding more data)
   - need to be kept alive
   - they might be accessed during or after the call to `WSARecv`
+- calling the function is just the beginning, how do we tie things at the end?
 
 ---
 
@@ -67,11 +68,17 @@ int WSAAPI WSARecv(
 considered
 harmful](https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/)
 
-Low level C APIs expose a detached behaviour which on one side is necessary,
-like `jump` statements in assembly, but we want that wrapped in structured
-concurrency primitives that are easier to use correctly.
+Low level C APIs expose a detached behaviour, which on one side might be
+necessary*, like `jump` statements in assembly, but we want that wrapped in
+structured concurrency primitives that are easier to use correctly.
+
+Detach/fire and forget has issues: lifetime, sharing data e.g. by value, error
+propagation.
 
 We don't want to continue to stay low level and error prone.
+
+(*) By the end of this presentation it might be worth going back on the
+necessity of this kind of interface
 
 ---
 
@@ -165,15 +172,16 @@ Easy to say, but what are some examples of structured concurrency primitives?
   reference](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cp53-parameters-to-coroutines-should-not-be-passed-by-reference)
 - We'll see that the sender/receiver framework partially gives up on this and
   has "algorithms" for basic stuff e.g. `just` for variable declaration,
-  `repeat` for loops, `then` for function calls and care is required for
-  algorithms passing
+  `repeat` for loops, `then` for function calls and care is required for things
+  being passed to such algorithms (reference, value, moved etc. has to be done
+  careful and deliberate).
 
 ---
 
 # Example good
 
 ```cpp
-task<void> echo(socket s) {
+task<void> async_echo(socket s) {
   buffer buff;
   while (true) {
     std::size_t length = co_await async_read_some(s, buff);
@@ -224,7 +232,7 @@ f.then([](int x) {
 # Example good: lazy
 
 ```cpp
-task<void> echo(socket s) {
+task<void> async_echo(socket s) {
   buffer buff;
   while (true) {
     std::size_t length = co_await async_read_some(s, buff);
@@ -234,10 +242,10 @@ task<void> echo(socket s) {
 ```
 
 - for example `co_await async_write(...)`
-- `echo` runs uninterrupted until a `co_await`
+- `async_echo` runs uninterrupted until a `co_await`
 - `async_write` is lazy, does not introduce concurency
 - `co_await` introduces concurrency
-- but `echo` only continues when `co_await` completes
+- but `async_echo` only continues when `co_await` completes
 
 
 - concurrency introduced by `co_await` does not outlive the parent
@@ -271,7 +279,7 @@ task<void> echo(socket s) {
 # Example
 
 ```cpp
-task<void> echo(socket s) {
+task<void> async_echo(socket s) {
   buffer buff;
   while (true) {
     std::size_t length = co_await async_read_some(s, buff);
@@ -280,24 +288,365 @@ task<void> echo(socket s) {
 }
 ```
 
-- `echo` might have a parent
+- `async_echo` might have a parent
+- the parent of `async_echo` (etc.), `async_echo` and e.g. `async_read_some` make a chain
 - `async_read_some` and `async_write` are leaves (at different points in time)
+  - and illustrate how a chain shortens and lengthens
 
 ---
 
-- discuss issue with reference parameters, lambda captures, pointers, string_views
-  - the generator problems with scope
-- discuss the issue of detach/fire and forget
-  - sharing data e.g. by value
-  - lifetime
-    - though they really like detached in embedded environments, explain why
-  - error propagation
-- sync start a chain
-- wait_any, wait_all
-- wait_for
-  - stop_when (e.g. on user interrupt instead of timer)
-- nursery
+# Chain root
 
+```cpp
+co<int> async_foo()
+{
+  co_return 42;
+};
+
+TEST(run_co_return_int)
+{
+  int result = run(async_foo());
+
+  ASSERT_EQ(42, result);
+}
+```
+
+- `run` blocks the thread until `asnyc_foo` completes and returns whatever
+  `async_foo` `co_return`s.
+- the chain root needs to have the callback that is called when the entry point
+  in the chain eventually completes
+  - in the meantime run needs to go though the list of ready tasks and timers
+- there can be all sort of such `run` functions that differ on what they
+  actually do until the entry points completes
+
+---
+
+# Ready queue + timers heap
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurency/08-t1.svg %}
+</div>
+
+- a useful run loop uses a ready queue and timers heap (directly or
+  indirectly). Example shows a T1 model directly using them
+
+---
+
+# Run loops, sync_wait
+
+Not all the run loops are the same:
+
+- the simplest one `sync_wait` does not even "run" or "loop" anything
+  - it effectively blocks the thread waiting for something else to do the work
+  - used in `main` for "demo" examples
+  - if used in a thread from a thread pool it can/will case the issue where the
+    thread is taken out of the "active" ones in the pool
+- some can run their own ready queue and timers heap directly
+- others use (blocking) APIs that are required by yet other APIs (e.g. in
+  Windows `ReadFileEx` requires a `WaitFor...Ex`)
+  - unfortunately different sets of APIs require different kinds of run loops
+
+
+---
+
+# Detached entry in main
+
+- the whole point of this presentation is: avoid detached, what to do instead
+
+However:
+- in an embedded environment it makes sense to setup things in main, and exit
+  main while work continues driven e.g. by interrupts, making the entry point
+  detached
+
+---
+
+# Chain leaf
+
+```cpp
+task<void> async_echo(socket s) {
+  buffer buff;
+  while (true) {
+    std::size_t length = co_await async_read_some(s, buff);
+    co_await async_write(s, buff, length);
+  }
+}
+```
+
+- the leaves `async_read_some`, `async_write`
+- they have to (eventually) provide an awaiter that implements `await_ready`,
+  `await_suspend` and `await_result`
+- coroutines require a (nominal) allocation
+- leaves are not coroutines, this can avoid allocations (in most cases)
+  - as you think about the (temporarily dynamic) tree of a shrinking and
+    growing chain: there are a lot of leaves, therefore a lot of allocations
+    are avoided
+
+---
+
+# Elementary leaves
+
+```cpp
+// sleep for 10 seconds
+co_await async_sleep_for(10s);
+
+// give other chains a chance to run
+co_await async_yield();
+
+// check if cancelled
+co_await async_noop();
+
+// suspend forever (i.e. until cancelled)
+co_await async_suspend_forever();
+```
+
+---
+
+# wait_any
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurency/09-wait_any.svg %}
+</div>
+
+- is a leaf for a chain, but then it creates roots for the children chains
+- each of those roots has callbacks
+- when the callback for a child chain is called
+  - if it's the first one, then cancel the others
+- returns the result of the first chain
+  - and info: which one completed?
+
+---
+
+# wait_any
+
+```cpp
+co<size_t> async_some_wait()
+{
+  auto result = co_await async_wait_any(
+    async_suspend_forever(),
+    async_sleep_for(std::chrono::seconds(0))
+  );
+  co_return result.index;
+}
+
+TEST(wait_any_inside_co)
+{
+  auto result = run(async_some_wait());
+  ASSERT_EQ(1, result);
+}
+```
+
+---
+
+# wait_all
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurency/10-wait_all.svg %}
+</div>
+
+- is a leaf for a chain, but then it creates roots for the children chains
+- each of those roots has callbacks
+- when the callback for a child chain is called
+  - if it's the first one to have an error, then cancel the others
+- returns a tuple of the results of each chain
+
+---
+
+# wait_all
+
+```cpp
+TEST(wait_all_tree)
+{
+  auto result = run(coro_st::async_wait_any(
+    async_suspend_forever(),
+    async_wait_all(
+      std::invoke([]() -> co<int> {
+        co_return 42;
+      }),
+      async_yield()
+    )
+  ));
+  ASSERT_EQ(1, result.index);
+  ASSERT_EQ(42, std::get<0>(result.value));
+}
+```
+
+---
+
+# wait_for
+
+```cpp
+co<int> async_some_int()
+{
+  co_await async_yield();
+  co_return 42;
+}
+
+TEST(wait_for_int_has_value)
+{
+  auto result = run(async_wait_for(
+    async_some_int(),
+    std::chrono::hours(24)
+  ));
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(42, result.value());
+}
+```
+
+- it's so common do to an operation, but only willing to wait a certain amount
+  of time
+- could use `wait_any`, but `wait_for` is easier to use for this common
+  scenario
+- returns a `std::nullopt` if the time was hit and work was cancelled
+
+---
+
+# stop_when
+
+```cpp
+std::optional<int> result1 = co_await async_wait_for(
+  async_some_int(),
+  std::chrono::minutes(2)
+));
+
+std::optional<int> result2 = co_await async_stop_when(
+  async_some_int(),
+  async_sleep_for(std::chrono::minutes(2))
+));
+
+std::optional<int> result3 = co_await async_stop_when(
+  async_some_int(),
+  async_ctrl_c_pressed()
+));
+```
+
+- is a generalisation of `wait_for`, where the "stopping" async activity is
+  provided explicitly
+
+---
+
+# Nursery
+
+- a dynamic version of `wait_[all|any]`
+- nursery = "that's where the children live"
+- partially relaxes structured concurrency principles to achieve functionality
+  that's hard otherwise
+
+---
+
+# Nursery: the server case
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurency/11-nursery_server.svg %}
+</div>
+
+- main chain loops waiting for connections
+- each connection spawns a new chain
+- orderly shutdown
+
+---
+
+# Nursery: the server case
+
+```cpp
+co<void> async_accept_loop(nursery& n) {
+  auto ep = co_await async_tcp_listen(8080);
+  while (true) {
+    auto socket = co_await async_tcp_accept(ep);
+    n.spawn_child(async_echo, std::move(socket));
+  }
+}
+
+co<void> async_server() {
+  nursery n;
+  co_await n.async_run(
+    async_accept_loop(n));
+}
+```
+
+- the entry point usually takes it by reference
+- has `spawn_child` and `request_stop`
+- `spawn_child` has captures arguments similar to `std::bind`
+  - e.g. to pass reference use `std::ref`
+  - allocated to outlive the scope of the call
+
+---
+
+# Nursery: the proxy detection case
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurency/12-nursery_proxy.svg %}
+</div>
+
+- try a proxy
+- 100ms later try another one
+- first one to complete wins
+
+---
+
+# Nursery: the proxy detection case
+
+```cpp
+co<void> async_try_proxy(nursery& n,
+    const std::vector<proxy>& proxies, size_t i,
+    std::optional<size_t>& result) {
+  if (i != 0) { co_await async_sleep_for(100ms); }
+  if (i + 1 < proxies.size()) {
+    n.spawn_child(async_try_proxy, std::ref(proxies), i + 1, std::ref(result));
+  }
+  try {
+    co_await async_try_proxy(proxy);
+    result = i;
+    n.request_stop();
+  } catch(...) {
+  }
+}
+
+co<std::optional<size_t>> async_detect_proxy(const std::vector<proxy>& proxies) {
+  std::optional<size_t> result;
+  nursery n;
+  co_await n.async_run(
+    async_try_proxy(n, proxies, 0, result));
+  co_return result;
+}
+```
+
+---
+
+# Mildly unstructured (again)
+
+- we'll see in the cancellation presentation that actually the structured
+  concurrency primitives imply a two step process: setting the continuation
+  before starting the work
+- but in the (good) examples I hid that detail and stuck to the structured
+  concurrency principles that make it easy to reason about code
+- we only relaxed it a bit for the nursery
+
+
+- but not all the libraries are strict about it
+- bad (in my opinion)
+
+---
+
+# Example bad
+
+```cpp
+co<void> async_should_not_compile() {
+  auto x = async_foo("some string");
+  co_await std::move(x);
+}
+```
+
+- some libraries allow the above to compile, but this creates issues similar to
+  the generator
+- we've seen that the C++ core guidelines give up on this, [CP.53: Parameters
+  to coroutines should not be passed by
+  reference](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cp53-parameters-to-coroutines-should-not-be-passed-by-reference)
+
+
+- my observation is that programmers when taught about it nod, but then end up
+  learning the hard way (i.e. via bugs) and end up drawing the wrong conclusion
+  (i.e. don't use references for coroutine parameters) instead of
+  using/creating libraries that stop bad patterns
 
 ---
 
