@@ -190,5 +190,29 @@ Common blocking to avoid:
 
 ---
 
+# Even worse - std::mutex
+
+```cpp
+// Example BAD
+std::mutex g_lock;
+
+co<void> some_coroutine() {
+    std::lock_guard<std::mutex> guard(g_lock);
+    co_await something(); // DANGER: coroutine has suspended execution while holding a lock
+}
+```
+
+- As much as I bash the C++ core guidelines, this is one is mostly right:
+  [CP.52: Do not hold locks or other synchronization primitives across
+  suspension
+  points](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cp52-do-not-hold-locks-or-other-synchronization-primitives-across-suspension-points)
+- They are right about "traditional" locking synchronization primitives, but
+  coroutine friendly "mutex" like primitives can be designed
+  - e.g. such a "async_mutex" can have a list of waiting coroutines, the first
+    of which is scheduled when the "async_mutex" is unlocked
+- NOTE: can use std::mutex locks as long as they don't extend over concure
+
+---
+
 # Questions?
 
