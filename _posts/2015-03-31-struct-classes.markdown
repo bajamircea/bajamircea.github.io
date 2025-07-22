@@ -81,4 +81,9 @@ make its fields read only.
 Use `struct` to convey the message: "this is a class with (mostly) public
 members".
 
+## Reference
+
+See [Alex Stepanov: Efficient Programming with Components: Lecture 2 Part
+1](https://www.youtube.com/watch?v=FUMPsmKnKv8)
+
 [slim-raii]:    {% post_url 2015-03-22-slim-raii %}
