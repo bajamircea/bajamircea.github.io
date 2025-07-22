@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250603-0-box" width="100%" viewBox="0 0 800 300">
+  <style>
+    #svg20250603-0-box {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20250603-0-stop_border {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: none;
+    }
+    .svg20250603-0-stop_sign {
+      stroke: #ffffff;
+      stroke-width: 16;
+      fill: #ce2029;
+    }
+    .svg20250603-0-stop_word {
+      stroke: #ffffff;
+      stroke-width: 16;
+      fill: none;
+    }
+  </style>
+  <path class="svg20250603-0-stop_sign" d="M 113 15 h 138 l 100 100 v 136 l -100 100 h -138 l -100 -100 v -136 z"/>
+  <path class="svg20250603-0-stop_border" d="M 110 10 h 144 l 100 100 v 144 l -100 100 h -144 l -100 -100 v -144 z"/>
+  <path class="svg20250603-0-stop_word" d="M 100 160q 0 -20 -20 -20 q -20 0 -20 20 q 0 10 20 20q 20 10 20 20 q 0 20 -20 20 q -20 0 -20 -20"/>
+  <path class="svg20250603-0-stop_word" d="M 115 140 h 60 h -30 v 88"/>
+  <ellipse class="svg20250603-0-stop_word" cx="215" cy="180" rx="30" ry="40"/>
+  <path class="svg20250603-0-stop_word" d="M 275 228 v -88 h 20 a 20 20 0 0 1 0 40 h -20"/>
+</svg>

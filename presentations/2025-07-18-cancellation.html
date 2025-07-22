@@ -1,0 +1,37 @@
+---
+layout: presentation
+title: Cancellation
+---
+
+Mircea Baja - 18 July 2025
+
+# Cancellation
+
+<div align="center">
+{% include assets/2025-07-18-cancellation/00-cover.svg %}
+</div>
+
+---
+
+# Motivation
+
+- This is in a way a continuation of the structured concurrency discussion
+- We've seen that structured concurrency primitives like `when_any`,
+  `when_all`, the ones involving timeouts etc. require cancellation support
+- The topic of cancellation is complex enough that it deservers (at least) it's
+  own separate presentation
+- This explores using a variant of `std::stop_source|stop_token|stop_callback`
+  like e.g. `std::inplace_stop_source|inplace_stop_token|inplace_stop_callback`
+  that has the desired `noexcept` behaviour
+  - will informally drop the `inplace_` prefix, but mean it
+  - other single-threaded options are also possible for T1 threading models for
+    example
+
+---
+
+# Coroutine operation, no cancellation
+
+---
+
+# Questions?
+
