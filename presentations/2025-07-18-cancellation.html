@@ -27,6 +27,10 @@ Mircea Baja - 18 July 2025
   - other single-threaded options are also possible for T1 threading models for
     example
 
+
+- **Code is still slideware that demonstrates various specific issues, not
+  production library quality code**
+
 ---
 
 # Cancellation  at the leaves at chains
@@ -36,6 +40,10 @@ Mircea Baja - 18 July 2025
 - most register a stop callback
   - pattern to use in multi-threaded environments
 
+
+- **Slideware aspect: awaiters in the following samples should be made
+  non-copyable and non-moveable (same as say the sender/receiver operations)**
+
 ---
 
 # async_noop
@@ -44,7 +52,12 @@ Mircea Baja - 18 July 2025
 co_await async_noop();
 ```
 
-- noop, but if cancelled then it cancels the chain
+- noop continues immediately
+- but if cancelled then it cancels the chain
+
+
+- probably this is a rarely need to use primitive, but it has the advantage
+  that the core code fits comfortably on a slide
 
 ---
 
@@ -71,6 +84,52 @@ struct noop_awaiter {
 };
 ```
 
+- cancellation callback is scheduled, not called directly
+
+---
+
+# Cancellation is multistep
+
+- cancellation is not a single step synchronous activity
+- e.g. we've seen:
+
+```cpp
+ctx_.schedule_cancellation_callback();
+```
+
+- we did not call directly the chain root cancellation callback then and there,
+  but we deferred it via the re-schedule
+
+
+- remember as we discussed in [callback, callback,
+  callback](/presentations/2025-06-07-structured-concurrency.html) the term is
+  unfortunately overloaded
+
+
+---
+
+# Cancellation is multistep
+
+- we're on a leaf and either:
+  - polling on the stop token `stop_requested()` returns true
+  - a stop_callback is invoked (this is likely done on the caller of
+    `request_stop()`
+- in more complex cases than `noop` we need to call some C API to initiate
+  cancellation, which will complete later
+- but even in simple cases like `noop` we don't call the cancellation callback
+  immediately we schedule later
+- the cancellation callback will eventually do things like destroy the chain
+- if we do that immediately:
+  - we raise questions about stack size/overflow
+  - lots of care is required because we destroy the very object (e.g.
+    awaitable) that implements the stop_callback invocation
+- therefore to avoid that, the cancellation is at least two steps:
+  - the initiator calls `request_stop()` that leads to a tree of stop callbacks
+    invokations for the leaves
+  - this then returns
+  - the actual cancellation callback indicating the completion of the
+    cancellation work is called later (e.g. by the scheduler/run loop)
+
 ---
 
 # async_yield
@@ -81,7 +140,6 @@ co_await async_yield();
 
 - give other chains a chance to run
 - also cancel chain if cancelled
-
 
 ---
 
@@ -117,7 +175,95 @@ struct yield_awaiter {
 
 # async_suspend_forever
 
+```cpp
+co_await async_suspend_forever();
+```
+
+- suspends forever
+- nothing is forever, can be cancelled
+  - really "it's suspend until stopped because it's cancelled by something
+    else"
+  - name similar to other functions e.g. `serve_forever` for a Python socket
+    server
+
 ---
+
+# async_suspend_forever: callback
+
+```cpp
+struct suspend_forever_awaiter {
+  context& ctx_;
+  std::optional<stop_callback<callback>> stop_cb_;
+
+  awaiter(context& ctx) noexcept :
+    ctx_{ ctx }
+  {}
+
+  constexpr bool await_ready() const noexcept {
+    return false;
+  }
+
+  void await_suspend(std::coroutine_handle<>) noexcept {
+    configure_cancellation();
+  }
+
+  constexpr void await_resume() const noexcept {
+  }
+```
+- notice the optional stop_callback
+  - this is our single threaded stop_callback, but might be a
+    `std::inplace_stop_callback`
+
+---
+
+# async_suspend_forever: callback
+
+```cpp
+private:
+  void configure_cancellation() noexcept {
+    stop_cb_.emplace(
+      ctx_.get_stop_token(),
+      make_member_callback<&awaiter::on_cancel>(this));
+  }
+
+  void on_cancel() noexcept {
+    stop_cb_.reset();
+    ctx_.schedule_cancellation_callback();
+  }
+}; // suspend_forever_awaiter
+```
+
+- `std::optional<stop_callback<callback>> stop_cb_;` is used:
+  - `emplace`: to register the callback (takes the `stop_token` and the actual
+    callback)
+  - to `reset()`: to unregister the callback (in this case once it's fired)
+
+---
+
+# stop_callback as a member
+
+This is a common pattern that we've seen in the `suspend_forever_awaiter` where
+we had a `std::optional<stop_callback<callback>> stop_cb_` as a member
+
+This is different from the usual examples for `std::stop_token`:
+
+```cpp
+void in_some_function(std::stop_token st) {
+  std::stop_callback cb(st, []() {
+    // lambda body here
+  });
+
+  // do some stuff
+}
+```
+
+In this example the size of the type of `cb` depends on the size of the
+initializing lambda. But we can't use this pattern for a member variable where
+the declaration is separated from the initialization (and the size needs to be
+known at the declaration of the member variable).
+
+For the `suspend_forever_awaiter` I used the trick that the `callback` has a
+fixed size of two pointers.
 
 ---
 

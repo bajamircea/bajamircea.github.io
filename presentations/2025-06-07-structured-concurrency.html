@@ -420,6 +420,34 @@ co_await async_suspend_forever();
 
 ---
 
+# Callback, callback, callback
+
+The terminology is a little bit overloaded:
+
+- a root of a chain has some work to do when it's cancelled (e.g. destroy the
+  first coroutine in the chain that will recursively destroy the chain):
+  **cancellation callback** for a root of a chain
+  - similarly some work to do when it completes successfully: **completion
+    callback**
+- a good tool to implement cancellation is the triad:
+  `stop_source`/`stop_stoken`/**`stop_callback`**
+- the `stop_callback` takes a functor of the work to do when cancelled (which
+  eventually leads to the cancellation callback at the root of the chain to be
+  called
+- **our class `callback`** captures a `void*` and a function pointer and can be
+  used:
+  - as such a functor for `stop_callback`, though our `stop_callback`
+    integrates better with it that the `std::[inplace_]stop_callback` does
+  - or as a chain root cancellation or completion callback
+- **a completion routine** for a C API such as the one for `WSARecv` is called
+  a callback
+
+
+- we'll have a more complete picture when we talk about
+  [cancellation](/presentations/2025-07-18-cancellation.html)
+
+---
+
 # wait_any
 
 ```cpp
