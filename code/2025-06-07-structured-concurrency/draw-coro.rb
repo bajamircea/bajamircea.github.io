@@ -231,7 +231,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "00-cover.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "00-cover.svg", image.render)
 
 $crt_id += 1
 
@@ -393,7 +393,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "01-structured-programming.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "01-structured-programming.svg", image.render)
 
 $crt_id += 1
 
@@ -496,7 +496,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "02-goto-vs-detached.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "02-goto-vs-detached.svg", image.render)
 
 $crt_id += 1
 
@@ -663,7 +663,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "03-wait_any.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "03-wait_any.svg", image.render)
 
 $crt_id += 1
 
@@ -807,7 +807,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "04-wait_all.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "04-wait_all.svg", image.render)
 
 $crt_id += 1
 
@@ -978,7 +978,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "05-wait_all_cancel.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "05-wait_all_cancel.svg", image.render)
 
 $crt_id += 1
 
@@ -1051,7 +1051,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "06-continuation.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "06-continuation.svg", image.render)
 
 $crt_id += 1
 
@@ -1160,7 +1160,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "07-chain.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "07-chain.svg", image.render)
 
 $crt_id += 1
 
@@ -1283,7 +1283,7 @@ end
 
 #puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "08-t1.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "08-t1.svg", image.render)
 
 $crt_id += 1
 
@@ -1450,7 +1450,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "09-wait_any.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "09-wait_any.svg", image.render)
 
 $crt_id += 1
 
@@ -1594,7 +1594,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "10-wait_all.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "10-wait_all.svg", image.render)
 
 $crt_id += 1
 
@@ -1748,7 +1748,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "11-nursery_server.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "11-nursery_server.svg", image.render)
 
 $crt_id += 1
 
@@ -1914,7 +1914,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-06-07-structured-concurency", "12-nursery_proxy.svg", image.render)
+save_to_file("_includes/assets/2025-06-07-structured-concurrency", "12-nursery_proxy.svg", image.render)
 
 $crt_id += 1
 

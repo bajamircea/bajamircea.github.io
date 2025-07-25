@@ -30,10 +30,10 @@ WORK IN PROGRESS
 - [Generator](/presentations/2025-05-20-generator.html)
 - [Lazy task](/presentations/2025-05-24-lazy-task.html)
 - [Intrusive heap](/presentations/2025-05-15-intrusive-heap.html)
-- [Concurency threading models](/presentations/2025-05-28-threading-models.html)
+- [Concurrency threading models](/presentations/2025-05-28-threading-models.html)
 - [Callback](/presentations/2025-05-30-callback.html)
 - [Stop source, token, callback](/presentations/2025-06-03-stop.html)
-- [Structured concurency](/presentations/2025-06-07-structured-concurency.html)
+- [Structured concurrency](/presentations/2025-06-07-structured-concurrency.html)
 - [Niebloid, tag invoke, CPO etc.](/presentations/2025-06-11-niebloid-cpo.html)
 - [Cancellation](/presentations/2025-07-18-cancellation.html)
 

@@ -8,7 +8,7 @@ Mircea Baja - 7 June 2025
 # Structured concurrency
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/00-cover.svg %}
+{% include assets/2025-06-07-structured-concurrency/00-cover.svg %}
 </div>
 
 ---
@@ -16,7 +16,7 @@ Mircea Baja - 7 June 2025
 # Structured programming
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/01-structured-programming.svg %}
+{% include assets/2025-06-07-structured-concurrency/01-structured-programming.svg %}
 </div>
 
 [Nathaniel J. Smith: Notes on structured concurrency, or: Go statement
@@ -61,7 +61,7 @@ int WSAAPI WSARecv(
 # Unstructured concurrency
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/02-goto-vs-detached.svg %}
+{% include assets/2025-06-07-structured-concurrency/02-goto-vs-detached.svg %}
 </div>
 
 [Nathaniel J. Smith: Notes on structured concurrency, or: Go statement
@@ -114,7 +114,7 @@ std::shared_ptr<Foo> sharedFoo = get_foo();
 # Example good: wait_any
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/03-wait_any.svg %}
+{% include assets/2025-06-07-structured-concurrency/03-wait_any.svg %}
 </div>
 
 Easy to say "don't use detached", but what to do instead? What are some
@@ -130,7 +130,7 @@ examples of structured concurrency primitives? e.g. `wait_any`:
 # Example good: wait_all
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/04-wait_all.svg %}
+{% include assets/2025-06-07-structured-concurrency/04-wait_all.svg %}
 </div>
 
 - we started three tasks
@@ -143,7 +143,7 @@ examples of structured concurrency primitives? e.g. `wait_any`:
 # wait_all cancel
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/05-wait_all_cancel.svg %}
+{% include assets/2025-06-07-structured-concurrency/05-wait_all_cancel.svg %}
 </div>
 
 - but when task fails then the remaining are cancelled
@@ -200,7 +200,7 @@ task<void> async_echo(socket s) {
 # Basic: continuation
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/06-continuation.svg %}
+{% include assets/2025-06-07-structured-concurrency/06-continuation.svg %}
 </div>
 
 - do this, THEN do that
@@ -260,7 +260,7 @@ task<void> async_echo(socket s) {
 # Chain of continuations
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/07-chain.svg %}
+{% include assets/2025-06-07-structured-concurrency/07-chain.svg %}
 </div>
 
 - it is dynamic over time: further links are added to the right or they go away
@@ -325,7 +325,7 @@ TEST(run_co_return_int)
 # Ready queue + timers heap
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/08-t1.svg %}
+{% include assets/2025-06-07-structured-concurrency/08-t1.svg %}
 </div>
 
 - a useful run loop uses a ready queue and timers heap (directly or
@@ -406,7 +406,7 @@ co_await async_suspend_forever();
 # wait_any
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/09-wait_any.svg %}
+{% include assets/2025-06-07-structured-concurrency/09-wait_any.svg %}
 </div>
 
 - is a leaf for a chain, but then it creates roots for the children chains
@@ -444,7 +444,7 @@ TEST(wait_any_inside_co)
 # wait_all
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/10-wait_all.svg %}
+{% include assets/2025-06-07-structured-concurrency/10-wait_all.svg %}
 </div>
 
 - is a leaf for a chain, but then it creates roots for the children chains
@@ -540,7 +540,7 @@ std::optional<int> result3 = co_await async_stop_when(
 # Nursery: the server case
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/11-nursery_server.svg %}
+{% include assets/2025-06-07-structured-concurrency/11-nursery_server.svg %}
 </div>
 
 - main chain loops waiting for connections
@@ -578,7 +578,7 @@ co<void> async_server() {
 # Nursery: the proxy detection case
 
 <div align="center">
-{% include assets/2025-06-07-structured-concurency/12-nursery_proxy.svg %}
+{% include assets/2025-06-07-structured-concurrency/12-nursery_proxy.svg %}
 </div>
 
 - try a proxy
