@@ -29,7 +29,119 @@ Mircea Baja - 18 July 2025
 
 ---
 
-# Coroutine operation, no cancellation
+# Cancellation  at the leaves at chains
+
+- could poll `stop_requested`
+  - but that's unusual
+- most register a stop callback
+  - pattern to use in multi-threaded environments
+
+---
+
+# async_noop
+
+```cpp
+co_await async_noop();
+```
+
+- noop, but if cancelled then it cancels the chain
+
+---
+
+# async_noop: poll
+
+```cpp
+struct noop_awaiter {
+  context& ctx_;
+
+  awaiter(context& ctx) noexcept :
+    ctx_{ ctx }
+  {}
+
+  bool await_ready() const noexcept {
+    return !ctx_.get_stop_token().stop_requested();
+  }
+
+  void await_suspend(std::coroutine_handle<>) noexcept {
+    ctx_.schedule_cancellation_callback();
+  }
+
+  constexpr void await_resume() const noexcept {
+  }
+};
+```
+
+---
+
+# async_yield
+
+```cpp
+co_await async_yield();
+```
+
+- give other chains a chance to run
+- also cancel chain if cancelled
+
+
+---
+
+# async_yield: poll
+
+```cpp
+struct yield_awaiter {
+  context& ctx_;
+
+  awaiter(context& ctx) noexcept :
+    ctx_{ ctx }
+  {}
+
+  constexpr bool await_ready() const noexcept {
+    return false;
+  }
+
+  void await_suspend(std::coroutine_handle<> handle) noexcept {
+    if (ctx_.get_stop_token().stop_requested()) {
+      ctx_.schedule_cancellation_callback();
+      return;
+    }
+
+    ctx_.schedule_coroutine_resume(handle);
+  }
+
+  constexpr void await_resume() const noexcept {
+  }
+};
+```
+
+---
+
+# async_suspend_forever
+
+---
+
+---
+
+# async_sleep_for
+
+```cpp
+co_await async_sleep_for(std::chrono::seconds(5));
+```
+
+- sleeps for a specified duration
+  - uses a node in a timer heap
+- also cancels if cancelled
+  - would not be efficient to poll for cancellation
+  - uses stop callback to remove node from timer heap
+
+---
+
+---
+
+# Call API, no cancellation
+
+---
+
+# Call API, multithreaded
 
 ---
 

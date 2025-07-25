@@ -6,7 +6,7 @@ categories: maths engineering
 
 Reiteration of the paradox that despite being able to precisely identify large
 numbers, unless they put a particularly unusual effort, people count: one, two,
-some, many lots.
+some, many, lots.
 
 
 I [mentioned this before][numbers], but decided it's worth it's own article.

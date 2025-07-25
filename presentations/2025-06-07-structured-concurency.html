@@ -1,11 +1,11 @@
 ---
 layout: presentation
-title: Structured concurency
+title: Structured concurrency
 ---
 
 Mircea Baja - 7 June 2025
 
-# Structured concurency
+# Structured concurrency
 
 <div align="center">
 {% include assets/2025-06-07-structured-concurency/00-cover.svg %}
@@ -29,7 +29,7 @@ harmful](https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement
 - replaced with constructs that reduce to sequential
 - in modern languages even `goto` is tamed (only jumps within the same
   function)
-  - but kept for the three cases where it's needed once every 20 years or so
+  - but kept for the three cases where it's needed, new case once every 20 years or so
 - structured programming is what enables further high level language constructs
   like RAII
 
@@ -54,7 +54,7 @@ int WSAAPI WSARecv(
   structure (often a derived type holding more data)
   - need to be kept alive
   - they might be accessed during or after the call to `WSARecv`
-- calling the function is just the beginning, how do we tie things at the end?
+- Calling the function is just the beginning, how do we tie things at the end?
 
 ---
 
@@ -117,9 +117,8 @@ std::shared_ptr<Foo> sharedFoo = get_foo();
 {% include assets/2025-06-07-structured-concurency/03-wait_any.svg %}
 </div>
 
-Easy to say, but what are some examples of structured concurrency primitives?
-`wait_any`
-
+Easy to say "don't use detached", but what to do instead? What are some
+examples of structured concurrency primitives? e.g. `wait_any`:
 - we started three tasks
 - the second completed first
 - the other two are cancelled
@@ -194,7 +193,7 @@ task<void> async_echo(socket s) {
 - RAII works: `buff` gets destroyed on scope exit
   - but currently it can't be used for joining async work
 - we have a `while(true)` loop
-- `read_some` takes a reference to the buffer variable
+- `async_read_some` takes a reference to the buffer variable
 
 ---
 
@@ -220,9 +219,10 @@ f.then([](int x) {
 
 - a model where async work is started eager has the issue that attaching the
   continuation is potentially racing with the async work, therefore
-  synchronization is required between the async work providing the result into
-  the `std::future` and the `std::future` setting a continuation to be called
-  when a result is available
+  synchronization is required between:
+  - the async work providing the result into the `std::future`
+  - and the `std::future` setting a continuation to be called when a result is
+    available
 - a better model is to create lazy work which needs to be started later, but
   gives the opportunity to set the continuation before the async work is
   started, thus avoiding races
@@ -243,7 +243,7 @@ task<void> async_echo(socket s) {
 
 - for example `co_await async_write(...)`
 - `async_echo` runs uninterrupted until a `co_await`
-- `async_write` is lazy, does not introduce concurency
+- `async_write` is lazy, does not introduce concurrency yet
 - `co_await` introduces concurrency
 - but `async_echo` only continues when `co_await` completes
 
@@ -271,7 +271,7 @@ task<void> async_echo(socket s) {
   effect the whole chain is waiting on
 - only the leaf needs to register a `stop_callback` to react to cancellation
 - if this is a chain of coroutines then it can go to the root and destroy the
-  root coroutinem which in turn via RAII will destroy it's child, which in turn
+  root coroutine, which in turn via RAII will destroy it's child, which in turn
   via RAII ...
 
 ---
@@ -311,11 +311,12 @@ TEST(run_co_return_int)
 }
 ```
 
-- `run` blocks the thread until `asnyc_foo` completes and returns whatever
+- `run` blocks the thread until `async_foo` completes and returns whatever
   `async_foo` `co_return`s.
 - the chain root needs to have the callback that is called when the entry point
   in the chain eventually completes
-  - in the meantime run needs to go though the list of ready tasks and timers
+  - in the meantime this `run` needs to go though the list of ready tasks and
+    timers
 - there can be all sort of such `run` functions that differ on what they
   actually do until the entry points completes
 
@@ -345,7 +346,6 @@ Not all the run loops are the same:
 - others use (blocking) APIs that are required by yet other APIs (e.g. in
   Windows `ReadFileEx` requires a `WaitFor...Ex`)
   - unfortunately different sets of APIs require different kinds of run loops
-
 
 ---
 
@@ -380,6 +380,8 @@ task<void> async_echo(socket s) {
   - as you think about the (temporarily dynamic) tree of a shrinking and
     growing chain: there are a lot of leaves, therefore a lot of allocations
     are avoided
+- from the programmer's point of view writing a leaf is a different (and
+  relatively difficult) world from using them in a coroutine (simple)
 
 ---
 
@@ -411,8 +413,10 @@ co_await async_suspend_forever();
 - each of those roots has callbacks
 - when the callback for a child chain is called
   - if it's the first one, then cancel the others
-- returns the result of the first chain
+- when no error: returns the result of the first chain
   - and info: which one completed?
+- also if the chain for which `wait_any` is a leaf is cancelled then the
+  remaining children are cancelled
 
 ---
 
@@ -447,7 +451,7 @@ TEST(wait_any_inside_co)
 - each of those roots has callbacks
 - when the callback for a child chain is called
   - if it's the first one to have an error, then cancel the others
-- returns a tuple of the results of each chain
+- when no error: it returns a tuple of the results of each chain
 
 ---
 
@@ -591,10 +595,10 @@ co<void> async_try_proxy(nursery& n,
     std::optional<size_t>& result) {
   if (i != 0) { co_await async_sleep_for(100ms); }
   if (i + 1 < proxies.size()) {
-    n.spawn_child(async_try_proxy, std::ref(proxies), i + 1, std::ref(result));
+    n.spawn_child(async_try_proxy, std::ref(n), std::ref(proxies), i + 1, std::ref(result));
   }
   try {
-    co_await async_try_proxy(proxy);
+    co_await async_actually_try_proxy(proxy);
     result = i;
     n.request_stop();
   } catch(...) {
@@ -641,11 +645,14 @@ co<void> async_should_not_compile() {
 - we've seen that the C++ core guidelines give up on this, [CP.53: Parameters
   to coroutines should not be passed by
   reference](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cp53-parameters-to-coroutines-should-not-be-passed-by-reference)
+  - despite plenty of cases where things should be passed by reference and the
+    case where "values" of the like `std::string_view` are still references in
+    disguise
 
 
-- my observation is that programmers when taught about it nod, but then end up
-  learning the hard way (i.e. via bugs) and end up drawing the wrong conclusion
-  (i.e. don't use references for coroutine parameters) instead of
+- my observation is that programmers when taught about such issue nod, but then
+  end up learning the hard way (i.e. via bugs) and end up drawing the wrong
+  conclusion (i.e. don't use references for coroutine parameters) instead of
   using/creating libraries that stop bad patterns
 
 ---
