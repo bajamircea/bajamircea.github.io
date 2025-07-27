@@ -35,6 +35,10 @@ Mircea Baja - 18 July 2025
 
 # Cancellation  at the leaves at chains
 
+---
+
+# Cancellation  at the leaves at chains
+
 - could poll `stop_requested`
   - but that's unusual
 - most register a stop callback
@@ -67,7 +71,7 @@ co_await async_noop();
 struct noop_awaiter {
   context& ctx_;
 
-  awaiter(context& ctx) noexcept :
+  noop_awaiter(context& ctx) noexcept :
     ctx_{ ctx }
   {}
 
@@ -81,7 +85,7 @@ struct noop_awaiter {
 
   constexpr void await_resume() const noexcept {
   }
-};
+}; // noop_awaiter
 ```
 
 - cancellation callback is scheduled, not called directly
@@ -90,13 +94,10 @@ struct noop_awaiter {
 
 # Cancellation is multistep
 
-- cancellation is not a single step synchronous activity
 - e.g. we've seen:
-
 ```cpp
 ctx_.schedule_cancellation_callback();
 ```
-
 - we did not call directly the chain root cancellation callback then and there,
   but we deferred it via the re-schedule
 
@@ -132,6 +133,18 @@ ctx_.schedule_cancellation_callback();
 
 ---
 
+# Cancellation is multistep
+
+- cancellation is not a single step synchronous activity
+- someone calls `request_stop()` e.g. on a `stop_token` or a `nursery`
+  - that will initiate the cancellation (e.g. will often trigger work at the
+    leaves of chains)
+  - but (typically) it returns before the whole cancellation completes
+- the cancellation is really completed when the `co_await` for the `wait_any`,
+  `wait_all`, `nursery.async_run` etc. returns
+
+---
+
 # async_yield
 
 ```cpp
@@ -149,7 +162,7 @@ co_await async_yield();
 struct yield_awaiter {
   context& ctx_;
 
-  awaiter(context& ctx) noexcept :
+  yield_awaiter(context& ctx) noexcept :
     ctx_{ ctx }
   {}
 
@@ -168,7 +181,7 @@ struct yield_awaiter {
 
   constexpr void await_resume() const noexcept {
   }
-};
+}; // yield_awaiter
 ```
 
 ---
@@ -195,7 +208,7 @@ struct suspend_forever_awaiter {
   context& ctx_;
   std::optional<stop_callback<callback>> stop_cb_;
 
-  awaiter(context& ctx) noexcept :
+  suspend_forever_awaiter(context& ctx) noexcept :
     ctx_{ ctx }
   {}
 
@@ -223,7 +236,7 @@ private:
   void configure_cancellation() noexcept {
     stop_cb_.emplace(
       ctx_.get_stop_token(),
-      make_member_callback<&awaiter::on_cancel>(this));
+      make_member_callback<&suspend_forever_awaiter::on_cancel>(this));
   }
 
   void on_cancel() noexcept {
@@ -267,6 +280,58 @@ fixed size of two pointers.
 
 ---
 
+# stop_callback as a member
+
+```cpp
+struct suspend_forever_awaiter {
+  context& ctx_;
+  std::optional<stop_callback<callback>> stop_cb_;
+  // ...
+  void configure_cancellation() noexcept {
+    stop_cb_.emplace(
+      ctx_.get_stop_token(),
+      make_member_callback<&suspend_forever_awaiter::on_cancel>(this));
+  }
+
+  void on_cancel() noexcept {
+    stop_cb_.reset();
+    ctx_.schedule_cancellation_callback();
+  }
+}; // suspend_forever_awaiter
+```
+- instead of this you'll more likely to see ...
+
+---
+
+# stop_callback as a member
+
+```cpp
+struct suspend_forever_awaiter {
+  struct cancel_cb {
+    suspend_forever_awaiter& awaiter_;
+    void operator()() noexcept {
+      awaiter_.on_cancel();
+    }
+  };
+
+  context& ctx_;
+  std::optional<stop_callback<cancel_cb>> stop_cb_;
+  // ...
+  void configure_cancellation() noexcept {
+    stop_cb_.emplace(
+      ctx_.get_stop_token(),
+      cancel_cb{this});
+  }
+
+  void on_cancel() noexcept {
+    stop_cb_.reset();
+    ctx_.schedule_cancellation_callback();
+  }
+}; // suspend_forever_awaiter
+```
+
+---
+
 # async_sleep_for
 
 ```cpp
@@ -281,13 +346,183 @@ co_await async_sleep_for(std::chrono::seconds(5));
 
 ---
 
+# async_sleep_for (1/3)
+
+```cpp
+struct spleep_awaiter {
+  context& ctx_;
+  timer_node timer_node_;
+  std::coroutine_handle<> parent_handle_;
+  std::optional<stop_callback<callback>> stop_cb_;
+
+  sleep_awaiter(context& ctx, std::chrono::steady_clock::time_point deadline) noexcept :
+    ctx_{ ctx },
+    timer_node_{ deadline }
+  {}
+
+  constexpr bool await_ready() const noexcept {
+    return false;
+  }
+
+  void await_suspend(std::coroutine_handle<> handle) noexcept {
+    parent_handle_ = handle;
+    schedule_timer();
+  }
+
+  constexpr void await_resume() const noexcept {
+  }
+```
+
+---
+
+# async_sleep_for (2/3)
+
+```cpp
+private:
+  void schedule_timer() noexcept {
+    timer_node_.cb = make_member_callback<&sleep_awaiter::on_timer>(this);
+    ctx_.insert_timer_node(timer_node_);
+    stop_cb_.emplace(
+      ctx_.get_stop_token(),
+      make_member_callback<&sleep_awaiter::on_cancel>(this));
+  }
+```
+
+- notice that when we actually do some work (e.g. `insert_timer_node`), that is
+  an additional step from creating the callback via `stop_cb_.emplace`, raising
+  questions like: What happens if the timer fires before we call
+  `stop_cb_.emplace()`? Is the order right, should we emplace and then insert?
+  etc.
+  - this is a toy example that works for a T1 threading model where the timer
+    can't fire until we return to the run loop
+  - will discuss later what to do in a multi-threaded model
+
+---
+
+# async_sleep_for (3/3)
+
+```cpp
+  void on_timer() noexcept {
+    stop_cb_.reset();
+
+    parent_handle_.resume();
+  }
+
+  void on_cancel() noexcept {
+    stop_cb_.reset();
+    ctx_.remove_timer_node(timer_node_);
+    ctx_.schedule_cancellation_callback();
+  }
+}; //sleep_awaiter
+```
+
+- note that `parent_handle_.resume()` is fine to be called without stack
+  overflow risks as `on_timer` is called close to the run loop
+
 ---
 
 # Call API, no cancellation
 
+```cpp
+struct api_awaiter {
+  std::coroutine_handle<> parent_handle_;
+  // ...
+
+  constexpr bool await_ready() const noexcept {
+    return false;
+  }
+
+  void await_suspend(std::coroutine_handle<> handle) noexcept {
+    parent_handle_ = handle;
+    // call C API e.g. AsyncFileRead
+  }
+
+  int await_resume() const noexcept {
+    // return result
+  }
+}; // api_awaiter
+```
+
+---
+
+# Call API, no cancellation
+
+- [As shown
+  here](https://lewissbaker.github.io/2017/11/17/understanding-operator-co-await)
+  a C API that starts concurrent behaviour can be done without any synchronization
+  - **if cancellation is not implemented by the awaiter/operatation**
+- The issue is that when calling a C API that starts concurrent behaviour, then
+  another thread can do concurrent work e.g. the C API callback and resume the
+  coroutine which will continue from `await_resume` in that other thread
+  - even before the C API returns in `await_suspend`
+  - and the `resume()` could then even destroy the awaiter/operation while
+    `await_suspend` is in progress
+- But that can be made to work if done carefully:
+  - because the coroutine is suspended when the C API is called, then resume
+    has the correct state to resume from
+  - if care is taken to not access members of the awaiter after the C API is
+    called (by accessing the before, as done for `parent_handle_` in the
+    example, or by storing copies on the stack of `await_suspend`
+
+
+- Also things are easier if cancellation is implemented, but we do not run in a
+  multithreaded model (e.g. the timer example running in a T1 model)
+
 ---
 
 # Call API, multithreaded
+
+- But what to do in a multithreaded model?
+- The issue is that
+  - if calling a C API like `WSARecv`
+  - we have to emplace the stop_callback optional
+  - but that requires accessing a member of the awaiter/operation
+  - while potentially the C API callback is called from another thread
+- See [P2300 1.4. Asynchronous Windows socket
+  recv](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2300r10.html#example-async-windows-socket-recv)
+  where they solve this problem for a sender/receiver operation
+  - the idea is around using an atomic bool
+
+---
+
+# Call API, multithreaded (1/2)
+
+```cpp
+struct api_awaiter : derived from WSAOVERLAPPED {
+  // ...
+  std::atomic<bool> ready_{false};
+  // ...
+
+  bool completed() {
+    return ready_.load(std::memory_order_acquire) ||
+           ready_.exchange(true, std::memory_order_acq_rel);
+  }
+```
+
+---
+
+# Call API, multithreaded (2/2)
+
+```cpp
+  std::coroutine_handle<> await_suspend(std::coroutine_handle<> handle) noexcept {
+    parent_handle_ = handle;
+    // call WSAReceive, or even call it in await_ready instead
+    if (result_io_pending) {
+      stop_cb_.emplace(...);
+      if (completed()) {
+        // handle completion here e.g stop_cb_.reset() ...
+      }
+    }
+  }
+
+  void on_c_api_callback() {
+    if (completed()) {
+      // handle completion here e.g stop_cb_.reset() ...
+    }
+  }
+
+}; // api_awaiter
+```
 
 ---
 

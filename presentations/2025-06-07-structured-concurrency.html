@@ -433,13 +433,13 @@ The terminology is a little bit overloaded:
   `stop_source`/`stop_stoken`/**`stop_callback`**
 - the `stop_callback` takes a functor of the work to do when cancelled (which
   eventually leads to the cancellation callback at the root of the chain to be
-  called
+  called)
 - **our class `callback`** captures a `void*` and a function pointer and can be
   used:
   - as such a functor for `stop_callback`, though our `stop_callback`
     integrates better with it that the `std::[inplace_]stop_callback` does
   - or as a chain root cancellation or completion callback
-- **a completion routine** for a C API such as the one for `WSARecv` is called
+- **a C API completion routine** for a C API such as the one for `WSARecv` is called
   a callback
 
 
@@ -501,6 +501,26 @@ TEST(wait_all_tree)
   ASSERT_EQ(42, std::get<0>(result.value));
 }
 ```
+
+---
+
+# wait_[any|all] variants
+
+- there are all sort of variations possible
+
+
+- for wait_any it's useful to allow a mixture of children having a common
+  non-void result and children that return void
+- there could be variations regarding what's an error (the simplest behaviour
+  is to have exceptions as errors)
+
+
+- our wait_all returns a tuple of all the results and treats exceptions as
+  errors
+- but we could have a variant that return a tuple of optional of results and
+  ignores errors
+- or we could return a vector of results (though all the children have to
+  return the same type)
 
 ---
 
@@ -641,6 +661,21 @@ co<std::optional<size_t>> async_detect_proxy(const std::vector<proxy>& proxies) 
   co_return result;
 }
 ```
+
+---
+
+# Nursery: the proxy detection case
+
+- the method shown is not the only one
+  - e.g. there is no need to continue to sleep if the earlier proxy detection
+    completed unsuccessfully
+  - or we could use a proxy generator in the main chain of the nursery (with
+    sleeps) and spawn child attempts from there, the first child to succeed
+    requests a stop
+- the point is that the nursery has flexibility that is usually not available
+  with `wait_[all|any]`, but it (typically) comes to the cost of an additional
+  allocation for each spawned child whereas `wait_[all|any]` can avoid that
+  (due to the fact that the number of children is statically known)
 
 ---
 
