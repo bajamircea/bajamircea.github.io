@@ -485,7 +485,7 @@ struct api_awaiter {
 
 ---
 
-# Call API, multithreaded (1/2)
+# Call API, multithreaded
 
 ```cpp
 struct api_awaiter : derived from WSAOVERLAPPED {
@@ -493,36 +493,79 @@ struct api_awaiter : derived from WSAOVERLAPPED {
   std::atomic<bool> ready_{false};
   // ...
 
-  bool completed() {
-    return ready_.load(std::memory_order_acquire) ||
-           ready_.exchange(true, std::memory_order_acq_rel);
-  }
-```
-
----
-
-# Call API, multithreaded (2/2)
-
-```cpp
   std::coroutine_handle<> await_suspend(std::coroutine_handle<> handle) noexcept {
     parent_handle_ = handle;
     // call WSAReceive, or even call it in await_ready instead
     if (result_io_pending) {
       stop_cb_.emplace(...);
-      if (completed()) {
+      if (ready_.exchange(true, std::memory_order_acq_rel)) {
         // handle completion here e.g stop_cb_.reset() ...
       }
     }
   }
 
   void on_c_api_callback() {
-    if (completed()) {
+    if (ready_.exchange(true, std::memory_order_acq_rel)) {
       // handle completion here e.g stop_cb_.reset() ...
     }
   }
-
 }; // api_awaiter
 ```
+
+---
+
+# Exchange logic
+
+In the toy example I used just `exchange` to mark completion:
+```cpp
+if (ready_.exchange(true, std::memory_order_acq_rel)) {
+  // ...
+}
+```
+
+This caters for the scenario where there are potentially two threads. First
+thread calls a C API, taking a C callback e.g. `WSAReceive`, then it needs to
+do some work emplacing an optional called `stop_cb_`. Then it will set `ready_`
+via `exchange`, see the initial value of `false` and not execute the block.
+
+Then (usually) another thread runs the C callback that sees `true` out the
+exchange and does execute the block that accesses `stop_cb_` (calling
+`.reset()`).
+
+If the timing is different the C callback thread might skip the `if` block and
+the work will be done by the first thread.
+
+But in production you'll do a variation of the code above.
+
+---
+
+# Load and exchange
+
+[P2300, the "1.4. Asynchronous Windows socket recv"
+example](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2300r10.html#example-async-windows-socket-recv)
+uses a slightly different pattern to mark completion equivalent to:
+
+```cpp
+if (ready_.load(std::memory_order_acquire) ||
+    ready_.exchange(true, std::memory_order_acq_rel)) {
+  // ...
+}
+```
+
+As far as I can see the option to do just `exchange` is sufficient, but both
+threads will do an `exchange`. With the option `load` followed by `exchange`:
+typically there will be a `load` and `exchange` from one thread and only a
+`load` from the other (though it might be that both threads to `load` and
+`exchange`).
+
+This choice [seems to be an
+optimisation](https://stackoverflow.com/questions/79717187/why-load-and-exchange-an-stdatomicbool)
+on the lines of [test and
+tests-and-set](https://en.wikipedia.org/wiki/Test_and_test-and-set) (the idea
+is `exchange` is expensive).
+
+There could also be the option to do just `exchange` on the code path calling
+the C API and load+exchange from the C callback.
 
 ---
 

@@ -22,7 +22,7 @@ need to enumerate children before their parents.
 `std::filesystem::directory_iterator` can be used to iterate through the
 entries in a folder:
 - Constructing with a path gives a begin iterator. This probably maps to
-  `FindFirstFileExW` on Windows. `FindFirstFileW` returns a `HANDLE` which is
+  `FindFirstFileExW` on Windows. `FindFirstFileExW` returns a `HANDLE` which is
   probably stored by `std::filesystem::directory_iterator`
 - Incrementing advances the iterator. This probably maps to `FindNextFileW` on
   Windows. `FindNextFileW` receives the handle value and it uses it to store
@@ -33,6 +33,10 @@ entries in a folder:
   `FindClose`. This frees the memory used to store how far the iteration
   progressed.
 
+This is actually a bit more complicated as the design of [directory_iterator is
+flawed][begin] the terminology uses the `iterator` word to mean both a
+range/enumerator and an actual iterator and results in the need to store the
+`HANDLE` in a heap allocated, reference counted structure.
 
 First of all an error handling digression. The underlying Windows functions,
 `FindFirstFileExW` and `FindNextFileW`, can fail. That leads to two variations
@@ -196,3 +200,5 @@ Therefore it's clear we can't use it in our case where we would like to delete
 as much as possible so that files left behind are only the ones with errors,
 making troubleshooting easier (note that in this case the troubleshooting is
 usually not performed by the code writer, but by the user of the program).
+
+[begin]:  {% post_url 2023-04-02-begin %}
