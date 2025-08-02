@@ -91,7 +91,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-07-18-cancellation", "00-cover.svg", image.render)
+save_to_file("_includes/assets/2025-07-18-cancellation-leaves", "00-cover.svg", image.render)
 
 $crt_id += 1
 

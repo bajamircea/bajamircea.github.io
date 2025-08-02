@@ -1,14 +1,14 @@
 ---
 layout: presentation
-title: Cancellation
+title: Cancellation at the leaves of chains
 ---
 
 Mircea Baja - 18 July 2025
 
-# Cancellation
+# Cancellation at the leaves of chains
 
 <div align="center">
-{% include assets/2025-07-18-cancellation/00-cover.svg %}
+{% include assets/2025-07-18-cancellation-leaves/00-cover.svg %}
 </div>
 
 ---
@@ -18,8 +18,8 @@ Mircea Baja - 18 July 2025
 - This is in a way a continuation of the structured concurrency discussion
 - We've seen that structured concurrency primitives like `when_any`,
   `when_all`, the ones involving timeouts etc. require cancellation support
-- The topic of cancellation is complex enough that it deservers (at least) it's
-  own separate presentation
+- The topic of cancellation is complex enough that it deservers a few separate
+  presentations
 - This explores using a variant of `std::stop_source|stop_token|stop_callback`
   like e.g. `std::inplace_stop_source|inplace_stop_token|inplace_stop_callback`
   that has the desired `noexcept` behaviour
@@ -33,11 +33,7 @@ Mircea Baja - 18 July 2025
 
 ---
 
-# Cancellation  at the leaves at chains
-
----
-
-# Cancellation  at the leaves at chains
+# Cancellation at the leaves at chains
 
 - could poll `stop_requested`
   - but that's unusual

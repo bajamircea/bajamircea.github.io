@@ -35,7 +35,7 @@ WORK IN PROGRESS
 - [Stop source, token, callback](/presentations/2025-06-03-stop.html)
 - [Structured concurrency](/presentations/2025-06-07-structured-concurrency.html)
 - [Niebloid, tag invoke, CPO etc.](/presentations/2025-06-11-niebloid-cpo.html)
-- [Cancellation](/presentations/2025-07-18-cancellation.html)
+- [Cancellation at the leaves of chains](/presentations/2025-07-18-cancellation-leaves.html)
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/00-cover.svg %}
