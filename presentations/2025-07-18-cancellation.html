@@ -600,5 +600,76 @@ struct api_awaiter : derived from WSAOVERLAPPED {
 
 ---
 
+# Exchange and why? (code)
+
+```cpp
+std::atomic<bool> ready;
+
+int foo()
+{
+    if (ready.load(std::memory_order_acquire) ||
+        ready.exchange(true, std::memory_order_acq_rel))
+    {
+        return 42;
+    }
+    return 52;
+}
+```
+
+---
+
+# Exchange and why? (assembly)
+
+```asm
+foo():
+        movzx   ecx, byte ptr [rip + ready]
+        mov     eax, 42
+        test    cl, cl
+        jne     .LBB0_2
+        mov     al, 1
+        xchg    byte ptr [rip + ready], al
+        test    al, 1
+        mov     ecx, 42
+        mov     eax, 52
+        cmovne  eax, ecx
+.LBB0_2:
+        ret
+
+ready:
+        .zero   1
+```
+
+`clang x86-64 -O3 -std=c++23`
+
+---
+
+# Exchange and why? (timeline)
+
+```
+Timeline view:
+                    0123456789
+Index     0123456789          012345
+
+[0,0]     DeeeER    .    .    .    .   movzx	ecx, byte ptr [rip + ready]
+[0,1]     DeE--R    .    .    .    .   mov	eax, 42
+[0,2]     .D==eER   .    .    .    .   test	cl, cl
+[0,3]     .D===eER  .    .    .    .   jne	.LBB0_2
+[0,4]     . DeE--R  .    .    .    .   mov	al, 1
+[0,5]     .  DeeeeeeeeeeeeeeeeER   .   xchg	byte ptr [rip + ready], al
+[0,6]     .   D==========eE----R   .   test	al, 1
+[0,7]     .    DeE--------------R  .   mov	ecx, 42
+[0,8]     .    DeE--------------R  .   mov	eax, 52
+[0,9]     .    .D=========eE-----R .   cmovne	eax, ecx
+[0,10]    .    .D=============eeeeER   ret
+```
+
+`llvm-mca -timeline -iterations=1  -mcpu=btver2`
+
+- on some architectures `xchg` does way lot more (`eeeeeeeeeeeeeeeeE`) than
+  `movzx` (`eeeE`) because it has to coordinate cache access/flush etc.
+  between cores of the same processor
+
+---
+
 # Questions?
 
