@@ -36,6 +36,7 @@ WORK IN PROGRESS
 - [Structured concurrency](/presentations/2025-06-07-structured-concurrency.html)
 - [Niebloid, tag invoke, CPO etc.](/presentations/2025-06-11-niebloid-cpo.html)
 - [Cancellation at the leaves of chains](/presentations/2025-07-18-cancellation-leaves.html)
+- [Cancellation](/presentations/2025-08-03-cancellation.html)
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/00-cover.svg %}
@@ -70,8 +71,6 @@ date, but really good background info required to understand coroutines
   - asynchronous
     - best effort, e.g. might not cancel immediately or might still complete
   - the bottom up/top down/timer
-  - low level synchronization required for callbacks
-  - what if cancel is slow: the server/detection pattern
   - hiding cancellation from function signature (e.g. see `co_await get_cancellation_token()`
 - What's wrong with
   - std::async
@@ -83,10 +82,6 @@ date, but really good background info required to understand coroutines
 - context passing (adv/disadv):
   - explicit as an argument
   - buried
-- Threading synchronization in await_suspend
-  - none (no cancellation)
-  - mutex
-  - atomic bool
 - C++ coroutine weak points
   - weak allocation control: have allocator, but allocation size is runtime
     info

@@ -42,6 +42,21 @@ image = svg({
       border: 1px solid #e8e8e8;
       background-color: #f5f5f5;
     }
+    .#{make_id("l1")} {
+      stroke: #{color_blue};
+      stroke-width: 3;
+      fill: none;
+    }
+    .#{make_id("arrow")} {
+      stroke: #{color_blue};
+      stroke-width: 1;
+      fill: #{color_blue};
+    }
+    .#{make_id("box_white")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: #{color_white};
+    }
     .#{make_id("stop_border")} {
       stroke: #000000;
       stroke-width: 4;
@@ -58,6 +73,21 @@ image = svg({
       fill: none;
     }
   CSS
+
+  defs() do
+    marker(
+      id: make_id("arrow"),
+      viewBox: "0, 0, 10, 10",
+      refX: 5, refY: 5,
+      markerWidth: 6, markerHeight: 6,
+      orient: "auto-start-reverse",
+    ) do
+      path(
+        d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z",
+        class: make_id("arrow")
+      )
+    end
+  end
 
   path(
     class: make_id("stop_sign"),
@@ -85,6 +115,55 @@ image = svg({
   path(
     class: make_id("stop_word"),
     d: "M 275 228 v -88 h 20 a 20 20 0 0 1 0 40 h -20",
+  )
+
+
+  rect(x: 500, y: 82, width: 60, height: 30, class: make_id("box_white"))
+  path(
+    class: make_id("l1"),
+    d: "M 460 30 v 58 c 20 -70 70 -40 70 -18",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+  path(
+    class: make_id("l1"),
+    d: "M 530 113 c -5 30 -40 30 -70 -18 v 36",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+
+  rect(x: 570, y: 82, width: 60, height: 30, class: make_id("box_white"))
+  path(
+    class: make_id("l1"),
+    d: "M 530 88 c 20 -70 70 -40 70 -18",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+  path(
+    class: make_id("l1"),
+    d: "M 600 113 c -5 30 -40 30 -66 -16",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+
+  rect(x: 640, y: 82, width: 60, height: 30, class: make_id("box_white"))
+  path(
+    class: make_id("l1"),
+    d: "M 600 88 c 20 -70 70 -40 70 -18",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+  path(
+    class: make_id("l1"),
+    d: "M 670 113 c -5 30 -40 30 -66 -16",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+
+  rect(x: 710, y: 82, width: 60, height: 30, class: make_id("box_white"))
+  path(
+    class: make_id("l1"),
+    d: "M 670 88 c 20 -70 70 -40 70 -18",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+  path(
+    class: make_id("l1"),
+    d: "M 740 113 c -5 30 -40 30 -66 -16",
+    marker_end: "url(##{make_id("arrow")})"
   )
 
 end
