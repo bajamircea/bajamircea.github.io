@@ -88,6 +88,21 @@ struct noop_awaiter {
 
 ---
 
+# Code dihotomy
+
+- writing a low level primitive like `async_noop` is way harder than using it
+- there is a separation between writing "library" functions and using them
+- this is not new: it's harder to write a RAII type than just use it
+
+
+- but it is IMPORTANT that the language/library does not make the writing such
+  primitives prohibitivly complex for the mere mortals
+  - in particular my experience with `boost::asio` is that it was possible to
+    use it, but actually implementing similar library functions was way harder
+    (practically did not do it)
+
+---
+
 # Cancellation is multistep
 
 - e.g. we've seen:

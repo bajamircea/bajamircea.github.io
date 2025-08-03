@@ -83,8 +83,6 @@ date, but really good background info required to understand coroutines
 - context passing (adv/disadv):
   - explicit as an argument
   - buried
-- The issue of dual language:
-  - e.g. implementing vs. using (as seen in boost::asio)
 - Threading synchronization in await_suspend
   - none (no cancellation)
   - mutex
