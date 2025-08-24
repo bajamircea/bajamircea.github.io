@@ -7,6 +7,42 @@ categories: read book
 List of books I've read in 2025
 
 
+- 2025-08-24: Benjamin Graham, Charles McGolrick: The Interpretation of Financial Statements 1955
+: Reread
+
+- 2025-08-21: Felix Klein: Elementary Mathematics From an Advanced Standpoint 1945 English translation of 1924 work
+: Difficult for me, eventually skipped parts that were too hard, but many
+interesting ideas under the complexity of the text. Interesting to see how
+maths can be approached as a historical discovery process or as a isolated, yet
+polished theory. Although I skipped most of the quaternions, the beginning was
+quite interesting on e.g. the choices to be made, giving up on multiplication
+commutativity. The idea of having geometrical representations as a mean of
+learning and understanding, for functions and equations with complex arguments.
+Gauss might be worth a read. The problems with log being defined as inverse of
+exponentiation and how using complex functions eventually provides insights. I
+should read more about convergence of Taylor series.
+
+- 2025-08-17: Henry Fielding:Shamela
+: Very funny.
+
+- 2025-08-15: ntoine de Saint-Exupéry: Le Petit Prince
+: Ambiguous in meaning to the point of boring. As a grown up I had the
+endurance to keep going. As a child I have up due to the randomness of
+nonsense. The best of the book is the dedication. Read in French. Good for
+refreshing my French.
+
+- 2025-08-13: Jonathan P. Berkley: The Formation of Islam - Religion and Society in the Near East, 600-1800
+: Interesting. An example is that literature about a period reflects the issues
+of the period when it was written, not necessarily of the period that it
+describes
+
+- 2025-08-09: Harper Lee: To Kill A Mockingbird
+: Euch. Did not enjoy it. I had to keep on remembering that it's fiction,
+despite it trying to depict race mentalities of a period. The child character
+Scout has way to many insights for a child. Also Atticus is portrayed as part
+of a heroic group, but there is the double standard where the black Tom
+Robinson is brought to trial, but the white Boo is not.
+
 - Paul Freedman: The Early Middle Ages, 284–1000
 : Not a book, but video lectures from Open Yale Courses on the fall of the
 Roman Empire, the raise of Christianism and Islam and the "Dark Ages" (that
