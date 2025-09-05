@@ -34,10 +34,9 @@ know). All of them have to be handled.
 
 Agree with a twist:
 {% highlight c++ linenos %}
-if (dup2(fdv[1], 1) < 0)
-{
-syserr("%s: cannot dup2 for stdout", argv[0]);
-_exit(EX_OSERR);
+if (dup2(fdv[1], 1) < 0) {
+  syserr("%s: cannot dup2 for stdout", argv[0]);
+  _exit(EX_OSERR);
 }
 close(fdv[1]);
 {% endhighlight %}
@@ -66,8 +65,9 @@ stralloc_cats(&dtline,"\n");
 //or
 dtline += "\n";
 {% endhighlight %}
+
 So this leads to the conclusion that for concatenating string we should rather
-have code like the one below, which throws an exception in low memory
+have code like the one above, which throws an exception in low memory
 conditions (low memory conditions are exceptional). That is linked to having
 less source code (the exception throwing code is hidden from view). He says
 that he should have considered a tool like Bjarne Stroustrup's cfront. I would
