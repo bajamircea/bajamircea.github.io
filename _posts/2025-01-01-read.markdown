@@ -4,8 +4,76 @@ title: 'Books Read in 2025'
 categories: read book
 ---
 
-List of books I've read in 2024
+List of books I've read in 2025
 
+
+- 2025-10-04: William Penn: Fruits of Solitude
+: Penn of Pennsylvania fame. We're talking late 1600s here. He's a Quaker,
+though unlike John Woolman it's clear he read classics as well: he gives the
+same advice (from Socrates?) as Benjamin Franklin to "eat to live, not live to
+eat". It's still a bit of a moralizing sermon that suffers of ambiguity and
+religious nonsense.
+
+On the importance of using our time wisely:
+> There is nothing of which we are apt to be so lavish as of Time, and about
+> which we ought to be more solicitous
+
+On not applying double standards to others:
+> And nothing shews our Weakness more than to be so sharp-sighted at spying
+> other Men's Faults; and so purblind about our own.
+
+On the need to do physical activities for wellbeing:
+> Love Labor; For if though dost not want it for Food, though mayest for
+> Physick
+
+Quoting the ancients (Socrates?):
+> Eat therefore to live, and no not live to eat.
+
+Marriage advice (possibly sound, but ambiguous):
+> Never Marry but for Love; but see that thou lov'st what is lovely
+
+Quakers and gender equality:
+> Sexes make no Difference; Since in Souls there is none;
+
+Example of nice sounding, but ambiguous statement, which the book is full of:
+> Be [...] Rather Sweet than Familiar; Familiar, than Intimate; and Intimate
+> with very few, and upon very good Grounds.
+
+Early insight on how insurance companies treat parties involved into accidents:
+> In such Controversies, it is but too common for some to say, Both are to
+> blame, to excuse their own Unconcernedness [...]. Others will cry, They are
+> both alike; thereby involving the Injured with the Guilty, to mince the
+> Matter for the Faulty, or cover their own Injustice to the wronged Party.
+
+On what's important in life:
+> Seek not to be Rich, but Happy
+
+Mirroring Warren Buffet on his choice of managers:
+> An able bad Man, is an ill Instrument, and to be shunned as the Plague
+
+On emotional focus:
+> We should not be troubled for what we cannot help
+
+Focus on one thing at a time:
+> They that are least divided in their Care, always give the best Account of
+> their Business.
+> As therefore thou art always to pursue the present Subject, till though hast
+> master'd it, so if it fall out that thou hast more Affairs than one upon thy
+> Hand, be sure to prefer that which is of most Moment
+
+Busy does not mean productive (the old hare and the tortoise story):
+> He that Judges not well of the Importance of his Affairs, though he may be
+> always Busy, he must make but a small Progress.
+> But make not more Business necessary than is so; and rather lessen than
+> augment Work for thy self.
+> 'T is the Advantage that slower Tempers have upon the Men of lively Parts,
+> that tho' they don't lead, they will Follow well, and Glean Clean.
+
+On the mistake of believing other think as ourselves:
+> He that judges of other Men by himself, does not always hit the Mark. [...]
+> For the Able Man deceives himself by making t'other wiser than he is in the
+> Reason of his Conduct; and the ordinary Man makes himself so, in presuming to
+> judge of the Reasons of the Abler Man's Actions.
 
 - 2025-09-17: John Woolman: The Journal of John Woolman
 : John Woolman was a Quaker, living around the time of Benjamin Franklin, known
@@ -34,6 +102,9 @@ build more lighthouses, they save lives", John Woolman would mainly see to
 influence religiously the sailors. He died of smallpox as was against
 inoculation (unlike Benjamin Franklin), perceiving smallpox an act of God that
 we should not meddle with.
+
+> Deep-rooted customs, though wrong, are not easily altered; but it is the duty
+> of all to be firm in that which they certainly know is right for them.
 
 - 2025-09-05: Benjamin Franklin: Autobiography of Benjamin Franklin
 : Really lovely book to read, every dozen of pages of so there is a absolutely
@@ -97,6 +168,11 @@ On the observation of human behaviour when active vs. inactive:
 > and, with the consciousness of having done a good day's work, they spent the
 > evening jollily; but on our idle days they were mutinous and quarrelsome,
 > finding fault with their pork, the bread, etc., and in continual ill-humour.
+
+On observing that polite conversation does not mean agreement:
+> The conversation at first consisted of mutual declarations of disposition to
+> reasonable accommodations, but I suppose each party had its own ideas of what
+> should be meant by _reasonable_
 
 He mentions he met with David Hume (I seem to have a like for 18th century). He
 also mentions Richardson's Pamela (the one that triggered Henry Fielding's
