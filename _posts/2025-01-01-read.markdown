@@ -7,6 +7,12 @@ categories: read book
 List of books I've read in 2025
 
 
+- 2025-10-12: Mark Twain: The Adventures of Tom Sawyer
+: I read it as a child. I still enjoyed it, noticing Tom's superstitions,
+Huck's language, what 100 years made as a difference compared with Benjamin
+Franklin's times (schools for example). A bit discontinuous as a narrative at
+times.
+
 - 2025-10-04: William Penn: Fruits of Solitude
 : Penn of Pennsylvania fame. We're talking late 1600s here. He's a Quaker,
 though unlike John Woolman it's clear he read classics as well: he gives the

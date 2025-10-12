@@ -12,8 +12,10 @@ study of what he exactly meant.
 
 # Core idea
 
-The core idea is that human reasoning is at best inductive. This has profound
-implications about our knowledge of the world.
+The core idea is that human reasoning is at best inductive. In short, inductive
+reasoning is of the sort "all the swans I've seen are white, therefore all the
+swans are white". That all reasoning reduces to patterns of this kind, has
+profound implications about our knowledge of the world.
 
 Humans are animals. There are pre-build body structures. Sensors like eyes,
 ears etc. are linked to the brain and give us perceptions: information about
@@ -53,18 +55,19 @@ predictions stop working we'll try to come with some other theory.
 Philosophy is largely influenced by the ancient Greeks. Thorough the accident
 that the emperors of the Roman Empire decided to become Christians, a lot of
 the diversity of various schools of philosophy were inhibited/prosecuted
-leaving largely Aristotle due to the his view of the world kind of matching the
+leaving largely Aristotle due to his view of the world kind of matching the
 Christian doctrine. For Aristotle the world is structured in concentric
 spheres: the Earth, water, air, Moon, planets, Sun and finally the immutable
 stars, fitting the Christian theory that the hell is down and heaven is up. For
 Aristotle stones fall to the ground because they are made of "earth" and they
 (actively) aim to go to the "earth sphere".
 
-Through various other historical accidents such as the Ottomans' effective
+Through various other historical accidents, such as the Ottomans' effective
 use of gun powder to topple the last remains of the Roman Empire and conquer
-Constantinople alternative views of the world reach again the Western Europe.
+Constantinople, alternative views of the world reach again the Western Europe.
 Eventually we reach the likes of Galileo Galilei that challenged systematically
 the Aristotelian view: - the observation of a supernova questions the "immutable stars"
+
 - the Moon has mountains, whose height can be measured based on the shadows
   they make, so it's more like the earth and yet does not fall
 - Jupiter has moons, rotating around it, not around the Earth
@@ -123,8 +126,8 @@ need some repetition for the induction:
 - I told her not to touch it. She benefited from my experience. We learn not
   just from direct experience, but from the experience of others e.g. by
   reading.
-- The heat sensing nerves and pain sensation are pre-wired structures. There is
-  an evolutionary reasons for such structures to emerge and learn quickly that
+- The heat sensing nerves and pain sensation are pre-wired structures. There
+  are evolutionary reasons for such structures to emerge and learn quickly that
   fire is dangerous.
 
 The story continues as some months later I was baking bread in a Dutch oven
