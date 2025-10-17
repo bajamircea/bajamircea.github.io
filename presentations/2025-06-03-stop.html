@@ -94,8 +94,9 @@ inline bool stop_token::stop_requested() const noexcept {
 
 # Comments
 
-- the point of the `stop_source` is to allow a holder to check if it needs to
+- the point of the `stop_token` is to allow a holder to check if it needs to
   stop without being able to request a stop
+- only the holder of a `stop_source` can request a stop
 - forward declarations sometimes abused to gain compilation times at the cost
   of code maintenance difficulties, but this is a genuine case where forward
   declaration is required to break the circular dependency between: the
@@ -321,6 +322,13 @@ stop_source( stop_source&& other ) noexcept;
   - additional space used in the node
   - but the level of indirection of calling the cancellation might be reduced
   - more research is needed if that makes sense
+- I find it's common for people to know that "`std::jtread` is better than
+  `std::thread`", but the usual reason is given is that "because `std::jthread`
+  joins on destructor". That's not a good reason, it's easy to join a `thread`
+  as well. I find it very rare for people to know that the advantage is that
+  "before joining in the destructor, the `std::jtread` will request stop on
+  it's `std::stop_source` that can be used (via a `std::stop_token`) to trigger
+  exits from blocking activities using `std::stop_callback`"
 
 ---
 
