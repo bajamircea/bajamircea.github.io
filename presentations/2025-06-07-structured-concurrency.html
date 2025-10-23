@@ -13,6 +13,24 @@ Mircea Baja - 7 June 2025
 
 ---
 
+# Motivation
+
+Concurrent APIs commonly provide API callss that take some form of callback.
+Such a call initiates some concurrency and returns before the callback was
+called/activity completes. This is "detached" behaviour. The user has to
+maintain the lifetime of all the objects called directly or indirectly from the
+callback, until the activity "joins" when it completes or is cancelled. This is
+not easy, not automatic and error prone.
+
+The idea of structured concurrency is that "detached" operations are similar to
+"goto" statements. Structured primitives like "when_all", "when_any", "nursery"
+and even simple lazy task coroutines (if implemented correctly) automatically
+join in the current scope. Similar to "if/else", "for loops" and function
+calls, systematic usage of structured concurrency makes code easier to
+understand and safer.
+
+---
+
 # Structured programming
 
 <div align="center">
