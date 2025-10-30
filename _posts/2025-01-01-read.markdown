@@ -7,6 +7,13 @@ categories: read book
 List of books I've read in 2025
 
 
+- 2025-10-xx: Plato: Phaedo
+: This also follows the Apology. It's almost as if Plato tries to make a
+Philosophy a religion. He takes Socrates choice to die in the direction of a
+proof for the immortality of soul. The reasoning is dubious, ironically some of
+the counterarguments presented in the text as doubts of Socrates' disciples are
+better than the arguments.
+
 - 2025-10-22: Plato: Crito
 : This follows in the Apology. After the trial Crito visits Socrates in prison
 and suggests running away. Socrates does not. The widely disseminated
@@ -216,7 +223,7 @@ On what kind of things make us happy:
 > than in giving him a thousand guineas. The money may be soon spent, the
 > regret only remaining of having foolishly consumed it;
 
-On the inability of rules to take sound decisions:
+On the inability of rulers to take sound decisions:
 > But such mistakes are not new; history is full of the errors of states and
 > princes.
 
@@ -280,7 +287,7 @@ should read more about convergence of Taylor series.
 - 2025-08-17: Henry Fielding:Shamela
 : Very funny.
 
-- 2025-08-15: ntoine de Saint-Exupéry: Le Petit Prince
+- 2025-08-15: Antoine de Saint-Exupéry: Le Petit Prince
 : Ambiguous in meaning to the point of boring. As a grown up I had the
 endurance to keep going. As a child I have up due to the randomness of
 nonsense. The best of the book is the dedication. Read in French. Good for

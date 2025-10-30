@@ -3,7 +3,7 @@ layout: presentation
 title: Structured concurrency
 ---
 
-Mircea Baja - 7 June 2025
+Mircea Baja - 7 June 2025 (Updated 30 Oct 2025)
 
 # Structured concurrency
 
@@ -13,21 +13,25 @@ Mircea Baja - 7 June 2025
 
 ---
 
-# Motivation
+# Motivation - academical statements
 
-Concurrent APIs commonly provide API callss that take some form of callback.
-Such a call initiates some concurrency and returns before the callback was
-called/activity completes. This is "detached" behaviour. The user has to
-maintain the lifetime of all the objects called directly or indirectly from the
+Concurrent APIs commonly provide API calls that take some form of callback.
+Such a call initiates some concurrency and returns before the callback/activity
+completes. This "detached" behaviour requires the user of the API to maintain
+the lifetime of all the objects called directly or indirectly from the
 callback, until the activity "joins" when it completes or is cancelled. This is
-not easy, not automatic and error prone.
+not easy in practice, not automatic and error prone.
 
 The idea of structured concurrency is that "detached" operations are similar to
-"goto" statements. Structured primitives like "when_all", "when_any", "nursery"
-and even simple lazy task coroutines (if implemented correctly) automatically
-join in the current scope. Similar to "if/else", "for loops" and function
-calls, systematic usage of structured concurrency makes code easier to
-understand and safer.
+"goto" statements. Similar to "if/else", "for loops" and function calls,
+systematic usage of structured concurrency makes code easier to understand and
+safer.
+
+In a C++ coroutine environment, the structured concurrency is build on top of
+primitives like "when_all", "when_any", "nursery", "wait_for", "stop_when", and
+even simple lazy task coroutines (if implemented correctly). They automatically
+join in the current scope, making object lifetime questions easier to reason
+about.
 
 ---
 
@@ -91,16 +95,119 @@ necessary*, like `jump` statements in assembly, but we want that wrapped in
 structured concurrency primitives that are easier to use correctly.
 
 Detach/fire and forget has issues: lifetime, sharing data e.g. by value, error
-propagation.
-
-We don't want to continue to stay low level and error prone.
+propagation. We don't want to continue to stay low level and error prone.
 
 (*) By the end of this presentation it might be worth going back on the
 necessity of this kind of interface
 
 ---
 
+# Structured concurrency - primitives
+
+We want to identify what are the structured concurrency primitives (in addition
+to the nursery from Nathaniel's article). I discuss:
+
+- lazy coroutines/parent-child-parent continuation
+  - chains
+- the run loops
+- chain leaves
+  - `async_sleep_for`, `async_yield`, `async_noop`, `async_suspend_forever`
+- `async_wait_any`
+- `async_wait_all`
+- `async_wait_for`
+- `async_stop_when`
+- `nursery::async_run`
+
+---
+
+# Example good: wait_all
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurrency/04-wait_all.svg %}
+</div>
+
+- we started three tasks
+- the second completed first, nevermind
+- continues when all three are completed
+- returns the value of each (e.g. as a tuple)
+
+---
+
+# wait_all cancel
+
+<div align="center">
+{% include assets/2025-06-07-structured-concurrency/05-wait_all_cancel.svg %}
+</div>
+
+- but if the second task fails, then the remaining are told to cancel
+- code after `wait_all` only gets executed when all the tasks complete either
+  successfully or they completed the cancellation
+
+
+- detached behaviour looks like `goto`
+- `wait_all` looks like function calls, `if`/`else` blocks etc.
+
+---
+
+# Example good
+
+```cpp
+co<std::tuple<std::string, std::string>> async_search_multiple(
+  const std::string& encoded_query)
+{
+  proxy p{ "proxy.example.com", 8080 };
+  auto result = co_await async_wait_all(
+    async_http_get(p, "https://google.com/search?q=" + encoded_query),
+    async_http_get(p, "https://bing.com/search?q=" + encoded_query),
+    async_http_get(p, "https://duckduckgo.com/?q=" + encoded_query)
+  );
+  return result;
+}
+```
+
+- `co_await async_wait_all(...)` returns only when the work for all
+  `async_http_get` operations completed.
+- the object `proxy p` will naturally be stay alive due to scope rules
+- RAII works
+- more subtly: the string temporaries created as arguments for each
+  `async_http_get` will still be alive until the `;` after `async_wait_all` is
+  reached and that's the case only when both `async_http_get` operations
+  completed
+
+---
+
 # Example bad
+
+```cpp
+co<void> async_should_not_compile() {
+  auto x = async_foo("some string");
+  co_await std::move(x);
+}
+```
+
+- some libraries allow the above to compile, but this creates issues similar to
+  the [`std::generator` "spot the bug"
+  cases](/presentations/2025-05-20-generator.html)
+- currently the C++ core guidelines give up on this: [CP.53: Parameters to
+  coroutines should not be passed by
+  reference](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cp53-parameters-to-coroutines-should-not-be-passed-by-reference)
+  and [CP.51: Do not use capturing lambdas that are
+  coroutines](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cp51-do-not-use-capturing-lambdas-that-are-coroutines)
+- I disagree with the current form of the CP.51 and CP.53 (see next slides), I
+  think libraries should fail the code above at compilation stage (using lazy
+  coroutines where only unmoveable temporaries can be co_await-ed). They are
+  legacy thinking from when `std::future` was thought of as a good idea
+
+
+- my observation is that programmers when taught about such issue nod, do not
+  internalize the solution and then end up learning the hard way (i.e. via
+  bugs) or end up drawing the wrong conclusion (i.e. don't use references for
+  coroutine parameters) instead of using/creating libraries that stop bad
+  patterns
+
+---
+
+# Example bad - CP.51
 
 ```cpp
 int value = get_value();
@@ -129,43 +236,33 @@ std::shared_ptr<Foo> sharedFoo = get_foo();
 
 ---
 
-# Example good: wait_any
+# Example bad - CP.53
 
-<div align="center">
-{% include assets/2025-06-07-structured-concurrency/03-wait_any.svg %}
-</div>
+```cpp
+// claimed bad
+std::future<int> do_something(const std::shared_ptr<int>& input) {
+    co_await something();
 
-Easy to say "don't use detached", but what to do instead? What are some
-examples of structured concurrency primitives? e.g. `wait_any`:
-- we started three tasks
-- the second completed first
-- the other two are cancelled
-- continues when all three are completed (cancelled or otherwise)
-- returns the value of winner (second task in this case)
+    co_return *input + 1; // DANGER: the reference to input may no longer be valid
+}
 
----
+// claimed good, but still bad
+std::future<int> do_something(std::shared_ptr<int> input) {
+    co_await something();
+    co_return *input + 1; // input is a copy that is still valid here
+}
+```
 
-# Example good: wait_all
-
-<div align="center">
-{% include assets/2025-06-07-structured-concurrency/04-wait_all.svg %}
-</div>
-
-- we started three tasks
-- the second completed first, nevermind
-- continues when all three are completed
-- returns the value of each (e.g. as a tuple)
-
----
-
-# wait_all cancel
-
-<div align="center">
-{% include assets/2025-06-07-structured-concurrency/05-wait_all_cancel.svg %}
-</div>
-
-- but when task fails then the remaining are cancelled
-- there are quite a lot of similarities in this behaviour to `wait_any`
+- [CP.53: Parameters to coroutines should not be passed by
+  reference](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cp53-parameters-to-coroutines-should-not-be-passed-by-reference)
+- the example uses unstructured concurrency: the `do_someting()` is assumed to be
+  eager and the parameters no longer available after a `co_await`
+- the coding guideline, instead of pointing out to the unstructured concurrency
+  as a bad thing, makes recommendations about the usage of `shared_ptr`
+  (additional allocations)
+- despite plenty of cases where things should be passed by reference and the
+  case where "values" of the like `std::string_view` are still references in
+  disguise
 
 ---
 
@@ -198,7 +295,7 @@ examples of structured concurrency primitives? e.g. `wait_any`:
 # Example good
 
 ```cpp
-task<void> async_echo(socket s) {
+co<void> async_echo(socket s) {
   buffer buff;
   while (true) {
     std::size_t length = co_await async_read_some(s, buff);
@@ -208,10 +305,13 @@ task<void> async_echo(socket s) {
 ```
 
 - we have local variables: `buff`, `length`
-- RAII works: `buff` gets destroyed on scope exit
-  - but currently it can't be used for joining async work
 - we have a `while(true)` loop
-- `async_read_some` takes a reference to the buffer variable
+- `async_read_some` and `async_write` can take a reference to the `buff`
+  variable
+- `buff` outlives the execution of `async_read_some` and `async_write`
+- `buff` gets destroyed on scope exit
+- RAII works:
+  - but currently it can't be used for joining async work
 
 ---
 
@@ -244,13 +344,15 @@ f.then([](int x) {
 - a better model is to create lazy work which needs to be started later, but
   gives the opportunity to set the continuation before the async work is
   started, thus avoiding races
+- I think that `std::future/promise` is a broken model where Nathaniel's
+  critique of detached work applies
 
 ---
 
 # Example good: lazy
 
 ```cpp
-task<void> async_echo(socket s) {
+co<void> async_echo(socket s) {
   buffer buff;
   while (true) {
     std::size_t length = co_await async_read_some(s, buff);
@@ -297,7 +399,7 @@ task<void> async_echo(socket s) {
 # Example
 
 ```cpp
-task<void> async_echo(socket s) {
+co<void> async_echo(socket s) {
   buffer buff;
   while (true) {
     std::size_t length = co_await async_read_some(s, buff);
@@ -381,7 +483,7 @@ However:
 # Chain leaf
 
 ```cpp
-task<void> async_echo(socket s) {
+co<void> async_echo(socket s) {
   buffer buff;
   while (true) {
     std::size_t length = co_await async_read_some(s, buff);
@@ -418,6 +520,15 @@ co_await async_noop();
 // suspend forever (i.e. until cancelled)
 co_await async_suspend_forever();
 ```
+
+- primitives such as `async_sleep_for` have to be noexcept (no allocations
+  either), because they act as recovery tools (on error catch exceptions,
+  sleep, try again later)
+- `async_yield` is more like `std::this_thread::yield` than `co_yield`
+- `async_yield` and `async_noop` are useful to voluntarily allow progress
+  (unlike typical system threads, coroutines are non-preemptive)
+- `async_suspend_forever` is useful as interop e.g. to keep a `std::jthread`
+  variable alive and destruct/stop thread on cancellation
 
 ---
 
@@ -600,6 +711,8 @@ std::optional<int> result3 = co_await async_stop_when(
 - nursery = "that's where the children live"
 - partially relaxes structured concurrency principles to achieve functionality
   that's hard otherwise
+  - care is required when spawning a child
+  - but it still joins on all remaining children before continuing
 
 ---
 
@@ -697,44 +810,24 @@ co<std::optional<size_t>> async_detect_proxy(const std::vector<proxy>& proxies) 
 
 ---
 
-# Mildly unstructured (again)
+# Famous last words
 
-- we'll see in the cancellation presentation that actually the structured
-  concurrency primitives imply a two step process: setting the continuation
-  before starting the work
-- but in the (good) examples I hid that detail and stuck to the structured
-  concurrency principles that make it easy to reason about code
+- structured concurrency makes reasoning easy
+  - RAII works
+- detached/callback behaviour makes it difficult to reason about lifetime
+  - cancellation adds additional complexity (covered on separate
+    presentation(s))
+  - it should be handled in library implementation, to limit the difficult area
+    in the code
 - we only relaxed it a bit for the nursery
-
-
+  - care is required around `spawn_child`
 - but not all the libraries are strict about it
-- bad (in my opinion)
-
----
-
-# Example bad
-
-```cpp
-co<void> async_should_not_compile() {
-  auto x = async_foo("some string");
-  co_await std::move(x);
-}
-```
-
-- some libraries allow the above to compile, but this creates issues similar to
-  the generator
-- we've seen that the C++ core guidelines give up on this, [CP.53: Parameters
-  to coroutines should not be passed by
-  reference](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cp53-parameters-to-coroutines-should-not-be-passed-by-reference)
-  - despite plenty of cases where things should be passed by reference and the
-    case where "values" of the like `std::string_view` are still references in
-    disguise
-
-
-- my observation is that programmers when taught about such issue nod, but then
-  end up learning the hard way (i.e. via bugs) and end up drawing the wrong
-  conclusion (i.e. don't use references for coroutine parameters) instead of
-  using/creating libraries that stop bad patterns
+- there are plenty of bad/questionable example around
+  - as we've seen in the C++ core guidelines
+  - just because it's in the standard it does not mean it's good in all
+    respects (e.g. the `std::generator` "spot the bug", the legacy of
+    `std::future/promise`)
+- do not give up RAII lightly!
 
 ---
 
