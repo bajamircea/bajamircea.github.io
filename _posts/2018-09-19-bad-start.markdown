@@ -100,7 +100,7 @@ directly in a function, or when aggregated either as a member or as a base
 class.
 
 For an alternative, look at the `std::thread` class. It does not have
-`start`/`stop`. Instead, it receive the things it needs (e.g. the function to
+`start`/`stop`. Instead, it receives the things it needs (e.g. the function to
 call), in the constructor. That means that natural usage requires that the
 scope of the function to call from the thread will extend the life of the
 `std::thread` instance.

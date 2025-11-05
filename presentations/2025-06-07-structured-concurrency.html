@@ -229,7 +229,9 @@ std::shared_ptr<Foo> sharedFoo = get_foo();
   coroutine, but you have to save your captures while you still
   can](https://devblogs.microsoft.com/oldnewthing/20211103-00/?p=105870)
 - the example uses unstructured concurrency: the `lambda()` is assumed to be
-  eager and run in detached mode
+  eager and run in detached mode (calling `lambda()` starts concurrent work,
+  `co_await` is not required, and work continues after `;` following the
+  `lambda()` call)
 - the coding guideline, instead of pointing out to the unstructured concurrency
   as a bad thing, makes recommendations about the usage of `shared_ptr`
   (additional allocations), avoiding using lambda captures, gives up on RAII
@@ -524,7 +526,7 @@ co_await async_suspend_forever();
 - primitives such as `async_sleep_for` have to be noexcept (no allocations
   either), because they act as recovery tools (on error catch exceptions,
   sleep, try again later)
-- `async_yield` is more like `std::this_thread::yield` than `co_yield`
+- `async_yield` is more like `std::this_thread::yield()` than `co_yield`
 - `async_yield` and `async_noop` are useful to voluntarily allow progress
   (unlike typical system threads, coroutines are non-preemptive)
 - `async_suspend_forever` is useful as interop e.g. to keep a `std::jthread`

@@ -43,7 +43,7 @@ Mircea Baja - 6 May 2025
 {% include assets/2025-05-06-cpp-coroutines/01-sequential.svg %}
 </div>
 
-# Concurrent
+# Concurrent, but not parallel
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/03-concurrent.svg %}
@@ -201,9 +201,10 @@ Pascal"
 # GUI
 
 ```cpp
+MSG msg;
 BOOL bRet;
 
-while ( (bRet = ::GetMessage(&msg, hWnd, 0, 0)) != 0)
+while ( (bRet = ::GetMessage(&msg, NULL, 0, 0)) != 0)
 {
   if (bRet == -1)
   {
