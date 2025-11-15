@@ -38,7 +38,6 @@
     .svg20250506-13-tx {
       font-family: sans-serif;
       font-size: 16px;
-      text-anchor: middle;
       dominant-baseline: middle;
     }
   </style>
@@ -47,17 +46,17 @@
       <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z"/>
     </marker>
   </defs>
-  <rect x="110" y="50" width="80" height="150" class="svg20250506-13-queue"/>
-  <path class="svg20250506-13-l0" d="M 120 180 h 60"/>
-  <path class="svg20250506-13-l0" d="M 120 160 h 60"/>
-  <path class="svg20250506-13-l0" d="M 120 140 h 60"/>
-  <circle cx="100" cy="270" r="40" class="svg20250506-13-t1"/>
-  <path class="svg20250506-13-l1" d="M 130 200 l -12 25" marker-end="url(#svg20250506-13-arrow)"/>
-  <path class="svg20250506-13-l2" d="M 60 270 h -50 v -240 h 110 v 12" marker-end="url(#svg20250506-13-arrow)"/>
-  <circle cx="200" cy="270" r="40" class="svg20250506-13-t1"/>
-  <path class="svg20250506-13-l1" d="M 170 200 l 12 25" marker-end="url(#svg20250506-13-arrow)"/>
-  <path class="svg20250506-13-l2" d="M 240 270 h 50 v -240 h -110 v 12" marker-end="url(#svg20250506-13-arrow)"/>
+  <rect x="10" y="50" width="80" height="150" class="svg20250506-13-queue"/>
+  <path class="svg20250506-13-l0" d="M 20 180 h 60"/>
+  <path class="svg20250506-13-l0" d="M 20 160 h 60"/>
+  <path class="svg20250506-13-l0" d="M 20 140 h 60"/>
+  <circle cx="50" cy="270" r="40" class="svg20250506-13-t1"/>
+  <path class="svg20250506-13-l1" d="M 50 200 v 22" marker-end="url(#svg20250506-13-arrow)"/>
+  <path class="svg20250506-13-l2" d="M 90 270 h 110 v -240 h -130 v 12" marker-end="url(#svg20250506-13-arrow)"/>
   <circle cx="350" cy="270" r="40" class="svg20250506-13-t2"/>
-  <path class="svg20250506-13-l2" d="M 390 270 h 50 v -260 h -290 v 32" marker-end="url(#svg20250506-13-arrow)"/>
-  <text class="svg20250506-13-tx" x="150" y="215">GetQueuedCompletionStatus x2</text>
+  <path class="svg20250506-13-l2" d="M 390 270 h 50 v -260 h -410 v 32" marker-end="url(#svg20250506-13-arrow)"/>
+  <text class="svg20250506-13-tx" x="60" y="220">SleepEx/Wait...Ex</text>
+  <text class="svg20250506-13-tx" x="210" y="120">ReadFileEx</text>
+  <text class="svg20250506-13-tx" x="210" y="140">WriteFileEx</text>
+  <text class="svg20250506-13-tx" x="450" y="120">QueueUserAPC</text>
 </svg>

@@ -223,7 +223,7 @@ while ( (bRet = ::GetMessage(&msg, NULL, 0, 0)) != 0)
 # GUI
 
 <div align="center">
-{% include assets/2025-05-06-cpp-coroutines/12-st_queue.svg %}
+{% include assets/2025-05-06-cpp-coroutines/12-st_gui_queue.svg %}
 </div>
 
 
@@ -294,7 +294,7 @@ while ( (bRet = ::GetMessage(&msg, NULL, 0, 0)) != 0)
 # Completion port
 
 <div align="center">
-{% include assets/2025-05-06-cpp-coroutines/13-mt_queue.svg %}
+{% include assets/2025-05-06-cpp-coroutines/14-mt_queue.svg %}
 </div>
 
 ---
@@ -316,10 +316,35 @@ while ( (bRet = ::GetMessage(&msg, NULL, 0, 0)) != 0)
 - `GetQueuedCompletionStatus` return
 
 
+- additional queueing can be done using `PostQueuedCompletionStatus`
+
+
 - it solves the `O(N)` problem, work to queue/dequeue one item does not depend
   on the number of items in the queue
 - the disadvantage is that most such queueing systems are incompatible, a
   thread is blocked on reading from a particular queue system
+
+---
+
+# Alertable I/O
+
+<div align="center">
+{% include assets/2025-05-06-cpp-coroutines/13-st_alertable_queue.svg %}
+</div>
+
+---
+
+# Alertable I/O
+
+- `ReadFileEx` and `WriteFileEx` receive a completion function which is
+  executed when the thread enters a "alertable wait state" which happens when
+  the thread calls `SleepEx`, `WaitForSingleObjectEx` etc.
+- effectively the completion functions are queued when the operation completes
+- the queue is emptied when one of the `Sleep/Wait..Ex` are called
+- other options to queue: `QueueUserAPC`, `SetWaitableTimer`
+- single threaded: the completions for `ReadFileEx` and `WriteFileEx` are
+  dequeued from the same thread (it's harder to distribute load to multiple
+  threads compared with the completion port)
 
 ---
 

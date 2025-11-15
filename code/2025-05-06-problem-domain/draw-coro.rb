@@ -889,7 +889,117 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-05-06-cpp-coroutines", "12-st_queue.svg", image.render)
+save_to_file("_includes/assets/2025-05-06-cpp-coroutines", "12-st_gui_queue.svg", image.render)
+
+$crt_id += 1
+
+image = svg({
+  id: make_id("box"),
+  width: "100%",
+  viewBox: "0 0 800 320",
+  }) do
+
+  style().add_text(<<-CSS)
+    ##{make_id("box")} {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .#{make_id("queue")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_white};
+    }
+    .#{make_id("l0")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: none;
+    }
+    .#{make_id("t1")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_white};
+    }
+    .#{make_id("t2")} {
+      stroke: #000000;
+      stroke-width: 4;
+      fill: #{color_grey};
+    }
+    .#{make_id("l1")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+    }
+    .#{make_id("l2")} {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: none;
+      stroke-dasharray: 5;
+    }
+    .#{make_id("tx")} {
+      font-family: sans-serif;
+      font-size: 16px;
+      dominant-baseline: middle;
+    }
+  CSS
+
+  defs() do
+    marker(
+      id: make_id("arrow"),
+      viewBox: "0, 0, 10, 10",
+      refX: 5, refY: 5,
+      markerWidth: 6, markerHeight: 6,
+      orient: "auto-start-reverse"
+    ) do
+      path(d: "M 0 0 L 10 5 L 0 10 L 2.5 5 Z")
+    end
+  end
+
+  rect(x: 10, y: 50, width: 80, height: 150, class: make_id("queue"))
+  path(class: make_id("l0"), d: "M 20 180 h 60")
+  path(class: make_id("l0"), d: "M 20 160 h 60")
+  path(class: make_id("l0"), d: "M 20 140 h 60")
+
+  circle(cx: 50, cy: 270, r: 40, class: make_id("t1"))
+  path(
+    class: make_id("l1"),
+    d: "M 50 200 v 22",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+  path(
+    class: make_id("l2"),
+    d: "M 90 270 h 110 v -240 h -130 v 12",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+
+  circle(cx: 350, cy: 270, r: 40, class: make_id("t2"))
+  path(
+    class: make_id("l2"),
+    d: "M 390 270 h 50 v -260 h -410 v 32",
+    marker_end: "url(##{make_id("arrow")})"
+  )
+
+  text(
+    class: make_id("tx"),
+    x: 60, y: 220
+  ).add_text("SleepEx/Wait...Ex")
+  text(
+    class: make_id("tx"),
+    x: 210, y: 120
+  ).add_text("ReadFileEx")
+  text(
+    class: make_id("tx"),
+    x: 210, y: 140
+  ).add_text("WriteFileEx")
+  text(
+    class: make_id("tx"),
+    x: 450, y: 120
+  ).add_text("QueueUserAPC")
+
+end
+
+# puts(image.render)
+
+save_to_file("_includes/assets/2025-05-06-cpp-coroutines", "13-st_alertable_queue.svg", image.render)
 
 $crt_id += 1
 
@@ -995,12 +1105,16 @@ image = svg({
     class: make_id("tx"),
     x: 150, y: 215
   ).add_text("GetQueuedCompletionStatus x2")
+  text(
+    class: make_id("tx"),
+    x: 560, y: 120
+  ).add_text("PostQueuedCompletionStatus")
 
 end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-05-06-cpp-coroutines", "13-mt_queue.svg", image.render)
+save_to_file("_includes/assets/2025-05-06-cpp-coroutines", "14-mt_queue.svg", image.render)
 
 $crt_id += 1
 
