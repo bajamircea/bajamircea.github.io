@@ -7,12 +7,40 @@ categories: read book
 List of books I've read in 2025
 
 
-- 2025-10-xx: Plato: Phaedo
+- 2025-11-15: Plato: Phaedo
 : This also follows the Apology. It's almost as if Plato tries to make a
 Philosophy a religion. He takes Socrates choice to die in the direction of a
 proof for the immortality of soul. The reasoning is dubious, ironically some of
 the counterarguments presented in the text as doubts of Socrates' disciples are
-better than the arguments.
+better than the arguments. A lot of reasoning by incorrect analogy: fire
+repels cold, odd numbers repel evenness, therefore soul repels death, hence is
+immortal. This is wrong also by assuming the very thing to prove: the existence
+of a soul separate from the body, yet that which makes the body alive.
+Something of this book which pre-dates Christianity, reminds me of it such as it
+is almost that Socrates surrounded by his disciples before dying looks like
+Christ at the last supper.
+
+And I don't think it can be dismissed "oh, well, he did not know better". Here
+is an example from the numerical part of the analogy:
+
+> double, though not strictly opposed to the odd, rejects the odd altogether.
+
+So OK, even is the opposite of odd, but yet we know that doubling half gives
+us a whole which is odd, so double does not "reject the odd altogether". So
+maybe he did not know about fractions. And yet he continues right after that
+with:
+
+> Nor again will parts in the ratio 3:2, nor any fraction in which there is a
+> half, nor again in which there is a third, admit the notion of the whole.
+
+I rest my case. He should have known better, Anaxagoras knew better. Part of
+the reason of Plato's fame is that Christians could recognize in his writings
+nonsensical ideas that they shared.
+
+But overall I really enjoyed reading Plato, I had a lot of pleasure from going
+to the source, making my own judgement and debunking second hand erroneous
+information on the subject.
+
 
 - 2025-10-22: Plato: Crito
 : This follows in the Apology. After the trial Crito visits Socrates in prison
