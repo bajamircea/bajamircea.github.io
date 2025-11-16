@@ -2,7 +2,6 @@
 
 require_relative '../util/svg.rb'
 
-# for commits
 color_neutral = "#2d93ad"
 color_neutral2 = "#6ac3d9"
 

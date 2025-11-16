@@ -41,7 +41,7 @@ times.
 
 And this issue was not reported. Thousands of customers complained by the large
 number of entries, but none complained that only 50 are displayed, the rest are
-repeats. **No customer complained "Hei, the 51st entry is a repeat of the first,
+repeats. **No customer complained "Hey, the 51st entry is a repeat of the first,
 the 52nd a repeat of the second etc."**
 
 My empirical observation is that somewhere between 20 and 50 our brains stop
@@ -60,7 +60,7 @@ an incident with toothpicks falling on the floor, says "246 total" out of a box
 of 250. It turns out that there were 4 left in the box. It's a movie scene
 because it's unusual to grasp such numbers.
 
-Daniel Kahneman in his book "Thinking Fast and Slow" mentiones the effort
+Daniel Kahneman in his book "Thinking Fast and Slow" mentions the effort
 required for calculating "17 x 24". We can do it, it's easier with a pen and
 paper rather than mentally, it's easier with a calculator, but we don't have a
 precise intuitive expectation of the result. 17 and 24 are already large
@@ -71,7 +71,7 @@ numbers (not humongous, but large).
 
 In all sorts of ways. One example is when designing user interfaces: question
 cases where a list would display large number of entries. E.g. "Export to PDF"
-does not make sense for a table of 1 million entries (who is going to check
+Does not make sense for a table of 1 million entries? Who is going to check
 that the entry 492342 is wrong?
 
 [numbers]: {% post_url 2023-04-15-numbers %}

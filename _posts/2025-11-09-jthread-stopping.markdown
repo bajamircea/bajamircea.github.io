@@ -136,4 +136,4 @@ Implementing such types to handle multithreaded synchronization is a medium to
 hard exercise.
 
 [More info on how stop source, token and callback
-work](http://127.0.0.1:4000/presentations/2025-06-03-stop.html)
+work](/presentations/2025-06-03-stop.html)
