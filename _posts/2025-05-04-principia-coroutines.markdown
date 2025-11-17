@@ -57,6 +57,10 @@ date, but really good background info required to understand coroutines
 - [Structured Networking in C++ - Dietmar Kühl - CppCon 2022](https://www.youtube.com/watch?v=XaNajUp-sGY)
 - [P2300R10 std::execution](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2024/p2300r10.html)
 - [P2175R0: Composable cancellation for sender-based async operations](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p2175r0.html#appendix-a-the-stop_when-algorithm)
+- [Eliminating heap-allocations in sender/receiver with connect()/start()
+as basis operations](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2020/p2006r1.pdf):
+for the design of the connect/start interface of sender/receivers to avoid
+allocations at the leaves that the previous submit method was leading to
 - [P3552R1 Add a Coroutine Task Type](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2025/p3552r1.pdf)
 - [Introduction to Wait-free Algorithms in C++ Programming - Daniel Anderson - CppCon 2024](https://www.youtube.com/watch?v=kPh8pod0-gk)
 
