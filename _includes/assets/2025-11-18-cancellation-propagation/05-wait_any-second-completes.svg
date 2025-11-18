@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20251118-5-box" width="100%" viewBox="0 0 800 320">
+  <style>
+    #svg20251118-5-box {
+      border: 1px solid #e8e8e8;
+      background-color: #f5f5f5;
+    }
+    .svg20251118-5-t1 {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: left;
+      dominant-baseline: middle;
+    }
+    .svg20251118-5-t2 {
+      font-family: sans-serif;
+      font-size: 16px;
+      text-anchor: left;
+      dominant-baseline: middle;
+      fill: #ee6055;
+    }
+    .svg20251118-5-l0 {
+      stroke: #f5bb00;
+      stroke-width: 3;
+      fill: none;
+    }
+    .svg20251118-5-arrow0 {
+      stroke: #f5bb00;
+      stroke-width: 1;
+      fill: #f5bb00;
+    }
+    .svg20251118-5-l1 {
+      stroke: #2d93ad;
+      stroke-width: 3;
+      fill: none;
+    }
+    .svg20251118-5-arrow1 {
+      stroke: #2d93ad;
+      stroke-width: 1;
+      fill: #2d93ad;
+    }
+    .svg20251118-5-l2 {
+      stroke: #8ea604;
+      stroke-width: 3;
+      fill: none;
+    }
+    .svg20251118-5-arrow2 {
+      stroke: #8ea604;
+      stroke-width: 1;
+      fill: #8ea604;
+    }
+    .svg20251118-5-l3 {
+      stroke: #9665ac;
+      stroke-width: 3;
+      fill: none;
+    }
+    .svg20251118-5-arrow3 {
+      stroke: #9665ac;
+      stroke-width: 1;
+      fill: #9665ac;
+    }
+    .svg20251118-5-box_white {
+      stroke: #000000;
+      stroke-width: 2;
+      fill: #ffffff;
+    }
+  </style>
+  <defs>
+    <marker id="svg20251118-5-arrow0" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z" class="svg20251118-5-arrow0"/>
+    </marker>
+    <marker id="svg20251118-5-arrow1" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z" class="svg20251118-5-arrow1"/>
+    </marker>
+    <marker id="svg20251118-5-arrow2" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z" class="svg20251118-5-arrow2"/>
+    </marker>
+    <marker id="svg20251118-5-arrow3" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z" class="svg20251118-5-arrow3"/>
+    </marker>
+  </defs>
+  <rect x="-20" y="152" width="60" height="30" class="svg20251118-5-box_white"/>
+  <rect x="70" y="5" width="180" height="310" class="svg20251118-5-box_white"/>
+  <path class="svg20251118-5-l0" d="M 10 158 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-5-arrow0)"/>
+  <rect x="270" y="52" width="60" height="30" class="svg20251118-5-box_white"/>
+  <path class="svg20251118-5-l1" d="M 300 83 c -5 30 -40 30 -66 -16" marker-end="url(#svg20251118-5-arrow1)"/>
+  <rect x="270" y="252" width="60" height="30" class="svg20251118-5-box_white"/>
+  <path class="svg20251118-5-l3" d="M 230 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-5-arrow3)"/>
+  <path class="svg20251118-5-l3" d="M 300 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-5-arrow3)"/>
+  <rect x="340" y="252" width="60" height="30" class="svg20251118-5-box_white"/>
+  <path class="svg20251118-5-l3" d="M 370 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-5-arrow3)"/>
+  <rect x="410" y="252" width="60" height="30" class="svg20251118-5-box_white"/>
+  <text class="svg20251118-5-t1" x="10" y="85">parent</text>
+  <text class="svg20251118-5-t1" x="10" y="105">chain</text>
+  <text class="svg20251118-5-t1" x="80" y="25">wait_any</text>
+  <text class="svg20251118-5-t2" x="90" y="45">stop_source: true</text>
+  <text class="svg20251118-5-t1" x="90" y="65">pending: 1</text>
+  <text class="svg20251118-5-t1" x="490" y="65">child chain 1</text>
+  <text class="svg20251118-5-t1" x="490" y="265">child chain 3</text>
+</svg>

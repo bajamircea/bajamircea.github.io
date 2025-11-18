@@ -28,7 +28,7 @@ color_grey = "#cccccc"
 $crt_id = 0
 
 def make_id(arg)
-  return "svg20250603-" + $crt_id.to_s + "-" + arg
+  return "svg20250718-" + $crt_id.to_s + "-" + arg
 end
 
 image = svg({

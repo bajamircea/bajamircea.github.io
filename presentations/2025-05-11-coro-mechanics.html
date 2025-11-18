@@ -252,6 +252,32 @@ The promise allows all sorts of coroutine customization
 
 ---
 
+# Body re-write interpretation
+
+```cpp
+  promise_type promise(<<promise constructor args>>);
+  try {
+    co_await promise.initial_suspend();
+    // ... body here
+  }
+  catch (...) {
+    if (!made enough progress through initial_suspend) {
+      throw;
+    }
+    promise.unhandled_exception();
+  }
+  co_await promise.final_suspend();
+```
+
+- this is pseudocode
+- the coroutine function becomes a state machine
+- state is changed by a function(s) called from `.resume()` that would `switch`
+  or `goto` to code based on the content of the state
+- the coroutine frame is the location of those things that need to be persisted
+  between invocations of that function(s): e.g. the promise
+
+---
+
 # co_await expression re-write
 
 Of the three `co_...` keywords `co_await` is more special.
@@ -299,8 +325,13 @@ if (!awaiter.await_ready()) {
 auto x = awaiter.await_resume();
 ```
 
-- this is still pseudocode as it involves jumps e.g. to resume where somehow
-  object continue as if they were in scope
+- this is still pseudocode
+- the awaiter is usually stored on the coroutine frame, not on the stack
+- "suspend coroutine (save data) here" means persisting progress to the
+  coroutine frame
+- "when resumed continue from here" means `switch`/`goto` to this code location
+  and use data from coroutine stack as if objects like the `awaiter`, which are
+  on the coroutine frame, are in scope
 
 ---
 
@@ -575,7 +606,10 @@ struct promise_type {
 
 # await_transform
 
-- e.g. can be used to disallow `co_await`
+Can be used to customize things that can be `co_await`ed in a coroutine with a
+particular promise type:
+- can be used to disallow `co_await` (e.g. in a generator)
+- can be used to inject "context" stored in the promise
 
 ---
 

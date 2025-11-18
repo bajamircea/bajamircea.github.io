@@ -1,0 +1,103 @@
+---
+layout: presentation
+title: Cancellation propagation
+---
+
+Mircea Baja - 18 November 2025
+
+# Cancellation propagation
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/00-cover.svg %}
+</div>
+
+---
+
+# Motivation
+
+- Discusses further topics on cancellation
+  - initiation and propagation from branched peers
+  - initiation and propagation from root
+  - propagation through branches
+  - initiation from leaf and containing it
+- Continuation
+  - of the structured concurrency discussion
+  - of the cancellation at leaves
+  - of the description of stop_source, stop_token and stop_callback
+
+---
+
+# From branched peers
+
+- Initiation and propagation from branch peers
+- Uses `wait_any` as an example: a child completing with a value results on the
+  other children being cancelled, when their cancellation completes, `wait_any`
+  resumes its parent with the value of the first completing child
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/01-wait_any-structured.svg %}
+</div>
+
+- `wait_any` starts a number of children chains
+- when one of the children completes with a value, then the others need to be
+  told to stop
+- when all the children finish the cancellation, then `wait_any` continues its
+  parent with the value of the first completing child
+
+
+- another way of looking at this is to rotate the picture 90 degrees and look
+  at the children chains of `wait_any`
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/03-wait_any-start.svg %}
+</div>
+
+- wait any is part of a parent chain
+- it starts a chain for each child
+- wait any has a stop_source
+- and a counter for pending children (3 in this case)
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/04-wait_any-first-completes.svg %}
+</div>
+
+- the first child completes with a value
+- the `stop_source.request_stop()` is called
+- the pending counter is decremented
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/05-wait_any-second-completes.svg %}
+</div>
+
+- another child chain completes (due to cancellation)
+- the pending counter is decremented
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/06-wait_any-last-completes.svg %}
+</div>
+
+- when the last child chain completes (due to cancellation)
+- the pending counter is decremented
+- it reaches zero
+- the parent chain is resumed (with the value of the first chain that completed)
+
+---
+
+# From root
+
+- initiation and propagation from root
+
+---
+
+# Questions?
+

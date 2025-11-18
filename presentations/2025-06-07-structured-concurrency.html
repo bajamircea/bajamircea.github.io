@@ -112,11 +112,12 @@ to the nursery from Nathaniel's article). I discuss:
 - the run loops
 - chain leaves
   - `async_sleep_for`, `async_yield`, `async_noop`, `async_suspend_forever`
-- `async_wait_any`
-- `async_wait_all`
-- `async_wait_for`
-- `async_stop_when`
-- `nursery::async_run`
+- brancing further chains
+  - `async_wait_any`
+  - `async_wait_all`
+  - `async_wait_for`
+  - `async_stop_when`
+  - `nursery::async_run`
 
 ---
 
@@ -427,16 +428,18 @@ co<int> async_foo()
 
 TEST(run_co_return_int)
 {
-  int result = run(async_foo());
+  int result = run(async_foo()).value();
 
   ASSERT_EQ(42, result);
 }
 ```
 
 - `run` blocks the thread until `async_foo` completes and returns whatever
-  `async_foo` `co_return`s.
+  `async_foo` `co_return`s
+  - in fact a `std::optional` of that: `run` returns `std::nullopt` when no
+    value was returned due to chain being cancelled
 - the chain root needs to have the callback that is called when the entry point
-  in the chain eventually completes
+  in the chain eventually completes or cancelled
   - in the meantime this `run` needs to go though the list of ready tasks and
     timers
 - there can be all sort of such `run` functions that differ on what they
@@ -593,7 +596,7 @@ co<size_t> async_some_wait()
 
 TEST(wait_any_inside_co)
 {
-  auto result = run(async_some_wait());
+  auto result = run(async_some_wait()).value();
   ASSERT_EQ(1, result);
 }
 ```
@@ -627,7 +630,7 @@ TEST(wait_all_tree)
       }),
       async_yield()
     )
-  ));
+  )).value();
   ASSERT_EQ(1, result.index);
   ASSERT_EQ(42, std::get<0>(result.value));
 }
@@ -669,7 +672,7 @@ TEST(wait_for_int_has_value)
   auto result = run(async_wait_for(
     async_some_int(),
     std::chrono::hours(24)
-  ));
+  )).value();
   ASSERT_TRUE(result.has_value());
   ASSERT_EQ(42, result.value());
 }

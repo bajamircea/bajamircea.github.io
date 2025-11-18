@@ -1,61 +1,61 @@
-<svg xmlns="http://www.w3.org/2000/svg" id="svg20250603-0-box" width="100%" viewBox="0 0 800 300">
+<svg xmlns="http://www.w3.org/2000/svg" id="svg20250718-0-box" width="100%" viewBox="0 0 800 300">
   <style>
-    #svg20250603-0-box {
+    #svg20250718-0-box {
       border: 1px solid #e8e8e8;
       background-color: #f5f5f5;
     }
-    .svg20250603-0-l1 {
+    .svg20250718-0-l1 {
       stroke: #2d93ad;
       stroke-width: 3;
       fill: none;
     }
-    .svg20250603-0-arrow {
+    .svg20250718-0-arrow {
       stroke: #2d93ad;
       stroke-width: 1;
       fill: #2d93ad;
     }
-    .svg20250603-0-box_white {
+    .svg20250718-0-box_white {
       stroke: #000000;
       stroke-width: 2;
       fill: #ffffff;
     }
-    .svg20250603-0-stop_border {
+    .svg20250718-0-stop_border {
       stroke: #000000;
       stroke-width: 4;
       fill: none;
     }
-    .svg20250603-0-stop_sign {
+    .svg20250718-0-stop_sign {
       stroke: #ffffff;
       stroke-width: 16;
       fill: #ce2029;
     }
-    .svg20250603-0-stop_word {
+    .svg20250718-0-stop_word {
       stroke: #ffffff;
       stroke-width: 16;
       fill: none;
     }
   </style>
   <defs>
-    <marker id="svg20250603-0-arrow" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z" class="svg20250603-0-arrow"/>
+    <marker id="svg20250718-0-arrow" viewBox="0, 0, 10, 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 L 2.5 5 Z" class="svg20250718-0-arrow"/>
     </marker>
   </defs>
-  <path class="svg20250603-0-stop_sign" d="M 113 15 h 138 l 100 100 v 136 l -100 100 h -138 l -100 -100 v -136 z"/>
-  <path class="svg20250603-0-stop_border" d="M 110 10 h 144 l 100 100 v 144 l -100 100 h -144 l -100 -100 v -144 z"/>
-  <path class="svg20250603-0-stop_word" d="M 100 160q 0 -20 -20 -20 q -20 0 -20 20 q 0 10 20 20q 20 10 20 20 q 0 20 -20 20 q -20 0 -20 -20"/>
-  <path class="svg20250603-0-stop_word" d="M 115 140 h 60 h -30 v 88"/>
-  <ellipse class="svg20250603-0-stop_word" cx="215" cy="180" rx="30" ry="40"/>
-  <path class="svg20250603-0-stop_word" d="M 275 228 v -88 h 20 a 20 20 0 0 1 0 40 h -20"/>
-  <rect x="500" y="82" width="60" height="30" class="svg20250603-0-box_white"/>
-  <path class="svg20250603-0-l1" d="M 460 30 v 58 c 20 -70 70 -40 70 -18" marker-end="url(#svg20250603-0-arrow)"/>
-  <path class="svg20250603-0-l1" d="M 530 113 c -5 30 -40 30 -70 -18 v 36" marker-end="url(#svg20250603-0-arrow)"/>
-  <rect x="570" y="82" width="60" height="30" class="svg20250603-0-box_white"/>
-  <path class="svg20250603-0-l1" d="M 530 88 c 20 -70 70 -40 70 -18" marker-end="url(#svg20250603-0-arrow)"/>
-  <path class="svg20250603-0-l1" d="M 600 113 c -5 30 -40 30 -66 -16" marker-end="url(#svg20250603-0-arrow)"/>
-  <rect x="640" y="82" width="60" height="30" class="svg20250603-0-box_white"/>
-  <path class="svg20250603-0-l1" d="M 600 88 c 20 -70 70 -40 70 -18" marker-end="url(#svg20250603-0-arrow)"/>
-  <path class="svg20250603-0-l1" d="M 670 113 c -5 30 -40 30 -66 -16" marker-end="url(#svg20250603-0-arrow)"/>
-  <rect x="710" y="82" width="60" height="30" class="svg20250603-0-box_white"/>
-  <path class="svg20250603-0-l1" d="M 670 88 c 20 -70 70 -40 70 -18" marker-end="url(#svg20250603-0-arrow)"/>
-  <path class="svg20250603-0-l1" d="M 740 113 c -5 30 -40 30 -66 -16" marker-end="url(#svg20250603-0-arrow)"/>
+  <path class="svg20250718-0-stop_sign" d="M 113 15 h 138 l 100 100 v 136 l -100 100 h -138 l -100 -100 v -136 z"/>
+  <path class="svg20250718-0-stop_border" d="M 110 10 h 144 l 100 100 v 144 l -100 100 h -144 l -100 -100 v -144 z"/>
+  <path class="svg20250718-0-stop_word" d="M 100 160q 0 -20 -20 -20 q -20 0 -20 20 q 0 10 20 20q 20 10 20 20 q 0 20 -20 20 q -20 0 -20 -20"/>
+  <path class="svg20250718-0-stop_word" d="M 115 140 h 60 h -30 v 88"/>
+  <ellipse class="svg20250718-0-stop_word" cx="215" cy="180" rx="30" ry="40"/>
+  <path class="svg20250718-0-stop_word" d="M 275 228 v -88 h 20 a 20 20 0 0 1 0 40 h -20"/>
+  <rect x="500" y="82" width="60" height="30" class="svg20250718-0-box_white"/>
+  <path class="svg20250718-0-l1" d="M 460 30 v 58 c 20 -70 70 -40 70 -18" marker-end="url(#svg20250718-0-arrow)"/>
+  <path class="svg20250718-0-l1" d="M 530 113 c -5 30 -40 30 -70 -18 v 36" marker-end="url(#svg20250718-0-arrow)"/>
+  <rect x="570" y="82" width="60" height="30" class="svg20250718-0-box_white"/>
+  <path class="svg20250718-0-l1" d="M 530 88 c 20 -70 70 -40 70 -18" marker-end="url(#svg20250718-0-arrow)"/>
+  <path class="svg20250718-0-l1" d="M 600 113 c -5 30 -40 30 -66 -16" marker-end="url(#svg20250718-0-arrow)"/>
+  <rect x="640" y="82" width="60" height="30" class="svg20250718-0-box_white"/>
+  <path class="svg20250718-0-l1" d="M 600 88 c 20 -70 70 -40 70 -18" marker-end="url(#svg20250718-0-arrow)"/>
+  <path class="svg20250718-0-l1" d="M 670 113 c -5 30 -40 30 -66 -16" marker-end="url(#svg20250718-0-arrow)"/>
+  <rect x="710" y="82" width="60" height="30" class="svg20250718-0-box_white"/>
+  <path class="svg20250718-0-l1" d="M 670 88 c 20 -70 70 -40 70 -18" marker-end="url(#svg20250718-0-arrow)"/>
+  <path class="svg20250718-0-l1" d="M 740 113 c -5 30 -40 30 -66 -16" marker-end="url(#svg20250718-0-arrow)"/>
 </svg>
