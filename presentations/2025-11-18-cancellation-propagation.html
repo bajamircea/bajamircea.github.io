@@ -10,41 +10,177 @@ Mircea Baja - 18 November 2025
 <div align="center">
 {% include assets/2025-11-18-cancellation-propagation/00-cover.svg %}
 </div>
-
 ---
 
 # Motivation
 
-- Discusses further topics on cancellation
-  - initiation and propagation from branched peers
-  - initiation and propagation from root
-  - propagation through branches
-  - initiation from leaf and containing it
-- Continuation
-  - of the structured concurrency discussion
-  - of the cancellation at leaves
-  - of the description of stop_source, stop_token and stop_callback
+We're going to look at cases where cancellation is initiated
+- who initiates it and why
+- how it propagates:
+  - who is told about the cancellation
+  - in what order
+  - and in what form
+
+
+- Follows on:
+  - the structured concurrency discussion
+  - the cancellation at leaves
+  - the description of stop_source, stop_token and stop_callback
+
+---
+
+# Kinds of result
+
+When a (concurrent) activity completes it can complete:
+- **with a value**: (if you include `void` as a value) i.e. successfully
+- **with an error**: the activity encountered an error
+- **with a stop**: the activity was cancelled and the cancellation is complete
+
+
+- when completing with a value or an error: the activity completed **with a
+  result**
+
+---
+
+# Forms of propagation
+
+- A `stop_source` has `.request_stop()` called. The users of the associated
+  `stop_token` (children) can find out by:
+  - polling the `stop_token`
+  - or by a function being called via a `stop_callback` registration
+- A parent is told by child that the child completed with a value, an error or
+  a stop
+
+
+- There can be (and usually is) a gap between a parent calling
+  `stop_source.request_stop()` which calls the registered `stop_callback`
+  functions inside AND the child telling the parent that the child completed
+
+---
+
+# From root
+
+- Initiation and propagation from root
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/07-from-root.svg %}
+</div>
+
+- root means e.g. a `run` blocking function that initiates the chain
+- chain means a sequence of concurrent work with a strict parent-child
+  relationship:
+  - the child is started by a parent
+  - the child communicates back to the parent when it completes (with a result
+    or with a stop)
+  - the child does not outlive the parent
+- `run` has a `stop_source` and some boolean to track that it's first child
+  completed
+- if/when `run` decides to stop the chain it started
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/08-from-root-stopped.svg %}
+</div>
+
+- `request_stop()` is called on the `stop_source`. The leaf of the chain is the
+  one that will react to this:
+  - if it has a `stop_callback` registered it will be called (the only way for
+    a blocked one in a single threaded case) OR when it tries to register a
+    `stop_callback`
+  - or when it checks `stop_token.stop_requested()`
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/09-from-root-downhill.svg %}
+</div>
+
+- when the leaf's `stop_callback` is called, the leaf initiates the
+  cancellation, but it might return before the cancellation completes
+- but when it does: it informs its parent that it completed with a stop
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/10-from-root-downhill2.svg %}
+</div>
+
+- the parent destroys the child, it becomes itself the leaf of the chain
+- in turn it propagates the completion with a stop to its parent and so on
+- until we reach `run`
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/11-from-root-completed.svg %}
+</div>
+
+- when we reach `run` the completion provided by `run` is called by the child
+  of `run` (the last one remaining)
+- run then sets the `done` flag
+- if `run` is blocked waiting for the flag OR runs a loop processing work from
+  a queue: it can exit that condition_variable::wait OR the loop
+- and then it returns to the caller (e.g. a std::nullopt to indicate that it
+  was stopped before it had a result)
+
+---
+
+# Through coroutines
+
+- Propagation downhill through coroutines
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/12-coroutine-downhill.svg %}
+</div>
+
+- So we have a chain as before, but this time some of the activities are
+  coroutines (marked in yellow)
+- Children of a coroutine start at a `co_await` (marked with a purple arrow)
+- Normally when a child of a coroutine indicates completion this results in the
+  parent coroutine being resumed, but this is different when we want to stop
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/13-coroutine-downhill2.svg %}
+</div>
+
+When the `stop_source.request_stop()` is called, the leaf responds to that
+and eventually completes to its parent with a stop
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/14-coroutine-downhill3.svg %}
+</div>
+
+When we reach a coroutine, we propagate the completion with a stop to the
+parent of the coroutine segment: which by destroying that coroutine will
+destroy recursively the whole coroutine segment
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/15-coroutine-downhill4.svg %}
+</div>
 
 ---
 
 # From branched peers
 
 - Initiation and propagation from branch peers
-- Uses `wait_any` as an example: a child completing with a value results on the
-  other children being cancelled, when their cancellation completes, `wait_any`
-  resumes its parent with the value of the first completing child
+- Uses `wait_any` as an example
 
 ---
+
+# From branched peers
 
 <div align="center">
 {% include assets/2025-11-18-cancellation-propagation/01-wait_any-structured.svg %}
 </div>
 
-- `wait_any` starts a number of children chains
-- when one of the children completes with a value, then the others need to be
-  told to stop
-- when all the children finish the cancellation, then `wait_any` continues its
-  parent with the value of the first completing child
+- `wait_any` starts/branches into a number of children chains
+- when one of the children completes, then the others need to be told to stop
+- when all the children complete, then `wait_any` continues its own
+  parent with the same kind of completion as the first completing child (e.g.
+  value into value, error into error, stop into stop)
 
 
 - another way of looking at this is to rotate the picture 90 degrees and look
@@ -56,10 +192,11 @@ Mircea Baja - 18 November 2025
 {% include assets/2025-11-18-cancellation-propagation/03-wait_any-start.svg %}
 </div>
 
-- wait any is part of a parent chain
+- `wait_any` is part of a parent chain
 - it starts a chain for each child
-- wait any has a stop_source
-- and a counter for pending children (3 in this case)
+- `wait_any` has a `stop_source`
+- and a counter for pending children (3 in this case, once the children were
+  started)
 
 ---
 
@@ -67,9 +204,12 @@ Mircea Baja - 18 November 2025
 {% include assets/2025-11-18-cancellation-propagation/04-wait_any-first-completes.svg %}
 </div>
 
-- the first child completes with a value
-- the `stop_source.request_stop()` is called
-- the pending counter is decremented
+- child chain 2 happens to be the first child that completes, e.g. with a value
+- the `stop_source.request_stop()` is called: this tells the other children to
+  hurry up completing: the leaves on those chains will usually have the
+  `stop_callback` function called and they will arrange to complete with a stop
+  ASAP
+- the pending counter is decremented, but it's not zero
 
 ---
 
@@ -77,8 +217,13 @@ Mircea Baja - 18 November 2025
 {% include assets/2025-11-18-cancellation-propagation/05-wait_any-second-completes.svg %}
 </div>
 
-- another child chain completes (due to cancellation)
-- the pending counter is decremented
+- another child chain completes (e.g. with a stop): child chain 1 in this case
+- the pending counter is decremented, but it's not zero
+
+
+- there could be case where the (not the first) child of `wait_any` completes
+  with a result rather than a stop. This does not impact the completion of
+  `wait_any` which will be the one of the first
 
 ---
 
@@ -86,16 +231,81 @@ Mircea Baja - 18 November 2025
 {% include assets/2025-11-18-cancellation-propagation/06-wait_any-last-completes.svg %}
 </div>
 
-- when the last child chain completes (due to cancellation)
+- when the last child chain completes (e.g. with a stop): child chain 3 in this
+  case
 - the pending counter is decremented
 - it reaches zero
 - the parent chain is resumed (with the value of the first chain that completed)
 
+
+- similarly if the first child completed
+
 ---
 
-# From root
+# Through branches
 
-- initiation and propagation from root
+- Propagation uphill through branches
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/16-wait_any-with_parent.svg %}
+</div>
+
+- here, from `run`, we have a chain reaching a `wait_any` that then branches into
+  three child chains
+- we look at what should happen if the parent chain of `wait_any` initiates the
+  cancellation: how does it propagate through the child chains of `wait_any`?
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/17-wait_any-request_stop.svg %}
+</div>
+
+- the `wait_any` got a `stop_token` from it's parent chain (from `run` in this
+  case)
+- when the parent `stop_source.request_stop()` is called
+- `wait_any` is notified via a `stop_callback`
+- and in turn it calls `stop_source.request_stop()` on the stop source
+  controlling its children chains
+- the children chains then one by one complete (e.g. with a stop)
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/18-wait_any-completed.svg %}
+</div>
+
+- when the last child of `wait_any` completes
+- then the pending count reaches zero
+- then `wait_any` itself completes with a stop (ignoring any result from a
+  child that maybe completed earlier with a result)
+
+---
+
+# From leaf
+
+- Initiation from leaf and containing it
+
+---
+
+<div align="center">
+{% include assets/2025-11-18-cancellation-propagation/19-leaf-stop.svg %}
+</div>
+
+- a leaf of a chain can complete with a stop (instead of a result) without
+  being triggered via the `stop_token` of the chain it belongs to
+  - `just_stopped` is such a primitive that "just completes with a stop"
+- most links in a chain propagate this further down the chain by completing
+  with a stop themselves
+  - this is the behaviour of `wait_any` if the first child to complete
+    completes with a stop
+- this would lead to the stop being propagated all the way to the `run` that
+  initiated the chains
+  - however a primitive like `stopped_as_optional` converts a child completion
+    with a stop into a completion with a `std::nullopt` value, allowing control
+    of how deep a child completion with stop propagates down the chain
 
 ---
 

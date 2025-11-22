@@ -57,6 +57,11 @@
       stroke-width: 1;
       fill: #9665ac;
     }
+    .svg20251118-6-l4 {
+      stroke: #ee6055;
+      stroke-width: 3;
+      fill: none;
+    }
     .svg20251118-6-box_white {
       stroke: #000000;
       stroke-width: 2;
@@ -79,13 +84,16 @@
   </defs>
   <rect x="-20" y="152" width="60" height="30" class="svg20251118-6-box_white"/>
   <rect x="70" y="5" width="180" height="310" class="svg20251118-6-box_white"/>
-  <path class="svg20251118-6-l0" d="M 80 183 c -5 30 -40 30 -66 -16" marker-end="url(#svg20251118-6-arrow0)"/>
+  <path class="svg20251118-6-l0" d="M 100 183 c -5 30 -40 30 -66 -16" marker-end="url(#svg20251118-6-arrow0)"/>
   <rect x="270" y="252" width="60" height="30" class="svg20251118-6-box_white"/>
-  <path class="svg20251118-6-l3" d="M 300 283 q -100 40 -210 -90" marker-end="url(#svg20251118-6-arrow3)"/>
+  <path class="svg20251118-6-l3" d="M 300 283 q -100 40 -190 -90" marker-end="url(#svg20251118-6-arrow3)"/>
+  <line class="svg20251118-6-l4" x1="100" y1="175" x2="110" y2="165"/>
+  <line class="svg20251118-6-l4" x1="100" y1="165" x2="110" y2="175"/>
+  <circle cx="20" cy="165" r="6" class="svg20251118-6-l2"/>
   <text class="svg20251118-6-t1" x="10" y="85">parent</text>
   <text class="svg20251118-6-t1" x="10" y="105">chain</text>
   <text class="svg20251118-6-t1" x="80" y="25">wait_any</text>
   <text class="svg20251118-6-t2" x="90" y="45">stop_source: true</text>
-  <text class="svg20251118-6-t1" x="90" y="65">pending: 0</text>
+  <text class="svg20251118-6-t2" x="90" y="65">pending: 0</text>
   <text class="svg20251118-6-t1" x="490" y="265">child chain 3</text>
 </svg>

@@ -75,22 +75,22 @@
   <path class="svg20251118-3-l0" d="M 10 158 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow0)"/>
   <rect x="270" y="52" width="60" height="30" class="svg20251118-3-box_white"/>
   <path class="svg20251118-3-l1" d="M 230 58 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow1)"/>
-  <path class="svg20251118-3-l1" d="M 300 58 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow1)"/>
   <rect x="340" y="52" width="60" height="30" class="svg20251118-3-box_white"/>
-  <path class="svg20251118-3-l1" d="M 370 58 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow1)"/>
+  <path class="svg20251118-3-l1" d="M 300 58 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow1)"/>
   <rect x="410" y="52" width="60" height="30" class="svg20251118-3-box_white"/>
+  <path class="svg20251118-3-l1" d="M 370 58 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow1)"/>
   <rect x="270" y="152" width="60" height="30" class="svg20251118-3-box_white"/>
   <path class="svg20251118-3-l2" d="M 230 158 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow2)"/>
-  <path class="svg20251118-3-l2" d="M 300 158 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow2)"/>
   <rect x="340" y="152" width="60" height="30" class="svg20251118-3-box_white"/>
-  <path class="svg20251118-3-l2" d="M 370 158 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow2)"/>
+  <path class="svg20251118-3-l2" d="M 300 158 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow2)"/>
   <rect x="410" y="152" width="60" height="30" class="svg20251118-3-box_white"/>
+  <path class="svg20251118-3-l2" d="M 370 158 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow2)"/>
   <rect x="270" y="252" width="60" height="30" class="svg20251118-3-box_white"/>
   <path class="svg20251118-3-l3" d="M 230 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow3)"/>
-  <path class="svg20251118-3-l3" d="M 300 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow3)"/>
   <rect x="340" y="252" width="60" height="30" class="svg20251118-3-box_white"/>
-  <path class="svg20251118-3-l3" d="M 370 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow3)"/>
+  <path class="svg20251118-3-l3" d="M 300 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow3)"/>
   <rect x="410" y="252" width="60" height="30" class="svg20251118-3-box_white"/>
+  <path class="svg20251118-3-l3" d="M 370 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-3-arrow3)"/>
   <text class="svg20251118-3-t1" x="10" y="85">parent</text>
   <text class="svg20251118-3-t1" x="10" y="105">chain</text>
   <text class="svg20251118-3-t1" x="80" y="25">wait_any</text>

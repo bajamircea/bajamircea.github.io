@@ -317,7 +317,7 @@ is roughly equivalent to
 ```cpp
 if (!awaiter.await_ready()) {
   // ... suspend coroutine (save data) here
-  awaiter.await_suspend(coroutine_handle) // 3 variations of
+  awaiter.await_suspend(coroutine_handle); // 3 variations of
   // ... return to caller here
   // ...
   // ... when resumed continue from here
@@ -624,7 +624,7 @@ if await_suspend returns `void`:
 ```cpp
 if (!awaiter.await_ready()) {
   // ... suspend coroutine (save data) here
-  awaiter.await_suspend(coroutine_handle)
+  awaiter.await_suspend(coroutine_handle);
   // ... return to caller here
   // ...
   // ... when resumed continue from here

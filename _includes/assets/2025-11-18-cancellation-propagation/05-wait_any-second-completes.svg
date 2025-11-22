@@ -57,6 +57,11 @@
       stroke-width: 1;
       fill: #9665ac;
     }
+    .svg20251118-5-l4 {
+      stroke: #ee6055;
+      stroke-width: 3;
+      fill: none;
+    }
     .svg20251118-5-box_white {
       stroke: #000000;
       stroke-width: 2;
@@ -80,14 +85,17 @@
   <rect x="-20" y="152" width="60" height="30" class="svg20251118-5-box_white"/>
   <rect x="70" y="5" width="180" height="310" class="svg20251118-5-box_white"/>
   <path class="svg20251118-5-l0" d="M 10 158 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-5-arrow0)"/>
+  <line class="svg20251118-5-l4" x1="210" y1="65" x2="220" y2="55"/>
+  <line class="svg20251118-5-l4" x1="210" y1="55" x2="220" y2="65"/>
   <rect x="270" y="52" width="60" height="30" class="svg20251118-5-box_white"/>
   <path class="svg20251118-5-l1" d="M 300 83 c -5 30 -40 30 -66 -16" marker-end="url(#svg20251118-5-arrow1)"/>
   <rect x="270" y="252" width="60" height="30" class="svg20251118-5-box_white"/>
   <path class="svg20251118-5-l3" d="M 230 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-5-arrow3)"/>
-  <path class="svg20251118-5-l3" d="M 300 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-5-arrow3)"/>
   <rect x="340" y="252" width="60" height="30" class="svg20251118-5-box_white"/>
-  <path class="svg20251118-5-l3" d="M 370 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-5-arrow3)"/>
+  <path class="svg20251118-5-l3" d="M 300 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-5-arrow3)"/>
   <rect x="410" y="252" width="60" height="30" class="svg20251118-5-box_white"/>
+  <path class="svg20251118-5-l3" d="M 370 258 c 20 -70 70 -40 70 -18" marker-end="url(#svg20251118-5-arrow3)"/>
+  <circle cx="220" cy="146" r="7" class="svg20251118-5-l2"/>
   <text class="svg20251118-5-t1" x="10" y="85">parent</text>
   <text class="svg20251118-5-t1" x="10" y="105">chain</text>
   <text class="svg20251118-5-t1" x="80" y="25">wait_any</text>
