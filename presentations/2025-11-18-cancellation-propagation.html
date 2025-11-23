@@ -31,7 +31,7 @@ We're going to look at cases where cancellation is initiated
 
 # Kinds of result
 
-When a (concurrent) activity completes it can complete:
+When an asynchronous activity completes it can complete:
 - **with a value**: (if you include `void` as a value) i.e. successfully
 - **with an error**: the activity encountered an error
 - **with a stop**: the activity was cancelled and the cancellation is complete
@@ -69,7 +69,7 @@ When a (concurrent) activity completes it can complete:
 </div>
 
 - root means e.g. a `run` blocking function that initiates the chain
-- chain means a sequence of concurrent work with a strict parent-child
+- chain means a sequence of asynchronous work with a strict parent-child
   relationship:
   - the child is started by a parent
   - the child communicates back to the parent when it completes (with a result

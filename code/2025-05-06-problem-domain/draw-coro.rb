@@ -188,7 +188,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-05-06-cpp-coroutines", "03-concurrent.svg", image.render)
+save_to_file("_includes/assets/2025-05-06-cpp-coroutines", "03-asynchronous.svg", image.render)
 
 $crt_id += 1
 
@@ -232,7 +232,7 @@ end
 
 # puts(image.render)
 
-save_to_file("_includes/assets/2025-05-06-cpp-coroutines", "04-concurrent-parallel.svg", image.render)
+save_to_file("_includes/assets/2025-05-06-cpp-coroutines", "04-asynchronous-parallel.svg", image.render)
 
 $crt_id += 1
 

@@ -37,6 +37,7 @@ WORK IN PROGRESS
 - [Cancellation at the leaves of chains](/presentations/2025-07-18-cancellation-leaves.html)
 - [Cancellation propagation](/presentations/2025-11-18-cancellation-propagation.html)
 - [Niebloid, tag invoke, CPO etc.](/presentations/2025-06-11-niebloid-cpo.html)
+- [Sender/receiver intro][sender-receiver-intro]
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/00-cover.svg %}
@@ -100,3 +101,4 @@ allocations at the leaves that the previous submit method was leading to
     - customization points overload
 - Windows Thread Pool
 
+[sender-receiver-intro]:    {% post_url 2025-11-22-sender-receiver-intro %}

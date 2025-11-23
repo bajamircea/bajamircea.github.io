@@ -13,7 +13,7 @@ Mircea Baja - 6 May 2025
 
 ---
 
-# Concurrent vs. parallel
+# Asynchronous vs. parallel
 
 - intuitively illustrated using abstract pictures
 - for intro into C++ standardese doublespeak see ["Forward Progress Guarantees in
@@ -21,13 +21,13 @@ Mircea Baja - 6 May 2025
 
 ---
 
-# Sequential
+# Sequential and synchronous
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/01-sequential.svg %}
 </div>
 
-# Parallel
+# Parallel and synchronous
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/02-parallel.svg %}
@@ -37,33 +37,35 @@ Mircea Baja - 6 May 2025
 
 ---
 
-# Sequential
+# Sequential and synchronous
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/01-sequential.svg %}
 </div>
 
-# Concurrent, but not parallel
+# Asynchronous, but not parallel
 
 <div align="center">
-{% include assets/2025-05-06-cpp-coroutines/03-concurrent.svg %}
+{% include assets/2025-05-06-cpp-coroutines/03-asynchronous.svg %}
 </div>
 
+- asynchronous means work stops (e.g. when it needs to wait) and continues
+  later, letting other work be done in the meantime
 - purple and yellow end later
 - there is additional overhead (not illustrated)
 
 ---
 
-# Sequential
+# Sequential and synchronous
 
 <div align="center">
 {% include assets/2025-05-06-cpp-coroutines/01-sequential.svg %}
 </div>
 
-# Concurrent and parallel
+# Parallel and asynchronous
 
 <div align="center">
-{% include assets/2025-05-06-cpp-coroutines/04-concurrent-parallel.svg %}
+{% include assets/2025-05-06-cpp-coroutines/04-asynchronous-parallel.svg %}
 </div>
 
 - purple ends later
