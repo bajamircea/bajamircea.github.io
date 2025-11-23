@@ -88,7 +88,7 @@ be used in unit tests and for 50% of the cases the `const` methods are not
 really `const`.
 
 Forth: multi-threading. In general `const` is useful to address some threading
-concerns, but on it's own it's not sufficient. Just marking interface functions
+concerns, but on its own it's not sufficient. Just marking interface functions
 `const` will not make your object thread safe.
 
 

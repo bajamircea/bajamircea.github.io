@@ -4,7 +4,7 @@ title: 'std::string_view corners'
 categories: coding cpp
 ---
 
-`std::string_view` introduction and the dark corners of it's usage
+`std::string_view` introduction and the dark corners of its usage
 
 
 # Motivation

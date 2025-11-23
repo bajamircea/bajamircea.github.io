@@ -156,7 +156,7 @@ names), less dangerous than using naked handles for C APIs which e.g. use the
 return value for errors and provide created handles via a pointer to handle
 argument.
 
-The operator `bool` checks for `is_valid()`, it is `explicit`, limiting it's
+The operator `bool` checks for `is_valid()`, it is `explicit`, limiting its
 use e.g. to `if` tests.
 
 All the methods are `noexcept` either explicitly or implicitly, which is useful
@@ -240,7 +240,7 @@ namespace cpp_util
 This class is a bit like `std::string_view` that can be used as an argument for
 a function that accepts either a string literal or a `std::string`, but unlike
 `std::string_view` that can construct from temporary `std::string`, I made the
-choice that it's consructor does not accept a temporary RAII class, because
+choice that its consructor does not accept a temporary RAII class, because
 that's the safest option as it's harder to have dangling reference to a
 temporary that's out of scope, with the minor inconvenience that one can't do
 `read(open(...), ...);` on a single line using the file functions below, instead
@@ -265,7 +265,7 @@ has to call `.c_str();` instead.
 ## cstdio_lib/file_raii.h
 
 Given `raii_with_invalid_value`, we can now easily create `file_raii`, a
-wrapper for `FILE *`. It's single responsibility is to ensure that a valid
+wrapper for `FILE *`. Its single responsibility is to ensure that a valid
 `FILE *` is closed using `fclose` precisely once. Similarly `file_arg` uses
 `handle_arg`.
 
@@ -365,7 +365,7 @@ Here is the basic API wrapping level. It consists of functions grouped in a
 namespace. Their single responsibility it to be thin wrappers that deal with
 error handling.
 
-It is not the traditional OOP approach, which surprises some, but it has it's
+It is not the traditional OOP approach, which surprises some, but it has its
 advantages.
 
 For input parameters most require a `file_arg` which means they can be used
@@ -498,7 +498,7 @@ namespace app_lib::file_util
 The function here is not strictly necessary for this simple example, but useful
 if you're writing more than one executable.
 
-It's responsibility is to handle exceptions at a boundary (e.g. main in this
+Its responsibility is to handle exceptions at a boundary (e.g. main in this
 case) over which exceptions should not be thrown.
 
 {% highlight c++ linenos %}

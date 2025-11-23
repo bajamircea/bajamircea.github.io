@@ -113,7 +113,7 @@ that turn around hence the shape of a circle. Similar competitor products
 marketed for the luxury end of the market try to look like such a watch. The
 Microsoft Band does not try to fake it, it is what it is.
 
-It's display is a wide rectangle, that you access using swipe and tap
+Its display is a wide rectangle, that you access using swipe and tap
 gestures, in addition to two buttons on a side. The interface is intuitive
 (swipe is scroll, tap is select and buttons turn thing on and off),
 with virtually no learning curve. The only downside is that when finger and
@@ -158,7 +158,7 @@ The high level application architecture looks like in the diagram below.
 
 To access this data, other than a summary, you need to pair it to a syncing
 application. The band processor is not powerful enough to do all the
-HTTPS/TCP/IP/WiFi stack to talk to the cloud on it's own. It needs to be paired
+HTTPS/TCP/IP/WiFi stack to talk to the cloud on its own. It needs to be paired
 to a device capable of doing that.
 
 There are applications for smart phones (Windows Phone, iOS,

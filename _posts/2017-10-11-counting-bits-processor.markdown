@@ -11,7 +11,7 @@ Counting the bits set: processor can do best
 
 This is where we address the fundamental point, number 1 on the list of issues
 with a naive implementaion for counting the bits set. The processor/hardware
-can do that best, because it's simpler circuitry compared with other
+can do that best, because its simpler circuitry compared with other
 operations, even compared with just simple addition of two numbers.
 
 AMD/Intel processors have a `POPCNT` instruction since arround 2008.

@@ -116,7 +116,7 @@ heap.
 
 Using `unique_ptr` subtly changes the life-cycle of the classes, a class like
 `buzz` is created outside `foo`, but destroyed inside `foo`. So for example if
-`bar` refers to `buzz` in it's destructor, changing the order might lead to
+`bar` refers to `buzz` in its destructor, changing the order might lead to
 using dangling references. This is subtle cause for bugs (or potential bugs
 waiting to happen).
 

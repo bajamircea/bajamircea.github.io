@@ -107,7 +107,7 @@ In both views they illustrate the issue that for a sequence of `N` elements,
 attention to the number of bits required for positions for a certain maximum
 number of elements.
 
-Ultimately it's problem not limited to arrays. For a fence of 50m, with fence
+Ultimately it's a problem not limited to arrays. For a fence of 50m, with fence
 panels of 10m, 6 posts are required, not 5. As old of 1st century BC,
 Vitruvius in his *De Architectura* book III, chapter 4 advices that to build a
 temple of a length twice the front width, one should use twice the space
@@ -187,7 +187,7 @@ The range can be expressed using two postions.
 
 If so, by convention, `first` and `last` are used for the positions defining
 the range, as opposed to `begin` and `end` which refer to the whole range of a
-array. All the issues about `end` apply to `last` e.g., despite it's name,
+array. All the issues about `end` apply to `last` e.g., despite its name,
 `last` does not point to the last element in the range, but **one past last**.
 
 Or the range can be wrapped into a range object, with member(s) for the

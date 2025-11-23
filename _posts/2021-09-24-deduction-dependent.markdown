@@ -83,7 +83,7 @@ axiom that does not contain $$x$$ free.
 it is the assumption formula
 2. $$A(x) \to (C \to A(x))$$ - axiom schema $$1a$$.
 3. $$C \to A(x)$$ - rule of inference 2 (on steps 1 and 2), depends on the
-assumption formula because it's rule 2 on a premise that depends on assumption
+assumption formula because its rule 2 on a premise that depends on assumption
 formula (the first premise - step 1)
 4. $$C \to \forall x A(x)$$ - rule 9 (on step 3), depends on the assumption
 formula (uses step 3 as a premise), and that's the application of rule 9 with

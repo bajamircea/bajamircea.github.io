@@ -11,7 +11,7 @@ Too many smart pointers considered evil
 
 You've got an entry point, say a class `program` with a `start` and a `stop`
 method. Then you have a class `house`, with a `kitchen` and a `living_room`
-both sharing the same `door`. The job is to instantiate the `house` and it's
+both sharing the same `door`. The job is to instantiate the `house` and its
 dependencies in `start` and delete it in `stop`. There is also a `shed`. It too
 has to be instantiated in `start` and deleted in `stop`.
 
@@ -91,7 +91,7 @@ of changes. E.g. the `kitchen` has to care that the `living_room` uses the same
 `door`.
 
 The objects have additional responsibilities: e.g. `house` is also responsible
-with managing the `living_room` instance lifetime, in addition to it's core
+with managing the `living_room` instance lifetime, in addition to its core
 responsibility.
 
 The claimed usage of smart pointers in the anti-pattern is to address lifetime

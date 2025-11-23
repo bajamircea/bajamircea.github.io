@@ -79,7 +79,7 @@ value no allocation is required, hence it can be guaranteed to not throw.
 # Customisation points
 
 By customisation points I mean the mechanism through which a class can
-define/customise it's behaviour. This is a complex subject that I'm not
+define/customise its behaviour. This is a complex subject that I'm not
 addressing fully here.
 
 Pre C++11, customisation for `std::swap` was achieved by providing

@@ -4,7 +4,8 @@ title: 'Sender/receiver intro'
 categories: coding cpp
 ---
 
-The idea behind sender/receiver
+The idea behind sender/receiver, three examples: synchronous, composing and
+asynchronous
 
 
 This article is part of the [Principia coroutines][principia-coroutines] series.
@@ -155,6 +156,7 @@ struct just_int {
 };
 {% endhighlight %}
 
+
 # Example 2: composing senders
 
 This example builds onto the previous example and shows how some senders allow
@@ -181,7 +183,7 @@ int main() {
 
 ## then_int.h
 
-`then_int` is a sender that injects it's own receiver so that it applies a
+`then_int` is a sender that injects its own receiver so that it applies a
 function to the value of the upstream sender and sends the result of the
 function into the downstream receiver.
 
@@ -212,7 +214,7 @@ struct then_int {
 {% endhighlight %}
 
 
-# Example 3: asyncronous sender
+# Example 3: asyncronous sender and supporting run function
 
 ## line_feed_counter.h
 
@@ -274,12 +276,12 @@ struct line_feed_counter {
         }
 
         void read_completed(DWORD error, DWORD count) {
-            if ((0 == count) || (ERROR_HANDLE_EOF == error)) {
-                r_.set_value(lines_);
+            if ((0 != error) && (ERROR_HANDLE_EOF != error)) {
+                r_.set_error(error);
                 return;
             }
-            if (0 != error) {
-                r_.set_error(error);
+            if (0 == count) {
+                r_.set_value(lines_);
                 return;
             }
             if ('\n' == buffer_) {

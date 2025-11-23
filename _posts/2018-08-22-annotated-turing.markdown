@@ -27,7 +27,7 @@ by mere mortals.
 
 # Subject
 
-Despite it's importance for computer science, Turing's paper is a mathematical
+Despite its importance for computer science, Turing's paper is a mathematical
 one. The title is 'On computable numbers, with an application to <<insert long
 German word here>>'
 
@@ -112,14 +112,14 @@ The other insight was that Turing introduced functions (i.e. procedures),
 without which the code for the state machine tables get big quickly.
 
 The first function he introduces is a linear find, which he correctly
-identified as a fundamental algorithm. It's behaviour is basically identical to
+identified as a fundamental algorithm. Its behaviour is basically identical to
 the C++ STL linear find: if the value is found the head stops at the found
 value, otherwise the head stops on the tape at one past the last entry on tape.
 
 There is no `if` syntax, so the find function receives, in addition to the
 value to find, two other functions: the function to call when a value is found,
 and the function to call when the value is not found. The idea of functions as
-arguments is again ahead of it's age.
+arguments is again ahead of its age.
 
 And the last item is that shortly after introducing functions, he uses
 overloads i.e. same function name, but with a different number of parameters.
@@ -228,7 +228,7 @@ Machine H in a loop:
 - pass C as input to D
 - if D return true
   - increment counter N
-  - pass C as input to UM, run until it generate it's Nth digit
+  - pass C as input to UM, run until it generate its Nth digit
   - print that digit
 
 It's all potentially good until C contains the binary of the machine H.

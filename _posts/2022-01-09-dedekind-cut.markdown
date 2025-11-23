@@ -118,7 +118,7 @@ This leads to the counterpart of exponentiation. Take square root for example.
 We know since the ancient Greeks that any rational numbers have a common
 measure. For example for $$\dfrac{1}{2}$$ and $$\dfrac{2}{3}$$ the common
 measure is $$\dfrac{1}{6}$$. But also from the ancient Greeks we know that the
-side of the square and it's diagonal do not have a common measure. If the side
+side of the square and its diagonal do not have a common measure. If the side
 is of length $$1$$, the diagonal is $$\sqrt{2}$$ which is not a rational
 number, it's irrational.
 

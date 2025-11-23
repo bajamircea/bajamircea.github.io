@@ -289,7 +289,7 @@ public:
 {% endhighlight %}
 
 This way, if opening the destination file fails, then creating the instance of
-`two_files` fails, but not before the source file is closed as part of it's
+`two_files` fails, but not before the source file is closed as part of its
 destructor. It also comes to pretty much the same number of code lines (fewer
 lines of code in fact).
 

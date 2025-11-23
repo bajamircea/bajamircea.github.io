@@ -197,7 +197,7 @@ question that is easier to answer e.g.:
 # Authority bias tendency
 
 This is where there are several approaches to a problem (e.g. related to
-architecture, security, test) each with it's pros and cons, and decision is
+architecture, security, test) each with its pros and cons, and decision is
 taken not by judging the facts/arguments/reasons, but by accepting the decision
 of the person with the job title matching the domain (e.g. the Architect, the
 Security Expert, the Test Manager).
@@ -205,7 +205,7 @@ Security Expert, the Test Manager).
 
 # Social proof tendency
 
-This is where there are several approaches to a problem each with it's pros and
+This is where there are several approaches to a problem each with its pros and
 cons, and decision is taken not by judging the facts/arguments/reasons, but by
 accepting the decision of the majority of the team members/participants to the
 meeting.
@@ -273,7 +273,7 @@ to say.
 
 Each misjudgement has a reason: the wrong behaviour is actually useful. To
 take just the first tendency as an example "Execute to original plan tendency":
-we like it when a team  delivers to it's commitments. It is only a problem when
+we like it when a team  delivers to its commitments. It is only a problem when
 we learn that the original plan was wrong and we fail to react to that and
 change course.
 

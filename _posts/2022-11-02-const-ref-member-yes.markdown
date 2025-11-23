@@ -59,7 +59,7 @@ than in the C++ standard library e.g. with regards to partition.
 
 # Explanation
 
-Despite it's initially unintuitive name, `lower_bound` is a great algorithm
+Despite its initially unintuitive name, `lower_bound` is a great algorithm
 that basically uses divide and conquer to do what most people thing of a binary
 search on `O(lg(N))` time. I [already covered how it works][lowerbound] in
 glorious details.

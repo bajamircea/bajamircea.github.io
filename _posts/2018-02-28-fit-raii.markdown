@@ -147,7 +147,7 @@ smart pointers.
 ## cstdio_lib/file_raii.h
 
 Given `raii_with_invalid_value`, we can now easily create a wrapper for `FILE
-*`. It's single responsibility is to ensure that a valid `FILE *` is closed
+*`. Its single responsibility is to ensure that a valid `FILE *` is closed
 using `fclose` precisely once.
 
 {% highlight c++ linenos %}
@@ -241,7 +241,7 @@ error handling.
 For input parameters they still require a `FILE *` which means they can be used
 with `stdout` as well.
 
-It is not the traditional OOP approach, which surprises some, but it has it's
+It is not the traditional OOP approach, which surprises some, but it has its
 advantages.
 
 {% highlight c++ linenos %}
@@ -372,7 +372,7 @@ namespace app_lib::file_util
 The function here is not strictly necessary for this simple example, but useful
 if you're writing more than one executable.
 
-It's responsibility is to handle exceptions at a boundary (e.g. main in this
+Its responsibility is to handle exceptions at a boundary (e.g. main in this
 case) over which exceptions should not be thrown.
 
 {% highlight c++ linenos %}

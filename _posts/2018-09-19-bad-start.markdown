@@ -93,7 +93,7 @@ class `periodic_thread` that might call a method of the derived class
 The naive solution is to defer starting the thread in a `start` method for the
 `periodic_thread` class. In addition to the problems mentioned above, this
 approach spreads. The derived class `some_periodic_thread` needs to have a
-`start` method, and it's usage in a function is more complex.
+`start` method, and its usage in a function is more complex.
 
 Whenever you use the class you need additional work whenever it is used, either
 directly in a function, or when aggregated either as a member or as a base

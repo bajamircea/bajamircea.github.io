@@ -77,7 +77,7 @@ immoral to encourage the likeness of routines as a substitute for critical
 thinking.
 
 Even for situations where TDD is used, it's best to spend effort on thinking
-about the functionality that a component should achieve, it's role in the
+about the functionality that a component should achieve, its role in the
 greater picture, and what a good name for that component would be, before
 writing a test trying to construct a not-yet-implemented component just to a
 achieve a red-green routine.

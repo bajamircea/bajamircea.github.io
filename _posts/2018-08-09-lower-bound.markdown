@@ -151,7 +151,7 @@ This is similar to the discussion we had on the [linear find article][find].
 I've employed some of this idea in a complex case where syntactically the
 comparison was homogeneous (it compared file system paths), but semantically it
 was not, because the container contains a mixture of folder and file paths,
-while the value provided was a full file path, trying to determine if it's
+while the value provided was a full file path, trying to determine if it
 matches either a full file path on the container or it is in a folder path
 stored in the container.
 

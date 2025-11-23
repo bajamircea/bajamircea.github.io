@@ -26,7 +26,7 @@ appear as an almost random selection.
 
 Contrast this with "Clear and simple as the truth: writing classic prose" by
 Francis-Noël Thomas and Mark Turner:
-> A style is defined by it's conceptual stand on truth, presentation, writer,
+> A style is defined by its conceptual stand on truth, presentation, writer,
 > reader, thought, language, and their relationship 
 
 This sounds abstract, but in the book, they make the case that the above define
@@ -130,7 +130,7 @@ void dog_from_json(
 This solution takes the dogmatic view that problems should be represented as
 functions.
 
-This naive view comes with it's own undesirable consequences.
+This naive view comes with its own undesirable consequences.
 
 
 ## Classic style
@@ -153,7 +153,7 @@ representing reality and that a `struct` is the right way to group a number of
 fields, and that functions are the right way to transform a type to another
 type.
 
-This solution has it's own problems, such as the lack of compiler defined
+This solution has its own problems, such as the lack of compiler defined
 comparisons for user defined types, but it does address the memory layout.
 
 ![Image](/assets/2018-07-06-on-coding-style/02-classic-layout.png)
@@ -188,7 +188,7 @@ representation that needs to be identified. It assumes that there is a one true
 representation and that it can be identified through careful reasoning,
 avoiding pitfalls such as object only or lambda only narrow views. It's a
 style that does not shy away from using abstractions. It aims for a certain
-generality. Behind it's simplicity lies the writer's effort to aim for that
+generality. Behind its simplicity lies the writer's effort to aim for that
 simplicity and a certain elegance. The writer assumes the reader understands
 that there is no single way to represent reality as objects only or lambdas
 only.

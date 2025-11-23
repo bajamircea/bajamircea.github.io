@@ -206,7 +206,7 @@ In the system described here there is a close linked between the material
 implication logical operator ($$\to$$) and yields ($$\vdash$$): sometimes the
 word _implication_ is used for either of them.
 
-I find it easier to grasp it's logic when the implication is phrased instead in
+I find it easier to grasp its logic when the implication is phrased instead in
 terms of negation and logical OR.
 
 $$
@@ -406,7 +406,7 @@ Restrictions:
 The postulate numbering scheme makes sense from the link to the "natural
 deduction"-like rules as follows:
 - $$1$$ in the natural deduction is the deduction theorem, requiring postulates
-  $$1a$$, $$1b$$ and $$2$$ for it's proof
+  $$1a$$, $$1b$$ and $$2$$ for its proof
 - $$2$$ in the natural deduction is postulate $$2$$
 - $$3$$ in the natural deduction also requires postulate $$3$$
 - $$4$$ in the natural deduction also requires postulates $$4a$$ and $$4b$$
@@ -420,7 +420,7 @@ In Kleene's system, the "natural deduction"-like rules are deduced from the
 postulates above.
 
 When we looked at the deduction theorem it turns out that induction rules in
-particular cause issues with it's proof, but other the other postulates it's
+particular cause issues with its proof, but other the other postulates it's
 easy to check that they do not. **If the natural deduction rules are taken as a
 basis, as some logic course do, this issue of the impact of adding more rules
 is not as clear.**

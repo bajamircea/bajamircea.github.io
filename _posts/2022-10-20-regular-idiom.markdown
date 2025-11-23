@@ -216,7 +216,7 @@ Members of `person` are not private, they don't have getters and setters.
 variables comes useful sometimes e.g. to move into their values.
 
 
-# What are it's limits?
+# What are its limits?
 
 Not all the functions that are pure calculation are regular. E.g. `addressof`
 for any type and also `capacity()` for `std::string` and `std::vector` are not

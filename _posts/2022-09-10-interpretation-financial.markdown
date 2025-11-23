@@ -32,10 +32,10 @@ Buffett.
   will have to be repaid) with shareholder "owned" amounts (i.e. capital and
   profit and loss surplus).
 - **Working capital** is a good measure of the company's ability to carry on
-  it's normal business. Shortage can cause rejection of desirable business,
+  its normal business. Shortage can cause rejection of desirable business,
   delays in payments (and poor credit rating) or worse bankruptcy.
 - **Where cash (and equivalents) are a large amount** that requires favourable
-  attention. The cash can find it's way to the shareholders eventually. The
+  attention. The cash can find its way to the shareholders eventually. The
   earnings might be better than what it looks because that large amount of cash
   usually contributes little to the income.
 - **Inventory calculation depends** on the method used. There are several such
@@ -107,7 +107,7 @@ Buffett.
 - **Earnings on invested capital**: net income plus fixed charges divided by
   the sum of bonds, preferred stock, common stock and P&L surplus
   - Fixed charges refers to interest paid on bonds (or equivalent), before
-    taxes. Despite it's name it does not include building rents.
+    taxes. Despite its name it does not include building rents.
   - Net income is what the company gets from income after paying the fixed
     charges and tax, but before paying dividends.
   - It's a test on how much the company makes on the entire capital employed

@@ -434,7 +434,7 @@ forward<const Y&>(Y()); // does not compile
 Some non-obvious properties of `std::forward` are that the return value can be
 more cv-qualified (i.e.  can add a `const`). Also it allows for the case where
 the argument and return are different e.g. to forward expressions from derived
-type to it's base type (even some scenarios where the base is derived from as
+type to its base type (even some scenarios where the base is derived from as
 `private`).
 
 

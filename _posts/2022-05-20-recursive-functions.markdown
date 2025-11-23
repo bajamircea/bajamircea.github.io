@@ -15,7 +15,7 @@ die Zahlen?" ("The nature and meaning of numbers") (1888), in theorem 126, the
 theorem of the definition by induction.
 
 The idea is to define functions (and predicates) using a set of simple rules
-that include one where the value for $$n + 1$$ is defined based on it's value
+that include one where the value for $$n + 1$$ is defined based on its value
 for $$n$$. $$n + 1$$ is expressed as $$n'$$, the successor of $$n$$. When a
 function has more than one argument, the rest of arguments are held constant
 when this recursion rule is used.

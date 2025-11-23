@@ -6,7 +6,7 @@ categories: politics brexit
 
 Brexit is not just a series of accidental shambles with large and long term
 negative consequences. It comes with an internal logic driven by ideology. The
-ideology is fundamentally flawed and that will lead to it's eventual failure.
+ideology is fundamentally flawed and that will lead to its eventual failure.
 
 Theoretically, one can argue about the merits of UK leaving EU on a purely
 rational merit. But the Brexit is driven instead by a right-wing ideology with
@@ -60,7 +60,7 @@ Fundamentally it is a form of racism.
 # Violence vs. Compassion
 
 The Brexit ideological preference for appeal to violence has it's origin into
-it's right-wing roots, in plain incitement to violence such as: "and if this
+its right-wing roots, in plain incitement to violence such as: "and if this
 [Brexit] is not delivered there will be widespread public anger in this country
 of scale, in a way that we have never seen before [audience cheers] and if that
 happens ...  then I will be forced to don kaki, pick up a rifle, and head from
@@ -119,7 +119,7 @@ EU is not perfect. There are many countries involved, there is almost always
 some misguided lunatic in power in one of them, making collaboration harder
 than it should be, as Britain clearly proves these days. But Britain will be
 better off by working closely together with its neighbours in the EU. It can
-shape and influence it's fate better from within.
+shape and influence its fate better from within.
 
 To say that good things will happen out of Brexit is to say that disease
 resulted in good things like vaccines and antibiotics. Some good things will

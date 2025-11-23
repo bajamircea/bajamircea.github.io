@@ -33,7 +33,7 @@ basis, and Freeman's approach had neither.
 
 Freeman then asks: how about the numerical agreement? Fermi then quotes John
 von Neumann that with four parameters you can fit an elephant and with five you
-can wiggle it's trunk.
+can wiggle its trunk.
 
 Freeman thanked Fermi, and the whole meeting was finished in 10-15 minutes.
 

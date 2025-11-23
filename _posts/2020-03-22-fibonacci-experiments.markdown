@@ -11,7 +11,7 @@ sequence
 # Introduction
 
 Ever since reading Chapter 3 in [Elements of Programming][eop], calculating
-Fibonacci, pretending it's has high runtime complexity compared with other
+Fibonacci, pretending it has high runtime complexity compared with other
 functions, [looked silly][fib].
 
 Later Sean Parent had a presentation on concurrency in which he asks people to

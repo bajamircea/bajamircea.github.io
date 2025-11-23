@@ -75,7 +75,7 @@ When an asynchronous activity completes it can complete:
   - the child communicates back to the parent when it completes (with a result
     or with a stop)
   - the child does not outlive the parent
-- `run` has a `stop_source` and some boolean to track that it's first child
+- `run` has a `stop_source` and some boolean to track that its first child
   completed
 - if/when `run` decides to stop the chain it started
 
@@ -263,7 +263,7 @@ destroy recursively the whole coroutine segment
 {% include assets/2025-11-18-cancellation-propagation/17-wait_any-request_stop.svg %}
 </div>
 
-- the `wait_any` got a `stop_token` from it's parent chain (from `run` in this
+- the `wait_any` got a `stop_token` from its parent chain (from `run` in this
   case)
 - when the parent `stop_source.request_stop()` is called
 - `wait_any` is notified via a `stop_callback`

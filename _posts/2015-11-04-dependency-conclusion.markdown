@@ -15,7 +15,7 @@ classes that contain some application logic, but depend on other classes to
 perform it. To test, we want to substitute the dependencies with mocks where we
 can easily reproduce all sorts of edge case scenarios.
 
-Testing a class that has it's dependencies injected becomes mechanical:
+Testing a class that has its dependencies injected becomes mechanical:
 
 - Create the appropriate mocks.
 - Setup expectations on the mocks, if your test library allows it.

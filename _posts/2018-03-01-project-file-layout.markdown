@@ -90,7 +90,7 @@ output executable consists of a small `main.cpp` using code from static
 libraries. Most of the related code should be put into a static library e.g.
 `foo_lib`.
 
-Test executable for a `bar_lib` should be called `bar_lib_test`, and it's files
+Test executable for a `bar_lib` should be called `bar_lib_test`, and its files
 have derived names e.g.: `bar_lib\foo.(h|cpp)` is tested in
 `bar_lib_test\foo_test.cpp`.
 
@@ -105,7 +105,7 @@ selecting for single responsibility. A unit can be a class or a set of related
 functions. The name of the files is the name of the unit (plus the extension).
 E.g. a `foo.h` would contain a class `foo` or a namespace `foo` with functions.
 
-You would separate a `struct` from it's related JSON
+You would separate a `struct` from its related JSON
 serialization/deserialization functions in different units (there are usually
 plenty of contexts to use a struct without caring about serialization).
 
@@ -117,7 +117,7 @@ things that are intimately related.  See for example [fit RAII][fit-raii]
 
 ## Headers inclusion
 
-A .cpp file first includes it's .h file (if any).
+A .cpp file first includes its .h file (if any).
 
 After this headers are grouped:
 

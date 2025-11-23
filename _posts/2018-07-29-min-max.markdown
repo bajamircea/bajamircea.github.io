@@ -300,7 +300,7 @@ std::string result = algs::min(x, y, algs::less(), &person::age).first_name;
 
 # Less - function object
 
-In the code above `less` is a struct and only it's `operator()` is a function
+In the code above `less` is a struct and only its `operator()` is a function
 template. This choice is more similar to `std::less<>` which for backward
 compatibility reasons is a specialization for `std::less` for `void`.
 

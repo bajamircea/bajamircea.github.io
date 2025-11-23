@@ -22,7 +22,7 @@ Declarative coding style is when we state the expected results, and something
 else takes care of the actions happening. For example in a `makefile` we
 specify the targets, the dependencies and the actions to build targets from
 dependencies, but we expect `make` to generate a dependency graph, and execute
-only the required actions in a sequence of it's choosing.
+only the required actions in a sequence of its choosing.
 
 In the examples below we'll use a heavily instrumented class
 
@@ -97,7 +97,7 @@ Destructor : destruct b
 And then you might notice that we're talking about a temporary, and we have
 move constructor, so since C++11 the compiler could use that so that `b` takes
 over the content of the temporary (which is not used after that other than to
-call it's destructor), in which case we would have:
+call its destructor), in which case we would have:
 
 {% highlight text linenos %}
 Constructor : construct temporary

@@ -90,7 +90,7 @@ implementation. The potential problem is caused by ADL.
 
 ADL (of Andrew Koenig fame) allows the code below to work, because in `main`,
 the function `some_fn` is not qualified with a namespace, so `some_fn` is
-looked up (and found) in the namespace `X` for the type `Y` of it's argument
+looked up (and found) in the namespace `X` for the type `Y` of its argument
 `z`.
 
 {% highlight c++ linenos %}

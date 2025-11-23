@@ -56,7 +56,7 @@ class X :
 # Rule 3: Stack unwinding
 
 _Stack unwinding_ is a term with a specific meaning. It refers to what happens
-when an exception is thrown and control is passed to it's corresponding `catch`
+when an exception is thrown and control is passed to its corresponding `catch`
 block. During stack unwinding automatic objects that were created since the
 `try` blocked was entered get destroyed in an orderly fashion.
 
@@ -127,7 +127,7 @@ struct X
 
 Example: In the code below the exception in the destructor will not terminate.
 The destructor of `x` is called during stack unwinding, but the second
-exception thrown inside it's destructor is caught before leaving the
+exception thrown inside its destructor is caught before leaving the
 destructor.
 
 {% highlight c++ linenos %}
@@ -196,7 +196,7 @@ void fn()
 
 Example: Slight variations might terminate. Below by throwing an exception
 inside `fn` the destructor for `x` will be called during stack unwinding and
-it's exception will cause program termination
+its exception will cause program termination
 
 {% highlight c++ linenos %}
 struct X

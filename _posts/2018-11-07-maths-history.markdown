@@ -69,7 +69,7 @@ throughout the mathematics history.
 # Euclid - the Greek Apex
 
 Mathematics flourished in the ancient Greek culture, and in Euclid's Elements
-(13 books) it reached it's peak. The Pythagorean theorem is captured in
+(13 books) it reached its peak. The Pythagorean theorem is captured in
 Euclid's Elements in Book I Proposition 47.
 
 <div align="center">
@@ -270,7 +270,7 @@ set theory about the set of all the sets that do not contain themselves. Does
 this set contain itself?
 
 Inconsistencies are also important, based on the assumption that if a formal
-system can prove both a statement and it's negation, then it's inconsistent,
+system can prove both a statement and its negation, then it's inconsistent,
 and an inconsistent system can then prove everything, making it useless.
 
 Enter David Hilbert a highly influential German mathematician that led a

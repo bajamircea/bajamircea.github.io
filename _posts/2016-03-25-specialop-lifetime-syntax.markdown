@@ -14,7 +14,7 @@ C++ provides a lot of control over the fundamental behaviour of user defined
 types while at the same time preserving runtime efficiency.
 
 This is a first article that covers ways of defining aspects of a class related
-to it's [regularity][regular].
+to its [regularity][regular].
 
 The most fundamental/special part about a class is what the class does when it's
 created, copied, moved and destroyed. That is defined by:

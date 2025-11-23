@@ -63,7 +63,7 @@ service (DOS) attacks, and would like very good hashes e.g. of cryptographic
 hash strength and/or with a random seed mechanism. In those scenarios simple
 methods of combining like hashing the hash of members in a tuple are not good
 enough. There is the question of who should provide the hash functions: the
-standard library or it's users, and how easy would be to update it as
+standard library or its users, and how easy would be to update it as
 issues/vulnerabilities are found.
 
 Yet others are using it in distributed environments where they would like

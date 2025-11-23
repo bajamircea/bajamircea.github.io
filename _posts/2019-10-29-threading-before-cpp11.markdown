@@ -21,7 +21,7 @@ functions that can wait for Windows `HANDLE`s. To end the exclusive access the
 thread calls `ReleaseMutex`.
 
 Below is an example that tries to show how compilers handled multi-threading
-before C++11, but it's pointless outside this purpose (it's a also bad example
+before C++11, but it's pointless outside this purpose (it's also a bad example
 of error handling and resource management).
 
 {% highlight c++ linenos %}

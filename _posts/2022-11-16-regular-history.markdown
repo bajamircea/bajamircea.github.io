@@ -49,7 +49,7 @@ struct person
 {% endhighlight %}
 
 I called this a regular data type. Regular is another name for normal, usual.
-`person` is type that holds some data related to a person. Behind it's relative
+`person` is type that holds some data related to a person. Behind its relative
 simplicity it's a very flexible type: it can be copied, moved, compared for
 equality and order, it will not leak memory.
 

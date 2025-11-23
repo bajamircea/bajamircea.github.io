@@ -14,7 +14,7 @@ Press: 2009 reprint)
 
 Why did I choose this book
 - undestand Goedel's incompleteness theorem
-  - because of it's ramnifications on the limits of a formal system
+  - because of its ramnifications on the limits of a formal system
   - and potential implications on: is there a single best way to program?
 - undestand core mathematical concepts such as consistency, completeness,
   recursion
@@ -118,7 +118,7 @@ c [\mathcal{A}(a, b) \& \mathcal{A}(b, c) \to \mathcal{A}(a, c)] \quad \& \quad
 If the domain of the variables has a finite $$k > 0$$ number of objects, the
 formula is not satisfiable (i.e. cannot be interpreted true for any combination
 of objects), but it is satisfiable in the enumerable (infinite) domain of
-natural numbers. It's negation is valid (i.e. interpreted true) for every
+natural numbers. Its negation is valid (i.e. interpreted true) for every
 finite domain of $$k > 0$$ objects, but not valid for the enumerable domain.
 
 This is a fantastic puzzling example that are shows different outcomes between

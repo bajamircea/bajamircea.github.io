@@ -142,7 +142,7 @@ than one type and express requirements between several types (e.g. between a
 matrix, vector and scalar type), or even non-types (e.g. an integer constant).
 
 In this case `StrictlyTotallyOrdered` relies on `EqualiyComparable` for the
-equality requirements, and defines on top of that it's own syntactic
+equality requirements, and defines on top of that its own syntactic
 requiremens using the new `requires` keyword. This concept has semantic
 expectations that are not captured.
 

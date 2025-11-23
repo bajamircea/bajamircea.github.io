@@ -28,7 +28,7 @@ case study. It received a major change around January 2021.
 
 ## Documentation
 
-Before 2021, the documentation for S3 had the following to say about it's
+Before 2021, the documentation for S3 had the following to say about its
 consistency:
 
 > Amazon S3 provides read-after-write consistency for PUTS of new objects in
@@ -71,7 +71,7 @@ methods outside S3)
 3. Consumers make `GET` requests to retrieve the file content. Different
 requests can reach different edges, even when the requests are made by the same
 customer.
-4. The edge checks it's local cache, the file is not present for the first
+4. The edge checks its local cache, the file is not present for the first
 request, but it will be ready available for subsequent requests until the cache
 ages
 5. If the file is not in the local cache of an edge, the file is retrieved from

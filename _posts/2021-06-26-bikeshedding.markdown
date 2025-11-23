@@ -46,7 +46,7 @@ should be made. The extended discussions consume the remaining of the time, the
 decision is ask for more information and continue at the next meeting.
 
 The point he's trying to make is that the committee should have spend most of
-it's energy on the large contract for the atomic reactor, but people struggle
+its energy on the large contract for the atomic reactor, but people struggle
 with complex issues and large amounts of money, spending disproportionate
 amounts of time on issues that are trivial in comparison, but not necessarily
 in absolute terms, eventually very small costs will be recognised as trivial by

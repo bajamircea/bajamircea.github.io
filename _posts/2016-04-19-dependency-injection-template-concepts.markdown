@@ -57,7 +57,7 @@ g++ -fconcepts main.cpp
 
 # Code
 
-Here is one option to enforce the expectation of the `house` class on it's
+Here is one option to enforce the expectation of the `house` class on its
 template types. Lines 7 to 23 are the overhead of using
 concept/requirements.
 

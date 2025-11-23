@@ -34,7 +34,7 @@ The dependencies between the involved objects looks like this:
 The application **function** is in this case "when you handle a ball, throw it
 to the other juggler". In the code below it depends on the control layer for
 the other juggler (where the ball will be thrown) and it's implemented as
-lambdas inside the `main` function body (due to it's simplicity in this
+lambdas inside the `main` function body (due to its simplicity in this
 example).
 
 The **control** layer manages the balls to be handled by the juggler. In the

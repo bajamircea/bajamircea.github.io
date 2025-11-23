@@ -31,7 +31,7 @@ argumentation' approach: he makes a claim and then presents structured,
 detailed arguments for the claim.
 
 Data is one way of providing arguments in the book. He references the original
-source of the data, it's meaning (are we talking about absolute or relative
+source of the data, its meaning (are we talking about absolute or relative
 poverty?), the scales (e.g. is it linear or logarithmic?). He is upfront about
 the limitations and weaknesses of the data and is upfront with regards to what
 can be inferred (e.g. points that two curves on the graph cannot be compared

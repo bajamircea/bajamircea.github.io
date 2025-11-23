@@ -247,7 +247,7 @@ public:
 {% endhighlight %}
 
 Then you would instantiate that `waldo_builder` once, e.g. using a
-`std::unique_ptr`. This class would not be unit tested, though it's simple
+`std::unique_ptr`. This class would not be unit tested, though its simple
 functionality might be covered by component or system tests.
 
 
@@ -274,12 +274,12 @@ annotations. The diference is that here the dependency injection was done by
 hand.
 
 
-# What are it's limits?
+# What are its limits?
 
 **Of the three idioms presented here, this one is the least intellectually sound
 one**.
 
-In it's defence we can say that it is useful in the context of lack of
+In its defence we can say that it is useful in the context of lack of
 compiler/build tools support for intrusive testing where you want to substitute
 entities for testing purposes with minimal code bloat complexity. For example
 even if there is some code bloat in the declaration and use of the interface,
@@ -292,7 +292,7 @@ Many an enthusiastic programmer has created an overly complex and inefficient
 program after reading the GoF patterns book. For issues around inheritance, see
 talks like Sean Parent's talk ["Inheritance is the Base Class of
 Evil"][evil-inheritance]. To keep the idiom usable you need to take active
-steps to avoid it's pitfalls.
+steps to avoid its pitfalls.
 
 Avoid the factory pattern where an interface returns another interface. Usually
 that requires additional unnecesary memory allocations. Return data from

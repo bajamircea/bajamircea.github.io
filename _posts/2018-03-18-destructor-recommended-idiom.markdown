@@ -80,7 +80,7 @@ public:
 
 Move is related to destruction because of two reasons.
 
-Reason 1: If we move from an object it's destructor is still called, but the
+Reason 1: If we move from an object its destructor is still called, but the
 resource is gone, the destructor has nothing to do. Therefore once we add move
 to a class we need to add a test in the destructor to decide if we need to
 release the resource or not. The test usually involves testing for a invalid

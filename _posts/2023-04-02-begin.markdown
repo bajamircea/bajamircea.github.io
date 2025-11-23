@@ -20,7 +20,7 @@ values.
 
 What if the vector is `const`? The design decision for `std::vector` was to
 make it a regular type, hence it should behave like `int`, hence a `const
-std::vector` should not allow you to change it's values. That's why we have
+std::vector` should not allow you to change its values. That's why we have
 `std::vector<int>` and `const std::vector<int>`, but rarely `std::vector<const
 int>`.
 
@@ -192,7 +192,7 @@ The `directory_iterator` is a weird type: it started life as something close to
 an iterator, then become more like a range, while it preserved the old name.
 The design/documentation also forces the storage of the handle returned from
 e.g.  `FindFirstFileExW` in a heap allocated, reference counted location. Also
-it's end iterator predates ideas of a sentinel for determining if we reached
+its end iterator predates ideas of a sentinel for determining if we reached
 the end.
 
 Dereferencing the `directory_iterator` gives access to a `const
@@ -210,7 +210,7 @@ literals.
 
 As for the range, it typically stores two pointers and returns the first as the
 `begin()` and the last as the `end()`. But the iterators it returns are const
-iterators, and it's `cbegin()` returns the same const iterator.
+iterators, and its `cbegin()` returns the same const iterator.
 
 
 # std::span
@@ -237,11 +237,11 @@ on it, hoping to select the const member function `begin()`.
 
 But `std::span` has issues with constness. As a type it makes sense to model a
 pointer where just because the pointer is `const` (shallow), does not mean that
-the pointed data is `const` (deep). It's member function `begin()` returns a
+the pointed data is `const` (deep). Its member function `begin()` returns a
 non const iterator (allowing to change the pointed data) even if the `span`
 object is `const` (can't change the pointers it embeds).
 
-In the rush of standardising `std::span`, it's `cbegin()` member function [was
+In the rush of standardising `std::span`, its `cbegin()` member function [was
 dropped, see LGW3320](https://cplusplus.github.io/LWG/issue3320), though
 hopefully these issues will be sorted out (see proposals
 [P2278r4](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2278r4.html)

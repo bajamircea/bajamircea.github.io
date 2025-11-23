@@ -34,7 +34,7 @@ B$$, but $$\vdash A \to B$$ (Pythagoras' theorem), therefore $$A \vdash B$$.
 # Restrictions
 
 For the (first-order) predicate calculus the source of the additional
-restrictions for the deduction theorem has it's roots in the interpretation of
+restrictions for the deduction theorem has its roots in the interpretation of
 formulas with free variables.
 
 Here are two examples of formulas where $$x$$ is a free variable:
@@ -45,7 +45,7 @@ Here are two examples of formulas where $$x$$ is a free variable:
 
 There are three issues:
 - the interpretation of formulas with free variables and issues like the
-  relation between the formal system and it's interpretation (e.g. soundness,
+  relation between the formal system and its interpretation (e.g. soundness,
   completeness)
 - the generality-introduction rule: $$A \vdash \forall x A$$
 - the deduction theorem (implication-introduction): If $$\Gamma, A \vdash B$$

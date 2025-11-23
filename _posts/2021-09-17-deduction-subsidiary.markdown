@@ -33,7 +33,7 @@ additional cases that needs to be considered in the proof if the rule.
 
 In particular our [sample predicate calculus][deduction-axioms] adds the Gen
 (generalisation) rule of inference to the propositional calculus rules, hence
-we need to reconsider the deduction theorem and it's proof for the predicate
+we need to reconsider the deduction theorem and its proof for the predicate
 calculus, despite having proven it for the propositional calculus.
 
 
