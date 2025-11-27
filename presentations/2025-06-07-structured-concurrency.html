@@ -258,7 +258,7 @@ std::future<int> do_something(std::shared_ptr<int> input) {
 
 - [CP.53: Parameters to coroutines should not be passed by
   reference](https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#cp53-parameters-to-coroutines-should-not-be-passed-by-reference)
-- the example uses unstructured concurrency: the `do_someting()` is assumed to be
+- the example uses unstructured concurrency: the `do_something()` is assumed to be
   eager and the parameters no longer available after a `co_await`
 - the coding guideline, instead of pointing out to the unstructured concurrency
   as a bad thing, makes recommendations about the usage of `shared_ptr`

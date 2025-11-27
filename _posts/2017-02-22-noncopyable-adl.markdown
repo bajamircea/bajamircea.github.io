@@ -37,7 +37,7 @@ void some_fn()
 # Code implementation and analysis
 
 The implementation code for `boost::noncopyable` (contributed by Dave Abrahams)
-looks someting like:
+looks something like:
 
 {% highlight c++ linenos %}
 namespace boost {
