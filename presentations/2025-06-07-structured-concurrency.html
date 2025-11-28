@@ -162,7 +162,7 @@ co<std::tuple<std::string, std::string>> async_search_multiple(
     async_http_get(p, "https://bing.com/search?q=" + encoded_query),
     async_http_get(p, "https://duckduckgo.com/?q=" + encoded_query)
   );
-  return result;
+  co_return result;
 }
 ```
 
