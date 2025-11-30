@@ -7,6 +7,13 @@ categories: read book
 List of books I've read in 2025
 
 
+- 2025-11-30: Milton Friedman: Free To Choose 1980
+: Not a book, but a [series of video presentations followed by
+debates](https://www.youtube.com/watch?v=dngqR9gcDDw&list=PLt27lKoC5LS4wbD28Jkv95UUm9H7wbVO4&index=1)
+on the freedom and role of government by Milton Friedman of Nobel prize fame.
+Does it contain mistakes? Yes, sometimes he exaggerates. But the points he raises
+make up for it: 10 out of 10
+
 - 2025-11-15: Plato: Phaedo
 : This also follows the Apology. It's almost as if Plato tries to make a
 Philosophy a religion. He takes Socrates choice to die in the direction of a
@@ -35,7 +42,9 @@ with:
 
 I rest my case. He should have known better, Anaxagoras knew better. Part of
 the reason of Plato's fame is that Christians could recognize in his writings
-nonsensical ideas that they shared.
+nonsensical ideas that they shared. Plato complains, though words assigned to
+Socrates that Anaxagoras did not have provide answers to the questions the had
+about the world, and instead he produces a list of incorrect answers.
 
 But overall I really enjoyed reading Plato, I had a lot of pleasure from going
 to the source, making my own judgement and debunking second hand erroneous
