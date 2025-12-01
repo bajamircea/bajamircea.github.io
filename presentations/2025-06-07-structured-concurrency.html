@@ -512,28 +512,107 @@ co<void> async_echo(socket s) {
 
 # Elementary leaves
 
+---
+
+# sleep_for
+
 ```cpp
-// sleep for 10 seconds
-co_await async_sleep_for(10s);
-
-// give other chains a chance to run
-co_await async_yield();
-
-// check if cancelled
-co_await async_noop();
-
-// suspend forever (i.e. until cancelled)
-co_await async_suspend_forever();
+co<void> async_foo() {
+  while (true) {
+    bool had_exception{ false };
+    try {
+      co_await bar();
+    }
+    catch(...) {
+      had_exception = true;
+    }
+    if (had_exception)
+      // sleep for 1 minute
+      co_await async_sleep_for(1min);
+  }
+}
 ```
 
-- primitives such as `async_sleep_for` have to be noexcept (no allocations
-  either), because they act as recovery tools (on error catch exceptions,
-  sleep, try again later)
-- `async_yield` is more like `std::this_thread::yield()` than `co_yield`
-- `async_yield` and `async_noop` are useful to voluntarily allow progress
-  (unlike typical system threads, coroutines are non-preemptive)
-- `async_suspend_forever` is useful as interop e.g. to keep a `std::jthread`
-  variable alive and destruct/stop thread on cancellation
+Shows how you can do an activity until cancelled, but if an exception is
+thrown, sleep for 1 minute and then try again.
+
+Primitives such as `async_sleep_for` have to be noexcept (no allocations
+either), because they act as recovery tools (on error catch exceptions, sleep,
+try again later)
+
+---
+
+# yield
+
+```cpp
+co<void> async_foo() {
+  for (int i = 0 ; i < 1000; ++i) {
+    compute(i);
+    // give other chains a chance to run
+    co_await async_yield();
+  }
+}
+```
+
+`async_yield` is more like `std::this_thread::yield()` than `co_yield`
+
+The computation in `async_foo()` can be suspended in `async_yield` to allow
+other asynchronous work (if any) to be resumed (and suspended) before
+`async_foo()` is resumed to continue the computation in the loop.
+
+---
+
+# noop
+
+```cpp
+co<void> async_foo() {
+  for (int i = 0 ; i < 1000; ++i) {
+    compute(i);
+    // check if cancelled
+    co_await async_noop();
+  }
+}
+```
+
+The computation in `async_foo()` can be can be suspended only for cancellation,
+otherwise it selfishly does not allow other asynchronous work to be resumed.
+
+`async_yield` and `async_noop` are useful to voluntarily allow progress,
+`async_noop` only allows progress of others if cancelled,
+
+Unlike typical system threads, coroutines are non-preemptive.
+
+---
+
+# suspend_forever
+
+```cpp
+co<void> async_foo() {
+  std::jthread t([](std::stop_token token) {
+    // ...
+    auto callback = std::stop_callback(
+      token,
+      [&](){
+        example_server.shutdown();
+      }
+    );
+    example_server.serve_forever();
+  });
+
+  // suspend forever (i.e. until cancelled)
+  co_await async_suspend_forever();
+}
+```
+
+`async_suspend_forever` is useful as interop e.g. to keep a `std::jthread`
+variable alive and destruct/stop thread on cancellation
+
+When cancelled, it will destroy the `std::jtread` which will wait for the
+thread to exit before continuing.
+
+---
+
+# Branching child chains
 
 ---
 
@@ -560,9 +639,9 @@ The terminology is a little bit overloaded:
 
 - a root of a chain has some work to do when it's cancelled (e.g. destroy the
   first coroutine in the chain that will recursively destroy the chain):
-  **cancellation callback** for a root of a chain
-  - similarly some work to do when it completes successfully: **completion
-    callback**
+  **cancellation completion callback** for a root of a chain
+  - similarly some work to do when it completes successfully: **result
+    completion callback**
 - a good tool to implement cancellation is the triad:
   `stop_source`/`stop_stoken`/**`stop_callback`**
 - the `stop_callback` takes a functor of the work to do when cancelled (which
