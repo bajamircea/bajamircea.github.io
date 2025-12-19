@@ -7,6 +7,24 @@ categories: read book
 List of books I've read in 2025
 
 
+- 2025-12-18: Peter Fleming: Dark Academia: How Universities Die (2021)
+: The issues of universities are real, but poorly analysed in this book. The
+author uses a rhetorical tone at times whinging or accusatory, fancy words, but
+consistently unsound logically. Really likes words starting with "neo":
+neoliberal, neoclassical, neo-corporate, neoconservative, waving them around,
+but lacks substance. A waste of reading time.
+
+- 2025-12-17: Frédéric Bastiat: The Law (1850)
+: Follow on from Milton Friedman, this book introduces the idea of **legal
+plunder**. Written around the French revolution of 1848, it describes the
+situation where a group receives income/unfair advantages via mechanisms
+captured in the law to the disadvantage/exploitation of others and how this is
+done sometimes covertly wrong (such a slavery) out of greed or with
+misconceived philanthropic intentions (e.g. to protect some social groups). He
+uses ideas that remind me of the (later) Open Society and its Enemies by Karl
+Popper, including the critique of Plato's Republic. The book and author should
+be better known.
+
 - 2025-11-30: Milton Friedman: Free To Choose 1980
 : Not a book, but a [series of video presentations followed by
 debates](https://www.youtube.com/watch?v=dngqR9gcDDw&list=PLt27lKoC5LS4wbD28Jkv95UUm9H7wbVO4&index=1)
