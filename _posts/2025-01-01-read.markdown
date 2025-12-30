@@ -7,6 +7,47 @@ categories: read book
 List of books I've read in 2025
 
 
+- 2025-12-24: Epictetus: The Golden Sayings of Epictetus
+: From the Discourses and Encheiridion collected by Arrian. Stoic. You can see
+why it survived the Christianism: Epictetus believes in a god compatible with
+Christianism, a pagan one to which you bring sacrifices, though singular. The
+theme is resilience if face of external factors that can't be controlled, but a
+particular version of that resilience: shut up and put up with misfortune. He
+advocates for moral behaviour, with the caveat that it's motivated by the
+belief in a god. Clearly a learned man for his times, but not necessarily the
+source. He mentions Socrates regularly (mental node for me: read Xenophon's
+Banquet). He mentions "know yourself", but not in an actionable way (i.e. how
+exactly, what are the possibilities?). Advocates for citizen of the word, as
+opposed to a particular state, probably from Diogenes. Some good quotes, see
+below, but most is not so good.
+
+A good observation about the transfer of information (the receiver needs to do
+his bit as well):
+
+> To make a statue needs skill: to view a statue aright needs skill also.
+
+Choose your company carefully:
+
+> one cannot rub shoulders with a soot-stained man without sharing the soot
+> oneself.
+
+Part of the Greek story of controlling emotions to come with something better,
+in this case handling (unfair) critique:
+
+> If you are told that such an one speaks ill of you: make no defence against
+> what was said, but answer, He surely knew not my other faults, else he would
+> not have mentioned these only!
+
+Stories about Socrates:
+
+> When Xanthippe was chiding Socrates for making scanty preparation for
+> entertaining his friends, he answered: - "If they are friends of ours, they
+> will not care for that; if they are not, we shall care nothing for them!"
+
+Maybe misattributed, but good:
+
+> A ship should not ride on a single anchor, nor life on a single hope.
+
 - 2025-12-21: Bertolt Brecht: Life of Galileo (1938)
 : Galileo, the scientist (will come back to Berholt's play later), shaped the
 way we see the world now. Imagine a time in 1600s, dominated by church and an
