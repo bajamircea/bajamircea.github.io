@@ -1,0 +1,122 @@
+---
+layout: post
+title: 'Books Read in 2026'
+categories: read book
+---
+
+List of books I've read in 2026
+
+
+- 2026-01-10: Marcus Aurelius: Meditations
+: Re-read, this time in the translation by George Lang, which uses `thou`s and
+`doest`s, which on one side it makes it more difficult to read, but it might be
+in the spirit of the Meditations which were after all private notes, not public
+writing. It still felt repetitive almost like a ritualistic incantation, but in
+a enjoyable way.
+
+It occurred me this time how well educated, read, conversed Marcus Aurelius
+was. He refers to Epictetus, Socrates, Empedocles, Heraclitus, Hesiod, Homer
+etc.  He was born in the elite Roman families around the emperor, so money was
+not an objection to give him the best education possible. For example Plutarch
+was not available since he died in about 120 CE, around the time when Marcus
+Aurelius was born. So when when he remembers Sextus, at the start of the
+Meditations in the list of his teachers/role models, he means Sextus of
+Chaeronea: i.e. they got him one of Plutarch's grandson or nephew as a tutor.
+
+He's a stoic, though he has a different feel from Epictetus. E.g. instead of
+the "shut up and put up with it", it's more about a sense of duty, appreciation
+about the bright side of your circumstances (though it's easy to say for him,
+he was the Roman emperor), plus not letting your focus be distracted by
+unpleasant things that you can't change.
+
+In Romanian literature there is this traditional ballad Miorița, taught in
+schools, and there is a whole discussion about the attitude of the character
+facing death. I realise that there are parallels with Marcus Aurelius' attitude
+to death: do your best in every circumstance, don't fret over death caused by
+things you can't control, but this parallel escapes Romanian literature
+critics, Marcus Aurelius is not on their reading list.
+
+For him the physical space is composed of the four elements: earth, water, air
+and fire organised in sphere, and he mentions Empedocles a pre-Socratic
+Sicilian philosopher for the origin of this idea, and the idea spherical
+Earth-centric layout of the universe.
+
+He does not believe in life after death, more like Heraclitus, another
+pre-Socratic, perishing is just a transformation. Death is a theme to which he
+comes repeatedly.
+
+He believes in God enough to be of interest to Christians, which is what
+probably helped preserve the book, e.g. the translator mentions Bishop Butler's
+related opinions.
+
+Similar to Epictetus, he sees himself part of a larger brotherhood of men.
+
+There are plenty of logical fallacies employed, the most common are: the false
+binary option and the false analogy.
+
+Be deliberate about what you do so that you don't have regrets:
+> thou doest every act of thy life as if it were the last
+
+Have focus on what you do:
+> Do the things external which fall upon thee distract thee? Give thyself time
+> to learn something new and good, and cease to be whirled around
+
+He does consider that god/gods might not exist, but finds that troubling so he
+goes back to the assumption that it does exist (I find this funny):
+> if there are gods, is not a thing to be afraid of, for the gods will not
+> involve thee in evil; but if indeed they do not exist, or if they have no
+> concern about human affairs, what is it to me to live in a universe devoid of
+> goods and devoid of providence? But in truth they do exist,
+
+Though later he does find useful advice for the alternative:
+
+> if there is a god, all is well; and if chance rules, do not though also be
+> governed by it
+
+He has seen enough to know that there are no absolute truths:
+> Remember that all is opinion
+
+Yes, but some opinions are better (also he has a specific meaning for
+"opinion", see below).
+
+We've got a limited time, use it wisely:
+
+> We must make haste then, not only because we are daily nearer to death, but
+> also because the conception of things and the understanding of them cease
+> first.
+
+The idea of continuous change:
+
+> all these things, which thou seest, change immediately and will no longer be;
+> and constantly bear in mind how many of these changes though hast already
+> witnessed. The universe is transformation: life is opinion.
+
+Think:
+
+> Hast thou reason? I have. - Why then dost not thou use it?
+
+I don't think he believed in an immortal soul, everything transforms and is
+reused:
+
+> If the souls continue to exist, how does the air contain them from eternity?
+
+Be an active listener, see the other side of the argument:
+
+> Accustom thyself to attend carefully to what is said by another, and as much
+> as it is possible, be in the speaker's mind.
+
+About happiness:
+
+> very little indeed is necessary for living a happy life. [...] nor in life be
+> so busy as to have no leisure
+
+Practice makes perfect:
+
+> Practice thyself even in the things which thou despairest of accomplishing.
+> For even the left hand, which is ineffectual for all other things for want of
+> practice, holds the bridle more vigorously than the right hand; for it has
+> been practised into this.
+
+I find that I've read many books recently, Meditations being one of them, that
+on one side contain a lot of nonsense, but on the other side, though active
+reading, I can get a lot of value out of them as well.

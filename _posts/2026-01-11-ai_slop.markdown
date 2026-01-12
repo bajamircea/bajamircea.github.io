@@ -1,0 +1,18 @@
+---
+layout: post
+title: 'AI slop'
+categories: engineering ai
+---
+
+Satya Nadella, Microslop blog
+
+> We need to get beyond the arguments of slop vs sophistication and develop a
+> new equilibrium in terms of our “theory of the mind” that accounts for humans
+> being equipped with these new cognitive amplifier tools as we relate to each
+> other.
+
+[Satya Nadella: Looking Ahead to
+2026](https://snscratchpad.com/posts/looking-ahead-2026/)
+
+Unreadable, pretentious, borderline meaningless slop complaining about slop
+labeling. I rest my case.
