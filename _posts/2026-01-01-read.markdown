@@ -7,6 +7,15 @@ categories: read book
 List of books I've read in 2026
 
 
+- 2026-01-17: J. B. Priestley: An Inspector Calls
+: Moralising play written by a socialist soon after the Word War II. Funny to
+compare it with Brecht and see the differences between a German socialist and
+an English one. The German one is more revolutionary on the lines "in the same
+way as science dethrones religion, the workers will overthrow the exploitative
+capitalists", while the English one is more "workers should be paid fair wages,
+customers should be respectful to shop assistants and everybody should stop
+drinking alcohol". Not bad, but not good 6 out of 10.
+
 - 2026-01-10: Marcus Aurelius: Meditations
 : Re-read, this time in the translation by George Lang, which uses `thou`s and
 `doest`s, which on one side it makes it more difficult to read, but it might be
