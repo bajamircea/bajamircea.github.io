@@ -33,6 +33,19 @@ Mircea Baja - 18 July 2025
 
 ---
 
+# Kinds of completion
+
+When an asynchronous activity completes it can complete:
+- **with a value**: (if you include `void` as a value) i.e. successfully
+- **with an error**: the activity encountered an error
+- **with a stop**: the activity was cancelled and the cancellation is complete
+
+
+- when completing with a value or an error: the activity completed **with a
+  result**
+
+---
+
 # Cancellation at the leaves at chains
 
 - could poll `stop_requested`
@@ -76,15 +89,12 @@ struct noop_awaiter {
   }
 
   void await_suspend(std::coroutine_handle<>) noexcept {
-    ctx_.schedule_cancellation_callback();
+    ctx_.invoke_stopped();
   }
 
-  constexpr void await_resume() const noexcept {
-  }
+  constexpr void await_resume() const noexcept {}
 }; // noop_awaiter
 ```
-
-- cancellation callback is scheduled, not called directly
 
 ---
 
@@ -107,10 +117,16 @@ struct noop_awaiter {
 
 - e.g. we've seen:
 ```cpp
-ctx_.schedule_cancellation_callback();
+ctx_.invoke_stopped();
 ```
-- we did not call directly the chain root cancellation callback then and there,
-  but we deferred it via the re-schedule
+- another option could have been
+```cpp
+ctx_.schedule_stopped();
+```
+- the cancellation is initiated via calling `request_stop()` on a
+  `stop_source`, but if the `stopped` callback is scheduled, then cancellation
+  completes later when the run eventually picks  the `stopped` callback from
+  the ready queue and runs it.
 
 
 - remember as we discussed in [callback, callback,
@@ -126,16 +142,16 @@ ctx_.schedule_cancellation_callback();
   - polling on the stop token `stop_requested()` returns true
   - a stop_callback is invoked (this is likely done on the caller of
     `request_stop()`
+- in simple cases the `stopped` callback is invoked immediately
 - in more complex cases than `noop` we need to call some C API to initiate
-  cancellation, which will complete later
-- but even in simple cases like `noop` we don't call the cancellation callback
-  immediately we schedule later
-- the cancellation callback will eventually do things like destroy the chain
-- if we do that immediately:
+  cancellation, which will complete later or it's explicitly scheduled to run
+  later
+- the stopped callback will eventually do things like destroy the chain - if we
+  do that immediately:
   - we raise questions about stack size/overflow
   - lots of care is required because we destroy the very object (e.g.
     awaitable) that implements the stop_callback invocation
-- therefore to avoid that, the cancellation is at least two steps:
+- but in general the cancellation is at least two steps:
   - the initiator calls `request_stop()` that leads to a tree of stop callbacks
     invokations for the leaves
   - this then returns
@@ -152,7 +168,8 @@ ctx_.schedule_cancellation_callback();
     leaves of chains)
   - but (typically) it returns before the whole cancellation completes
 - the cancellation is really completed when the `co_await` for the `wait_any`,
-  `wait_all`, `nursery.async_run` etc. returns
+  `wait_all`, `nursery.async_run` etc. informs the parent that it completed
+  with a stop
 
 ---
 
@@ -183,15 +200,14 @@ struct yield_awaiter {
 
   void await_suspend(std::coroutine_handle<> handle) noexcept {
     if (ctx_.get_stop_token().stop_requested()) {
-      ctx_.schedule_cancellation_callback();
+      ctx_.invoke_stopped();
       return;
     }
-
+    // we schedule here: that's the nature of yield
     ctx_.schedule_coroutine_resume(handle);
   }
 
-  constexpr void await_resume() const noexcept {
-  }
+  constexpr void await_resume() const noexcept {}
 }; // yield_awaiter
 ```
 
@@ -231,8 +247,7 @@ struct suspend_forever_awaiter {
     configure_cancellation();
   }
 
-  constexpr void await_resume() const noexcept {
-  }
+  constexpr void await_resume() const noexcept {}
 ```
 - notice the optional stop_callback
   - this is our single threaded stop_callback, but might be a
@@ -252,7 +267,7 @@ private:
 
   void on_cancel() noexcept {
     stop_cb_.reset();
-    ctx_.schedule_cancellation_callback();
+    ctx_.schedule_stopped();
   }
 }; // suspend_forever_awaiter
 ```
@@ -306,7 +321,7 @@ struct suspend_forever_awaiter {
 
   void on_cancel() noexcept {
     stop_cb_.reset();
-    ctx_.schedule_cancellation_callback();
+    ctx_.schedule_stopped();
   }
 }; // suspend_forever_awaiter
 ```
@@ -336,7 +351,7 @@ struct suspend_forever_awaiter {
 
   void on_cancel() noexcept {
     stop_cb_.reset();
-    ctx_.schedule_cancellation_callback();
+    ctx_.schedule_stopped();
   }
 }; // suspend_forever_awaiter
 ```
@@ -380,8 +395,7 @@ struct spleep_awaiter {
     schedule_timer();
   }
 
-  constexpr void await_resume() const noexcept {
-  }
+  constexpr void await_resume() const noexcept {}
 ```
 
 ---
@@ -422,7 +436,7 @@ private:
   void on_cancel() noexcept {
     stop_cb_.reset();
     ctx_.remove_timer_node(timer_node_);
-    ctx_.schedule_cancellation_callback();
+    ctx_.schedule_stopped();
   }
 }; //sleep_awaiter
 ```

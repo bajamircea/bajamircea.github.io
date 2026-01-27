@@ -32,6 +32,8 @@ A receiver "receives" by implementing methods like:
 - `set_value(...)`: the computation provides a value (multiple overloads based
   on the value type)
   - e.g. `set_value(int)` to receive an `int` value
+  - e.g. `set_value()` to receive a `void`: we treat this as a completion with
+    a value
   - e.g. `set_value(int, char)` to receive in one go both an `int` and a `char`
 - `set_error(...)`: the computation provides an error (multiple overloads based
   on the error type)

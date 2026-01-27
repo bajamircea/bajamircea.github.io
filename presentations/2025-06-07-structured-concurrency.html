@@ -639,9 +639,9 @@ The terminology is a little bit overloaded:
 
 - a root of a chain has some work to do when it's cancelled (e.g. destroy the
   first coroutine in the chain that will recursively destroy the chain):
-  **cancellation completion callback** for a root of a chain
-  - similarly some work to do when it completes successfully: **result
-    completion callback**
+  **stop completion callback** for a root of a chain
+  - similarly some work to do when it completes without being cancelled: **result
+    completion callback** (a value or an error)
 - a good tool to implement cancellation is the triad:
   `stop_source`/`stop_stoken`/**`stop_callback`**
 - the `stop_callback` takes a functor of the work to do when cancelled (which

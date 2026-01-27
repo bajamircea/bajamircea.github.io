@@ -29,7 +29,7 @@ We're going to look at cases where cancellation is initiated
 
 ---
 
-# Kinds of result
+# Kinds of completion
 
 When an asynchronous activity completes it can complete:
 - **with a value**: (if you include `void` as a value) i.e. successfully
@@ -303,9 +303,13 @@ destroy recursively the whole coroutine segment
     completes with a stop
 - this would lead to the stop being propagated all the way to the `run` that
   initiated the chains
+  - a `run` function returns an optional of the value/result type of the first
+    link in the chain, a `std::nullopt` meaning that the first link in the
+    chain completed with a stop
   - however a primitive like `stopped_as_optional` converts a child completion
     with a stop into a completion with a `std::nullopt` value, allowing control
-    of how deep a child completion with stop propagates down the chain
+    of how deep a child completion with stop propagates down the chain (and not
+    letting propagate all the way to the root/`run`
 
 ---
 
