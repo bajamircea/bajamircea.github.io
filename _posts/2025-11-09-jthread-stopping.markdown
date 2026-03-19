@@ -28,6 +28,8 @@ void foo() {
     // child thread blocked in some processing loop
     example_server.serve_forever();
   });
+
+  // do other things, then t is destroyed
 }
 {% endhighlight %}
 
@@ -116,6 +118,14 @@ around coroutines, sender/receiver without allocating when a stop source is
 constructed. `std::stop_source()` heap allocates a shared state which means:
 constructing can throw, copy is `noexcept` and `stop_possible()` exists to
 return `false` if it does not have a shared state (e.g. moved from object).
+
+**Q:** How is different from using old fashioned `::WaitForMultipleObjects`
+where one of them is a `HANDLE` to an event used to trigger stopping?<br/>
+**A:** `std::stop_callback` provides a mechanism that can interrupt a variety
+of blocking functions. It can also work with `::WaitForMultipleObjects` by
+setting from the callback some event `HANDLE`, but also with others such as
+`example_server.serve_forever()` fictional function above, which requires
+calling `example_server.shutdown()` from the callback.
 
 
 # How do they work?
