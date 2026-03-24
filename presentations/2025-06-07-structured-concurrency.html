@@ -153,7 +153,7 @@ to the nursery from Nathaniel's article). I discuss:
 # Example good
 
 ```cpp
-co<std::tuple<std::string, std::string>> async_search_multiple(
+co<std::tuple<std::string, std::string, std::string>> async_search_multiple(
   const std::string& encoded_query)
 {
   proxy p{ "proxy.example.com", 8080 };
