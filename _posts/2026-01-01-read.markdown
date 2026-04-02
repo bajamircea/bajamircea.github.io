@@ -7,6 +7,10 @@ categories: read book
 List of books I've read in 2026
 
 
+- 2026-04-02: Mark Twain: The Celebrated Jumping Frog
+: OKish. More interesting as insight on how to write a novel: you write short
+stories and then you link them together.
+
 - 2026-03-24: Orhan Pamuk: My Name Is Red
 : Fiction. The action happens in Istambul in about 1591 in the circle of
 miniaturists around the Ottoman Sultan. Each chapter switches to a different
