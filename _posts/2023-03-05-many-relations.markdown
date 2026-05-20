@@ -70,11 +70,16 @@ of the objects involved for equality.
 
 "Less than" is also special. It is related to equality via the trichotomy rule:
 given two values, one is less than the other or the values are equal. "Less
-than" is a special case of order relations: it is strict.
+than" is a special case of order relations: it is strict (irreflexive,
+asymmetric and transitive).
 
 Order usually refers to any of the "less than", "greater than", "less than or
-equal", "greater than or equal". Comparison refers to order or equality
-relations.
+equal", "greater than or equal". "greater than" for example is not strict (e.g.
+it is reflexive).
+
+Comparison is used ambiguously. Sometimes it refers to order or equality
+relations, other times it refers to strict order (and implies an associated
+equality).
 
 Sometimes terminology strong and weak is used e.g. strong equality is normal
 equality, while weak equality is equivalence, similar strong order is provided
@@ -134,10 +139,14 @@ made (though with good intentions probably). Here are two examples.
 There are multiple values that usually result from computation errors, such as
 divide by `0`, they are generally referred as `NaN` (i.e. Not A Number). The
 rules of comparing against a `NaN` are not sane mathematically: e.g. they don't
-respect properties such as trichotomy. One approach is to say that float
-comparisons are partial, not total, that `NaN` values are not in the domain of
-comparisons, though realistically the chance of enforcing that in a large
-program are slim.
+respect properties such as trichotomy. `42 < Nan`, `42 == Nan` and `Nan < 42`
+are all `false`. One approach is to say that float comparisons are partial, not
+total, that `NaN` values are not in the domain of comparisons, though
+realistically the chance of enforcing that in a large program at all points are
+slim, but at least at certain points, like sorting arrays of `float`s, care
+must be taken. The behaviour might be undefined as sort algorithms often have
+requirements that the order is strict for the values in the sequence.
+
 
 ## The case of -0.0 and +0.0
 

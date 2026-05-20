@@ -32,7 +32,7 @@ for comparisons `==` and `<` this is made harder because, as we'll see,
 historically and also when the spaceship `<=>` operator was introduced, people
 sometimes use `==` and `<` for weaker relations than equality or "less than".
 
-## Semantics of a regular type
+## Semantics of a regular data type
 
 - It's a data class.
 - You can create an instance of that class
@@ -66,7 +66,7 @@ sometimes use `==` and `<` for weaker relations than equality or "less than".
 - Independence: changing one value does not change other unrelated values
 
 
-## Syntax requirements of a regular type
+## Syntax requirements of a regular data type
 
 Syntactic requirements are those that a compiler should be able to check.
 E.g. given `const T a, b` then `a == b` should compile (and return something
@@ -104,6 +104,11 @@ but only the subset of those values that do not overflow.
 Regular types go hand in hand with regular functions. In particular we expect
 that functions that implement comparison for equality and order for regular
 types are themselves regular functions.
+
+It might initially appear weird that we have a definition of regular for data
+types and a related, but quite different definition for functions. However this
+mimics the separation in a hardware processor between data and instructions and
+even deeper in mathematics between objects and functions.
 
 
 # Comments

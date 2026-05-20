@@ -28,11 +28,10 @@ It's often called the spaceship operator because it kind of looks like a ASCII
 representation of a spaceship from Star Wars, though Star Wars ASCII experts
 have better representations in their opinion such as `>=<`, `|=|` or even `|-o-|`.
 
-Many elements of the elements of the proposal pose no philosophical problems.
-
-Three-way comparison has a long history, we've seen the `memcmp` being one of
-the fundamental C functions around `struct` regularity, that did not have
-direct language support in C++ like copy had.
+Many elements of the proposal pose no philosophical problems.  Three-way
+comparison has a long history, we've seen the `memcmp` being one of the
+fundamental C functions around `struct` regularity, that did not have direct
+language support in C++ like copy had.
 
 It supports `= default` to request the compiler to generate memberwise
 implementation, i.e. implement it based on the base class(es) and member(s)

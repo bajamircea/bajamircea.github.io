@@ -119,7 +119,7 @@ int main() {
 The reality is that most of the time the assignment is not intentional and
 obvious as in the code above. Most of the copy assignment implementations take
 care of this. There are several options:
-- one is to carefully kraft the steps so that it does not matter if self
+- one is to carefully craft the steps so that it does not matter if self
   assigned
 - the other is to test for object identity as below
 
