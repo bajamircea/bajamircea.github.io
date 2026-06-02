@@ -7,6 +7,16 @@ categories: read book
 List of books I've read in 2026
 
 
+- 2026-04-30: William Zinsser: On Writing Well
+: This is written by a journalist, it's in a journalist style. It has
+interesting points, it feel dynamic, but if you want to really understand a
+subject look for a subject authority e.g. see something like rancis-Noël Thomas
+and Mark Turner: Clear and simple as the truth. To point just one thing, the
+advice to avoid passive is wrong. Passive is in the language for a reason: via
+a already introduced subject, introduce a new one to which the narrative will
+move next. Not bad enough to stop reading it. The best out of it is a reading
+list of potentially interesting books.
+
 - 2026-04-02: Mark Twain: The Celebrated Jumping Frog
 : OKish. More interesting as insight on how to write a novel: you write short
 stories and then you link them together.
