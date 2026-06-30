@@ -1,0 +1,98 @@
+---
+layout: post
+title: 'Hamming ideas'
+categories: engineering ideas
+---
+
+Ideas from Richard Hamming's 1995 lectures "Learning to learn"
+
+Reference: [The Art of Doing Science and Engineering: Learning to Learn" course by
+Dr.  Richard W. Hamming
+(1915-1998)](https://www.youtube.com/playlist?list=PL2FF649D0C4407B30)
+(1915-1998) for graduate students at the Naval Postgraduate School (NPS) in
+Monterey, California 1995. http://www.nps.edu/
+
+
+# Sigmoid
+
+A lot of natural processes follow a sigmoid growth: they start small, then they
+grow exponentially, but then eventually they saturate. It's not necessarily a
+sigmoid, but has some similar characteristics.
+
+
+# Every 17 years
+
+Knowledge doubles every 17 years. He does a back of the envelope calculation,
+being a mathematician he's very comfortable to use calculus for that. It does
+not seem outlandish. One issue is that it currently requires more scientists.
+We'll hit a saturation point on that. Consequences are that the areas of
+expertise become more specialized and that things are changed technologically
+20 years later, you need to come up with new things.
+
+
+# Early feedback
+
+There is the example of the back of the envelope calculation and later when he
+talks about an iterative, agile project management that gives you more
+productivity than blindly following a dead end.
+
+
+# Economic incentives for the development of electronic computers
+
+The 1890s US census, which was by law required every 10 years, was looking to
+take more than 10 years to process before a new one is due. This lead to the
+development of punch cards, by Herman Hollerith, where holes in the card
+indicating say the age or gender could be then used to count. This then
+eventually led to IBM.
+
+Then the Manhattan project (and other e.g. calculating tables of ballistic
+trajectories for the US army). Imagine large rooms, factory floor size with
+rows and rows of, almost always, women doing calculations. Hamming says that
+you get a multiplication every 20 seconds, for short periods of time you can
+get more, but it's not sustainable (e.g. people get tired, then they do
+mistakes, they need a cup of tea, etc.).
+
+It's interesting to think about these people, having a job, earnings, and how
+the electronic computers lost these jobs, and how other jobs were created
+instead. We're facing today (2026) the same kind if discourse related to AI,
+the historical experience says that some jobs will be lost, other jobs will be
+created.
+
+
+# Centralized computers vs. PCs
+
+Computers used to be centralized, expensive, with options to rent time slots
+where then utilization factors mattered. AI is currently in a similar early
+situation where it's centralized (remote in the cloud), expensive, per-token
+costs. Things might change.
+
+
+# Productivity
+
+He claims that different people have a wide range of productivity for the same
+time/effort. He mentions this at the beginning for scientists getting results
+and later for some programmers being up to 10 times more productive.
+
+
+ # Computer says
+
+An image meme was created in February 2026:
+- A human tells the computer: say "I am alive"
+- Computer responds: I AM ALIVE
+- Human reacts: oh my god
+
+In 1995 Hamming mentions that just because the computer displays,prints,says
+that it thinks, it's not necessarily so.
+
+
+# Definition bias
+
+When we ask what is intelligence or thinking, we have a bias, interest, to have
+such a definition that it does not answer in the negative about ourselves.
+
+
+# Meaning
+
+He describes a situation where his wife mentions that it rains. He wonders why
+she said that, because he can see that it rains. He then realises that what she
+means instead is: "I finished my tea, I'm ready to have a conversation".

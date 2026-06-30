@@ -7,6 +7,10 @@ categories: read book
 List of books I've read in 2026
 
 
+- 2026-06-28: Michel Foucault: What is an author?
+: The triumph of scholasticism: the art of making difficult of a simple
+subject. Not recommended. 1 out of 10.
+
 - 2026-04-30: William Zinsser: On Writing Well
 : This is written by a journalist, it's in a journalist style. It has
 interesting points, it feel dynamic, but if you want to really understand a

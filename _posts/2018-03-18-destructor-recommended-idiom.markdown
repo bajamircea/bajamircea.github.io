@@ -505,7 +505,7 @@ The code above checks for all errors and reports only one:
 
 ## Bad APIs
 
-Sometimes the APIs a broken. Oh well, good luck, do your best.
+Sometimes the APIs are broken. Oh well, good luck, do your best.
 
 {% highlight c %}
 The EINTR error is a somewhat special case.  Regarding the EINTR

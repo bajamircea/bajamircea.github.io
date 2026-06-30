@@ -57,7 +57,7 @@ for (auto it = std::directory_iterator(folder);
 }
 {% endhighlight %}
 
-There are versions that take and `error_code` as an argument. Note that in
+There are versions that take an `error_code` as an argument. Note that in
 these versions, when an error happens, the constructor still constructs an
 object (probably the same as the default constructor). Also notice that the
 `operator++` can't be used, we have an `increment` function instead which
