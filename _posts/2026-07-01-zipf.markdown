@@ -1,0 +1,33 @@
+---
+layout: post
+title: 'Zipf''s law in programming'
+categories: coding cpp
+---
+
+When I discover that my hyperbolic usage conjecture is not new
+
+In 2020 I made the observation, which I called the hyperbolic usage conjecture,
+that in C++ a few types are used a lot and a lot of types that are used very
+few times.
+
+![Hyperbolic usage](/assets/2020-02-26-irregularity/08-type-usage.png)
+
+Then I said that this applies to C++ concepts as well.
+
+I knew that using the hyperbola as a name for the curve is not perfect, it only
+meant that it's large for values close to zero and it's small for values further
+from zero.
+
+This applies to other programming languages, though, say in LUA or Python, the
+curve might have a different shape depending on the community ability to define
+new types.
+
+It turns out it's not a new idea: [Zipf's
+Law](https://en.wikipedia.org/wiki/Zipf%27s_law).
+
+The funny sounding Zipf is the surname of an American linguist George Zipf, who
+observed that that the frequency of words in a natural language decreases in a
+similar way. He's not the first one to make such observations either.
+
+It's also not the only curve, it comes from a family of curves called "power
+law".
