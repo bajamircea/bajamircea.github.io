@@ -74,3 +74,17 @@ The reason is probably a consequence of the enshitification of Google search,
 which now leaves a gap in the market to be filled.
 
 History will repeat.
+
+
+# Conclusion
+
+You need to develop an understanding of what AI can and cannot deliver. Without
+it, you're going:
+
+> to be a simple creature who is likely to have been deceived by some wizard or
+> actor whom he met, and whom he thought all-knowing, because he himself was
+> unable to analyse the nature of knowledge and ignorance and imitation
+
+(From [Plato's Republic](https://classics.mit.edu/Plato/republic.11.x.html),
+with thanks to [Justin
+Meiners](https://www.jmeiners.com/questioning-probability/))
