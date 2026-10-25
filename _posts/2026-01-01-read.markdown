@@ -7,6 +7,17 @@ categories: read book
 List of books I've read in 2026
 
 
+- 2026-10-25: Jean-Philippe Aumasson: Serious Cryptography
+: Good recap on cryptography. Relatively high level overview. Recommended.
+
+- 2026-10-10: Jaques Lacan: The Agency of the Letter in the Unconscious
+: Professional bullshiter. He tries to position himself as a Freud interpreter,
+uniquely able to see past the way Freud's writing "glosses with which it is
+decked out for popular consumption". Basically he takes Freud's nonsense and
+embraces it to apply it to other fields (literature in this case). He insists
+to tell us that the talk was given in a prestigious setting, and that the
+discussion continued over drinks, as if this makes it right. 0 out of 10.
+
 - 2026-09-10: Walter Benjamin: The Work of Art in the Age of Mechanical
   Reproduction
 : The subject is interesting, the author fails to address it. Effectively

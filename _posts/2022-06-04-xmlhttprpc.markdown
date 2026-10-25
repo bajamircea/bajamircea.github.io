@@ -40,7 +40,7 @@ Well like that:
 </tr>
 <tr>
   <td><code>xmlFile</code></td>
-  <td><code>XMLFile</code></td>
+  <td><code>xMLFile</code></td>
 </tr>
 </table>
 
