@@ -916,3 +916,80 @@ class: large-points
 
 # Questions?
 
+---
+
+# How to mess up feature branches
+
+Added 26 Oct 2026, not part of the initial presentation
+
+---
+
+# How to mess up feature branches
+
+<pre><font color="#12488B"><b>repo</b></font><font color="#E9AD0C"><b> (feature &gt;)</b></font>$ git push
+To ../remote.git
+ <font color="#C01C28">! [rejected]       </font> feature -&gt; feature (fetch first)
+<font color="#C01C28">error: failed to push some refs to &apos;../remote.git&apos;</font>
+<font color="#A2734C">hint: Updates were rejected because the remote contains work that you do not</font>
+<font color="#A2734C">hint: have locally. This is usually caused by another repository pushing to</font>
+<font color="#A2734C">hint: the same ref. If you want to integrate the remote changes, use</font>
+<font color="#A2734C">hint: &apos;git pull&apos; before pushing again.</font>
+<font color="#A2734C">hint: See the &apos;Note about fast-forwards&apos; in &apos;git push --help&apos; for details.</font></pre>
+
+- git told me to "git pull": DON'T
+- if you pull now, instead of a linear history you'll end up with a spaghetti
+  one
+
+---
+
+# How to mess up feature branches
+
+<pre><font color="#12488B"><b>repo</b></font><font color="#E9AD0C"><b> (feature &gt;)</b></font>$ git fetch
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 2 (delta 0), reused 0 (delta 0), pack-reused 0
+Unpacking objects: 100% (2/2), 221 bytes | 221.00 KiB/s, done.
+From ../remote
+   bac7593..ec0ccc2  feature    -&gt; origin/feature
+<font color="#12488B"><b>repo</b></font><font color="#E9AD0C"><b> (feature &lt;&gt;)</b></font>$ </pre>
+
+- if you first fetch you can see that remote feature diverged, notice the
+  <code><font color="#E9AD0C"><b>&lt;&gt;</b></font></code> after the fetch
+
+---
+
+# How to mess up feature branches
+
+<pre><font color="#12488B"><b>repo</b></font><font color="#E9AD0C"><b> (feature &lt;&gt;)</b></font>$ git log --graph --oneline feature origin/feature develop
+* <font color="#A2734C">4cf611c (</font><font color="#2AA1B3"><b>HEAD</b></font><font color="#A2734C"> -&gt; </font><font color="#26A269"><b>feature</b></font><font color="#A2734C">)</font> My new change
+<font color="#C01C28">|</font> * <font color="#A2734C">ec0ccc2 (</font><font color="#C01C28"><b>origin/feature</b></font><font color="#A2734C">)</font> Their change
+<font color="#C01C28">|/</font>  
+* <font color="#A2734C">bac7593</font> My change
+* <font color="#A2734C">e80cd41 (</font><font color="#C01C28"><b>origin/develop</b></font><font color="#A2734C">, </font><font color="#26A269"><b>develop</b></font><font color="#A2734C">)</font> Base</pre>
+
+- so what happened is the while you did "My new change" locally on your local
+  feature branch, a colleague of yours updated it and pushed "Their change"
+- the reason `git pull` is not a good idea is that git will fetch and merge,
+  ending up with a non-linear feature branch history
+
+---
+
+# How to mess up feature branches
+
+<pre><font color="#12488B"><b>repo</b></font><font color="#E9AD0C"><b> (feature &gt;)</b></font>$ git fetch
+...
+<font color="#12488B"><b>repo</b></font><font color="#E9AD0C"><b> (feature &lt;&gt;)</b></font>$ git log --graph --oneline feature origin/feature develop
+...
+<font color="#12488B"><b>repo</b></font><font color="#E9AD0C"><b> (feature &lt;&gt;)</b></font>$ git rebase origin/feature
+Successfully rebased and updated refs/heads/feature.
+<font color="#12488B"><b>repo</b></font><font color="#E9AD0C"><b> (feature &gt;)</b></font>$ git log --graph --oneline feature origin/feature develop
+* <font color="#A2734C">d490677 (</font><font color="#2AA1B3"><b>HEAD</b></font><font color="#A2734C"> -&gt; </font><font color="#26A269"><b>feature</b></font><font color="#A2734C">)</font> My new change
+* <font color="#A2734C">ec0ccc2 (</font><font color="#C01C28"><b>origin/feature</b></font><font color="#A2734C">)</font> Their change
+* <font color="#A2734C">bac7593</font> My change
+* <font color="#A2734C">e80cd41 (</font><font color="#C01C28"><b>origin/develop</b></font><font color="#A2734C">, </font><font color="#26A269"><b>develop</b></font><font color="#A2734C">)</font> Base</pre>
+
+- to have a linear history: fetch first, inspect, rebase your changes on top of
+  theirs and then try to push again
+
+---
