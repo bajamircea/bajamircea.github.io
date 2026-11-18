@@ -7,6 +7,11 @@ categories: read book
 List of books I've read in 2026
 
 
+- 2026-11-02: Neal Shusterman: Scythe
+: In a society that conquered mortality, a select group is in charge with
+killing to keep the population under control, but they struggle with the
+morality of it. Grim, with a bit of teeneragy romance, but OK as a book.
+
 - 2026-10-25: Jean-Philippe Aumasson: Serious Cryptography
 : Good recap on cryptography. Relatively high level overview. Recommended.
 
@@ -35,7 +40,7 @@ speech. 1.5 out of 10 (at least he's not so deliberately incomprehensible as
 Derrida).
 
 - 2026-09-01: Lawrence Lipking: The practice of theory
-: How lively to see read a sane and funny at the time article. "To begin with,
+: How lovely to read a sane and funny at the same time article. "To begin with,
 you have asked the wrong person. Deconstruction is not my game. It is a bit as
 if a sheep has been comissioned to say something sympathetic about wolves, from
 a wolf's point of view". As an example he goes over "Sailing to Byzantium" by
